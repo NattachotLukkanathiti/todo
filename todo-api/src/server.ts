@@ -1,0 +1,90 @@
+import express from 'express';
+import cors from 'cors';
+import { pool } from './database/db';
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+app.get('/', (req, res) => {
+  res.send('Todo API Running');
+});
+
+
+app.get('/todos', async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM todos ORDER BY id DESC'
+    );
+
+    res.json(result.rows);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
+  }
+});
+
+app.post('/todos', async (req, res) => {
+  try {
+    const { title ,password} = req.body;
+
+    const result = await pool.query(
+      `INSERT INTO todos (title, password,completed)
+       VALUES ($1, $2, false)
+       RETURNING *`,
+      [title, password]
+    );
+
+    res.status(201).json(result.rows[0]);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+app.put('/todos/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { completed } = req.body;
+
+    const result = await pool.query(
+      `UPDATE todos
+       SET completed = $1
+       WHERE id = $2
+       RETURNING *`,
+      [completed, id]
+    );
+
+    res.json(result.rows[0]);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+app.delete('/todos/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await pool.query(
+      'DELETE FROM todos WHERE id = $1',
+      [id]
+    );
+
+    res.json({
+      message: 'Todo deleted successfully'
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
