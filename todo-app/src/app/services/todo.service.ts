@@ -13,7 +13,7 @@ export interface Todo {
 })
 export class TodoService {
   private http = inject(HttpClient);
-  private api = 'https://todo-arz1.onrender.com';
+  private api = 'https://todo-arz1.onrender.com/todos';
 
   // 1. กำหนด Header พิเศษเพื่อข้ามหน้าเตือนของ Ngrok
   private headers = new HttpHeaders({

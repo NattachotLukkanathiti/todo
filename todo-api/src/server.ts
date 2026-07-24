@@ -6,7 +6,8 @@ const app = express();
 app.use(cors({
   origin: [
     'https://lamped.netlify.app',
-    'http://localhost:4200' // ใส่เผื่อทดสอบในเครื่อง
+    'http://localhost:4200', // ใส่เผื่อทดสอบในเครื่อง
+     'https://coruscating-donut-62bb86.netlify.app'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'ngrok-skip-browser-warning'],
