@@ -3,10 +3,18 @@ import cors from 'cors';
 import { pool } from './database/db';
 
 const app = express();
-
-app.use(cors());
+app.use(cors({
+  origin: [
+    'https://lamped.netlify.app',
+    'http://localhost:4200' // ใส่เผื่อทดสอบในเครื่อง
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'ngrok-skip-browser-warning'],
+  credentials: true
+}));
 app.use(express.json());
 
+app.use(express.json());
 app.get('/', (req, res) => {
   res.send('Todo API Running');
 });
