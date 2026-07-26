@@ -61,7 +61,7 @@ app.post('/api/login', async (req, res) => {
 
     // ค้นหาผู้ใช้จากตาราง todos
     const result = await pool.query(
-      'SELECT * FROM todos WHERE title = $2 AND password = $3',
+      'SELECT * FROM todos WHERE title = $1 AND password = $2',
       [title, password]
     );
 
