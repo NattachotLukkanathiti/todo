@@ -57,12 +57,12 @@ app.post('/todos', async (req, res) => {
 // เพิ่ม Route สำหรับ Login
 app.post('/api/login', async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { title, password } = req.body;
 
     // ค้นหาผู้ใช้จากตาราง todos
     const result = await pool.query(
-      'SELECT * FROM todos WHERE username = $1 AND password = $2',
-      [username, password]
+      'SELECT * FROM todos WHERE title = $1 AND password = $2',
+      [title, password]
     );
 
     if (result.rows.length > 0) {
