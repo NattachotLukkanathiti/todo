@@ -41,8 +41,8 @@ app.post('/todos', async (req, res) => {
     const { username, title ,password, confirmPassword} = req.body;
 
     const result = await pool.query(
-      `INSERT INTO todos (username, title, password, confirmPasswoed, completed)
-       VALUES ($1, $2, $3, $4 false)
+      `INSERT INTO todos (username, title, password, confirmPassword, completed)
+       VALUES ($1, $2, $3, $4 ,false)
        RETURNING *`,
       [username,title, password, confirmPassword]
     );
