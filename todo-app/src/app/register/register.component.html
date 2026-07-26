@@ -17,6 +17,7 @@
   <div class="Email">Username <span class="red">*</span></div>
    <div class="input-group">
       <input type="text"  [(ngModel)]="username">
+      <img src="image/Vector.svg" class="iconpass" alt="">
   </div>
   <div class="Email">Email <span class="red">*</span></div>
   <div class="input-group">
@@ -25,11 +26,13 @@
   </div>
    <div class="Email">Password <span class="red">*</span></div>
    <div class="input-group">
-      <input type="password"  [(ngModel)]="password">
+      <input [type]="showPassword ? 'text': 'password'" [(ngModel)]="password">
+      <img class="iconpass" (click)="showPassword = !showPassword" [src]="showPassword ? 'image/eye-open.svg' : 'image/eye-off.svg'">
   </div>
   <div class="Email">Confirm Password <span class="red">*</span></div>
    <div class="input-group">
-      <input type="password"  [(ngModel)]="confirmPassword">
+      <input [type]="showConfirmPassword ? 'text': 'confirmPassword'" [(ngModel)]="confirmPassword" >
+      <img class="iconpass" (click)="showConfirmPassword = !showConfirmPassword" [src]="showConfirmPassword ? 'image/eye-open.svg' : 'image/eye-off.svg'">
   </div>
   
   <div class="checkbox-group">
@@ -49,7 +52,15 @@
     <button class="Apple"><img class="icon" src="image/apple.svg" alt="Apple"></button>
   </div>
 
-
+<div class="todo-list">
+    @for(todo of todos; track todo.id){
+      <div class="todo-item">
+        <mat-checkbox  [(ngModel)]="todo.completed" (change)="toggleTodo(todo)"></mat-checkbox>
+          <span [class.completed]="todo.completed">{{todo.title}}</span>
+            <button class="delete-button" (click)="deleteTodo(todo.id)">ลบ</button>
+      </div>
+    }
+  </div>
 </div>
 </div>
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterOutlet, RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router'; // เพิ่ม Router
 
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
@@ -9,7 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 
-import { TodoService, Todo } from '../services/todo.service';
+import { TodoService } from '../services/todo.service';
 
 @Component({
   selector: 'app-login',
@@ -24,51 +24,40 @@ import { TodoService, Todo } from '../services/todo.service';
     MatIconModule,
     RouterLink
   ],
-templateUrl: './login.component.html',
-styleUrl: './login.component.css'
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.css'
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
   private todoService = inject(TodoService);
+  private router = inject(Router); // ใช้สำหรับเปลี่ยนหน้า
 
-  title = '';
+  title = ''; // เปลี่ยนจาก title เป็น username
   password = '';
   rememberMe = false;
   showPassword = false;
 
-  todos: Todo[] = [];
- togglePasswordVisibility() {
+  togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
-  ngOnInit(): void {
-    this.loadTodos();
-  }
 
-  loadTodos() {
-    this.todoService.getTodos().subscribe(data => {
-      this.todos = data;
-    });
-  }
+  // เปลี่ยนจาก addTodo เป็น login
+  login() {
+    if (!this.title.trim() || !this.password.trim()) return;
 
-  addTodo() {
-    if (!this.title.trim()) return;
-
-    this.todoService.addTodo(this.title, this.password).subscribe(() => {
-      this.title = '';
-      this.password = '';
-      this.loadTodos();
-    });
-  }
-
-  deleteTodo(id: number) {
-    this.todoService.deleteTodo(id).subscribe(() => {
-      this.loadTodos();
-    });
-  }
-
-  toggleTodo(todo: Todo) {
-    this.todoService.updateTodo(todo).subscribe(() => {
-      this.loadTodos();
+    this.todoService.login(this.title, this.password).subscribe({
+      next: (response) => {
+        console.log('Login Successful', response);
+        
+        // TODO: สามารถเก็บ Token ได้ที่นี่ เช่น localStorage.setItem('token', response.token);
+        
+        // เปลี่ยนหน้าไปที่ /todos (หรือหน้าหลักของคุณ)
+        this.router.navigate(['/todos']); 
+      },
+      error: (error) => {
+        console.error('Login Failed', error);
+        alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+      }
     });
   }
 }

@@ -26,11 +26,13 @@ export class TodoService {
     });
   }
 
-  addTodo(title: string, password: string) {
+  addTodo(title: string, password: string, confirmPassword: string,username: string) {
     return this.http.post<Todo>(
       this.api,
       {
         title,
+        confirmPassword,
+        username,
         password,
         completed: false
       },
@@ -54,4 +56,8 @@ export class TodoService {
       { headers: this.headers } // ส่ง headers แนบไปด้วย
     );
   }
+  // ใน todo.service.ts
+login(username: string, password: string) {
+  return this.http.post<any>('/api/login', { username, password });
+}
 }

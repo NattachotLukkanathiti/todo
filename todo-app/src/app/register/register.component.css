@@ -46,15 +46,16 @@ input{
     color:red;
 }
 .re{
-    font-size: 20px;
-    margin-left:0px;
+    font-size: 15px;
     color: #646B72;
+    font-weight: 300;
 }
 .For {
     margin-left: 5px; 
     color: #E04F16;
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 400;
+    text-decoration: none;
 }
 .iconpass {
     position: absolute;
@@ -208,55 +209,53 @@ mat-form-field{
 
 }
 
-.ferni{
-    width: 400px;
+.ferni {
+    width: 500px; /* เมื่อเพิ่มความกว้าง จะขยายไปทางซ้าย */
     height: 60px;
     background: #84D46E;
     position: fixed;
-    left: -120px;
+    right: 50%;
+    margin-right: 320px; /* ปรับค่านี้เพื่อกำหนดระยะห่างจากจุดกึ่งกลาง */
     top: 50vh;
     transform: translateY(-50%) rotate(-10deg);
-    clip-path: polygon(0 0, 100% 0,95% 100%,0 100%
-    );
+    clip-path: polygon(0 0, 100% 0, 95% 100%, 0 100%);
 }
-.ferni2{
-    width: 400px;
-    height: 60px;
-    background: #84D46E;
 
+.ferni2 {
+    width: 400px;
+    height: 60px;
+    background: #84D46E;
     position: fixed;
-    left: 100px;
+    left: 50%;
+    margin-left: -500px; /* ปรับค่านี้เพื่อกำหนดระยะห่างจากจุดกึ่งกลาง */
     top: 50vh;
     transform: translateY(-50%) rotate(-10deg);
-    clip-path: polygon(100% 0, 96% 100%,0 100%,5% 0
-);
+    clip-path: polygon(100% 0, 96% 100%, 0 100%, 5% 0);
 }
-.ferni3{
+
+.ferni3 {
     width: 400px;
     height: 60px;
     background: #84d46e69;
-
     position: fixed;
-    right: -12px;
+    left: 50%;
+    margin-left: 200px; /* ปรับค่านี้เพื่อกำหนดระยะห่างจากจุดกึ่งกลาง */
     top: 32vh;
     transform: translateY(-50%) rotate(-5deg);
-    clip-path: polygon(100% 0, 96% 100%,0 100%,5% 0
-);
+    clip-path: polygon(100% 0, 96% 100%, 0 100%, 5% 0);
 }
-.ferniback{
-     width: 2300px;
-    height: 1200px;
+
+.ferniback {
+    width: 2300px;
+    height: 1100px;
     background: #84d46e35;
-
     position: fixed;
-    left: -120px;
-    top: 110vh;
+    left: 50%;
+    margin-left: -1150px; /* ครึ่งหนึ่งของความกว้าง เพื่อให้อยู่ตรงกลาง */
+    top: 900px;
     transform: translateY(-50%) rotate(-5deg);
-    clip-path: polygon(0 0, 100% 0,95% 100%,0 100%
-        
-    );
+    clip-path: polygon(0 0, 100% 0, 95% 100%, 0 100%);
 }
-
 
 @media(max-width:600px){
 

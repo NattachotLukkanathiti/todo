@@ -30,9 +30,10 @@ import { TodoService, Todo } from './services/todo.service';
 export class AppComponent implements OnInit {
 
   private todoService = inject(TodoService);
-
+  username = '';
   title = '';
   password = '';
+  confirmPassword = '';
   rememberMe = false;
 
   todos: Todo[] = [];
@@ -50,9 +51,11 @@ export class AppComponent implements OnInit {
   addTodo() {
     if (!this.title.trim()) return;
 
-    this.todoService.addTodo(this.title, this.password).subscribe(() => {
+    this.todoService.addTodo(this.username, this.title, this.password,this.confirmPassword).subscribe(() => {
+      this.username = '';
       this.title = '';
       this.password = '';
+      this.confirmPassword = '';
       this.loadTodos();
     });
   }
