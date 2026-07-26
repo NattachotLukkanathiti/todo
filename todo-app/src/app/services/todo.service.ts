@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { title } from 'process';
 
 export interface Todo {
   id: number;
@@ -56,8 +57,13 @@ export class TodoService {
       { headers: this.headers } // ส่ง headers แนบไปด้วย
     );
   }
-  // ใน todo.service.ts
-login(username: string, password: string) {
-  return this.http.post<any>('/api/login', { username, password });
-}
+
+// ใน todo.service.ts
+  login(title: string, password: string) {
+    return this.http.post<any>(
+      'https://todo-arz1.onrender.com/api/login', // 1. เปลี่ยน URL ให้ชี้ไปที่ Render
+      { title, password },
+      { headers: this.headers } // 2. แนบ headers เพื่อป้องกันปัญหาการเชื่อมต่อ
+    );
+  }
 }
