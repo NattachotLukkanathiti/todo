@@ -54,6 +54,29 @@ app.post('/todos', async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 });
+// เพิ่ม Route สำหรับ Login
+app.post('/api/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    // ค้นหาผู้ใช้จากตาราง todos
+    const result = await pool.query(
+      'SELECT * FROM todos WHERE username = $1 AND password = $2',
+      [username, password]
+    );
+
+    if (result.rows.length > 0) {
+      // ถ้าเจอผู้ใช้
+      res.json({ success: true, message: 'Login successful', user: result.rows[0] });
+    } else {
+      // ถ้าไม่เจอผู้ใช้
+      res.status(401).json({ success: false, message: 'Invalid username or password' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
 app.put('/todos/:id', async (req, res) => {
   try {
     const { id } = req.params;
