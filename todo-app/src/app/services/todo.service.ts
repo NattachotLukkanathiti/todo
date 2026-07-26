@@ -26,13 +26,13 @@ export class TodoService {
     });
   }
 
-  addTodo(title: string, password: string, confirmPassword: string,username: string) {
+  addTodo(username: string, title: string, password: string, confirmPassword: string) {
     return this.http.post<Todo>(
       this.api,
       {
+        username,
         title,
         confirmPassword,
-        username,
         password,
         completed: false
       },
