@@ -7,11 +7,13 @@ const app = express();
 // เก็บ OTP ชั่วคราว (ในระบบจริงควรใช้ Redis หรือ Database)
 const otpStore = new Map();
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false, // ใช้ STARTTLS
   auth: {
-    user: 'YOUR_EMAIL@gmail.com', // ใส่อีเมลของคุณ
-    pass: 'YOUR_APP_PASSWORD'      // ใส่ App Password (ไม่ใช่รหัสผ่านปกติ)
-  }
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
 });
 app.use(cors({
   origin: [
