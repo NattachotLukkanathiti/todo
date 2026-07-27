@@ -10,10 +10,11 @@ const app = express();
 // เก็บ OTP ชั่วคราว (ในระบบจริงควรใช้ Redis หรือ Database)
 const otpStore = new Map();
 const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
+  // เปลี่ยนจาก 'smtp.gmail.com' เป็น IP ของ Gmail โดยตรง
+  host: '74.125.130.108', // หรือ '142.251.10.108' (IP สำหรับ smtp.gmail.com)
   port: 587,
   secure: false, // STARTTLS
-  family: 4,     // บังคับ IPv4 อีกชั้น
+  family: 4,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
