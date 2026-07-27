@@ -33,7 +33,157 @@ display: flex;
     align-items:center;
     justify-content:center;
     z-index: 1;
+    animation: slideDown 0.7s ease-out forwards;
 
+}
+
+@keyframes slideDown { 
+    0% { 
+        transform: translateY(-1000px); 
+        width: 50px;
+        height: 50px;
+        border-radius: 100px; 
+    } 
+    30% { 
+        transform: translateY(0);
+        width: 50px;
+        height: 50px;
+        border-radius: 100px; 
+    } 
+    60% { 
+        transform: translateY(0);
+        width: 300px;
+        height: 300px;
+        border-radius: 1000px;
+        box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5), 0 0 8px 10px #d4e4d0; 
+    } 
+    90% { 
+        transform: translateY(0); 
+        max-width:500px;
+        background:#FFFFFF;
+        margin:20px;
+        border:1px solid #c5c5c59a;
+        border-radius:10px;
+        padding:44px;
+        align-items:center;
+        justify-content:center;
+        z-index: 1;
+         box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5), 0 0 100px 10px #a6d59b; 
+    } 
+    95% { 
+        transform: translateY(0); 
+        max-width:500px;
+        background:#FFFFFF;
+        margin:20px;
+        border:1px solid #c5c5c59a;
+        border-radius:10px;
+        padding:44px;
+        align-items:center;
+        justify-content:center;
+        z-index: 1;
+        box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5), 0 0 19px 10px #d4e4d0; 
+    } 
+    100% { 
+        transform: translateY(0); 
+        max-width:500px;
+        background:#FFFFFF;
+        margin:20px;
+        border:1px solid #c5c5c59a;
+        border-radius:10px;
+        padding:44px;
+        align-items:center;
+        justify-content:center;
+        z-index: 1;
+    } 
+}
+
+/* 2. ตั้งค่าเริ่มต้นให้เนื้อหาข้างในถูกซ่อนไว้ */ 
+.navbar, .hero, .sihg, .new, .or, .internet { 
+  opacity: 0; 
+  animation: fadeIn 0.7s ease-out forwards; 
+}
+
+/* 3. หน่วงเวลา (Delay) ให้แต่ละส่วนค่อยๆ แสดงขึ้นมา */ 
+.navbar { 
+  animation-delay: 0.6s; /* แสดงส่วนหัว */ 
+}
+
+.hero { 
+  animation-delay: 0.7s; /* แสดงฟอร์ม */ 
+}
+
+.sihg, .new, .or, .internet { 
+  animation-delay: 0.8s; /* แสดงปุ่มและส่วนท้าย */ 
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+@media only screen and (max-width: 768px) {
+    .container{
+        animation: slideDownmoblie 0.8s ease-out forwards;
+    }
+  @keyframes slideDownmoblie {
+     0% { 
+        transform: translateY(-1000px); 
+        width: 50px;
+        height: 50px;
+        border-radius: 100px; 
+    } 
+    30% { 
+        transform: translateY(0);
+        width: 50px;
+        height: 50px;
+        border-radius: 100px; 
+    } 
+    60% { 
+        transform: translateY(0);
+        width: 300px;
+        height: 300px;
+        border-radius: 1000px;
+        box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5), 0 0 8px 10px #d4e4d0; 
+    } 
+    90% { 
+        transform: translateY(0); 
+        max-width:500px;
+        background:#FFFFFF;
+        margin:20px;
+        border:1px solid #c5c5c59a;
+        border-radius:10px;
+        padding:44px;
+        align-items:center;
+        justify-content:center;
+        z-index: 1;
+         box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5), 0 0 100px 10px #a6d59b; 
+    } 
+    95% { 
+        transform: translateY(0); 
+        max-width:500px;
+        background:#FFFFFF;
+        margin:20px;
+        border:1px solid #c5c5c59a;
+        border-radius:10px;
+        padding:44px;
+        align-items:center;
+        justify-content:center;
+        z-index: 1;
+        box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5), 0 0 19px 10px #d4e4d0; 
+    } 
+    100% { 
+        transform: translateY(0); 
+        max-width:500px;
+        background:#FFFFFF;
+        margin:20px;
+        border:1px solid #c5c5c59a;
+        border-radius:10px;
+        padding:44px;
+        align-items:center;
+        justify-content:center;
+        z-index: 1;
+    } 
+}
 }
 
 input{
@@ -213,6 +363,7 @@ mat-form-field{
     transform: translateY(-50%) rotate(-10deg);
     clip-path: polygon(0 0, 100% 0,95% 100%,0 100%
     );
+    animation: fade 0.7s ease-out forwards;
 }
 .ferni2{
     width: 400px;
@@ -225,6 +376,7 @@ mat-form-field{
     transform: translateY(-50%) rotate(-10deg);
     clip-path: polygon(100% 0, 96% 100%,0 100%,5% 0
 );
+    animation: fade 0.7s ease-out forwards;
 }
 .ferni3{
     width: 400px;
@@ -237,6 +389,7 @@ mat-form-field{
     transform: translateY(-50%) rotate(-5deg);
     clip-path: polygon(100% 0, 96% 100%,0 100%,5% 0
 );
+    animation: fade 0.7s ease-out forwards;
 }
 .ferniback{
      width: 2300px;
@@ -250,16 +403,27 @@ mat-form-field{
     clip-path: polygon(0 0, 100% 0,95% 100%,0 100%
         
     );
+    animation: fade 1.5s ease-out forwards;
 }
+@keyframes fade {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
 
 
 @media (max-width:768px){
 
-    .container{
-        max-width:100%;
-        margin:20px;
-        padding:24px;
+      .container{
+        width: 80vw !important;
+        max-width:100% !important;
+        padding:20px !important;
     }
+
 
     .header{
         font-size:26px;
@@ -276,15 +440,21 @@ mat-form-field{
     }
 
     .internet{
-        flex-direction:column;
+    width: 100%;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
     }
 
     .Facebook,
     .Google,
     .Apple{
-        width:50%;
-        align-self:center;
-        justify-content:center;
+        width:50px;
+        height: 50px;
+        border-radius: 100px;
+
     }
     .subheader{
         margin-bottom:10px;
@@ -305,28 +475,5 @@ mat-form-field{
         height:700px;
         left:-20%;
         top:100%;
-    }
-}
-
-@media (max-width:480px){
-    .container{
-        padding:16px;
-        margin:12px;
-    }
-
-    .header{
-        font-size:22px;
-    }
-
-    .subheader{
-        font-size:14px;
-    }
-
-    .button{
-        height:50px;
-    }
-
-    input{
-        height:30px;
     }
 }

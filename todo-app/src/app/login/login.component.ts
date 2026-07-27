@@ -47,7 +47,8 @@ export class LoginComponent {
 
     this.todoService.login(this.title, this.password).subscribe({
       next: (response) => {
-        console.log('Login Successful', response);
+        console.log('Login สำเร็จแล้วว ไม่ต้องถามหาหน้าให้ทดสอบเฉยๆจร้า', response);
+        alert("Login สำเร็จแล้วว ไม่ต้องถามหาหน้าให้ทดสอบเฉยๆจร้า");
         
         // TODO: สามารถเก็บ Token ได้ที่นี่ เช่น localStorage.setItem('token', response.token);
         

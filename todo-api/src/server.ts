@@ -3,6 +3,8 @@ import cors from 'cors';
 import { pool } from './database/db';
 
 const app = express();
+// เก็บ OTP ชั่วคราว (ในระบบจริงควรใช้ Redis หรือ Database)
+const otpStore = new Map();
 app.use(cors({
   origin: [
     'https://lamped.netlify.app',
@@ -75,6 +77,53 @@ app.post('/api/login', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server Error' });
+  }
+});
+app.post('/api/request-otp', (req, res) => {
+  const { username } = req.body;
+
+  if (!username) {
+    return res.status(400).json({ success: false, message: 'Username is required' });
+  }
+
+  // สุ่ม OTP 6 หลัก
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  
+  // กำหนดเวลาหมดอายุ (เช่น 5 นาที)
+  const expiresAt = Date.now() + 5 * 60 * 1000;
+
+  // บันทึก OTP
+  otpStore.set(username, { otp, expiresAt });
+
+  console.log(`OTP for ${username} is: ${otp}`); // สำหรับการทดสอบ
+
+  // ในระบบจริง: ส่ง OTP ผ่าน SMS Gateway หรือ Email ที่นี่
+
+  res.json({ success: true, message: 'OTP sent successfully' });
+});
+app.post('/api/verify-otp', (req, res) => {
+  const { username, otp } = req.body;
+
+  const storedData = otpStore.get(username);
+
+  if (!storedData) {
+    return res.status(400).json({ success: false, message: 'OTP not found or expired' });
+  }
+
+  const { otp: storedOtp, expiresAt } = storedData;
+
+  // ตรวจสอบเวลาหมดอายุ
+  if (Date.now() > expiresAt) {
+    otpStore.delete(username);
+    return res.status(400).json({ success: false, message: 'OTP has expired' });
+  }
+
+  // ตรวจสอบความถูกต้องของ OTP
+  if (otp === storedOtp) {
+    otpStore.delete(username); // ลบ OTP เมื่อใช้แล้ว
+    res.json({ success: true, message: 'OTP verified successfully' });
+  } else {
+    res.status(400).json({ success: false, message: 'Invalid OTP' });
   }
 });
 app.put('/todos/:id', async (req, res) => {

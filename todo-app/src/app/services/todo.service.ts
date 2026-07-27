@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { title } from 'process';
+import { Observable } from 'rxjs'; // 1. เพิ่มก
 
 export interface Todo {
   id: number;
@@ -66,4 +67,13 @@ export class TodoService {
       { headers: this.headers } // 2. แนบ headers เพื่อป้องกันปัญหาการเชื่อมต่อ
     );
   }
+  // ในไฟล์ todo.service.ts
+// ตัวอย่างการแก้ไข apiUrl ใน verifyOtp
+verifyOtp(email: string, otp: string): Observable<any> {
+  return this.http.post<any>(`${this.api}/verify-otp`, { email, otp }, { headers: this.headers });
+}
+// เพิ่มใน todo.service.ts
+sendOtp(email: string) {
+  return this.http.post(`${this.api}/send-otp`, { email }, { headers: this.headers });
+}
 }
