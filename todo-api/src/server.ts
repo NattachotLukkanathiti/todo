@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { pool } from './database/db';
-import nodemailer from 'nodemailer'; 
+import nodemailer from 'nodemailer';
 
 
 // 1. ตั้งค่าให้ DNS เลือกใช้ IPv4 ก่อนเสมอ (ป้องกัน IPv6 ENETUNREACH)
@@ -54,13 +54,13 @@ app.get('/todos', async (req, res) => {
 
 app.post('/todos', async (req, res) => {
   try {
-    const { username, title ,password} = req.body;
+    const { username, title, password } = req.body;
 
     const result = await pool.query(
       `INSERT INTO todos (username, title, password, completed)
        VALUES ($1, $2, $3, false)
        RETURNING *`,
-      [username,title, password]
+      [username, title, password]
     );
 
     res.status(201).json(result.rows[0]);
@@ -94,7 +94,7 @@ app.post('/api/login', async (req, res) => {
   }
 });
 app.post('/api/request-otp', async (req, res) => {
-  const { title } = req.body; 
+  const { title } = req.body;
 
   if (!title) {
     return res.status(400).json({ success: false, message: 'Username is required' });
@@ -114,27 +114,31 @@ app.post('/api/request-otp', async (req, res) => {
         'api-key': process.env.BREVO_API_KEY ?? '', // แก้ไขตรงนี้: เพิ่ม ?? '' เพื่อให้เป็น string เสมอ
         'content-type': 'application/json'
       },
+      // เปลี่ยนจาก process.env.EMAIL_USER เป็นอีเมลจริงของคุณ
       body: JSON.stringify({
-        sender: { name: 'Todo App', email: process.env.EMAIL_USER },
-        to: [{ email: title }],
-        subject: 'รหัส OTP สำหรับการสมัครสมาชิก',
-        htmlContent: `<p>รหัส OTP ของคุณคือ: <strong>${otp}</strong> (หมดอายุใน 5 นาที)</p>`
-      })
+        sender: {
+          name: 'Todo App',
+          email:'minec2645@gmail.com'
+      },
+      to: [{ email: title }],
+      subject: 'รหัส OTP สำหรับการสมัครสมาชิก',
+      htmlContent: `<p>รหัส OTP ของคุณคือ: <strong>${otp}</strong> (หมดอายุใน 5 นาที)</p>`
+    })
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Brevo API Error:', errorData);
-      throw new Error('Failed to send via Brevo API');
-    }
+if (!response.ok) {
+  const errorData = await response.json();
+  console.error('Brevo API Error:', errorData);
+  throw new Error('Failed to send via Brevo API');
+}
 
-    console.log(`OTP sent to ${title}`);
-    res.json({ success: true, message: 'OTP sent successfully' });
+console.log(`OTP sent to ${title}`);
+res.json({ success: true, message: 'OTP sent successfully' });
 
   } catch (error) {
-    console.error('Error sending email:', error);
-    res.status(500).json({ success: false, message: 'Failed to send OTP' });
-  }
+  console.error('Error sending email:', error);
+  res.status(500).json({ success: false, message: 'Failed to send OTP' });
+}
 });
 
 app.post('/api/verify-otp', (req, res) => {
