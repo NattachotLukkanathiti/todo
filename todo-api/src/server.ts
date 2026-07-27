@@ -2,7 +2,10 @@ import express from 'express';
 import cors from 'cors';
 import { pool } from './database/db';
 import nodemailer from 'nodemailer'; 
+import dns from 'dns';
 
+// 1. ตั้งค่าให้ DNS เลือกใช้ IPv4 ก่อนเสมอ (ป้องกัน IPv6 ENETUNREACH)
+dns.setDefaultResultOrder('ipv4first');
 const app = express();
 // เก็บ OTP ชั่วคราว (ในระบบจริงควรใช้ Redis หรือ Database)
 const otpStore = new Map();
@@ -10,6 +13,7 @@ const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 465,
   secure: true,
+  family: 4, // <-- บังคับใช้ IPv4 สำหรับ SMTP Connection
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
