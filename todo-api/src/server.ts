@@ -11,7 +11,7 @@ const app = express();
 const otpStore = new Map();
 const transporter = nodemailer.createTransport({
   // เปลี่ยนจาก 'smtp.gmail.com' เป็น IP ของ Gmail โดยตรง
-  host: '74.125.130.108', // หรือ '142.251.10.108' (IP สำหรับ smtp.gmail.com)
+  host: 'smtp-relay.brevo.com',// หรือ '142.251.10.108' (IP สำหรับ smtp.gmail.com)
   port: 587,
   secure: false, // STARTTLS
   family: 4,
