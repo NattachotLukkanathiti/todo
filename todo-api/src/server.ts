@@ -11,9 +11,9 @@ const app = express();
 const otpStore = new Map();
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
-  port: 587,           // <-- เปลี่ยนจาก 465 เป็น 587
-  secure: false,       // <-- เปลี่ยนจาก true เป็น false (ใช้ STARTTLS)
-  family: 4,           // <-- คงบังคับ IPv4 ไว้เหมือนเดิม
+  port: 587,
+  secure: false, // STARTTLS
+  family: 4,     // บังคับ IPv4 อีกชั้น
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
