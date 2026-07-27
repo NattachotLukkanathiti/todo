@@ -1,10 +1,18 @@
 import express from 'express';
 import cors from 'cors';
 import { pool } from './database/db';
+import nodemailer from 'nodemailer'; 
 
 const app = express();
 // เก็บ OTP ชั่วคราว (ในระบบจริงควรใช้ Redis หรือ Database)
 const otpStore = new Map();
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'YOUR_EMAIL@gmail.com', // ใส่อีเมลของคุณ
+    pass: 'YOUR_APP_PASSWORD'      // ใส่ App Password (ไม่ใช่รหัสผ่านปกติ)
+  }
+});
 app.use(cors({
   origin: [
     'https://lamped.netlify.app',
@@ -68,7 +76,7 @@ app.post('/api/login', async (req, res) => {
     );
 
     if (result.rows.length > 0) {
-      // ถ้าเจอผู้ใช้
+      // ถ้าเจอผู้ใช้ป
       res.json({ success: true, message: 'Login successful', user: result.rows[0] });
     } else {
       // ถ้าไม่เจอผู้ใช้
@@ -79,28 +87,37 @@ app.post('/api/login', async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 });
-app.post('/api/request-otp', (req, res) => {
-  const { username } = req.body;
+app.post('/api/request-otp', async (req, res) => {
+  const { username } = req.body; // username ในที่นี้คือ email จาก Frontend
 
   if (!username) {
     return res.status(400).json({ success: false, message: 'Username is required' });
   }
 
-  // สุ่ม OTP 6 หลัก
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
-  
-  // กำหนดเวลาหมดอายุ (เช่น 5 นาที)
   const expiresAt = Date.now() + 5 * 60 * 1000;
 
-  // บันทึก OTP
   otpStore.set(username, { otp, expiresAt });
 
-  console.log(`OTP for ${username} is: ${otp}`); // สำหรับการทดสอบ
+  // ตั้งค่าเนื้อหาอีเมล
+  const mailOptions = {
+    from: 'YOUR_EMAIL@gmail.com',
+    to: username,
+    subject: 'รหัส OTP สำหรับการสมัครสมาชิก',
+    text: `รหัส OTP ของคุณคือ: ${otp} (หมดอายุใน 5 นาที)`
+  };
 
-  // ในระบบจริง: ส่ง OTP ผ่าน SMS Gateway หรือ Email ที่นี่
-
-  res.json({ success: true, message: 'OTP sent successfully' });
+  try {
+    // ส่งอีเมล
+    await transporter.sendMail(mailOptions);
+    console.log(`OTP sent to ${username}`);
+    res.json({ success: true, message: 'OTP sent successfully' });
+  } catch (error) {
+    console.error('Error sending email:', error);
+    res.status(500).json({ success: false, message: 'Failed to send OTP' });
+  }
 });
+
 app.post('/api/verify-otp', (req, res) => {
   const { username, otp } = req.body;
 
