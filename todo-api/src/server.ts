@@ -88,21 +88,21 @@ app.post('/api/login', async (req, res) => {
   }
 });
 app.post('/api/request-otp', async (req, res) => {
-  const { username } = req.body; // username ในที่นี้คือ email จาก Frontend
+  const { title } = req.body; // username ในที่นี้คือ email จาก Frontend
 
-  if (!username) {
+  if (!title) {
     return res.status(400).json({ success: false, message: 'Username is required' });
   }
 
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
   const expiresAt = Date.now() + 5 * 60 * 1000;
 
-  otpStore.set(username, { otp, expiresAt });
+  otpStore.set(title, { otp, expiresAt });
 
   // ตั้งค่าเนื้อหาอีเมล
   const mailOptions = {
     from: 'YOUR_EMAIL@gmail.com',
-    to: username,
+    to: title,
     subject: 'รหัส OTP สำหรับการสมัครสมาชิก',
     text: `รหัส OTP ของคุณคือ: ${otp} (หมดอายุใน 5 นาที)`
   };
@@ -110,7 +110,7 @@ app.post('/api/request-otp', async (req, res) => {
   try {
     // ส่งอีเมล
     await transporter.sendMail(mailOptions);
-    console.log(`OTP sent to ${username}`);
+    console.log(`OTP sent to ${title}`);
     res.json({ success: true, message: 'OTP sent successfully' });
   } catch (error) {
     console.error('Error sending email:', error);
@@ -119,9 +119,9 @@ app.post('/api/request-otp', async (req, res) => {
 });
 
 app.post('/api/verify-otp', (req, res) => {
-  const { username, otp } = req.body;
+  const { title, otp } = req.body;
 
-  const storedData = otpStore.get(username);
+  const storedData = otpStore.get(title);
 
   if (!storedData) {
     return res.status(400).json({ success: false, message: 'OTP not found or expired' });
@@ -131,13 +131,13 @@ app.post('/api/verify-otp', (req, res) => {
 
   // ตรวจสอบเวลาหมดอายุ
   if (Date.now() > expiresAt) {
-    otpStore.delete(username);
+    otpStore.delete(title);
     return res.status(400).json({ success: false, message: 'OTP has expired' });
   }
 
   // ตรวจสอบความถูกต้องของ OTP
   if (otp === storedOtp) {
-    otpStore.delete(username); // ลบ OTP เมื่อใช้แล้ว
+    otpStore.delete(title); // ลบ OTP เมื่อใช้แล้ว
     res.json({ success: true, message: 'OTP verified successfully' });
   } else {
     res.status(400).json({ success: false, message: 'Invalid OTP' });
