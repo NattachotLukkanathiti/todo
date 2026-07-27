@@ -8,15 +8,13 @@ const app = express();
 const otpStore = new Map();
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
-  port: 587,
-  secure: false,
+  port: 465,
+  secure: true,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
-  logger: true,
-  debug: true,
-});
+} as any);
 app.use(cors({
   origin: [
     'https://lamped.netlify.app',
@@ -105,7 +103,7 @@ app.post('/api/request-otp', async (req, res) => {
 
   // ตั้งค่าเนื้อหาอีเมล
   const mailOptions = {
-    from: 'YOUR_EMAIL@gmail.com',
+    from: process.env.EMAIL_USER,
     to: title,
     subject: 'รหัส OTP สำหรับการสมัครสมาชิก',
     text: `รหัส OTP ของคุณคือ: ${otp} (หมดอายุใน 5 นาที)`
