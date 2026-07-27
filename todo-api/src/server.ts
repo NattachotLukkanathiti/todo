@@ -7,18 +7,8 @@ import nodemailer from 'nodemailer';
 // 1. ตั้งค่าให้ DNS เลือกใช้ IPv4 ก่อนเสมอ (ป้องกัน IPv6 ENETUNREACH)
 const app = express();
 // เก็บ OTP ชั่วคราว (ในระบบจริงควรใช้ Redis หรือ Database)
-const otpStore = new Map();
-const transporter = nodemailer.createTransport({
-  // เปลี่ยนจาก 'smtp.gmail.com' เป็น IP ของ Gmail โดยตรง
-  host: 'smtp-relay.brevo.com',// หรือ '142.251.10.108' (IP สำหรับ smtp.gmail.com)
-  port: 587,
-  secure: false, // STARTTLS
-  family: 4,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-} as any);
+const otpStore = new Map<string, { otp: string; expiresAt: number }>();
+
 app.use(cors({
   origin: [
     'https://lamped.netlify.app',
@@ -30,7 +20,6 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization', 'ngrok-skip-browser-warning'],
   credentials: true
 }));
-app.use(express.json());
 
 app.use(express.json());
 app.get('/', (req, res) => {
@@ -54,8 +43,39 @@ app.get('/todos', async (req, res) => {
 
 app.post('/todos', async (req, res) => {
   try {
-    const { username, title, password } = req.body;
+    // ➕ [เพิ่ม] รับค่า otp เพิ่มเติมมาจาก Frontend
+    const { username, title, password, otp } = req.body;
 
+    // ➕ [เพิ่ม] เช็กว่าส่งอีเมลและ OTP มาหรือไม่
+    if (!title || !otp) {
+      return res.status(400).json({ success: false, message: 'กรุณากรอกอีเมลและรหัส OTP' });
+    }
+
+    // ➕ [เพิ่ม] ดึงข้อมูล OTP ที่จดไว้ในสมุดโน้ต (otpStore)
+    const storedData = otpStore.get(title);
+
+    // ➕ [เพิ่ม] Step 1: เช็กว่ามี OTP ของอีเมลนี้สร้างไว้ไหม
+    if (!storedData) {
+      return res.status(400).json({ success: false, message: 'ไม่พบรหัส OTP หรือ OTP หมดอายุแล้ว' });
+    }
+
+    // ➕ [เพิ่ม] Step 2: เช็กว่า OTP หมดอายุหรือยัง (เกิน 5 นาทีไหม)
+    if (Date.now() > storedData.expiresAt) {
+      otpStore.delete(title);
+      return res.status(400).json({ success: false, message: 'รหัส OTP หมดอายุแล้ว กรุณาขอใหม่' });
+    }
+
+    // ➕ [เพิ่ม] Step 3: เช็กว่า OTP ที่ยูเซอร์พิมพ์มา ตรงกับรหัสจริงไหม
+    if (storedData.otp !== otp) {
+      return res.status(400).json({ success: false, message: 'รหัส OTP ไม่ถูกต้อง' });
+    }
+
+    // ➕ [เพิ่ม] Step 4: ถ้ารหัสถูกต้อง -> ลบรหัสออกจากสมุดโน้ตทันที (กันเอามาใช้ซ้ำ)
+    otpStore.delete(title);
+
+    // ------------------------------------------
+    // โค้ดเดิมของคุณ: บันทึกข้อมูลผู้ใช้ลง PostgreSQL
+    // ------------------------------------------
     const result = await pool.query(
       `INSERT INTO todos (username, title, password, completed)
        VALUES ($1, $2, $3, false)
@@ -63,11 +83,16 @@ app.post('/todos', async (req, res) => {
       [username, title, password]
     );
 
-    res.status(201).json(result.rows[0]);
+    // ✏️ [ปรับแก้ไข] ส่งโครงสร้าง JSON ตอบกลับให้ละเอียดและอ่านง่ายขึ้น
+    res.status(201).json({
+      success: true,
+      message: 'สมัครสมาชิกสำเร็จ!',
+      user: result.rows[0]
+    });
 
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ success: false, message: 'Server Error' });
   }
 });
 // เพิ่ม Route สำหรับ Login
@@ -100,7 +125,8 @@ app.post('/api/request-otp', async (req, res) => {
     return res.status(400).json({ success: false, message: 'Username is required' });
   }
 
-  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  // ของใหม่ (4 หลัก): สุ่มตั้งแต่ 1000 ถึง 9999
+  const otp = Math.floor(1000 + Math.random() * 9000).toString();
   const expiresAt = Date.now() + 5 * 60 * 1000;
 
   otpStore.set(title, { otp, expiresAt });
@@ -117,11 +143,11 @@ app.post('/api/request-otp', async (req, res) => {
       // เปลี่ยนจาก process.env.EMAIL_USER เป็นอีเมลจริงของคุณ
       body: JSON.stringify({
         sender: {
-          name: 'Todo App',
+          name: 'Tamraidee OTP',
           email:'minec2645@gmail.com'
       },
       to: [{ email: title }],
-      subject: 'รหัส OTP สำหรับการสมัครสมาชิก',
+      subject: 'เรียนแจ้งรหัส OTP สำหรับสมัครสมาชิก',
       htmlContent: `<p>รหัส OTP ของคุณคือ: <strong>${otp}</strong> (หมดอายุใน 5 นาที)</p>`
     })
     });
