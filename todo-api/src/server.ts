@@ -2,10 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import { pool } from './database/db';
 import nodemailer from 'nodemailer'; 
-import dns from 'dns';
+
 
 // 1. ตั้งค่าให้ DNS เลือกใช้ IPv4 ก่อนเสมอ (ป้องกัน IPv6 ENETUNREACH)
-dns.setDefaultResultOrder('ipv4first');
 const app = express();
 // เก็บ OTP ชั่วคราว (ในระบบจริงควรใช้ Redis หรือ Database)
 const otpStore = new Map();
@@ -95,7 +94,7 @@ app.post('/api/login', async (req, res) => {
   }
 });
 app.post('/api/request-otp', async (req, res) => {
-  const { title } = req.body; // username ในที่นี้คือ email จาก Frontend
+  const { title } = req.body; 
 
   if (!title) {
     return res.status(400).json({ success: false, message: 'Username is required' });
@@ -106,19 +105,32 @@ app.post('/api/request-otp', async (req, res) => {
 
   otpStore.set(title, { otp, expiresAt });
 
-  // ตั้งค่าเนื้อหาอีเมล
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to: title,
-    subject: 'รหัส OTP สำหรับการสมัครสมาชิก',
-    text: `รหัส OTP ของคุณคือ: ${otp} (หมดอายุใน 5 นาที)`
-  };
-
   try {
-    // ส่งอีเมล
-    await transporter.sendMail(mailOptions);
+    // ใช้ fetch ยิงหา Brevo API โดยตรง
+    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'api-key': process.env.BREVO_API_KEY ?? '', // แก้ไขตรงนี้: เพิ่ม ?? '' เพื่อให้เป็น string เสมอ
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        sender: { name: 'Todo App', email: process.env.EMAIL_USER },
+        to: [{ email: title }],
+        subject: 'รหัส OTP สำหรับการสมัครสมาชิก',
+        htmlContent: `<p>รหัส OTP ของคุณคือ: <strong>${otp}</strong> (หมดอายุใน 5 นาที)</p>`
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Brevo API Error:', errorData);
+      throw new Error('Failed to send via Brevo API');
+    }
+
     console.log(`OTP sent to ${title}`);
     res.json({ success: true, message: 'OTP sent successfully' });
+
   } catch (error) {
     console.error('Error sending email:', error);
     res.status(500).json({ success: false, message: 'Failed to send OTP' });
