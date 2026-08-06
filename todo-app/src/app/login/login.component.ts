@@ -36,7 +36,29 @@ export class LoginComponent {
   password = '';
   rememberMe = false;
   showPassword = false;
+  showpopup = false;
+  showpopupnoti = false;
+  popup = '';
+  registersuccess = false;
 
+
+  openpopup(message:string){
+    this.popup = message;
+    this.showpopup = true;
+  }
+  closepopup(){
+    this.showpopup = false;
+    this.showpopupnoti = false;
+    
+    if(this.registersuccess === true){
+      this.router.navigate(['/login']); 
+            this.registersuccess = false;
+    }
+  }
+  openpopupnoti(message:string){
+    this.showpopupnoti = true;
+    this.popup = message;
+  }
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
@@ -47,17 +69,16 @@ export class LoginComponent {
 
     this.todoService.login(this.title, this.password).subscribe({
       next: (response) => {
-        console.log('Login สำเร็จแล้วว ไม่ต้องถามหาหน้าให้ทดสอบเฉยๆจร้า', response);
-        alert("Login สำเร็จแล้วว ไม่ต้องถามหาหน้าให้ทดสอบเฉยๆจร้า");
+
+        this.router.navigate(['/dashboard']);
         
         // TODO: สามารถเก็บ Token ได้ที่นี่ เช่น localStorage.setItem('token', response.token);
         
         // เปลี่ยนหน้าไปที่ /todos (หรือหน้าหลักของคุณ)
-        this.router.navigate(['/todos']); 
       },
       error: (error) => {
         console.error('Login Failed', error);
-        alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+        this.openpopupnoti("Username or password incorrect");
       }
     });
   }

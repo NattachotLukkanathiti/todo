@@ -1,0 +1,131 @@
+<div class="navbaar">
+    <button class="hamburger" (click)="toggleMenu()">
+        <img src="image/ham.svg" alt="">
+    </button>
+    <div class="headercompany" >
+        <img src="image/logo.svg" alt="">
+    </div>
+    <div class="search">
+        <input class="inputser"type="text" placeholder="Search" [(ngModel)]="search" (input)="filterS()">
+        <img class="iconsearch" src="image/search.svg" alt="">
+    </div>
+</div>
+
+<div class="over">
+    <div class="fix" [class.open]="isMenuOpen">
+        <div class="sidebar" [class.open]="isMenuOpen">
+  <div class="ge">GENERAL</div>
+  <div class="menuin">
+    <div class="dash">
+        <img src="image/dashboard.svg" alt="">Dashboard</div>
+  <div class="no">
+    <img src="image/icon-wrapper-h.svg" alt="">Inventory</div>
+  <div class="no">
+        <img src="image/shop.svg" alt="">Sales Orders</div>
+    <div class="no">
+        <img src="image/car.svg" alt="">Suppliers</div>
+    <div class="no">
+        <img src="image/Union.svg" alt="">Reports</div>
+  </div>
+  <div class="ge">SUPPORT</div>
+  <div class="menuin">
+    <div class="no">
+        <img src="image/help.svg" alt="">Help</div>
+  <div class="no">
+    <img src="image/setting.svg" alt="">Settings</div>
+  </div>
+  <div class="Logout"(click)="logout()"><img class="" src="/icon_manager/Logout.svg" >Log Out</div>
+    </div>
+</div>
+<div class="container">
+    
+    <div class="headersum">Sales Summary</div>
+    <div class="conT">
+        <div class="T">
+            <img class="iconpass" src="image/Frame.svg" alt="">
+        </div>
+        <div class="T">
+            <img class="iconpass" src="image/shop2.svg" alt="">
+        
+        </div>
+        <div class="T">
+            <img class="iconpass" src="image/coin.svg" alt="">
+        </div>
+        <div class="T">
+             <img class="iconpass" src="image/bag.svg" alt="">
+        </div>
+    </div>
+    <div class="static">
+       <div class="navstatic">
+        <img class="iconsale" src="image/Salegreen.svg" alt="">
+         <div class="headerSale">
+            Sales & Purchase
+        </div>
+        <div class="overdate">
+            <div class="date">1D</div>
+            
+        <div class="date">1W</div>
+        <div class="date">1M</div>
+        <div class="date">3M</div>
+        <div class="date">6M</div>
+        <div class="date">1Y</div>
+        </div>
+       </div>
+       <div class="line-header"></div>
+       <div class="box-total">
+        <div class="total"><span class="point"></span>Total Purchase</div>
+        <div class="total"><span class="point"></span>Total Sales</div>
+       </div>
+       <div class="bigcontainergraph">
+        <div class="num-container">
+            <div class="num">60K</div> 
+            <div class="num">50K</div>         
+            <div class="num">40K</div>        
+            <div class="num">30K</div>         
+            <div class="num">20K</div>         
+            <div class="num">10K</div>         
+            <div class="num">0</div>
+            <div class="num">
+                <div class="detail">
+                    Sales Order
+                </div>
+            </div>
+            </div>
+        <div class="con">
+            <div *ngFor="let item of data; let i = index" class="bar-container">
+                <div class="bar" [style.height.px]="item.value"></div>
+                <div class="mon">{{ months[i] }}</div>
+            </div>
+
+<div class="line"></div>
+       </div>
+       </div>
+    </div>
+    
+</div>
+ <div class="fix2" [class.open]="isMenuOpenprofile">
+    <div [class.open]="isMenuOpenprofile" class="profile">
+    <div class="header_Manager">
+        <div class="header_inside">
+            <img class="icon_manager"  src="/image/avatar.svg">
+            <div class="container_header">
+                    <div class="manager">Manager</div>
+                    <div class="small_manager">Admin</div>
+            </div>
+            <img class="pointt" src="/icon_manager/point.svg">
+        </div>
+
+        
+    </div>
+    <div class="linee"></div>
+    <div class="container_qu">
+        <div class="qu">Quick Actions</div>
+        <div class="action">
+            <div class="co"><img class="icon_managerr" src="/icon_manager/add.svg" >Create Order </div>
+            <div class="co"><img class="icon_managerr" src="/icon_manager/box.svg" >Add Product</div>
+            <div class="co"><img class="icon_managerr" src="/icon_manager/deli.svg" >Add Supplier</div>
+            <div class="co"><img class="icon_managerr" src="/icon_manager/up.svg" >Export</div>
+        </div>
+    </div>
+ </div>
+ </div>

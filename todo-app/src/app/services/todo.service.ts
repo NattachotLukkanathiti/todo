@@ -16,6 +16,7 @@ export interface Todo {
 export class TodoService {
   private http = inject(HttpClient);
   private api = 'https://todo-arz1.onrender.com/todos';
+  private apiUrl = 'https://todo-arz1.onrender.com/api'; 
 
   // 1. กำหนด Header พิเศษเพื่อข้ามหน้าเตือนของ Ngrok
   private headers = new HttpHeaders({
@@ -69,11 +70,13 @@ export class TodoService {
   }
   // ในไฟล์ todo.service.ts
 // ตัวอย่างการแก้ไข apiUrl ใน verifyOtp
-verifyOtp(email: string, otp: string): Observable<any> {
-  return this.http.post<any>(`${this.api}/verify-otp`, { email, otp }, { headers: this.headers });
-}
-// เพิ่มใน todo.service.ts
-sendOtp(email: string) {
-  return this.http.post(`${this.api}/send-otp`, { email }, { headers: this.headers });
-}
+// แก้ไขให้ส่ง { username: title } แทน
+  verifyOtp(title: string, otp: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/verify-otp`, { title, otp }, { headers: this.headers });
+  }
+
+  // แก้ไขให้ส่ง { username: title } แทน
+  sendOtp(title: string) {
+    return this.http.post(`${this.apiUrl}/request-otp`, { title }, { headers: this.headers });
+  }
 }

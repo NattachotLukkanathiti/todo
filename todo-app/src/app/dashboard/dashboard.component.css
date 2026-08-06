@@ -1,0 +1,687 @@
+
+.navbaar {
+  display: flex;/* กระจายองค์ประกอบให้เต็มพื้นที่ */
+  align-items: center; /* จัดให้อยู่ตรงกลางตามแนวตั้ง */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 3;/* ปรับให้มากกว่า sidebar เพื่อให้อยู่ด้านบนสุด */
+  background-color: #FFF;
+  border: 1px solid #CED4DA ;
+  animation: slide 1s ease-in-out;
+  
+}
+
+.navstatic{
+    display: flex;
+}
+.headerSale{
+    font-size: 25px;
+     display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+}
+.overdate{
+    width: 50%;
+    display: flex;
+    margin-left: auto; 
+    flex-direction: row-reverse ;
+    flex-wrap: wrap;
+}
+.iconsale{
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.date{
+    background-color: #e6eaed64;
+    width: 10%;
+    height: 10px;
+    font-size: 15px;
+    font-weight: 300;
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    border: 0.5px solid #212b3623;
+}
+.iconsearch{
+    position: absolute;
+    display: flex;
+    margin-right: auto;
+    justify-content: center;
+    align-items: center;
+    margin-left:10px;
+    top: 40%;
+}
+input::placeholder{
+    text-indent: 40px;
+}
+.hamburger{
+    border: 0.5px solid #00000031;
+    background-color: white;
+    border-radius: 8px;
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+}
+
+.hamburger:hover{
+    background-color: #4444447c;
+    border-radius: 50px;
+}
+.headercompany {
+    display: flex;
+    margin-left: 20px;
+    flex-direction: column;
+    color: #6FAB23;
+    font-weight: 800;
+    align-items: flex-start;
+    font-family: 'Nicomoji', sans-serif; /* ใช้งานฟอนต์เฉพาะตรงนี้ */
+}
+.search {
+    display: flex;
+    margin-left:auto;
+    border-radius: 40px;
+    padding: 20px;
+}
+.inputser{
+    border-radius: 10px;
+    padding: 10px;
+    width: 15vw;
+    border: none;
+    box-shadow: 0px 0px 2px 0px #5C6F88;
+}
+.profile{
+    display: flex;
+    position: fixed;
+  top: 70px;
+  margin-left: auto;
+  width: 270px;
+  height: 120vh;
+  background-color: #FFF;
+  color: #212529;
+  z-index: 1;
+  transition: all .3s ease;
+
+
+}
+
+/* ตั้งค่าเริ่มต้นให้ Sidebar ซ่อนอยู่นอกจอ (ทางซ้าย) */
+.sidebar {
+    position: fixed;
+    width: 280px;
+    height: 100vh;
+    padding: 20px;
+    overflow: hidden;
+    background: #F4F5FC;
+    transition: all .3s ease;
+    flex-shrink: 0;
+    z-index: 1;
+    animation: slideright 0.5s ease-in-out;
+}
+
+.fix {
+    position: relative;
+    width: 280px;
+    padding: 20px;
+    overflow: hidden;
+    background: #F4F5FC;
+    transition: all .3s ease;
+    flex-shrink: 0;
+    
+}
+
+.sidebar.open {
+    width: 0;
+    padding: 0;
+}
+.fix.open{
+    width: 0;
+    padding: 0;
+}
+.fix2{
+     display: flex;
+    position: relative;
+  top: 0;
+  margin-left: auto;
+  width: 270px;
+  height: 120vh;
+  background-color: #FFF;
+  color: #212529;
+  z-index: 1;
+  animation: slideright 0.5s ease-in-out;
+}
+@keyframes slideright{
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+.fix2.open{
+    width: 0;
+    padding: 0;
+}
+.profile.open{
+    width: 0;
+    padding: 0;
+}
+.ge{
+    font-size: 12px;
+    margin-top: 20px;
+    color: #6C757D;
+    font-weight: 600;
+    margin-left: 20px;
+}
+.Logout {
+    padding: 10px;
+    color: #6C757D;
+    font-weight: 300;
+    border-radius: 5px;
+    margin-top: 50px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+.Logout:hover{
+    background-color: #4444447b;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.dash{
+    background-color:#84D46E;
+    padding: 10px;
+    border-radius: 5px;
+    color: #FFF;
+    font-weight: bolder;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.no{
+    padding: 10px;
+    color: #6C757D;
+    font-weight: 300;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+.no:hover{
+    background-color: #4444447b;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.menuin{
+    padding: 20px;
+}
+/* เมื่อมีคลาส .open ให้เลื่อน Sidebar กลับเข้ามาในจอ */
+
+.static {
+    width: 100%;
+    padding: 20px;
+    border: 1px solid #E6EAED;
+    border-radius: 10px;
+    height: 100vh;
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(0,0,0,.08);
+    box-sizing: border-box;
+}
+
+.container {
+    flex: 1; 
+    width: 100%; /* เปลี่ยนจาก max-width เป็น width */
+    box-sizing: border-box; /* ป้องกันไม่ให้ padding ทำให้เกิด Scrollbar หรือพื้นที่เกิน */
+    min-width: 0; 
+    padding: 20px; 
+    background: #F4F5FC; 
+    margin-right: 0;
+    z-index: 2;
+    animation: Boom 1s ease-in-out;
+}
+
+/* ปรับแต่งหน้าตาเมนูเพิ่มเติม (ตัวอย่าง) */
+.menu-item {
+  display: block;
+  padding: 15px 20px;
+  color: #212529;
+  text-decoration: none;
+}
+.over {
+    display: flex;
+    margin-top: 50px;
+    min-height: calc(100vh - 50px);
+    overflow: hidden;
+    max-width: 100%;
+    width: 100vw;
+}
+.menu-item:hover {
+  background-color: #444;
+}
+
+.headersum{
+    margin-top: 20px;
+    display: flex;
+    font-size: 20px;
+    margin-left: 30px;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+.T {
+    height: 70px;
+    width: 180px; /* เพิ่มความกว้าง */
+    background-color: #FFF; /* เปลี่ยนเป็นสีดำเพื่อทดสอบ */
+    border-radius: 10px;
+    box-shadow: 0px 2px 6px 0px #00000013;
+    
+}
+.conT{
+    margin-left: 30px;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+.iconpass{
+    position: relative;
+    display: flex;
+    width: 30px;
+    height: 30px;
+    top: 30%;
+    margin-left: 10%;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.bar-container {
+    margin-top: 70px;
+  display: inline-block;
+  margin-right: 10px;
+  width: 6.5%;
+  text-align: center;
+  vertical-align: bottom;
+}
+
+.bar {
+  width: 100%;
+  background-color: #84D46E;
+  border-radius: 10px;
+  animation: height 1s ease-out forwards;
+    animation-delay: 0.6s;
+    transform: scaleY(0);
+  transform-origin: bottom; /* ให้แอนิเมชันเริ่มจากด้านล่างขึ้นไป */
+}
+
+@keyframes height {
+  0% {
+    transform: scaleY(0);
+    box-shadow:0px 10px 200px 20px #69ff4a;
+  }     
+  50% {
+    transform: scaleY(1);
+    box-shadow:0px 10px 200px 20px #fbfffa;
+    /* เพิ่มการเรืองแสงสีขาวตรงกลาง */
+  }
+  100% {
+    transform: scaleY(1);
+    /* ลดขนาดลงมาเล็กน้อยเพื่อให้ดูมีจังหวะการเต้นของแสง */
+    box-shadow: 0px 0px 30px 5px #69a95700;
+  }
+}
+.con{
+    
+    white-space: wrap;
+    margin-left: 50px;
+}
+.line{
+    background-color: #BCBFC3;
+    width: 100%;
+    margin-top:-70px;
+    height: 1px;
+}
+.line-header{
+    background-color: #BCBFC3;
+    width: 100%;
+    height: 1px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.num-container {
+    position: absolute;
+    margin-top: 20px;
+}
+.num{
+    color: #646B72;
+    font-weight: 300;
+    margin-bottom: 20px;
+}
+.mon{
+    color: #646B72;
+    font-weight: 300;
+    margin-top :30px;
+    margin-bottom: 20px;
+}
+.box-total{
+    display: flex;
+    gap: 8px;
+}
+.total{
+    color: #646B72;
+    font-weight: 300;
+    display: flex;
+    padding: 10px;
+    width: 130px;
+    height: 50px;
+    border-radius: 8px;
+    border: 1px solid #E6EAED;
+    
+}
+.point{
+    display: flex;
+    width: 10px;
+    height: 10px;
+    background-color: #69A957;
+    border-radius: 100px;
+    margin-top: 4px;
+}
+.detail{
+    font-size: 10px;
+    margin-left: -10px;
+}
+
+.header_inside{
+    padding: 10px;
+    width: 200px;
+    display: flex;
+    gap: 10px;
+}
+.header_Manager{
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    height: 50px;
+    border: 1px solid #CED4DA ;
+}
+.small_manager{
+    font-size: 12px;
+    color: #6C757D;
+}
+.container_header {
+    justify-content: center;
+    
+    display: flex;
+    flex-direction: column; /* จัดให้ข้อความ Manager และ Admin เรียงกันในแนวตั้ง */
+}
+.icon_manager{
+    display: flex;
+    width: 30px;
+    height: 30px;
+}
+.manager{
+    font-size: 15px;
+    font-weight: 500;
+}
+.pointt{
+    display: flex;
+    width: 30px;
+    height: 30px;
+    margin-left: auto;
+}
+.Qu{
+    
+}
+.container_qu{
+    flex-direction: column;
+    position: absolute;
+    top: 90px;
+    width: 100%;
+    padding: 30px;
+    border: 1px solid #CED4DA ;
+}
+.co{
+    display: flex;
+    color: #5C6F88;
+    font-weight: 500;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+.action{
+    padding: 20px;
+    gap: 10px;
+}
+.icon_managerr{
+    
+}
+
+@keyframes Boom {
+    0%{
+        box-shadow: 0px 42px 234px 0px #e3ffdc;
+        transform: translateY(-1000px); 
+        opacity: 0;
+
+    }
+    30%{
+         opacity: 1;
+         
+         
+    }
+    40%{
+        transform: translateY(100px); 
+    }
+    80%{
+        box-shadow: none;
+        transform: scaleY(1.1);
+
+    }
+    100%{
+        box-shadow: none;
+
+        
+    }
+}
+
+@media (max-width:768px){
+    .headercompany {
+    display: flex;
+    margin-left: 5px;
+    flex-direction: column;
+    color: #6FAB23;
+    font-weight: 800;
+    align-items: flex-start;
+    font-family: 'Nicomoji', sans-serif; /* ใช้งานฟอนต์เฉพาะตรงนี้ */
+}
+.headersum{
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+    .hamburger{
+    border: 0.5px solid #00000031;
+    border-radius: 8px;
+    background-color: white;
+    margin-left: auto;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 40px;
+    flex-direction: row-reverse ;
+    height: 40px;
+}   
+
+    .search{
+        display: none;
+    }
+    .navbaar{
+        padding: 15px;
+        flex-direction: row-reverse 
+    }
+    .sidebar {
+    width: 280px;
+    padding: 20px;
+    overflow: hidden;
+    background: #F4F5FC;
+    transition: all .3s ease;
+    flex-shrink: 0;
+    }
+    .profile{
+        display: none;
+    }
+    .conT{
+    margin-left: 30px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+.conT{
+    margin-left: 30px;
+    margin-right: 30px;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(40%,2fr)); /* ปรับ 200px ตามขนาดที่ต้องการ */
+    gap: 10px;
+}
+.T {
+    height: 70px;
+    max-width: 100%;
+    width: 40vw; /* เพิ่มความกว้าง */
+    background-color: #FFF; /* เปลี่ยนเป็นสีดำเพื่อทดสอบ */
+    border-radius: 10px;
+    box-shadow: 0px 2px 6px 0px #00000013;
+    
+}
+.container {
+    flex: 1; 
+    width: 100%; /* เปลี่ยนจาก max-width เป็น width */
+    box-sizing: border-box; /* ป้องกันไม่ให้ padding ทำให้เกิด Scrollbar หรือพื้นที่เกิน */
+    min-width: 0; 
+    padding: 0; 
+    background: #F4F5FC; 
+    margin-right: 0;
+}
+.bar {
+  width: 5vw;
+  background-color: #84D46E;
+  border-radius: 10px;
+
+}
+.con{
+    margin-left: 40px;
+    gap: 0;
+}
+.bar-container {
+    margin-top: 70px;
+  display: inline-block;
+  margin-right: 10px;
+  width: 5%;
+  vertical-align: bottom;
+}
+.num{
+    color: #646B72;
+    font-weight: 300;
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+.mon{
+    color: #646B72;
+    font-weight: 300;
+    font-size: 10px;
+}
+.line{
+    margin-top: -62px;
+}
+.overdate{
+    display: none;
+}
+.headerSale{
+    font-size: 18px;
+}
+.sidebar {
+      width: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #F4F5FC;
+    transition: all .3s ease;
+    flex-shrink: 0;
+}
+
+.sidebar.open {
+    width: 280px;
+    padding: 20px;
+
+}
+.fix.open~.container{
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+.fix {
+    position: relative;
+    width: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #F4F5FC;
+    transition: all .3s ease;
+    flex-shrink: 0;
+}
+
+
+.fix.open{
+    width: 280px;
+    padding: 20px;
+    height: 100vh;
+}
+.iconpass{
+    position: relative;
+    display: flex;
+    width: 30px;
+    height: 30px;
+    top: 30%;
+    margin-left: 10%;
+    justify-content: center;
+    align-items: center;
+}
+.profile{
+    display: none;
+}
+.fix2{
+    display: none;
+}
+.Logout {
+    position: fixed;
+    bottom: 20px;
+    z-index: 1000; /* เพื่อให้ปุ่มอยู่ด้านบนสุดเสมอ */
+}
+}

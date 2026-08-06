@@ -1,11 +1,5 @@
 
-body {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-}
+
 .header{
     font-size: 23px;
     color: #212B36;
@@ -37,7 +31,7 @@ body {
     align-items:center;
     justify-content:center;
     z-index: 1;
-
+    animation: slideDown 0.7s ease-out forwards;
 }
 
 .Email{
@@ -308,9 +302,31 @@ mat-form-field{
     }
 
     .header{
-        font-size:26px;
+        font-size:23px;
         margin-bottom:10px;
     }
+    
+.input-group{
+ display:flex;
+ gap:10px !important;
+}
+    input{
+    height:10%;
+    text-align: center;
+    font-size: 30px;
+    color:#FE9F43;
+    font-weight: 600;
+    border-radius:8px;
+    border:2px solid #E6EAED;
+    box-shadow: 0px 2px 23px rgba(16, 24, 40, 0.05);
+    width:20%;
+    
+    padding: 10px;
+    margin-bottom: 20px;
+    outline: none;
+    caret-color: #FE9F43;
+}
+
 
     .subheader{
         font-size:16px;
@@ -354,25 +370,242 @@ mat-form-field{
     }
 }
 
-@media (max-width:480px){
+
+.popupcontainer{
+    background-color: #FFFFFF;
+    border: 2px solid #bccbbb85 ;
+    border-radius: 40px;
+    padding: 50px;
+    width: 400px;
+    height: 200px;
+    position: absolute;
+    z-index: 1;
+    font-size: 30px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.buttonclose {
+    width:100%;
+    height:20px;
+    padding:23px;
+    font-size:16px;
+    color:#FFFFFF;
+    border:2px solid #E6EAED;
+    border-radius:8px;
+    background:#84D46E;
+    justify-content:center;
+    display:flex;
+    margin-bottom:20px;
+    align-items:center;
+}
+.backpop {
+    background-color: rgba(0, 0, 0, 0.28);
+    position: fixed; /* ใช้ fixed เพื่อให้ตรึงอยู่กับหน้าจอแม้จะมีการเลื่อน */
+    top: 0;
+    left: 0;
+    width: 100vw;  /* ความกว้างเต็มหน้าจอ */
+    height: 100vh; /* ความสูงเต็มหน้าจอ */
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    z-index: 9999; /* เพิ่ม z-index เพื่อให้อยู่ด้านบนสุด */
+}
+.subheadersuccess{
+    font-size: 15px;
+    color: #646B72;
+    margin-bottom: 20px;
+    font-weight: 300;
+    justify-content: center;
+    display: flex;
+    text-align: center;
+}
+.headerpop{
+    font-size: 30px;
+    color: #212B36;
+    margin-bottom: 15px;
+    font-weight: 450;
+    display: flex;
+    justify-content: center;
+
+}
+
+.iconsuccess{
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    margin: auto;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+
+.buttonnoti {
+    width:100%;
+    height:20px;
+    padding:23px;
+    font-size:16px;
+    color:#FFFFFF;
+    border:2px solid #E6EAED;
+    border-radius:8px;
+    background:#DC1818;
+    justify-content:center;
+    display:flex;
+    margin-bottom:20px;
+    align-items:center;
+}
+
+
+@keyframes slideDown { 
+    0% { 
+        transform: translateY(-1000px); 
+        width: 50px;
+        height: 50px;
+        border-radius: 100px; 
+    } 
+    30% { 
+        transform: translateY(0);
+        width: 50px;
+        height: 50px;
+        border-radius: 100px; 
+    } 
+    60% { 
+        transform: translateY(0);
+        width: 300px;
+        height: 300px;
+        border-radius: 1000px;
+        box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5), 0 0 8px 10px #d4e4d0; 
+    } 
+    90% { 
+        transform: translateY(0); 
+        max-width:500px;
+        background:#FFFFFF;
+        margin:20px;
+        border:1px solid #c5c5c59a;
+        border-radius:10px;
+        padding:44px;
+        align-items:center;
+        justify-content:center;
+        z-index: 1;
+         box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5), 0 0 100px 10px #a6d59b; 
+    } 
+    95% { 
+        transform: translateY(0); 
+        max-width:500px;
+        background:#FFFFFF;
+        margin:20px;
+        border:1px solid #c5c5c59a;
+        border-radius:10px;
+        padding:44px;
+        align-items:center;
+        justify-content:center;
+        z-index: 1;
+        box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5), 0 0 19px 10px #d4e4d0; 
+    } 
+    100% { 
+        transform: translateY(0); 
+        max-width:500px;
+        background:#FFFFFF;
+        margin:20px;
+        border:1px solid #c5c5c59a;
+        border-radius:10px;
+        padding:44px;
+        align-items:center;
+        justify-content:center;
+        z-index: 1;
+    } 
+}
+
+/* 2. ตั้งค่าเริ่มต้นให้เนื้อหาข้างในถูกซ่อนไว้ */ 
+.navbar, .hero, .sihg, .new, .or, .internet { 
+  opacity: 0; 
+  animation: fadeIn 0.7s ease-out forwards; 
+}
+
+/* 3. หน่วงเวลา (Delay) ให้แต่ละส่วนค่อยๆ แสดงขึ้นมา */ 
+.navbar { 
+  animation-delay: 0.6s; /* แสดงส่วนหัว */ 
+}
+
+.hero { 
+  animation-delay: 0.7s; /* แสดงฟอร์ม */ 
+}
+
+.sihg, .new, .or, .internet { 
+  animation-delay: 0.8s; /* แสดงปุ่มและส่วนท้าย */ 
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+@media only screen and (max-width: 768px) {
     .container{
-        padding:16px;
-        margin:12px;
+        animation: slideDownmoblie 0.8s ease-out forwards;
     }
-
-    .header{
-        font-size:22px;
-    }
-
-    .subheader{
-        font-size:14px;
-    }
-
-    .button{
-        height:50px;
-    }
-
-    input{
-        height:30px;
-    }
+  @keyframes slideDownmoblie {
+     0% { 
+        transform: translateY(-1000px); 
+        width: 50px;
+        height: 50px;
+        border-radius: 100px; 
+    } 
+    30% { 
+        transform: translateY(0);
+        width: 50px;
+        height: 50px;
+        border-radius: 100px; 
+    } 
+    60% { 
+        transform: translateY(0);
+        width: 300px;
+        height: 300px;
+        border-radius: 1000px;
+        box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5), 0 0 8px 10px #d4e4d0; 
+    } 
+    90% { 
+        transform: translateY(0); 
+        max-width:500px;
+        background:#FFFFFF;
+        margin:20px;
+        border:1px solid #c5c5c59a;
+        border-radius:10px;
+        padding:44px;
+        align-items:center;
+        justify-content:center;
+        z-index: 1;
+         box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5), 0 0 100px 10px #a6d59b; 
+    } 
+    95% { 
+        transform: translateY(0); 
+        max-width:500px;
+        background:#FFFFFF;
+        margin:20px;
+        border:1px solid #c5c5c59a;
+        border-radius:10px;
+        padding:44px;
+        align-items:center;
+        justify-content:center;
+        z-index: 1;
+        box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5), 0 0 19px 10px #d4e4d0; 
+    } 
+    100% { 
+        transform: translateY(0); 
+        max-width:500px;
+        background:#FFFFFF;
+        margin:20px;
+        border:1px solid #c5c5c59a;
+        border-radius:10px;
+        padding:44px;
+        align-items:center;
+        justify-content:center;
+        z-index: 1;
+    } 
+}
 }

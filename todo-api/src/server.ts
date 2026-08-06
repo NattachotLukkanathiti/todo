@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { pool } from './database/db';
-import nodemailer from 'nodemailer';
+
 
 
 // 1. ตั้งค่าให้ DNS เลือกใช้ IPv4 ก่อนเสมอ (ป้องกัน IPv6 ENETUNREACH)
@@ -143,12 +143,12 @@ app.post('/api/request-otp', async (req, res) => {
       // เปลี่ยนจาก process.env.EMAIL_USER เป็นอีเมลจริงของคุณ
       body: JSON.stringify({
         sender: {
-          name: 'Tamraidee OTP',
+          name: 'Tamraidee Co.Th',
           email:'minec2645@gmail.com'
       },
       to: [{ email: title }],
-      subject: 'เรียนแจ้งรหัส OTP สำหรับสมัครสมาชิก',
-      htmlContent: `<p>รหัส OTP ของคุณคือ: <strong>${otp}</strong> (หมดอายุใน 5 นาที)</p>`
+      subject: 'Passcode OTP for Register',
+      htmlContent: `<p>Your PIN is a: <h1>${otp}</h1> (Expire in 5 minutes)</p>`
     })
     });
 

@@ -37,6 +37,7 @@ body {
     align-items:center;
     justify-content:center;
     z-index: 1;
+     animation: slideDown 0.7s ease-out forwards;
 
 }
 
@@ -344,4 +345,155 @@ mat-form-field{
     input{
         height:30px;
     }
+}
+
+
+
+@keyframes slideDown { 
+    0% { 
+        transform: translateY(-1000px); 
+        width: 50px;
+        height: 50px;
+        border-radius: 100px; 
+    } 
+    30% { 
+        transform: translateY(0);
+        width: 50px;
+        height: 50px;
+        border-radius: 100px; 
+    } 
+    60% { 
+        transform: translateY(0);
+        width: 300px;
+        height: 300px;
+        border-radius: 1000px;
+        box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5), 0 0 8px 10px #d4e4d0; 
+    } 
+    90% { 
+        transform: translateY(0); 
+        max-width:500px;
+        background:#FFFFFF;
+        margin:20px;
+        border:1px solid #c5c5c59a;
+        border-radius:10px;
+        padding:44px;
+        align-items:center;
+        justify-content:center;
+        z-index: 1;
+         box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5), 0 0 100px 10px #a6d59b; 
+    } 
+    95% { 
+        transform: translateY(0); 
+        max-width:500px;
+        background:#FFFFFF;
+        margin:20px;
+        border:1px solid #c5c5c59a;
+        border-radius:10px;
+        padding:44px;
+        align-items:center;
+        justify-content:center;
+        z-index: 1;
+        box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5), 0 0 19px 10px #d4e4d0; 
+    } 
+    100% { 
+        transform: translateY(0); 
+        max-width:500px;
+        background:#FFFFFF;
+        margin:20px;
+        border:1px solid #c5c5c59a;
+        border-radius:10px;
+        padding:44px;
+        align-items:center;
+        justify-content:center;
+        z-index: 1;
+    } 
+}
+
+/* 2. ตั้งค่าเริ่มต้นให้เนื้อหาข้างในถูกซ่อนไว้ */ 
+.navbar, .hero, .sihg, .new, .or, .internet { 
+  opacity: 0; 
+  animation: fadeIn 0.7s ease-out forwards; 
+}
+
+/* 3. หน่วงเวลา (Delay) ให้แต่ละส่วนค่อยๆ แสดงขึ้นมา */ 
+.navbar { 
+  animation-delay: 0.6s; /* แสดงส่วนหัว */ 
+}
+
+.hero { 
+  animation-delay: 0.7s; /* แสดงฟอร์ม */ 
+}
+
+.sihg, .new, .or, .internet { 
+  animation-delay: 0.8s; /* แสดงปุ่มและส่วนท้าย */ 
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+@media only screen and (max-width: 768px) {
+    .container{
+        animation: slideDownmoblie 0.8s ease-out forwards;
+    }
+  @keyframes slideDownmoblie {
+     0% { 
+        transform: translateY(-1000px); 
+        width: 50px;
+        height: 50px;
+        border-radius: 100px; 
+    } 
+    30% { 
+        transform: translateY(0);
+        width: 50px;
+        height: 50px;
+        border-radius: 100px; 
+    } 
+    60% { 
+        transform: translateY(0);
+        width: 300px;
+        height: 300px;
+        border-radius: 1000px;
+        box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5), 0 0 8px 10px #d4e4d0; 
+    } 
+    90% { 
+        transform: translateY(0); 
+        max-width:500px;
+        background:#FFFFFF;
+        margin:20px;
+        border:1px solid #c5c5c59a;
+        border-radius:10px;
+        padding:44px;
+        align-items:center;
+        justify-content:center;
+        z-index: 1;
+         box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5), 0 0 100px 10px #a6d59b; 
+    } 
+    95% { 
+        transform: translateY(0); 
+        max-width:500px;
+        background:#FFFFFF;
+        margin:20px;
+        border:1px solid #c5c5c59a;
+        border-radius:10px;
+        padding:44px;
+        align-items:center;
+        justify-content:center;
+        z-index: 1;
+        box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5), 0 0 19px 10px #d4e4d0; 
+    } 
+    100% { 
+        transform: translateY(0); 
+        max-width:500px;
+        background:#FFFFFF;
+        margin:20px;
+        border:1px solid #c5c5c59a;
+        border-radius:10px;
+        padding:44px;
+        align-items:center;
+        justify-content:center;
+        z-index: 1;
+    } 
+}
 }

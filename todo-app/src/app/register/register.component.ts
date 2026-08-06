@@ -4,6 +4,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TodoService } from '../services/todo.service';
 import { Subscription, interval } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -33,6 +34,7 @@ export class RegisterComponent implements OnInit { // Added implements OnInit
   registersuccess = false;
   otp = '';
   otpoutput: boolean = false;
+  
   ngOnDestroy(): void {
     if (this.update) {
       this.update.unsubscribe();
@@ -79,7 +81,10 @@ export class RegisterComponent implements OnInit { // Added implements OnInit
     this.popup = message;
   }
   private update!: Subscription;
-  constructor(private todoService: TodoService) {}
+  constructor(
+    private todoService: TodoService,
+    private router: Router
+  ) {}
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
@@ -100,14 +105,22 @@ export class RegisterComponent implements OnInit { // Added implements OnInit
   }      
 
   addTodo() {
-    if (this.loading || !this.title.trim() || !this.username.trim()) return;
+  // 1. ตรวจสอบว่ากรอกข้อมูลครบหรือไม่ ก่อนที่จะ return ออกไป
+  if (!this.title.trim() || !this.username.trim()) {
+    this.openpopupnoti("กรุณากรอกอีเมลและชื่อผู้ใช้ให้ครบถ้วน");
+    return;
+  }
 
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailPattern.test(this.title)) {
       this.openpopupnoti("Please enter a valid email address");
       return;
     }
-
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+    if (!passwordPattern.test(this.password)) {
+      this.openpopupnoti("รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร และประกอบด้วยตัวพิมพ์ใหญ่ พิมพ์เล็ก ตัวเลข และอักขระพิเศษ เช่น @$!%*?&#");
+      return;
+    }
     const checkEmail = this.todos.some(todo => todo.title === this.title);
     if (checkEmail) {
       this.openpopupnoti("This is account a already in use")
@@ -126,7 +139,13 @@ export class RegisterComponent implements OnInit { // Added implements OnInit
 
     this.todoService.sendOtp(this.title).subscribe({
     next: () => {
-      this.openpopupnoti("ส่งรหัส OTP ไปยังอีเมลของคุณแล้ว");
+      const userData = {
+          username: this.username,
+          title: this.title,
+          password: this.password
+        };
+        sessionStorage.setItem('tempUserData', JSON.stringify(userData));
+      this.router.navigate(['/otp'], { state: { userData } });
       this.otpoutput = true; // 2. สั่งเปิดหน้า OTP
       this.loading = false;
     },
@@ -148,4 +167,6 @@ export class RegisterComponent implements OnInit { // Added implements OnInit
       this.loadTodos();
     });
   }
+  
 }
+
