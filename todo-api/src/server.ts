@@ -14,7 +14,8 @@ app.use(cors({
     'https://lamped.netlify.app',
     'http://localhost:4200',
     'https://coruscating-donut-62bb86.netlify.app',
-    'https://tamraidee.netlify.app'
+    'https://tamraidee.netlify.app',
+    'https://tamraidee.nat-lukkanathiti.workers.dev'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'ngrok-skip-browser-warning'],
