@@ -43,6 +43,19 @@ app.get('/todos', async (req, res) => {
   }
 });
 
+app.get('/api/months', async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM months ORDER BY id ASC'
+    );
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
 app.post('/todos', async (req, res) => {
   try {
     // ➕ [เพิ่ม] รับค่า otp เพิ่มเติมมาจาก Frontend
