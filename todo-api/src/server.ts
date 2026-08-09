@@ -207,6 +207,43 @@ app.post('/api/verify-otp', (req, res) => {
     res.status(400).json({ success: false, message: 'Invalid OTP' });
   }
 });
+app.post('/api/check-email', async (req, res) => {
+  try {
+    const { title } = req.body;
+
+    if (!title) {
+      return res.status(400).json({
+        exists: false,
+        message: 'กรุณากรอกอีเมล'
+      });
+    }
+
+    const result = await pool.query(
+      'SELECT id FROM todos WHERE title = $1',
+      [title]
+    );
+
+    if (result.rows.length > 0) {
+      return res.json({
+        exists: true
+      });
+    }
+
+    return res.json({
+      exists: false,
+      message: 'ไม่พบอีเมลนี้ในระบบ'
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      exists: false,
+      message: 'Server Error'
+    });
+  }
+});
 app.put('/todos/:id', async (req, res) => {
   try {
     const { id } = req.params;

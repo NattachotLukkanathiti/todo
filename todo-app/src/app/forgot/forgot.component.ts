@@ -57,59 +57,51 @@ export class ForgotComponent {
   }
 
   onSubmit() {
+  if (!this.title) {
+    this.openpopupnoti('กรุณากรอกอีเมล');
+    return;
+  }
 
-    if (!this.title) {
-      this.openpopupnoti('กรุณากรอกอีเมล');
-      return;
-    }
+  this.isLoading = true;
 
-    this.isLoading = true;
-
-    this.http.post<any>(
-      `${this.apiUrl}/api/request-otp`,
-      {
-        title: this.title
+  // 1. เรียก API เพื่อตรวจสอบอีเมลก่อน
+  this.http.post<any>(`${this.apiUrl}/api/check-email`, { email: this.title }).subscribe({
+    next: (checkRes) => {
+      if (checkRes.exists) {
+        // 2. ถ้ามีอีเมลในระบบ ค่อยส่ง Request OTP
+        this.sendOtp();
+      } else {
+        this.isLoading = false;
+        this.openpopupnoti('ไม่พบอีเมลนี้ในระบบ');
       }
-    ).subscribe({
-
-      next: (res) => {
-
-  this.isLoading = false;
-
-  // เก็บ email ไว้ให้ OTP / Reset ใช้งาน
-  sessionStorage.setItem(
-    'tempUserData',
-    JSON.stringify({
-      title: this.title
-    })
-  );
-
-  // จำว่า OTP นี้มาจาก Forgot Password
-  sessionStorage.setItem('otpFrom', 'forget');
-
-  // ไปหน้า OTP ทันที
-  this.router.navigate(['/otp'], {
-    state: {
-      from: 'forget',
-      userData: {
-        title: this.title
-      }
+    },
+    error: (err) => {
+      this.isLoading = false;
+      this.openpopupnoti('เกิดข้อผิดพลาดในการตรวจสอบอีเมล');
     }
   });
+}
 
-},
-
-      error: (err) => {
-
-        this.isLoading = false;
-
-        const errorMsg =
-          err.error?.message ||
-          'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง';
-
-        this.openpopupnoti(errorMsg);
-      }
-
-    });
-  }
+// แยกฟังก์ชันส่ง OTP ออกมาเพื่อให้โค้ดอ่านง่ายขึ้น
+sendOtp() {
+  this.http.post<any>(
+    `${this.apiUrl}/api/request-otp`,
+    { title: this.title }
+  ).subscribe({
+    next: (res) => {
+      this.isLoading = false;
+      sessionStorage.setItem('tempUserData', JSON.stringify({ title: this.title }));
+      sessionStorage.setItem('otpFrom', 'forget');
+      
+      this.router.navigate(['/otp'], {
+        state: { from: 'forget', userData: { title: this.title } }
+      });
+    },
+    error: (err) => {
+      this.isLoading = false;
+      const errorMsg = err.error?.message || 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง';
+      this.openpopupnoti(errorMsg);
+    }
+  });
+}
 }
