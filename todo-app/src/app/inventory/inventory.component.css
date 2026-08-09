@@ -16,13 +16,7 @@
 .navstatic{
     display: flex;
 }
-.headerSale{
-    font-size: 25px;
-     display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 10px;
-}
+
 .iconsetting1,.iconsetting2,.iconsetting3,.iconsetting4{
     display: flex;
     justify-content: center;
@@ -35,6 +29,13 @@
 }
 .iconsetting1:hover,.iconsetting2:hover,.iconsetting3:hover,.iconsetting4:hover{
     background: #cccdd4;
+
+}
+.myicon1{
+    filter: brightness(0);
+}
+.myicon2 {
+    filter: brightness(0) invert(1);
 }
 .time{
     font-size: 15px;
@@ -95,6 +96,12 @@
     align-items: center;
     border: 0.5px solid #212b3623;
 }
+.header_Inventory{
+    margin-left: 20px;
+    font-size: 30px;
+    transform: scaleX(1.2);
+    font-weight: 450;
+}
 .iconsearch{
     position: absolute;
     display: flex;
@@ -102,10 +109,10 @@
     justify-content: center;
     align-items: center;
     margin-left:10px;
-    top: 40%;
+    margin-top: 10px;
 }
 input::placeholder{
-    text-indent: 40px;
+    text-indent: 30px;
 }
 .hamburger{
     border: 0.5px solid #00000031;
@@ -135,16 +142,162 @@ input::placeholder{
 }
 .search {
     display: flex;
-    margin-left:auto;
-    border-radius: 40px;
+    border-radius: 1px;
     padding: 20px;
+    font-weight: 200;
+}
+.button_add{
+    display: flex;
+    margin-left: auto;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 13px;
+    height: 8px;
+    gap: 8px;
+    text-align: center;
+    background-color:#84D46E;
+}
+.reload{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #E6EAED;
+    cursor: pointer;
+}
+.xs{
+     display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #E6EAED;
+    cursor: pointer;
+}
+.pdf{
+      display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #E6EAED;
+    cursor: pointer;
+}
+.custom-select {
+  width: 120px; /* ปรับความกว้างตามต้องการ */
+}
+
+.custom-select select {
+  width: 100%;
+  padding: 12px 16px;
+    color: #48505E;
+    font-weight:100;
+  background-color: #ffffff;
+  border: 1px solid #E5E7EB; /* สีขอบเทาอ่อน */
+  border-radius: 8px; /* ขอบมน */
+  appearance: none; /* ซ่อนลูกศรเริ่มต้นของระบบ */
+    font-size: 13px;
+  cursor: pointer;
+}
+
+/* เพิ่มลูกศรชี้ลงทางด้านขวา */
+.custom-select::after {
+  content: "▼"; /* สามารถเปลี่ยนเป็นไอคอนรูปภาพหรือ SVG ได้ */
+  font-size: 12px;
+  color: #6B7280;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; /* ทำให้คลิกทะลุไปโดน select ได้ */
+}
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  font-family: sans-serif;
+}
+.prev{
+    color: #1364D5 !important;
+}
+.next{
+    color: #1364D5 !important;
+}
+.pagination a, .pagination span {
+  text-decoration: none;
+  color: #2B2F38;
+  font-weight: 200;
+  font-size: 16px;
+  padding:10px 16px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+.table {
+    background-color: #F4F5FC;
+    margin-top: 20px;
+    padding: 20px;
+    width: 100%;
+    gap: 8%;
+    display: flex;
+    box-sizing: border-box; /* เพิ่มบรรทัดนี้ */
+}
+
+.sku {
+    font-size: 15px;
+    color: #2B2F38;
+    font-weight: 350;
+}
+.pagination .page.active {
+  background-color: #1364D5;
+  color: white;
+}
+
+.pagination .page:hover:not(.active) {
+  background-color: #f3f4f6;
+}
+
+.pagination .dots {
+  color: #6b7280;
+}
+
+.import{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 13px;
+    height: 8px;
+    gap: 8px;
+    text-align: center;
+    background-color:#1364D5;
+}
+.in_bt{
+    display: flex;
+    margin-left: auto;
+    gap: 8px;
 }
 .inputser{
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 10px;
     width: 15vw;
+    height: 20px;
+    font-size: 15px;
+    font-weight: 100;
+    color: #48505E;
     border: none;
-    box-shadow: 0px 0px 2px 0px #5C6F88;
+    border: 1px solid #E6EAED;
 }
 .profile{
     display: flex;
@@ -206,32 +359,6 @@ input::placeholder{
       transition: all .3s ease;
   z-index: 1;
   animation: sliderightt 0.5s ease-in-out;
-}
-.inhere{
-    animation: inhere 0.5s ease-in-out;
-}
-.inhere.inhere{
-    width: 270px;
-  height: 120vh;
-}
-@keyframes inhere{
-    0%{
-        padding: 0;
-        width: 0;
-    }
-    100%{
-  width: 270px;
-  height: 120vh;
-    }
-}
-@keyframes sliderightt{
-    0%{
-        
-    }
-    100%{
-        padding: 0;
-        width: 0;
-    }
 }
 
 .fix2.open{
@@ -312,8 +439,8 @@ input::placeholder{
     width: 100%;
     padding: 20px;
     border: 1px solid #E6EAED;
-    border-radius: 10px;
     height: 100vh;
+    padding: 20px;
     background: #fff;
     box-shadow: 0 8px 24px rgba(0,0,0,.08);
     box-sizing: border-box;
@@ -323,11 +450,35 @@ input::placeholder{
     flex: 1; 
     width: 100%; /* เปลี่ยนจาก max-width เป็น width */
     box-sizing: border-box; /* ป้องกันไม่ให้ padding ทำให้เกิด Scrollbar หรือพื้นที่เกิน */
-    min-width: 0;  
+    min-width: 0; 
     background: #F4F5FC; 
     margin-right: 0;
     z-index: 2;
-    animation: Boom 1s ease-in-out;
+    margin-top: 0;
+    animation: Boom 0.7s ease-in-out;
+}
+.detail_con{
+    position: relative;
+    border: 1px solid #E6EAED;
+    width: 100%;
+    margin-top: 0;
+    height: 100%;
+}
+.bars{
+    margin-top: 20px;
+    margin-left: -10px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 30px;
+    gap: 8px;
+    
+}
+.header_in{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
 }
 
 /* ปรับแต่งหน้าตาเมนูเพิ่มเติม (ตัวอย่าง) */
@@ -349,14 +500,7 @@ input::placeholder{
   background-color: #444;
 }
 
-.headersum{
-    margin-top: 20px;
-    display: flex;
-    font-size: 20px;
-    margin-left: 30px;
-    margin-bottom: 20px;
-    font-weight: 500;
-}
+
 .T {
     height: 70px;
     width: 180px; /* เพิ่มความกว้าง */
@@ -383,30 +527,6 @@ input::placeholder{
 }
 
 
-.bar-container {
-    margin-top: 70px;
-  display: inline-block;
-  margin-right: 10px;
-  width: 6.5%;
-  text-align: center;
-  vertical-align: bottom;
-  
-  bottom: 0;
-  
-}
-.container_bar{
-    margin-top: auto;
-    bottom: 0;
-}
-.bar {
-  width: 100%;
-  background-color: #84D46E;
-  border-radius: 10px;
-  animation: height 1s ease-out forwards;
-    animation-delay: 0.6s;
-    transform: scaleY(0);
-  transform-origin: bottom; /* ให้แอนิเมชันเริ่มจากด้านล่างขึ้นไป */
-}
 
 @keyframes height {
   0% {
@@ -561,19 +681,13 @@ input::placeholder{
 .icon_managerr{
     
 }
-.out.out{
-    animation: out 0.5s ease-in-out;
+.header_Product{
+    display: flex;
+    font-size: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-weight: 450;
 }
-@keyframes out{
-    0%{
-
-    }
-    100%{
-        width: 0;
-        padding: 0;
-    }
-}
-
 @keyframes Boom {
     0%{
         box-shadow: 0px 42px 234px 0px #e3ffdc;
@@ -612,38 +726,16 @@ input::placeholder{
     width: 100%;
 }
 .fade-out{
-    animation: Move_inventory 0.5s ease-in-out ;
+    animation: Move_dashboard 1s ease-in-out;
 }
-@keyframes Move_inventory{
+@keyframes Move_dashboard{
     0% {
         transform: translateY(0px); /* เริ่มต้นที่ตำแหน่งปกติ */
         opacity: 1;
     }
     100% {
-        transform: translateY(1000px); /* เลื่อนลงไปที่จุดสุดท้าย */
+        transform: translateY(-10000px); /* เลื่อนลงไปที่จุดสุดท้าย */
         opacity: 0; /* ค่อยๆ จางหายไปเมื่อเลื่อนลง */
-    }
-}
-.container.no-animation {
-    animation: none !important;
-}
-.Return {
-    animation: Move_Return 0.5s ease-in-out forwards !important;
-}
-@keyframes Move_Return{
-    0% {
-        transform: translateY(500px); /* เลื่อนลงไปที่จุดสุดท้าย */
-        opacity: 0; /* ค่อยๆ จางหายไปเมื่อเลื่อนลง */
-    }
-    50% {
-       transform: translateY(0); /* เริ่มต้นที่ตำแหน่งปกติ */
-        opacity: 1;
-            transform: scaleY(1.1);
-    
-    }
-    100%{
-         transform: translateY(0); /* เริ่มต้นที่ตำแหน่งปกติ */
-          opacity: 1;
     }
 }
 @media (max-width:768px){
@@ -725,7 +817,7 @@ input::placeholder{
     box-sizing: border-box; /* ป้องกันไม่ให้ padding ทำให้เกิด Scrollbar หรือพื้นที่เกิน */
     min-width: 0; 
     padding: 0; 
-    margin-top: 10px;
+     margin-top: 10px;
     background: #F4F5FC; 
     margin-right: 0;
 }
@@ -878,6 +970,7 @@ input::placeholder{
 
 
 
+
 .popupcontainer{
     background-color: #FFFFFF;
     border: 2px solid #bccbbb85 ;
@@ -972,4 +1065,9 @@ input::placeholder{
     margin-bottom:20px;
     align-items:center;
     cursor: pointer;
+}
+
+.Animation_out{
+    margin: 0;
+    padding: 0;
 }

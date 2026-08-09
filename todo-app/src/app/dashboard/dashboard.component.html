@@ -1,14 +1,27 @@
 <div class="navbaar">
-    <button class="hamburger" (click)="toggleMenu()">
+    <button class="hamburger" (click)="hambar()">
         <img src="image/ham.svg" alt="">
     </button>
     <div class="headercompany" >
         <img src="image/logo.svg" alt="">
     </div>
-    <div class="search">
+  <!--   <div class="search">
         <input class="inputser"type="text" placeholder="Search" [(ngModel)]="search" (input)="filterS()">
         <img class="iconsearch" src="image/search.svg" alt="">
-    </div>
+    </div> -->
+        <div class="container_bar">
+            <div class="time" [class.active]="isTimeOpen" (click)="isTimeOpen = !isTimeOpen" >
+                <img class="icon_time" src="image/Time Icon.svg" >
+                <div class="Y">
+  {{ currentTime | date:'HH:mm:ss' }}
+</div>
+            </div>
+            <div class="lin"></div>
+            <img class="iconsetting1" src="image/Maximize Icon.svg" (click)="toggleMenu()" alt="">
+            <img class="iconsetting2" src="image/Song.svg" alt="">
+            <img class="iconsetting3" src="image/Chart.svg" alt="">
+        </div>
+
 </div>
 
 <div class="over">
@@ -18,7 +31,7 @@
   <div class="menuin">
     <div class="dash">
         <img src="image/dashboard.svg" alt="">Dashboard</div>
-  <div class="no">
+  <div class="no"(click)="Animationa_out()">
     <img src="image/icon-wrapper-h.svg" alt="">Inventory</div>
   <div class="no">
         <img src="image/shop.svg" alt="">Sales Orders</div>
@@ -37,7 +50,8 @@
   <div class="Logout"(click)="logout()"><img class="" src="/icon_manager/Logout.svg" >Log Out</div>
     </div>
 </div>
-<div class="container">
+
+    <div class="container"  [class.fade-out]="Animation_out" [class.Return]="play_Return" [class.Boom]="stan">
     
     <div class="headersum">Sales Summary</div>
     <div class="conT">
@@ -62,13 +76,12 @@
             Sales & Purchase
         </div>
         <div class="overdate">
-            <div class="date">1D</div>
-            
-        <div class="date">1W</div>
-        <div class="date">1M</div>
-        <div class="date">3M</div>
-        <div class="date">6M</div>
-        <div class="date">1Y</div>
+            <div class="date">1Y</div>
+<div class="date">6M</div>
+<div class="date">3M</div>
+<div class="date">1M</div>
+<div class="date">1W</div>
+<div class="date">1D</div>
         </div>
        </div>
        <div class="line-header"></div>
@@ -77,39 +90,43 @@
         <div class="total"><span class="point"></span>Total Sales</div>
        </div>
        <div class="bigcontainergraph">
-        <div class="num-container">
-            <div class="num">60K</div> 
-            <div class="num">50K</div>         
-            <div class="num">40K</div>        
-            <div class="num">30K</div>         
-            <div class="num">20K</div>         
-            <div class="num">10K</div>         
-            <div class="num">0</div>
-            <div class="num">
-                <div class="detail">
-                    Sales Order
-                </div>
-            </div>
-            </div>
-        <div class="con">
-            <div *ngFor="let item of data; let i = index" class="bar-container">
-                <div class="bar" [style.height.px]="item.value"></div>
-                <div class="mon">{{ months[i] }}</div>
+
+    <div class="num-container">
+        <div class="num">60K</div>
+        <div class="num">50K</div>
+        <div class="num">40K</div>
+        <div class="num">30K</div>
+        <div class="num">20K</div>
+        <div class="num">10K</div>
+        <div class="num">0</div>
+    </div>
+
+    <div class="con">
+        <div *ngFor="let item of data; let i=index" class="bar-container">
+            <div class="bar"
+                 [style.height.px]="calculateHeight(item.value)">
             </div>
 
-<div class="line"></div>
-       </div>
-       </div>
+            <div class="mon">{{ months[i] }}</div>
+        </div>
     </div>
+
+    <div class="line"></div>
+
+</div>
+       </div>
+       
+
     
 </div>
- <div class="fix2" [class.open]="isMenuOpenprofile">
-    <div [class.open]="isMenuOpenprofile" class="profile">
+
+ <div class="fix2" [class.open]="isMenuOpenprofile" [class.out]="out" [class.inhere]="inhere">
+    <div [class.open]="isMenuOpenprofile" class="profile"[class.out]="out" [class.inhere]="inhere">
     <div class="header_Manager">
         <div class="header_inside">
             <img class="icon_manager"  src="/image/avatar.svg">
             <div class="container_header">
-                    <div class="manager">Manager</div>
+                    <div class="manager"> {{username}}</div>
                     <div class="small_manager">Admin</div>
             </div>
             <img class="pointt" src="/icon_manager/point.svg">
@@ -129,3 +146,19 @@
     </div>
  </div>
  </div>
+
+
+ <div *ngIf="showpopupnoti" class="backpop">
+  <div *ngIf="showpopupnoti" class="popupcontainer">
+  <div class="popup-content">
+    <img class="iconsuccess" src="image/cross.svg" alt="">
+    <div class="headerpop">
+      Something went Wrong
+    </div>
+    <div class="subheadersuccess">
+      {{popup}}
+    </div>
+    <button class="buttonnoti" (click)="closepopup()">OK</button>
+  </div>
+</div>
+</div>

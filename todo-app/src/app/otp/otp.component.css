@@ -109,6 +109,10 @@ input:focus{
     margin-bottom:20px;
     align-items:center;
 }
+.button:hover{
+    background: #98ee80;
+    cursor: pointer;
+}
 .iconpass {
     position: absolute;
     right: 15px;
@@ -368,6 +372,17 @@ mat-form-field{
         left:-20%;
         top:100%;
     }
+    .popupcontainer{
+    width:60% !important;
+    
+}
+.headerpop{
+    font-size: 20px !important; 
+}
+.iconsuccess{
+    width: 60px !important;
+    height: 60px !important;
+}
 }
 
 
@@ -401,6 +416,10 @@ mat-form-field{
     display:flex;
     margin-bottom:20px;
     align-items:center;
+    cursor: pointer;
+}
+.buttonclose:hover{
+    background:#9ef387;
 }
 .backpop {
     background-color: rgba(0, 0, 0, 0.28);
@@ -608,4 +627,148 @@ mat-form-field{
         z-index: 1;
     } 
 }
+}
+.loading-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    /* ใส่พื้นหลังโปร่งแสง (ไม่ใส่ก็ได้) */
+    z-index: 9999;
+    /* ให้อยู่บนสุดเสมอ */
+}
+
+
+.loading {
+    display: flex;
+    gap: 8px;
+    /* เพิ่มระยะห่างระหว่างแท่ง */
+    width: 100px;
+    /* กำหนดความกว้างให้กลุ่ม Loading */
+}
+
+.loading>div {
+    height: 16px;
+    background: #203e18;
+    flex: 1;
+    transform: scaleY(0.1);
+    animation: loading 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes loading {
+    0% {
+        opacity: 0.2;
+        transform: scaleY(0.1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scaleY(2.8);
+        background: #84D46E;
+    }
+}
+
+
+.loader1 {
+    animation-delay: 0.1s !important;
+}
+
+.loader2 {
+    animation-delay: 0.2s !important;
+}
+
+.loader3 {
+    animation-delay: 0.3s !important;
+}
+
+.loader4 {
+    animation-delay: 0.4s !important;
+}
+
+
+/* เพิ่ม Container สำหรับจัดกึ่งกลางหน้าจอ */
+.loading-container {
+    position: fixed;
+    top: -20px;
+    flex-direction: column;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    /* ใส่พื้นหลังโปร่งแสง (ไม่ใส่ก็ได้) */
+    z-index: 9999;
+    /* ให้อยู่บนสุดเสมอ */
+}
+
+.loading {
+    display: flex;
+    gap: 8px;
+    /* เพิ่มระยะห่างระหว่างแท่ง */
+    width: 100px;
+    /* กำหนดความกว้างให้กลุ่ม Loading */
+}
+
+.loading>div {
+    height: 16px;
+    background: #203e18;
+    flex: 1;
+    transform: scaleY(0.1);
+    animation: loading 0.5s ease-in-out infinite alternate;
+    
+}
+
+@keyframes loading {
+    0% {
+        opacity: 0.2;
+        transform: scaleY(0.1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scaleY(2.8);
+        background: #84D46E;
+    }
+}
+
+
+.loader1 {
+    animation-delay: 0.1s !important;
+}
+
+.loader2 {
+    animation-delay: 0.2s !important;
+}
+
+.loader3 {
+    animation-delay: 0.3s !important;
+}
+
+.loader4 {
+    animation-delay: 0.4s !important;
+}
+
+.logo_loading {     
+    width: 300px;     
+    transform: scaleX(1.2);
+    height: 300px;     
+    /* เพิ่ม Animation ให้ขยายใน 2 วินาที */
+    animation: expandLogo 2s linear infinite alternate;
+}
+
+/* สร้าง Keyframes สำหรับการขยาย */
+@keyframes expandLogo {
+    0% {
+        opacity: 0%;/* ขนาดเริ่มต้น */
+    }
+    100% {
+        opacity: 100%; /* ขยายใหญ่ขึ้น 1.5 เท่า (ปรับได้ตามต้องการ) */
+    }
 }

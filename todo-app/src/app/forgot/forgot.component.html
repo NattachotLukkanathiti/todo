@@ -11,7 +11,7 @@
 <div class="Email">Email Address  <span class="red">*</span></div>
 
   <div class="input-group">
-      <input type="text" > 
+      <input type="text" [(ngModel)]="title" > 
       <img src="image/Email.svg" class="iconpass" >
   </div>
 
@@ -23,11 +23,11 @@
 
 
 <div class="sihg">
-       <button class="button">Submit</button>
+       <button class="button" (click)="onSubmit()">Submit</button>
   </div>
 
   <div class="return">
-    Return to <a href="#" class="login">Login</a>
+    Return to <a href="#" class="login" >Login</a>
 </div>
 </div>
 </div>

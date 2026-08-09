@@ -227,6 +227,56 @@ app.put('/todos/:id', async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 });
+
+app.put('/api/reset-password', async (req, res) => {
+  try {
+    const { title, password } = req.body;
+
+    if (!title || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'กรุณากรอกอีเมลและรหัสผ่านใหม่'
+      });
+    }
+
+    // เช็กว่ามี Account นี้จริงไหม
+    const userCheck = await pool.query(
+      'SELECT * FROM todos WHERE title = $1',
+      [title]
+    );
+
+    if (userCheck.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'ไม่พบอีเมลนี้ในระบบ'
+      });
+    }
+
+    // เปลี่ยน Password
+    const result = await pool.query(
+      `UPDATE todos
+       SET password = $1
+       WHERE title = $2
+       RETURNING id, username, title`,
+      [password, title]
+    );
+
+    res.json({
+      success: true,
+      message: 'เปลี่ยนรหัสผ่านสำเร็จ',
+      user: result.rows[0]
+    });
+
+  } catch (error) {
+
+    console.error('Reset Password Error:', error);
+
+    res.status(500).json({
+      success: false,
+      message: 'Server Error'
+    });
+  }
+});
 app.delete('/todos/:id', async (req, res) => {
   try {
     const { id } = req.params;

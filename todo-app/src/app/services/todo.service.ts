@@ -1,7 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { title } from 'process';
-import { Observable } from 'rxjs'; // 1. เพิ่มก
+import { Observable } from 'rxjs';
 
 export interface Todo {
   id: number;
@@ -18,7 +17,6 @@ export class TodoService {
   private api = 'https://todo-arz1.onrender.com/todos';
   private apiUrl = 'https://todo-arz1.onrender.com/api'; 
 
-  // 1. กำหนด Header พิเศษเพื่อข้ามหน้าเตือนของ Ngrok
   private headers = new HttpHeaders({
     'ngrok-skip-browser-warning': 'true'
   });
@@ -32,51 +30,55 @@ export class TodoService {
   addTodo(username: string, title: string, password: string, confirmPassword: string) {
     return this.http.post<Todo>(
       this.api,
-      {
-        username,
-        title,
-        confirmPassword,
-        password,
-        completed: false
-      },
-      { headers: this.headers } // ส่ง headers แนบไปด้วย
+      { username, title, confirmPassword, password, completed: false },
+      { headers: this.headers }
     );
   }
 
   updateTodo(todo: Todo) {
     return this.http.put<Todo>(
       `${this.api}/${todo.id}`,
-      {
-        completed: todo.completed
-      },
-      { headers: this.headers } // ส่ง headers แนบไปด้วย
+      { completed: todo.completed },
+      { headers: this.headers }
     );
   }
 
   deleteTodo(id: number) {
     return this.http.delete(
       `${this.api}/${id}`,
-      { headers: this.headers } // ส่ง headers แนบไปด้วย
+      { headers: this.headers }
     );
   }
 
-// ใน todo.service.ts
   login(title: string, password: string) {
     return this.http.post<any>(
-      'https://todo-arz1.onrender.com/api/login', // 1. เปลี่ยน URL ให้ชี้ไปที่ Render
+      `${this.apiUrl}/login`, 
       { title, password },
-      { headers: this.headers } // 2. แนบ headers เพื่อป้องกันปัญหาการเชื่อมต่อ
+      { headers: this.headers }
     );
   }
-  // ในไฟล์ todo.service.ts
-// ตัวอย่างการแก้ไข apiUrl ใน verifyOtp
-// แก้ไขให้ส่ง { username: title } แทน
+
   verifyOtp(title: string, otp: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/verify-otp`, { title, otp }, { headers: this.headers });
   }
 
-  // แก้ไขให้ส่ง { username: title } แทน
   sendOtp(title: string) {
     return this.http.post(`${this.apiUrl}/request-otp`, { title }, { headers: this.headers });
+  }
+
+  getMonth() {
+    return this.http.get<any[]>(
+      `${this.apiUrl}/months`,
+      { headers: this.headers }
+    );
+  }
+
+  // 📌 เพิ่มฟังก์ชัน resetPassword ตรงนี้
+  resetPassword(title: string, password: string): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl}/reset-password`, 
+      { title, password },
+      { headers: this.headers }
+    );
   }
 }

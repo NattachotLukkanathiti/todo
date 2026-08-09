@@ -41,6 +41,7 @@ export class LoginComponent {
   popup = '';
   registersuccess = false;
 
+  
 
   openpopup(message:string){
     this.popup = message;
@@ -64,19 +65,27 @@ export class LoginComponent {
   }
 
   // เปลี่ยนจาก addTodo เป็น login
+   isLoading = false; // เพิ่มตัวแปรนี้
+
   login() {
     if (!this.title.trim() || !this.password.trim()) return;
 
+    this.isLoading = true; // เริ่มแสดง Loading
+
     this.todoService.login(this.title, this.password).subscribe({
       next: (response) => {
-
-        this.router.navigate(['/dashboard']);
-        
-        // TODO: สามารถเก็บ Token ได้ที่นี่ เช่น localStorage.setItem('token', response.token);
-        
-        // เปลี่ยนหน้าไปที่ /todos (หรือหน้าหลักของคุณ)
+        this.isLoading = false; // ซ่อน Loading
+        this.router.navigate(['/dashboard'],{
+          state:{
+          username: response.user.username,
+          email: response.user.title,
+          stan: true,
+          inhere: true
+        }
+        });
       },
       error: (error) => {
+        this.isLoading = false; // ซ่อน Loading เมื่อเกิดข้อผิดพลาด
         console.error('Login Failed', error);
         this.openpopupnoti("Username or password incorrect");
       }

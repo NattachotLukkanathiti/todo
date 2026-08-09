@@ -34,7 +34,7 @@ export class RegisterComponent implements OnInit { // Added implements OnInit
   registersuccess = false;
   otp = '';
   otpoutput: boolean = false;
-  
+     isLoading = false; // เพิ่มตัวแปรนี้
   ngOnDestroy(): void {
     if (this.update) {
       this.update.unsubscribe();
@@ -88,7 +88,9 @@ export class RegisterComponent implements OnInit { // Added implements OnInit
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
-    this.showConfirmPassword = !this.showConfirmPassword;
+  }
+  toggleConfirmPassword(){
+     this.showConfirmPassword = !this.showConfirmPassword;
   }
 
   ngOnInit(): void {
@@ -105,33 +107,41 @@ export class RegisterComponent implements OnInit { // Added implements OnInit
   }      
 
   addTodo() {
+    this.isLoading = true; // เริ่มแสดง Loading
   // 1. ตรวจสอบว่ากรอกข้อมูลครบหรือไม่ ก่อนที่จะ return ออกไป
   if (!this.title.trim() || !this.username.trim()) {
+    this.isLoading = false; // เริ่มแสดง Loading
     this.openpopupnoti("กรุณากรอกอีเมลและชื่อผู้ใช้ให้ครบถ้วน");
     return;
   }
 
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailPattern.test(this.title)) {
+      this.isLoading = false; // เริ่มแสดง Loading
       this.openpopupnoti("Please enter a valid email address");
       return;
     }
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
     if (!passwordPattern.test(this.password)) {
+      this.isLoading = false; // เริ่มแสดง Loading
       this.openpopupnoti("รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร และประกอบด้วยตัวพิมพ์ใหญ่ พิมพ์เล็ก ตัวเลข และอักขระพิเศษ เช่น @$!%*?&#");
+      
       return;
     }
     const checkEmail = this.todos.some(todo => todo.title === this.title);
     if (checkEmail) {
+      this.isLoading = false; // เริ่มแสดง Loading
       this.openpopupnoti("This is account a already in use")
       return;
     }
     if (this.password !== this.confirmPassword) {
+      this.isLoading = false; // เริ่มแสดง Loading
       this.openpopupnoti("Passwords do not match");
       return;
     }
     // Added password match validation
     if (this.password !== this.confirmPassword) {
+      this.isLoading = false; // เริ่มแสดง Loading
       this.openpopupnoti("Password do not match");
       return;
     }

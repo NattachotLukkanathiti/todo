@@ -1,17 +1,17 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TodoService } from '../services/todo.service';
 import { interval, Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-dashboard',
-  imports: [FormsModule, CommonModule, RouterLink],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  selector: 'app-inventory',
+  imports: [CommonModule, DatePipe, RouterLink,FormsModule],
+  templateUrl: './inventory.component.html',
+  styleUrl: './inventory.component.css'
 })
-export class DashboardComponent implements OnInit {
+export class InventoryComponent {
 
   private todoService = inject(TodoService);
 
@@ -21,7 +21,7 @@ export class DashboardComponent implements OnInit {
 
   data: any[] = [];
   months: string[] = [];
-  errorMessage: string = '';
+  
   email = '';
   username = '';
   showpopup = false;
@@ -30,12 +30,9 @@ export class DashboardComponent implements OnInit {
   isMenuOpen = false;
   isMenuOpenprofile = false;
   currentView = 'dashboard';
-  stan = false;
   currentTime = new Date();
   isTimeOpen = false;
   Animation_out = false;
-  play_Return = false;
-  inhere = false;
   out = false;
   private timeSubscription!: Subscription;
   constructor(private router: Router) {}
@@ -47,36 +44,25 @@ export class DashboardComponent implements OnInit {
     this.email = state.email || '';
 
      if (state.Move_return === true) {
-    this.stan = false;
-    this.play_Return = true;
-    this.inhere = true;
+    this.out = true;
   }
 
-  // เข้ามาจาก Login
-  else if (state.stan === true) {
-    this.stan = true;
-        this.inhere = true;
-    this.play_Return = false;
-  }
-
-  
     if(!this.username || !this.email){
       this.openpopupnoti("Session not found. Redirecting to login")
     return;
-  }
+    }
+
     this.loadChartData();
     this.timeSubscription = interval(1000).subscribe(() => {
       this.currentTime = new Date();
     });
   }
-
   Animationa_out(){
-        this.out = true;
-    this.play_Return = false;
     this.Animation_out = true;
+
     setTimeout(() =>{
-      this.router.navigate(['/inventory'],{
-        state:{username: this.username , email: this.email }
+      this.router.navigate(['/dashboard'],{
+        state:{username: this.username , email: this.email, Move_return:true}
       })
     } ,300)
   }
@@ -134,5 +120,5 @@ export class DashboardComponent implements OnInit {
 
   logout() {
     this.router.navigate(['/login']);
-  }
+}
 }

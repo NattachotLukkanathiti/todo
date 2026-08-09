@@ -3,10 +3,10 @@
   <div class="navbar">
 
   <div class="header">
-    Register
+    Reset password?
   </div>
   <div class="subheader">
-    Create New Dreamspos Account
+    Enter New Password & Confirm Password to get inside
   </div>
   
 
@@ -14,17 +14,7 @@
 
 
 <div class="hero">
-  <div class="Email">Username <span class="red">*</span></div>
-   <div class="input-group">
-      <input type="text"  [(ngModel)]="username">
-      <img src="image/Vector.svg" class="iconpass" alt="">
-  </div>
-  <div class="Email">Email <span class="red">*</span></div>
-  <div class="input-group">
-      <input type="text" [(ngModel)]="title">
-          <img src="image/Email.svg" class="iconpass" alt="">
-  </div>
-   <div class="Email">Password <span class="red">*</span></div>
+   <div class="Email">New Password <span class="red">*</span></div>
    <div class="input-group">
       <input [type]="showPassword ? 'text': 'password'" [(ngModel)]="password">
       <img class="iconpass"  (click)="togglePasswordVisibility()" [src]="showPassword ? 'image/eye-open.svg' : 'image/eye-off.svg'">
@@ -34,23 +24,15 @@
       <input [type]="showConfirmPassword ? 'text': 'password'" [(ngModel)]="confirmPassword" >
       <img class="iconpass" (click)="toggleConfirmPassword()" [src]="showConfirmPassword ? 'image/eye-open.svg' : 'image/eye-off.svg'">
   </div>
-  
-  <div class="checkbox-group">
-      <mat-checkbox class="re" id="rememberMe" [(ngModel)]="rememberMe">I agree to the</mat-checkbox>
-      <div class="For">Terms & Privacy</div>
-</div>
+
 
   <div class="sihg">
-       <button class="button" (click)="addTodo()" [disabled]="loading">Sign Up</button>
+       <button class="button" (click)="addTodo()" [disabled]="loading">Change Password</button>
   </div>
-  <div class="new">New on our platform?  <a href="#" class="Create-account">Sign In Instead</a></div>
-  <div class="or">OR</div>
+  <div class="return">
+    Return to <a href="#" class="login" >Login</a>
+</div>
 
-  <div class="internet">
-    <button class="Facebook"><img class="icon" src="image/facebook.svg" alt="Facebook"></button>
-    <button class="Google"><img class="icon" src="image/google.svg" alt="Google"></button>
-    <button class="Apple"><img class="icon" src="image/apple.svg" alt="Apple"></button>
-  </div>
 
 <!-- <div class="todo-list">
     @for(todo of todos; track todo.id){

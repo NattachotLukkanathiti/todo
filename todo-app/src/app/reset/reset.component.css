@@ -744,7 +744,18 @@ max-width: 100% !important;
     /* เพิ่ม Animation ให้ขยายใน 2 วินาที */
     animation: expandLogo 2s linear infinite alternate;
 }
-
+.return{
+    
+    justify-content: center;
+    text-align: center;
+    color: #646B72;
+    font-weight: 300;
+}
+.login{
+    text-decoration: none;
+    color: #212B36;
+    font-weight: 400;
+}
 /* สร้าง Keyframes สำหรับการขยาย */
 @keyframes expandLogo {
     0% {

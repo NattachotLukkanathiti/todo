@@ -28,10 +28,10 @@ export class OtpComponent implements OnInit, OnDestroy {
   showpopup = false;
   showpopupnoti = false;
   popup = '';
+  from: string = '';
   registersuccess = false;
   timeLeft = 5 * 60; // 5 นาที (300 วินาที)
   timer: any;
-
 
   openpopup(message:string){
     this.popup = message;
@@ -51,6 +51,8 @@ export class OtpComponent implements OnInit, OnDestroy {
     this.popup = message;
   }
   ngOnInit() {
+    this.from = history.state?.from || sessionStorage.getItem('otpFrom') || '';
+
     // 📌 1. ดึงข้อมูลจาก sessionStorage ก่อน (ป้องกันการรีเฟรชหน้าจอแล้วหลุด)
     const savedData = sessionStorage.getItem('tempUserData');
 
@@ -62,6 +64,9 @@ export class OtpComponent implements OnInit, OnDestroy {
       sessionStorage.setItem('tempUserData', JSON.stringify(this.userData));
     }
 
+    if (this.from === 'forget') {
+    sessionStorage.setItem('otpFrom', 'forget');
+  }
     // 📌 2. ถ้าไม่มีข้อมูลอีเมลจริงๆ ให้เด้งกลับไปหน้าสมัครสมาชิก
     if (!this.userData || !this.userData.title) {
       alert('ไม่พบข้อมูลการสมัครสมาชิก กรุณากรอกข้อมูลใหม่');
@@ -109,10 +114,13 @@ export class OtpComponent implements OnInit, OnDestroy {
 
   // 📌 3. ฟังก์ชันกดยืนยัน OTP และส่งข้อมูลไปยัง /todos
   submitRegister() {
+     this.isLoading = true; // เริ่มแสดง Loading
     // นำเลข 4 ช่องมารวมกันเป็น String ชุดเดียว
+    
     const fullOtp = this.otpDigits.join('');
 
     if (!fullOtp || fullOtp.length !== 4) {
+       this.isLoading = false; // เริ่มแสดง Loading
       this.errorMessage = 'กรุณากรอกรหัส OTP ให้ครบ 4 หลัก';
           this.openpopupnoti(this.errorMessage)
       return;
@@ -132,6 +140,17 @@ export class OtpComponent implements OnInit, OnDestroy {
     this.http.post<any>(`${this.apiUrl}/todos`, payload).subscribe({
       next: (res) => {
         this.isLoading = false;
+         if (this.from === 'forget') {
+
+        this.router.navigate(['/reset'], {
+          state: {
+            userData: this.userData
+          }
+        });
+
+        return;
+      }
+
         // 🧹 ลบข้อมูลชั่วคราวออกเมื่อสมัครสมาชิกสำเร็จ
         sessionStorage.removeItem('tempUserData');
         this.openpopup("Your register Completed")
@@ -149,6 +168,7 @@ export class OtpComponent implements OnInit, OnDestroy {
 
   // 📌 4. ฟังก์ชันขอรหัส OTP ใหม่
   resendOtp() {
+    this.isLoading = true; // เริ่มแสดง Loading
     if (this.timeLeft > 295) return;
 
     this.isLoading = true;
@@ -156,7 +176,7 @@ export class OtpComponent implements OnInit, OnDestroy {
 
     this.http.post<any>(`${this.apiUrl}/api/request-otp`, { title: this.userData.title }).subscribe({
       next: (res) => {
-        this.isLoading = false;
+        this.isLoading = false; // เริ่มแสดง Loading
         this.openpopup("OTP sent to your email")
         this.otpDigits = ['', '', '', '']; // ล้างช่องเก่า
         this.timeLeft = 5 * 60; // รีเซ็ตเวลาเป็น 5 นาที
