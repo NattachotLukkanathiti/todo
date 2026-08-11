@@ -56,19 +56,30 @@ app.get('/api/months', async (req, res) => {
   }
 });
 
-app.get('/api/sale_order', async (req, res) => {
-  try {
-    // ใช้ pool.query แทน supabase
-    const result = await pool.query(
-      'SELECT id, order_code, date, amount, create_by, status FROM sale_order'
-    );
+app.get('/api/sale_order', async (req, res) => {   
+  try {     
+    const result = await pool.query(       
+      'SELECT id, order_code, date, amount, create_by, status FROM sale_order'     
+    );      
 
-    // ส่งข้อมูลกลับไปให้ Frontend (ใช้ result.rows)
-    res.json(result.rows);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server Error'  });
-  }
+    // แปลงรูปแบบวันที่ก่อนส่งไปให้ Frontend
+    const formattedRows = result.rows.map(row => {
+      if (row.date) {
+        const dateObj = new Date(row.date);
+        row.date = dateObj.toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        });
+      }
+      return row;
+    });
+
+    res.json(formattedRows);   
+  } catch (error) {     
+    console.error(error);     
+    res.status(500).json({ message: 'Server Error' });   
+  } 
 });
 
 app.post('/todos', async (req, res) => {
