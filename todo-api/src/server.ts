@@ -56,6 +56,21 @@ app.get('/api/months', async (req, res) => {
   }
 });
 
+app.get('/api/sale_orders', async (req, res) => {
+  try {
+    // ใช้ pool.query แทน supabase
+    const result = await pool.query(
+      'SELECT id, order_code, date, amount, create_by, status FROM sale_order'
+    );
+
+    // ส่งข้อมูลกลับไปให้ Frontend (ใช้ result.rows)
+    res.json(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error'  });
+  }
+});
+
 app.post('/todos', async (req, res) => {
   try {
     // ➕ [เพิ่ม] รับค่า otp เพิ่มเติมมาจาก Frontend
@@ -207,6 +222,7 @@ app.post('/api/verify-otp', (req, res) => {
     res.status(400).json({ success: false, message: 'Invalid OTP' });
   }
 });
+
 app.post('/api/check-email', async (req, res) => {
   try {
     const { title } = req.body;
