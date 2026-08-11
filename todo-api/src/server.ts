@@ -82,7 +82,7 @@ app.get('/api/sale_order', async (req, res) => {
 app.get('/api/inventory', async (req, res) => {
     try {
         const result = await pool.query(
-            'SELECT id, SKU, Product Name, Category, Brand FROM inventory'
+            'SELECT id, sku, product_name, category, brand ,quantity, quantity_alert FROM inventory'
         );
 
         res.json(result.rows);
