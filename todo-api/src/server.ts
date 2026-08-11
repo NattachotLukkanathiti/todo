@@ -56,7 +56,7 @@ app.get('/api/months', async (req, res) => {
   }
 });
 
-app.get('/api/sale_orders', async (req, res) => {
+app.get('/api/sale_order', async (req, res) => {
   try {
     // ใช้ pool.query แทน supabase
     const result = await pool.query(
