@@ -61,8 +61,6 @@ app.get('/api/sale_order', async (req, res) => {
     const result = await pool.query(       
       'SELECT id, order_code, date, amount, create_by, status FROM sale_order'     
     );      
-
-    // แปลงรูปแบบวันที่ก่อนส่งไปให้ Frontend
     const formattedRows = result.rows.map(row => {
       if (row.date) {
         const dateObj = new Date(row.date);
@@ -80,6 +78,18 @@ app.get('/api/sale_order', async (req, res) => {
     console.error(error);     
     res.status(500).json({ message: 'Server Error' });   
   } 
+});
+app.get('/api/inventory', async (req, res) => {
+    try {
+        const result = await pool.query(
+            'SELECT id, sku, product_name, category, brand FROM inventory'
+        );
+
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' });
+    }
 });
 
 app.post('/todos', async (req, res) => {
