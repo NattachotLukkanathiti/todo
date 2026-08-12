@@ -120,6 +120,18 @@ app.get('/api/history', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+app.get('/api/employee', async (req, res) => {
+    try {
+        const result = await pool.query(
+            'SELECT id, code, employee, email, phone FROM employee'
+        );
+        
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
 app.post('/todos', async (req, res) => {
   try {
     // ➕ [เพิ่ม] รับค่า otp เพิ่มเติมมาจาก Frontend
