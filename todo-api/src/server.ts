@@ -84,7 +84,20 @@ app.get('/api/inventory', async (req, res) => {
         const result = await pool.query(
             'SELECT id, sku, product_name, category, brand ,quantity, quantity_alert FROM inventory'
         );
-        const formattedRows = result.rows.map(row => {
+        
+
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
+app.get('/api/history', async (req, res) => {
+    try {
+        const result = await pool.query(
+            'SELECT id, date, sku, product_name, brand, price, quantity ,created_by FROM history ORDER BY id ASC'
+        );
+          const formattedRows = result.rows.map(row => {
       if (row.date) {
         const dateObj = new Date(row.date);
         row.date = dateObj.toLocaleDateString('en-GB', {
@@ -96,23 +109,12 @@ app.get('/api/inventory', async (req, res) => {
       return row;
     });
 
-        res.json(formattedRows);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server Error' });
-    }
-});
-app.get('/api/history', async (req, res) => {
-    try {
-        const result = await pool.query(
-            'SELECT id, date, sku, product_name, brand, price, quantity ,created_by FROM history ORDER BY id ASC'
-        );
 
         if (result.rows.length === 0) {
             return res.status(404).json({ message: 'No history records found' });
         }
 
-        res.json(result.rows);
+        res.json(formattedRows);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error' });
