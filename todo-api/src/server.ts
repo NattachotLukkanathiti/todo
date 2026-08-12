@@ -91,7 +91,22 @@ app.get('/api/inventory', async (req, res) => {
         res.status(500).json({ message: 'Server Error' });
     }
 });
+app.get('/api/history', async (req, res) => {
+    try {
+        const result = await pool.query(
+            'SELECT id, date, sku, product_name, brand, price, quantity FROM history ORDER BY id ASC'
+        );
 
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'No history records found' });
+        }
+
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
 app.post('/todos', async (req, res) => {
   try {
     // ➕ [เพิ่ม] รับค่า otp เพิ่มเติมมาจาก Frontend
