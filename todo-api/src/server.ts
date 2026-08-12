@@ -94,7 +94,7 @@ app.get('/api/inventory', async (req, res) => {
 app.get('/api/history', async (req, res) => {
     try {
         const result = await pool.query(
-            'SELECT id, date, sku, product_name, brand, price, quantity FROM history ORDER BY id ASC'
+            'SELECT id, date, sku, product_name, brand, price, quantity created_by FROM history ORDER BY id ASC'
         );
 
         if (result.rows.length === 0) {
