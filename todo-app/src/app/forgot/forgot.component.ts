@@ -24,7 +24,6 @@ export class ForgotComponent {
   showpopup = false;
   showpopupnoti = false;
   popup = '';
-  isSuccess = false;
 
   openpopup(message: string) {
     this.popup = message;
@@ -34,21 +33,6 @@ export class ForgotComponent {
   closepopup() {
     this.showpopup = false;
     this.showpopupnoti = false;
-
-    if (this.isSuccess) {
-
-      // บอก OTP ว่ามาจาก Forgot Password
-      this.router.navigate(['/otp'], {
-        state: {
-          from: 'forget',
-          userData: {
-            title: this.title
-          }
-        }
-      });
-
-      this.isSuccess = false;
-    }
   }
 
   openpopupnoti(message: string) {
@@ -57,51 +41,102 @@ export class ForgotComponent {
   }
 
   onSubmit() {
-  if (!this.title) {
-    this.openpopupnoti('กรุณากรอกอีเมล');
-    return;
+
+    if (!this.title.trim()) {
+      this.openpopupnoti('กรุณากรอกอีเมล');
+      return;
+    }
+
+    this.isLoading = true;
+
+    // ตรวจสอบ Email ก่อน
+    this.http.post<any>(
+      `${this.apiUrl}/api/check-email`,
+      {
+        title: this.title
+      }
+    ).subscribe({
+
+      next: (checkRes) => {
+
+        if (checkRes.exists) {
+
+          // มี Email → ส่ง OTP
+          this.sendOtp();
+
+        } else {
+
+          this.isLoading = false;
+
+          this.openpopupnoti(
+            'ไม่พบอีเมลนี้ในระบบ'
+          );
+        }
+      },
+
+      error: (err) => {
+
+        this.isLoading = false;
+
+        this.openpopupnoti(
+          err.error?.message ||
+          'เกิดข้อผิดพลาดในการตรวจสอบอีเมล'
+        );
+      }
+
+    });
   }
 
-  this.isLoading = true;
 
-  // 1. เรียก API เพื่อตรวจสอบอีเมลก่อน
-  this.http.post<any>(`${this.apiUrl}/api/check-email`, { email: this.title }).subscribe({
-    next: (checkRes) => {
-      if (checkRes.exists) {
-        // 2. ถ้ามีอีเมลในระบบ ค่อยส่ง Request OTP
-        this.sendOtp();
-      } else {
-        this.isLoading = false;
-        this.openpopupnoti('ไม่พบอีเมลนี้ในระบบ');
+  sendOtp() {
+
+    this.http.post<any>(
+      `${this.apiUrl}/api/request-otp`,
+      {
+        title: this.title
       }
-    },
-    error: (err) => {
-      this.isLoading = false;
-      this.openpopupnoti('เกิดข้อผิดพลาดในการตรวจสอบอีเมล');
-    }
-  });
-}
+    ).subscribe({
 
-// แยกฟังก์ชันส่ง OTP ออกมาเพื่อให้โค้ดอ่านง่ายขึ้น
-sendOtp() {
-  this.http.post<any>(
-    `${this.apiUrl}/api/request-otp`,
-    { title: this.title }
-  ).subscribe({
-    next: (res) => {
-      this.isLoading = false;
-      sessionStorage.setItem('tempUserData', JSON.stringify({ title: this.title }));
-      sessionStorage.setItem('otpFrom', 'forget');
-      
-      this.router.navigate(['/otp'], {
-        state: { from: 'forget', userData: { title: this.title } }
-      });
-    },
-    error: (err) => {
-      this.isLoading = false;
-      const errorMsg = err.error?.message || 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง';
-      this.openpopupnoti(errorMsg);
-    }
-  });
-}
+      next: (res) => {
+
+        this.isLoading = false;
+
+        // เก็บ Email
+        sessionStorage.setItem(
+          'tempUserData',
+          JSON.stringify({
+            title: this.title
+          })
+        );
+
+        // จำว่า OTP มาจาก Forgot
+        sessionStorage.setItem(
+          'otpFrom',
+          'forget'
+        );
+
+        // ไปหน้า OTP
+        this.router.navigate(['/step'], {
+          state: {
+            from: 'forget',
+            userData: {
+              title: this.title
+            }
+          }
+        });
+
+      },
+
+      error: (err) => {
+
+        this.isLoading = false;
+
+        this.openpopupnoti(
+          err.error?.message ||
+          'เกิดข้อผิดพลาดในการส่ง OTP'
+        );
+      }
+
+    });
+  }
 }

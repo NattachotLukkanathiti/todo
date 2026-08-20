@@ -35,15 +35,19 @@
                 <div class="dash">
                     <img class="myicon2" src="image/icon-wrapper-h.svg" alt="">Inventory
                 </div>
-                <div class="no">
+                <div class="no" (click)="Animationa_out2()">
                     <img src="image/shop.svg" alt="">Sales Orders
+                </div>
+                <div class="no" (click)="Animationa_out3()">
+                    <img src="image/Vectorhistory.svg" alt="">Stock History
+                </div>
+                <div class="no"(click)="Animationa_out4()">
+                    <img src="image/Employee.svg" alt="">Employee
                 </div>
                 <div class="no">
                     <img src="image/car.svg" alt="">Suppliers
                 </div>
-                <div class="no">
-                    <img src="image/Union.svg" alt="">Reports
-                </div>
+                
             </div>
             <div class="ge">SUPPORT</div>
             <div class="menuin">
@@ -57,8 +61,8 @@
             <div class="Logout" (click)="logout()"><img class="" src="/icon_manager/Logout.svg">Log Out</div>
         </div>
     </div>
-    <div class="Animation_out" [class.fade-out]="Animation_out">
-        <div class="container">
+    <div class="Animation_out" [class.fade-out]="Animation_out" [class.fade-out2]="Animation_outdash" [class.Return]="play_Return" [class.Boom]="stan">
+        <div class="container"  [class.fade-out]="Animation_out" [class.fade-out2]="Animation_outdash" [class.Return]="play_Return" [class.Boom]="stan">
             <div class="static">
                 <div class="header_in">
                     <div class="header_Inventory">Inventory</div>
@@ -72,11 +76,11 @@
                                 <div class="reload">
                                     <img src="image/Group.svg" alt="">
                                 </div>
-                            <div class="button_add">
+                            <div class="button_addt" (click)="button_adds()">
                         <img src="image/In_add.svg" alt="">
-                        Add Product
+                        <div class="H">Add Product</div>
                     </div>
-                     <div class="import" >
+                     <div class="import" (click)="button_imports()" >
                         <img src="image/import.svg" alt="">
                         <div class="H">Import Product</div>
                     </div>
@@ -91,21 +95,21 @@
                     </div>
                     <div class="custom-select">
   <select class="text">
-    <option value="all">All</option>
+    <option value="all">All <img class="icon_down"src="image/down.svg" alt=""></option>
     <option value="option1">Option 1</option>
     <option value="option2">Option 2</option>
   </select>
 </div>  
 <div class="custom-select">
   <select>
-    <option value="all">Brand</option>
+    <option value="all">Brand <img class="icon_down"src="image/down.svg" alt=""></option>
     <option value="option1">Option 1</option>
     <option value="option2">Option 2</option>
   </select>
 </div>
 <div class="custom-select">
   <select>
-    <option value="all">Category</option>
+    <option value="all">Category <img class="icon_down"src="image/down.svg" alt=""></option>
     <option value="option1">Option 1</option>
     <option value="option2">Option 2</option>
   </select>
@@ -119,29 +123,56 @@
   <a href="#" class="next">Next &gt;</a>
 </div>
                     </div>
-                    <div class="table">
-                        <div class="sku">
-                            SKU
+                 <div class="table-container">
+    <!-- Header -->
+    <div class="table">
+        <div class="sku">SKU</div>
+        <div class="sku">
+            Product Name</div>
+        <div class="sku">Category</div>
+        <div class="sku">Brand</div>
+        <div class="sku">Quantity</div>
+        <div class="sku">Quantity Alert</div>
+    </div>
+    <ng-container *ngIf="loader; else realData">
+                        <div class="card">
+                            <div class="loader">
+                                <div class="text">Loading</div>
+                                <div class="words">
+                                    <span class="word"></span>
+                                    <span class="word">TAM</span>
+                                    <span class="word">RAI</span>
+                                    <span class="word">DEE</span>
+                                    <span class="word">WELCOME</span>
+                                    <span class="word">Please</span>
+                                    
+                                </div>
+                            </div>
                         </div>
-                        <div class="sku">
-                            Product Name
-                        </div>
-                        <div class="sku">
-                            Category
-                        </div>
-                        <div class="sku">
-                            Brand
-                        </div>
-                        <div class="sku">
-                            Price
-                        </div>
-                        <div class="sku">
-                            Quantity
-                        </div>
-                        <div class="sku">
-                            Quantity Alert
-                        </div>
-                    </div>
+
+                    </ng-container>
+    <!-- Data Rows -->
+    <ng-template #realData>
+        <div class="table_detail2" *ngFor="let item of Inventory; let i = index" 
+     [style.animation-delay]="i * 0.15 + 's'">
+    <div class="table_detail">
+        <div class="sku2">{{ item.sku }}</div>
+        <div class="sku2"><div class="connn">
+        <img profile_employee src="image/Example.svg" alt="">{{ item.product_name }}
+    </div></div>
+        <div class="sku2">{{ item.category }}</div>
+        <div class="sku2">{{ item.brand }}</div>
+        <div class="sku2">{{ item.quantity }}</div>
+        <div class="sku2">{{ item.quantity_alert }}</div>
+        <div class="button_small">
+            <img class="icon_small_inventory" src="image/edit.svg" alt="">
+            <img class="icon_small_inventory" src="image/delete.svg" alt="">
+        </div>
+    </div>
+    <div class="line"></div>
+</div>
+    </ng-template>
+</div>
                 </div>
                 
             </div>
@@ -191,3 +222,149 @@
             </div>
         </div>
     </div>
+
+<div class="import_product" [class.product]="product" [class.button_cancel]="button_cancel" [class.button_importt]="button_importt">
+    <div class="con_import_product" [class.out_comimport]="outimport">
+        <div class="serach_product">
+            Search Product
+        </div>
+        <div class="add_image">
+            <img src="image/Add ImageAdd_image.svg" alt="">
+        </div>
+        <div class="con_sku_pro">
+            <div class="sku_pro">
+            <label class="label_import" for="">SKU <span class="important">*</span></label>
+            <input type="text" class="sku_input">
+        </div>
+        <div class="sku_pro">
+            <label class="label_import" for="">Product Name</label>
+            <input type="text" class="sku_input">
+        </div>
+        </div>
+        <div class="con_sku_pro">
+            <div class="sku_pro">
+            <label class="label_import" for="">Catagory</label>
+            <input type="text" class="sku_input">
+        </div>
+        <div class="sku_pro">
+            <label class="label_import" for="">Brand</label>
+            <input type="text" class="sku_input">
+        </div>
+        </div>
+        <div class="con_sku_pro">
+            <div class="sku_pro">
+            <label class="label_import" for="">Price</label>
+            <input type="text" class="sku_input">
+        </div>
+        <div class="sku_pro">
+            <label  class="label_import"for="">Quantity In Stock</label>
+            <input type="text" class="sku_input">
+        </div>
+        </div>
+         <div class="serach_product">
+            Add Product
+        </div>
+        <div class="con_sku_pro">
+            <div class="sku_pro">
+            <label class="label_import" for="">Supplier <span class="important">*</span></label>
+            <input type="text" class="sku_input">
+        </div>
+        <div class="sku_pro">
+            <label class="label_import" for="">Supplier Invoice No.<span class="important">*</span></label>
+            <input type="text" class="sku_input">
+        </div>
+        </div>
+        <div class="con_sku_pro">
+            <div class="label_import" class="sku_pro">
+            <label for="">Import Quantity <span class="important">*</span></label>
+            <input type="text" class="sku_input">
+        </div>
+        <div class="sku_pro">
+            <label class="label_import"  for="">Upload Invoice <span class="important">*</span></label>
+            <input type="text"  placeholder="Upload Invoice Image / PDF" class="sku_input">
+        </div>
+        </div>
+          <div class="button_import">
+                <div class="save">Save to Stock</div>
+                <div class="cancel" (click)="button_cancels()" >Cancel</div>
+            </div>
+    </div>
+</div>
+
+<div class="import_product" [class.product2]="product2" [class.button_cancel]="button_cancel" [class.button_addd]="button_addd">
+    <div class="con_import_product2" [class.out_comimport]="outimport" >
+        <div class="serach_product">
+            Import Product
+        </div>
+        <div class="add_image">
+            <img src="image/Add ImageAdd_image.svg" alt="">
+        </div>
+        <div class="con_sku_pro">
+            <div class="sku_pro">
+            <label class="label_import" for="">SKU <span class="important">*</span></label>
+            <input type="text" class="sku_input">
+        </div>
+        <div class="sku_pro">
+            <label class="label_import" for="">Product Name</label>
+            <input type="text" class="sku_input">
+        </div>
+        </div>
+        <div class="con_sku_pro">
+            <div class="sku_pro">
+            <label class="label_import" for="">Catagory</label>
+            <input type="text" class="sku_input">
+        </div>
+        <div class="sku_pro">
+            <label class="label_import" for="">Brand</label>
+            <input type="text" class="sku_input">
+        </div>
+        </div>
+        <div class="con_sku_pro">
+            <div class="sku_pro">
+            <label class="label_import" for="">Price</label>
+            <input type="text" class="sku_input">
+        </div>
+        <div class="sku_pro">
+            <label  class="label_import"for="">Quantity In Stock</label>
+            <input type="text" class="sku_input">
+        </div>
+        </div>
+         <div class="serach_product">
+            Add Product
+        </div>
+        <div class="con_sku_pro">
+            <div class="sku_pro">
+            <label class="label_import" for="">Supplier <span class="important">*</span></label>
+            <input type="text" class="sku_input">
+        </div>
+        <div class="sku_pro">
+            <label class="label_import" for="">Supplier Invoice No.<span class="important">*</span></label>
+            <input type="text" class="sku_input">
+        </div>
+        </div>
+        <div class="con_sku_pro">
+            <div class="label_import" class="sku_pro">
+            <label for="">Import Quantity <span class="important">*</span></label>
+            <input type="text" class="sku_input">
+        </div>
+        <div class="sku_pro">
+            <label class="label_import"  for="">Upload Invoice <span class="important">*</span></label>
+            <input type="text"  placeholder="Upload Invoice Image / PDF" class="sku_input">
+        </div>
+        </div>
+          <div class="button_import">
+                <div class="save">Save to Stock</div>
+                <div class="cancel" (click)="button_cancels()" >Cancel</div>
+            </div>
+    </div>
+</div>
+
+<div *ngIf="isLoading" class="loading-container">
+    <img class="logo_loading" src="/image/logoo.svg" alt="" >
+  <div class="loading">
+    <div class="loader1"></div>
+    <div class="loader2"></div>
+    <div class="loader3"></div>
+    <div class="loader4"></div>
+  </div>
+</div>

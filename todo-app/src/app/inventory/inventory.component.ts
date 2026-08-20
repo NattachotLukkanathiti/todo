@@ -33,7 +33,20 @@ export class InventoryComponent {
   currentTime = new Date();
   isTimeOpen = false;
   Animation_out = false;
+  Animation_outdash = false;
+  return = false;
+  play_Return = false;
   out = false;
+  stan = false;
+  Inventory: any[] = [];
+  isLoading = false; 
+  button_cancel = false;
+  button_importt = false;
+  product = true;
+  product2 = true;
+  button_addd = false;
+    outimport = false;
+    loader = true;
   private timeSubscription!: Subscription;
   constructor(private router: Router) {}
 
@@ -44,25 +57,54 @@ export class InventoryComponent {
     this.email = state.email || '';
 
      if (state.Move_return === true) {
-    this.out = true;
+      this.stan = false;
+      this.play_Return = true;
+      this.out = false;
+    
   }
 
     if(!this.username || !this.email){
       this.openpopupnoti("Session not found. Redirecting to login")
     return;
     }
-
-    this.loadChartData();
+    this.loadInventory();
     this.timeSubscription = interval(1000).subscribe(() => {
       this.currentTime = new Date();
     });
   }
   Animationa_out(){
     this.Animation_out = true;
-
+    this.Animation_outdash = true;
     setTimeout(() =>{
       this.router.navigate(['/dashboard'],{
         state:{username: this.username , email: this.email, Move_return:true}
+      })
+    } ,300)
+  }
+  Animationa_out2(){
+      this.out = false;
+    this.Animation_out = true;
+    setTimeout(() =>{
+      this.router.navigate(['/sale'],{
+        state:{username: this.username , email: this.email, Move_returns:true }
+      })
+    } ,300)
+  }
+  Animationa_out3(){
+      this.out = false;
+    this.Animation_out = true;
+    setTimeout(() =>{
+      this.router.navigate(['/history'],{
+        state:{username: this.username , email: this.email, Move_returns3:true }
+      })
+    } ,300)
+  }
+  Animationa_out4(){
+      this.out = false;
+    this.Animation_out = true;
+    setTimeout(() =>{
+      this.router.navigate(['/employee'],{
+        state:{username: this.username , email: this.email, Move_returns4:true }
       })
     } ,300)
   }
@@ -88,17 +130,6 @@ export class InventoryComponent {
     
     return Math.min(valueInBaht * scale, maxHeight);
   }
-  loadChartData() {
-    this.todoService.getMonth().subscribe({
-      next: (res) => {
-        this.data = res;
-        this.months = res.map(item => item.month);
-      },
-      error: (err) => {
-        console.error(err);
-      }
-    });
-  }
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
@@ -121,4 +152,45 @@ export class InventoryComponent {
   logout() {
     this.router.navigate(['/login']);
 }
+  loadInventory() {
+  this.todoService.getInventory().subscribe({
+    next: (res) => {
+      this.Inventory = res;
+        this.isLoading = false; 
+        this.loader = false;
+    },
+    error: (err) => {
+      console.error('Error fetching sale order:', err);
+    }
+  });
+}
+  button_cancels() {
+  this.outimport = true;
+
+  const element = document.querySelector('.con_import_product') as HTMLElement;
+  const element2 = document.querySelector('.con_import_product2') as HTMLElement;
+  if (element) {
+    element.scrollTop = 0;
+    element.classList.add('out');
+  }
+  if (element2) {
+    element2.scrollTop = 0;
+    element2.classList.add('out');
+  }
+
+  setTimeout(() => {
+    this.button_importt = false;
+    this.button_addd = false;
+    this.button_cancel = false;
+    this.outimport = false;
+  }, 400);
+}
+  button_imports(){
+       this.outimport = false;
+    this.button_importt = true;
+    
+  }
+  button_adds(){
+    this.button_addd = true;
+  }
 }

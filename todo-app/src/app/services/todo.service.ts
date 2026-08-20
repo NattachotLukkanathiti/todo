@@ -14,8 +14,8 @@ export interface Todo {
 })
 export class TodoService {
   private http = inject(HttpClient);
-  private api = 'https://todo-arz1.onrender.com/todos';
-  private apiUrl = 'https://todo-arz1.onrender.com/api'; 
+  private api = 'https://todo-igjj.onrender.com/todos';
+  private apiUrl = 'https://todo-igjj.onrender.com/api'; 
 
   private headers = new HttpHeaders({
     'ngrok-skip-browser-warning': 'true'
@@ -75,10 +75,35 @@ export class TodoService {
 
   // 📌 เพิ่มฟังก์ชัน resetPassword ตรงนี้
   resetPassword(title: string, password: string): Observable<any> {
-    return this.http.post<any>(
+    return this.http.put<any>(
       `${this.apiUrl}/reset-password`, 
       { title, password },
       { headers: this.headers }
     );
   }
+  getSaleOrders() {
+  return this.http.get<any[]>(
+    `${this.apiUrl}/sale_order`,
+    { headers: this.headers }
+  );
+} 
+  getInventory() {
+  return this.http.get<any[]>(
+    `${this.apiUrl}/inventory`,
+    { headers: this.headers }
+  );
+}
+  getHistory() {
+  return this.http.get<any[]>(
+    `${this.apiUrl}/history`,
+    { headers: this.headers }
+  );
+}
+
+getEmployee() {
+  return this.http.get<any[]>(
+    `${this.apiUrl}/employee`,
+    { headers: this.headers }
+  );
+}
 }

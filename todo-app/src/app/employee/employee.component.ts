@@ -1,17 +1,18 @@
+
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TodoService } from '../services/todo.service';
 import { interval, Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-dashboard',
-  imports: [FormsModule, CommonModule, RouterLink],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  selector: 'app-employee',
+   imports: [CommonModule, DatePipe, RouterLink,FormsModule],
+  templateUrl: './employee.component.html',
+  styleUrl: './employee.component.css'
 })
-export class DashboardComponent implements OnInit {
+export class EmployeeComponent {
 
   private todoService = inject(TodoService);
 
@@ -21,7 +22,7 @@ export class DashboardComponent implements OnInit {
 
   data: any[] = [];
   months: string[] = [];
-  errorMessage: string = '';
+    stan = false;
   email = '';
   username = '';
   showpopup = false;
@@ -30,16 +31,20 @@ export class DashboardComponent implements OnInit {
   isMenuOpen = false;
   isMenuOpenprofile = false;
   currentView = 'dashboard';
-  stan = false;
   currentTime = new Date();
   isTimeOpen = false;
   Animation_out = false;
-  Animation_outsale = false;
-  play_Return = false;
-  inhere = false;
   out = false;
-  Max = false;
-  loader = false
+  saleOrders: any[] = []; 
+  reload = false;
+  isLoading = false; 
+  loader = false;
+  Animation_outdash = false;
+  return = false;
+  play_Return = false;
+  employee :any[] = []; 
+
+  
   private timeSubscription!: Subscription;
   constructor(private router: Router) {}
 
@@ -51,64 +56,73 @@ export class DashboardComponent implements OnInit {
 
      if (state.Move_return === true) {
     this.stan = false;
-    this.play_Return = true;
-    this.inhere = true;
+      this.play_Return = true;
+      this.out = false;
   }
-
-  // เข้ามาจาก Login
-  else if (state.stan === true) {
-    this.stan = true;
-        this.inhere = true;
-    this.play_Return = false;
-  }
+    if (state.Move_return2 === true){
+      this.stan = false;
+      this.play_Return = true;
+      this.out = false;
+    }
+    if (state.Move_return3 === true){
+    
+    }
+    if (state.Move_return4 === true){
+      this.stan = false;
+      this.play_Return = false;
+      this.Animation_outdash = false
+      this.Animation_out = false;
+      this.out = false;
+    }
 
     if(!this.username || !this.email){
       this.openpopupnoti("Session not found. Redirecting to login")
     return;
-  }
-    this.loadChartData();
+    }
+
+      this.loadEmployee(); 
+      
     this.timeSubscription = interval(1000).subscribe(() => {
       this.currentTime = new Date();
     });
   }
+  reloads() {
+  this.loadEmployee();
+    this.isLoading = true; 
+}   
+  Animationa2_out(){
+    this.Animation_outdash = true;
 
-  Animationa_out(){
-        this.out = true;
-    this.play_Return = false;
-    this.Animation_out = true;
     setTimeout(() =>{
       this.router.navigate(['/inventory'],{
-        state:{username: this.username , email: this.email }
-      })
-    } ,300)
-  }
-  Animation_out2(){
-            this.out = true;
-    this.play_Return = false;
-    this.Animation_outsale = true;
-    setTimeout(() =>{
-      this.router.navigate(['/sale'],{
-        state:{username: this.username , email: this.email, Move_return3:true}
-      })
-    } ,300)
-  }
-  Animation_out3(){
-            this.out = true;
-    this.play_Return = false;
-    this.Animation_outsale = true;
-    setTimeout(() =>{
-      this.router.navigate(['/history'],{
         state:{username: this.username , email: this.email, Move_return:true}
       })
     } ,300)
   }
-  Animation_out4(){
-            this.out = true;
-    this.play_Return = false;
-    this.Animation_outsale = true;
+  Animationa3_out(){
+    this.Animation_outdash = true;
+
     setTimeout(() =>{
-      this.router.navigate(['/employee'],{
+      this.router.navigate(['/sale'],{
+        state:{username: this.username , email: this.email, Move_return2:true}
+      })
+    } ,300)
+  }
+  Animationa4_out(){
+
+    this.Animation_outdash = true
+    setTimeout(() =>{
+      this.router.navigate(['/history'],{
         state:{username: this.username , email: this.email, Move_return4:true}
+      })
+    } ,300)
+  }
+  Animationa_out(){
+    this.Animation_outdash = true;
+    
+    setTimeout(() =>{
+      this.router.navigate(['/dashboard'],{
+        state:{username: this.username , email: this.email, Move_return:true}
       })
     } ,300)
   }
@@ -134,24 +148,23 @@ export class DashboardComponent implements OnInit {
     
     return Math.min(valueInBaht * scale, maxHeight);
   }
-  loadChartData() {
-    this.loader = true; // Set to true before fetching data
-    this.todoService.getMonth().subscribe({
-      next: (res) => {
-        this.data = res;
-        this.months = res.map(item => item.month);
-        this.loader = false; // Set to false once data is ready
-      },
-      error: (err) => {
-        console.error(err);
-        this.loader = false; // Also set to false on error
-      }
-    });
-  }
+
+  loadEmployee() {
+    this.loader = true;
+  this.todoService.getEmployee().subscribe({
+    next: (res) => {
+      this.employee = res;
+        this.isLoading = false; 
+        this.loader = false
+    },
+    error: (err) => {
+      console.error('Error fetching sale order:', err);
+    }
+  });
+}
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
-    this.Max = !this.Max;
     this.isMenuOpenprofile = !this.isMenuOpenprofile;
   }
   hambar(){
@@ -170,5 +183,5 @@ export class DashboardComponent implements OnInit {
 
   logout() {
     this.router.navigate(['/login']);
-  }
+}
 }

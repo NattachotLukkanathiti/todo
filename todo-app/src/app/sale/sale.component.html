@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="lin"></div>
-        <img class="iconsetting1" src="image/Maximize Icon.svg" (click)="toggleMenu()" [class.Max]="Max" alt="">
+        <img class="iconsetting1" src="image/Maximize Icon.svg" (click)="toggleMenu()" alt="">
         <img class="iconsetting2" src="image/Song.svg" alt="">
         <img class="iconsetting3" src="image/Chart.svg" alt="">
     </div>
@@ -29,24 +29,26 @@
         <div class="sidebar" [class.open]="isMenuOpen">
             <div class="ge">GENERAL</div>
             <div class="menuin">
-                <div class="dash">
-                    <img src="image/dashboard.svg" alt="">Dashboard
-                </div>
                 <div class="no" (click)="Animationa_out()">
-                    <img src="image/icon-wrapper-h.svg" alt="">Inventory
+                    <img class="myicon1" src="image/dashboard.svg" alt="">Dashboard
                 </div>
-                <div class="no" (click)="Animation_out2()">
-                    <img src="image/shop.svg" alt="">Sales Orders
+                <div class="no" (click)="Animationa2_out()">
+                    <img  src="image/icon-wrapper-h.svg" alt="">Inventory
                 </div>
-                <div class="no"(click)="Animation_out3()">
+                <div class="dash">
+                    <img class="myicon2" src="image/shop.svg" alt="">Sales Orders
+                </div>
+                <div class="no" (click)="Animationa3_out()">
                     <img src="image/Vectorhistory.svg" alt="">Stock History
                 </div>
-                <div class="no"(click)="Animation_out4()">
+                <div class="no"(click)="Animationa4_out()">
                     <img src="image/Employee.svg" alt="">Employee
                 </div>
                 <div class="no">
                     <img src="image/car.svg" alt="">Suppliers
                 </div>
+                
+              
             </div>
             <div class="ge">SUPPORT</div>
             <div class="menuin">
@@ -60,61 +62,72 @@
             <div class="Logout" (click)="logout()"><img class="" src="/icon_manager/Logout.svg">Log Out</div>
         </div>
     </div>
-
-    <div class="container" [class.fade-out]="Animation_out" [class.fade-out2]="Animation_outsale"
-        [class.Return]="play_Return" [class.Boom]="stan">
-
-        <div class="headersum">Sales Summary</div>
-        <div class="conT">
-            <div class="T">
-                <img class="iconpass" src="image/Frame.svg" alt="">
-            </div>
-            <div class="T">
-                <img class="iconpass" src="image/shop2.svg" alt="">
-
-            </div>
-            <div class="T">
-                <img class="iconpass" src="image/coin.svg" alt="">
-            </div>
-            <div class="T">
-                <img class="iconpass" src="image/bag.svg" alt="">
-            </div>
-        </div>
-        <div class="static" [class.Max]="Max">
-            <div class="navstatic">
-                <img class="iconsale" src="image/Salegreen.svg" alt="">
-                <div class="headerSale">
-                    Sales & Purchase
+    <div class="Animation_out" [class.fade-out]="Animation_out" [class.fade-out2]="Animation_outdash" [class.Return]="play_Return" [class.Boom]="stan">
+        <div class="container"  [class.fade-out]="Animation_out" [class.fade-out2]="Animation_outdash" [class.Return]="play_Return" [class.Boom]="stan">
+            <div class="static">
+                <div class="header_in">
+                    <div class="header_Inventory">Sales Orders</div>
+                        <div class="in_bt">
+                            <div class="pdf">
+                                <img src="image/pdf.svg" alt="">
+                            </div>
+                            <div class="xs">
+                                    <img src="image/XS.svg" alt="">
+                                </div>
+                                <div class="reload" (click)="reloads()">
+                                    <img src="image/Group.svg" alt="">
+                                </div>
+                          
+                        </div>
                 </div>
-                <div class="overdate">
-                    <div class="date">1Y</div>
-                    <div class="date">6M</div>
-                    <div class="date">3M</div>
-                    <div class="date">1M</div>
-                    <div class="date">1W</div>
-                    <div class="date">1D</div>
-                </div>
-            </div>
-            <div class="line-header"></div>
-            <div class="box-total">
-                <div class="total"><span class="point"></span>Total Purchase</div>
-                <div class="total"><span class="point"></span>Total Sales</div>
-            </div>
-            <div class="bigcontainergraph">
-
-                <div class="num-container">
-                    <div class="num">60K</div>
-                    <div class="num">50K</div>
-                    <div class="num">40K</div>
-                    <div class="num">30K</div>
-                    <div class="num">20K</div>
-                    <div class="num">10K</div>
-                    <div class="num">0</div>
-                </div>
-
-                <div class="con">
-                    <!-- ใช้ *ngIf เพื่อเลือกว่าจะแสดง Skeleton หรือข้อมูลจริง -->
-                    <ng-container *ngIf="loader; else realData">
+                <div class="detail_con">
+                    <div class="bars">
+                        <div class="search">
+                        <input class="inputser" type="text" placeholder="Search" [(ngModel)]="search"
+                            (input)="filterS()">
+                        <img class="iconsearch" src="image/search.svg" alt="">
+                    </div>
+                    <div class="custom-select">
+  <select class="text">
+    <option value="all">Last 7 Days <img class="icon_down"src="image/down.svg" alt=""></option>
+    <option value="option1">Option 1</option>
+    <option value="option2">Option 2</option>
+  </select>
+</div>  
+<div class="custom-select">
+  <select>
+    <option value="all">Brand <img src="image/down.svg" alt=""></option>
+    <option value="option1">Option 1</option>
+    <option value="option2">Option 2</option>
+  </select>
+</div>
+<div class="custom-select">
+  <select>
+    <option value="all">Category</option>
+    <option value="option1">Option 1</option>
+    <option value="option2">Option 2</option>
+  </select>
+</div>
+<div class="pagination">
+  <a href="#" class="prev">&lt; Prev</a>
+  <a href="#" class="page active">1</a>
+  <a href="#" class="page">2</a>
+  <span class="dots">...</span>
+  <a href="#" class="page">11</a>
+  <a href="#" class="next">Next &gt;</a>
+</div>
+                    </div>
+                 <div class="table-container">
+                    
+    <!-- Header -->
+    <div class="table">
+        <div class="sku">Order Code</div>
+        <div class="sku">Date</div>
+        <div class="sku">Amount</div>
+        <div class="sku">Create By</div>
+        <div class="sku">Status</div>
+    </div>
+    <ng-container *ngIf="loader; else realData">
                         <div class="card">
                             <div class="loader">
                                 <div class="text">Loading</div>
@@ -131,28 +144,32 @@
                         </div>
 
                     </ng-container>
-
-                    <!-- ส่วนแสดงข้อมูลจริงเมื่อ loader เป็น false -->
-                    <ng-template #realData>
-                        <div *ngFor="let item of data; let i=index" class="bar-container">
-                            <div class="bar" [style.height.px]="calculateHeight(item.value)"></div>
-                            <div class="mon">{{ months[i] }}</div>
-                        </div>
-                    </ng-template>
-                </div>
-
-                <div class="line"></div>
-
-            </div>
-        </div>
-
-
-
-
+    <!-- Data Rows -->
+   <ng-template #realData>
+     <div  class="table_detail2" *ngFor="let order of saleOrders; let i = index" [style.animation-delay]="i * 0.15 + 's'">
+    <div class="table_detail">
+        <div class="sku2">{{ order.order_code }}</div>
+        <div class="sku2">{{ order.date }}</div>
+        <div class="sku2">{{ order.amount }}</div>
+        <div class="sku2"><div class="connn">
+        <img profile_employee src="image/profile.svg" alt="">{{ order.create_by }}
+    </div></div>
+        <div class="status">{{ order.status }}</div>
     </div>
+    <div class="line"></div>
+</div>
+   </ng-template>
+</div>
+  
+                </div>
+                
+            </div>
 
-    <div class="fix2" [class.open]="isMenuOpenprofile" [class.out]="out" [class.inhere]="inhere">
-        <div [class.open]="isMenuOpenprofile" class="profile" [class.out]="out" [class.inhere]="inhere">
+
+        </div>
+    </div>
+    <div class="fix2" [class.open]="isMenuOpenprofile" [class.fix2]="out">
+        <div [class.open]="isMenuOpenprofile" class="profile">
             <div class="header_Manager">
                 <div class="header_inside">
                     <img class="icon_manager" src="/image/avatar.svg">
@@ -193,3 +210,14 @@
             </div>
         </div>
     </div>
+
+
+    <div *ngIf="isLoading" class="loading-container">
+  <img class="logo_loading" src="/image/logoo.svg" alt="" >
+  <div class="loading">
+    <div class="loader1"></div>
+    <div class="loader2"></div>
+    <div class="loader3"></div>
+    <div class="loader4"></div>
+  </div>
+</div>

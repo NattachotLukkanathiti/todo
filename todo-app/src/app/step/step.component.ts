@@ -1,3 +1,4 @@
+
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -5,13 +6,12 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-otp',
-  standalone: true,
+  selector: 'app-step',
   imports: [CommonModule, FormsModule],
-  templateUrl: './otp.component.html',
-  styleUrl: './otp.component.css'
+  templateUrl: './step.component.html',
+  styleUrl: './step.component.css'
 })
-export class OtpComponent implements OnInit, OnDestroy {
+export class StepComponent implements OnInit, OnDestroy {
 
   private http = inject(HttpClient);
   private router = inject(Router);
@@ -28,6 +28,7 @@ export class OtpComponent implements OnInit, OnDestroy {
   showpopup = false;
   showpopupnoti = false;
   popup = '';
+  from: string = '';
   registersuccess = false;
   timeLeft = 5 * 60; // 5 นาที (300 วินาที)
   timer: any;
@@ -50,6 +51,8 @@ export class OtpComponent implements OnInit, OnDestroy {
     this.popup = message;
   }
   ngOnInit() {
+    this.from = history.state?.from || sessionStorage.getItem('otpFrom') || '';
+
     // 📌 1. ดึงข้อมูลจาก sessionStorage ก่อน (ป้องกันการรีเฟรชหน้าจอแล้วหลุด)
     const savedData = sessionStorage.getItem('tempUserData');
 
@@ -61,6 +64,9 @@ export class OtpComponent implements OnInit, OnDestroy {
       sessionStorage.setItem('tempUserData', JSON.stringify(this.userData));
     }
 
+    if (this.from === 'forget') {
+    sessionStorage.setItem('otpFrom', 'forget');
+  }
     // 📌 2. ถ้าไม่มีข้อมูลอีเมลจริงๆ ให้เด้งกลับไปหน้าสมัครสมาชิก
     if (!this.userData || !this.userData.title) {
       alert('ไม่พบข้อมูลการสมัครสมาชิก กรุณากรอกข้อมูลใหม่');
@@ -110,6 +116,7 @@ export class OtpComponent implements OnInit, OnDestroy {
   submitRegister() {
      this.isLoading = true; // เริ่มแสดง Loading
     // นำเลข 4 ช่องมารวมกันเป็น String ชุดเดียว
+    
     const fullOtp = this.otpDigits.join('');
 
     if (!fullOtp || fullOtp.length !== 4) {
@@ -133,8 +140,21 @@ export class OtpComponent implements OnInit, OnDestroy {
     this.http.post<any>(`${this.apiUrl}/todos`, payload).subscribe({
       next: (res) => {
         this.isLoading = false;
+         if (this.from === 'forget') {
+
+        this.router.navigate(['/reset'], {
+          state: {
+            userData: this.userData
+          }
+        });
+
+        return;
+      }
+
         // 🧹 ลบข้อมูลชั่วคราวออกเมื่อสมัครสมาชิกสำเร็จ
-        sessionStorage.removeItem('tempUserData');
+        // 🧹 ลบข้อมูลชั่วคราวออกเมื่อสมัครสมาชิกสำเร็จ
+sessionStorage.removeItem('tempUserData');
+sessionStorage.removeItem('otpFrom'); // 📌 เพิ่มบรรทัดนี้
         this.openpopup("Your register Completed")
            this.registersuccess = true;
         // ย้ายไปหน้า Login

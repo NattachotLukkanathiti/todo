@@ -644,7 +644,6 @@ mat-form-field {
     cursor: pointer;
 }
 
-/* เพิ่ม Container สำหรับจัดกึ่งกลางหน้าจอ */
 .loading-container {
     position: fixed;
     top: -20px;
@@ -656,17 +655,13 @@ mat-form-field {
     justify-content: center;
     align-items: center;
     background-color: rgba(255, 255, 255, 0.8);
-    /* ใส่พื้นหลังโปร่งแสง (ไม่ใส่ก็ได้) */
     z-index: 9999;
-    /* ให้อยู่บนสุดเสมอ */
 }
 
 .loading {
     display: flex;
     gap: 8px;
-    /* เพิ่มระยะห่างระหว่างแท่ง */
     width: 100px;
-    /* กำหนดความกว้างให้กลุ่ม Loading */
 }
 
 .loading>div {
@@ -695,33 +690,27 @@ mat-form-field {
 .loader1 {
     animation-delay: 0.1s !important;
 }
-
 .loader2 {
     animation-delay: 0.2s !important;
 }
-
 .loader3 {
     animation-delay: 0.3s !important;
 }
-
 .loader4 {
     animation-delay: 0.4s !important;
 }
-
 .logo_loading {     
     width: 300px;     
     transform: scaleX(1.2);
-    height: 300px;     
-    /* เพิ่ม Animation ให้ขยายใน 2 วินาที */
+    height: 300px;    
     animation: expandLogo 2s linear infinite alternate;
 }
 
-/* สร้าง Keyframes สำหรับการขยาย */
 @keyframes expandLogo {
     0% {
-        opacity: 0%;/* ขนาดเริ่มต้น */
+        opacity: 0%;
     }
     100% {
-        opacity: 100%; /* ขยายใหญ่ขึ้น 1.5 เท่า (ปรับได้ตามต้องการ) */
+        opacity: 100%;
     }
 }

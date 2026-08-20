@@ -1,0 +1,222 @@
+<div class="navbaar">
+    <button class="hamburger" (click)="hambar()">
+        <img src="image/ham.svg" alt="">
+    </button>
+    <div class="headercompany">
+        <img src="image/logo.svg" alt="">
+    </div>
+    <!--   <div class="search">
+        <input class="inputser"type="text" placeholder="Search" [(ngModel)]="search" (input)="filterS()">
+        <img class="iconsearch" src="image/search.svg" alt="">
+    </div> -->
+    <div class="container_bar">
+        <div class="time" [class.active]="isTimeOpen" (click)="isTimeOpen = !isTimeOpen">
+            <img class="icon_time" src="image/Time Icon.svg">
+            <div class="Y">
+                {{ currentTime | date:'HH:mm:ss' }}
+            </div>
+        </div>
+        <div class="lin"></div>
+        <img class="iconsetting1" src="image/Maximize Icon.svg" (click)="toggleMenu()" alt="">
+        <img class="iconsetting2" src="image/Song.svg" alt="">
+        <img class="iconsetting3" src="image/Chart.svg" alt="">
+    </div>
+
+</div>
+
+<div class="over">
+    <div class="fix" [class.open]="isMenuOpen">
+        <div class="sidebar" [class.open]="isMenuOpen">
+            <div class="ge">GENERAL</div>
+            <div class="menuin">
+                <div class="no" (click)="Animationa_out()">
+                    <img class="myicon1" src="image/dashboard.svg" alt="">Dashboard
+                </div>
+                <div class="no" (click)="Animationa2_out()">
+                    <img  src="image/icon-wrapper-h.svg" alt="">Inventory
+                </div>
+                <div class="no"(click)="Animationa3_out()">
+                    <img  src="image/shop.svg" alt="">Sales Orders
+                </div>
+                <div class="no" (click)="Animationa4_out()" >
+                    <img src="image/Vectorhistory.svg" alt="">Stock History
+                </div>
+                <div class="dash">
+                    <img class="myicon2" src="image/Employee.svg" alt="">Employee
+                </div>
+                <div class="no">
+                    <img src="image/car.svg" alt="">Suppliers
+                </div>
+            
+            </div>
+            <div class="ge">SUPPORT</div>
+            <div class="menuin">
+                <div class="no">
+                    <img src="image/help.svg" alt="">Help
+                </div>
+                <div class="no">
+                    <img src="image/setting.svg" alt="">Settings
+                </div>
+            </div>
+            <div class="Logout" (click)="logout()"><img class="" src="/icon_manager/Logout.svg">Log Out</div>
+        </div>
+    </div>
+    <div class="Animation_out" [class.fade-out]="Animation_out" [class.fade-out2]="Animation_outdash" [class.Return]="play_Return" [class.Boom]="stan">
+        <div class="container"  [class.fade-out]="Animation_out" [class.fade-out2]="Animation_outdash" [class.Return]="play_Return" [class.Boom]="stan">
+            <div class="static">
+                <div class="header_in">
+                    <div class="header_Inventory">Employee</div>
+                        <div class="in_bt">
+                            <div class="pdf">
+                                <img src="image/pdf.svg" alt="">
+                            </div>
+                            <div class="xs">
+                                    <img src="image/XS.svg" alt="">
+                                </div>
+                                <div class="reload" (click)="reloads()">
+                                    <img src="image/Group.svg" alt="">
+                                </div>
+                          
+                        </div>
+                </div>
+                <div class="detail_con">
+                    <div class="bars">
+                        <div class="search">
+                        <input class="inputser" type="text" placeholder="Search" [(ngModel)]="search"
+                            (input)="filterS()">
+                        <img class="iconsearch" src="image/search.svg" alt="">
+                    </div>
+                <!--     <div class="custom-select">
+  <select class="text">
+    <option value="all">Last 7 Days <img class="icon_down"src="image/down.svg" alt=""></option>
+    <option value="option1">Option 1</option>
+    <option value="option2">Option 2</option>
+  </select>
+</div>  
+<div class="custom-select">
+  <select>
+    <option value="all">Brand <img src="image/down.svg" alt=""></option>
+    <option value="option1">Option 1</option>
+    <option value="option2">Option 2</option>
+  </select>
+</div> -->
+<div class="custom-select">
+  <select>
+    <option value="all">Position</option>
+    <option value="option1">Back</option>
+    <option value="option2">Fornt</option>
+  </select>
+</div>
+<div class="pagination">
+  <a href="#" class="prev">&lt; Prev</a>
+  <a href="#" class="page active">1</a>
+  <a href="#" class="page">2</a>
+  <span class="dots">...</span>
+  <a href="#" class="page">11</a>
+  <a href="#" class="next">Next &gt;</a>
+</div>
+                    </div>
+                 <div class="table-container">
+                    
+    <!-- Header -->
+    <div class="table">
+    <div class="sku">Code</div>
+    <div class="sku">Employee</div>
+    <div class="sku">Email</div>
+    <div class="sku">Phone</div>
+    </div>
+    <ng-container *ngIf="loader; else realData">
+                        <div class="card">
+                            <div class="loader">
+                                <div class="text">Loading</div>
+                                <div class="words">
+                                    <span class="word"></span>
+                                    <span class="word">TAM</span>
+                                    <span class="word">RAI</span>
+                                    <span class="word">DEE</span>
+                                    <span class="word">WELCOME</span>
+                                    <span class="word">Please</span>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                    </ng-container>
+    <!-- Data Rows -->
+   <ng-template #realData>
+     <div  class="table_detail2" *ngFor="let order of employee; let i = index" [style.animation-delay]="i * 0.15 + 's'">
+    <div class="table_detail">
+        <div class="sku2">{{ order.code }}</div>
+<div class="sku2"><div class="connn"><img src="image/profile.svg" alt="">{{ order.employee }}</div></div>
+<div class="sku2">{{ order.email }}</div>
+<div class="sku2">{{ order.phone }}</div>
+<div class="button_small">
+            <img class="icon_small_inventory" src="image/edit.svg" alt="">
+            <img class="icon_small_inventory" src="image/delete.svg" alt="">
+        </div>
+    </div>
+    <div class="line"></div>
+</div>
+   </ng-template>
+</div>
+  
+                </div>
+                
+            </div>
+
+
+        </div>
+    </div>
+    <div class="fix2" [class.open]="isMenuOpenprofile" [class.fix2]="out">
+        <div [class.open]="isMenuOpenprofile" class="profile">
+            <div class="header_Manager">
+                <div class="header_inside">
+                    <img class="icon_manager" src="/image/avatar.svg">
+                    <div class="container_header">
+                        <div class="manager"> {{username}}</div>
+                        <div class="small_manager">Admin</div>
+                    </div>
+                    <img class="pointt" src="/icon_manager/point.svg">
+                </div>
+
+
+            </div>
+            <div class="linee"></div>
+            <div class="container_qu">
+                <div class="qu">Quick Actions</div>
+                <div class="action">
+                    <div class="co"><img class="icon_managerr" src="/icon_manager/add.svg">Create Order </div>
+                    <div class="co"><img class="icon_managerr" src="/icon_manager/box.svg">Add Product</div>
+                    <div class="co"><img class="icon_managerr" src="/icon_manager/deli.svg">Add Supplier</div>
+                    <div class="co"><img class="icon_managerr" src="/icon_manager/up.svg">Export</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div *ngIf="showpopupnoti" class="backpop">
+        <div *ngIf="showpopupnoti" class="popupcontainer">
+            <div class="popup-content">
+                <img class="iconsuccess" src="image/cross.svg" alt="">
+                <div class="headerpop">
+                    Something went Wrong
+                </div>
+                <div class="subheadersuccess">
+                    {{popup}}
+                </div>
+                <button class="buttonnoti" (click)="closepopup()">OK</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div *ngIf="isLoading" class="loading-container">
+  <img class="logo_loading" src="/image/logoo.svg" alt="" >
+  <div class="loading">
+    <div class="loader1"></div>
+    <div class="loader2"></div>
+    <div class="loader3"></div>
+    <div class="loader4"></div>
+  </div>
+</div>
