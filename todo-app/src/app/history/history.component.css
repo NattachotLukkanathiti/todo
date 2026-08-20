@@ -101,6 +101,7 @@
 .header_Inventory{
     margin-left: 20px;
     font-size: 30px;
+    color: #2B2F38;
     transform: scaleX(1.1);
     font-weight: 450;
 }

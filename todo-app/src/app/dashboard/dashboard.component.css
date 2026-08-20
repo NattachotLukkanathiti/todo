@@ -20,8 +20,10 @@
     z-index: 2;
 }
 .headerSale{
-    font-size: 25px;
+    font-size: 20px;
      display: flex;
+     color: #2B2F38;
+     font-weight: 600;
     justify-content: center;
     align-items: center;
     margin-left: 10px;
@@ -332,13 +334,18 @@ input::placeholder{
     box-sizing: border-box;
     min-width: 0;  
     padding: 20px;
-    background: #F4F5FC; 
+    background: #FFF; 
     margin-right: 0;
     z-index: 2;
     animation: Boom 1s ease-in-out;
 }
 
-
+.contall{
+    border: 1px solid #E6EAED ;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 20px;
+}
 .Max {
    
     animation: waveExplosion 3s ease-in-out infinite ;
@@ -403,6 +410,7 @@ input::placeholder{
     display: flex;
     font-size: 20px;
     margin-left: 30px;
+    color: #2B2F38;
     margin-bottom: 20px;
     font-weight: 500;
 }
@@ -721,6 +729,7 @@ input::placeholder{
 .headersum{
     margin-top: 30px;
     margin-bottom: 30px;
+    color: #2B2F38;
 }
     .hamburger{
     border: 0.5px solid #00000031;
@@ -997,6 +1006,14 @@ input::placeholder{
     justify-content: center;
     display: flex;
     text-align: center;
+}
+.header_Inventory{
+    margin-left:30px;
+    font-size: 30px;
+    margin-bottom: 20px;
+    transform: scaleX(1.1);
+    color: #2B2F38;
+    font-weight: 450;
 }
 .headerpop{
     font-size: 30px;
