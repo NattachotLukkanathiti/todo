@@ -108,6 +108,15 @@ export class InventoryComponent {
       })
     } ,300)
   }
+  Animation_out5(){
+              this.out = false;
+    this.Animation_out = true;
+    setTimeout(() =>{
+      this.router.navigate(['/suppliers'],{
+        state:{username: this.username , email: this.email, Move_return5:true ,Open_bar:true}
+      })
+    } ,300)
+  }
   openpopupnoti(message:string){
     this.showpopupnoti = true;
     this.popup = message;

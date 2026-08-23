@@ -5,14 +5,13 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TodoService } from '../services/todo.service';
 import { interval, Subscription } from 'rxjs';
-
 @Component({
-  selector: 'app-employee',
-   imports: [CommonModule, DatePipe, RouterLink,FormsModule],
-  templateUrl: './employee.component.html',
-  styleUrl: './employee.component.css'
+  selector: 'app-suppliers',
+  imports: [CommonModule, DatePipe, RouterLink,FormsModule],
+  templateUrl: './suppliers.component.html',
+  styleUrl: './suppliers.component.css'
 })
-export class EmployeeComponent {
+export class SuppliersComponent {
 
   private todoService = inject(TodoService);
 
@@ -22,7 +21,7 @@ export class EmployeeComponent {
 
   data: any[] = [];
   months: string[] = [];
-    stan = false;
+  inhere = false;
   email = '';
   username = '';
   showpopup = false;
@@ -35,15 +34,15 @@ export class EmployeeComponent {
   isTimeOpen = false;
   Animation_out = false;
   out = false;
-  saleOrders: any[] = []; 
+  suppliers: any[] = []; 
   reload = false;
   isLoading = false; 
   loader = false;
-  Animation_outdash = false;
+ play_Return = false;
+   Animation_outdash = false;
   return = false;
-  play_Return = false;
-  employee :any[] = []; 
-
+    stan = false;
+    openn = false;
   
   private timeSubscription!: Subscription;
   constructor(private router: Router) {}
@@ -53,49 +52,53 @@ export class EmployeeComponent {
     const state = history.state;
     this.username = state.username || '';
     this.email = state.email || '';
-
+    this.loadSuppliers();
      if (state.Move_return === true) {
-    this.stan = false;
-      this.play_Return = true;
-      this.out = false;
-  }
-    if (state.Move_return2 === true){
-      this.stan = false;
-      this.play_Return = true;
-      this.out = false;
-    }
-    if (state.Move_return3 === true){
+    this.out = false;
     
-    }
-    if (state.Move_return4 === true){
-      this.stan = false;
+  }
+  if (state.Move_returns3 === true) {
+        this.play_Return = false;
+    this.out = false;
+    
+  }
+  if (state.Open_bar === true){
+    this.openn = true;
+  }
+  if (state.Dont_animation === true){
+    this.openn = false;
+    this.out = true;
+  }
+   if (state.Move_return4 === true) {
+        this.out = false
+    this.play_Return = true;
+  }
+  if (state.Move_return5 === true) {
+       this.stan = false;
       this.play_Return = false;
       this.Animation_outdash = false
-      this.Animation_out = false;
-      this.out = false;
-    }
-    if (state.Move_returnout === true){
-        this.play_Return = true;
-    }
+  }
 
     if(!this.username || !this.email){
       this.openpopupnoti("Session not found. Redirecting to login")
     return;
     }
+      
 
-      this.loadEmployee(); 
       
     this.timeSubscription = interval(1000).subscribe(() => {
       this.currentTime = new Date();
     });
   }
   reloads() {
-  this.loadEmployee();
+    this.suppliers
     this.isLoading = true; 
 }   
   Animationa2_out(){
+     this.out = false;
     this.Animation_outdash = true;
-
+     this.inhere = true;
+    this.play_Return = false;
     setTimeout(() =>{
       this.router.navigate(['/inventory'],{
         state:{username: this.username , email: this.email, Move_return:true}
@@ -103,39 +106,46 @@ export class EmployeeComponent {
     } ,300)
   }
   Animationa3_out(){
+     this.out = false;
     this.Animation_outdash = true;
-
+     this.inhere = true;
+    this.play_Return = false;
     setTimeout(() =>{
       this.router.navigate(['/sale'],{
-        state:{username: this.username , email: this.email, Move_return2:true}
+        state:{username: this.username , email: this.email, Move_return:true}
       })
     } ,300)
   }
   Animationa4_out(){
+     this.out = false;
+    this.Animation_outdash = true;
+     this.inhere = true;
+    this.play_Return = false;
 
-    this.Animation_outdash = true
     setTimeout(() =>{
       this.router.navigate(['/history'],{
         state:{username: this.username , email: this.email, Move_return4:true}
       })
     } ,300)
   }
-  Animation_out5(){
-            this.out = false;
+   Animationa5_out(){
+    this.out = false;
+    this.Animation_outdash = true;
+     this.inhere = true;
     this.play_Return = false;
-    this.Animation_out = true;
+
     setTimeout(() =>{
-      this.router.navigate(['/suppliers'],{
-        state:{username: this.username , email: this.email, Move_return5:true ,Open_bar:true}
+      this.router.navigate(['/employee'],{
+        state:{username: this.username , email: this.email, Move_returnout:true}
       })
     } ,300)
   }
   Animationa_out(){
     this.Animation_outdash = true;
-    
+
     setTimeout(() =>{
       this.router.navigate(['/dashboard'],{
-        state:{username: this.username , email: this.email, Move_return:true}
+        state:{username: this.username , email: this.email, Move_return:true ,Dont_animation: true}
       })
     } ,300)
   }
@@ -154,29 +164,26 @@ export class EmployeeComponent {
   ngOnDestroy() {
     this.timeSubscription?.unsubscribe();
   }
-  // ปรับชื่อและค่า scale ให้เหมาะกับความสูงของกราฟ
-  calculateHeight(valueInBaht: number): number {
-    const maxHeight = 300; // ความสูงสูงสุดที่ยอมรับได้ (px)
-    const scale = 0.004;    // อัตราส่วนย่อขยาย (ปรับตามความเหมาะสมของข้อมูล)
-    
-    return Math.min(valueInBaht * scale, maxHeight);
-  }
 
-  loadEmployee() {
-    this.loader = true;
-  this.todoService.getEmployee().subscribe({
+
+  loadSuppliers() {
+  this.loader = true;
+  this.todoService.getSuppliers().subscribe({
     next: (res) => {
-      this.employee = res;
-        this.isLoading = false; 
-        this.loader = false
+      this.suppliers = res;
+      this.isLoading = false;
+      this.loader = false;
     },
     error: (err) => {
-      console.error('Error fetching sale order:', err);
+      console.error('Error fetching history:', err);
+      this.loader = false; // เพิ่มการปิด loader เมื่อเกิด error
     }
   });
 }
 
+
   toggleMenu() {
+    this.out = false;
     this.isMenuOpen = !this.isMenuOpen;
     this.isMenuOpenprofile = !this.isMenuOpenprofile;
   }

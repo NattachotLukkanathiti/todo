@@ -391,7 +391,10 @@ input::placeholder {
     animation: showLine 1s ease forwards;
     /* สั่งให้เล่นแอนิเมชัน */
 }
-
+.profile_employee{
+    width: 30px;
+    height: 30px;
+}
 @keyframes showLine {
     0% {
         opacity: 0;
@@ -985,7 +988,7 @@ input::placeholder {
     width: 100%;
     padding: 20px;
     border: 1px solid #E6EAED;
-    height: 100vh;
+    height: 100%;
     padding: 20px;
     background: #fff;
     box-shadow: 0 8px 24px rgba(0, 0, 0, .08);

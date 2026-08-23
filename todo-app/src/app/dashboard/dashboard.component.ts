@@ -37,6 +37,7 @@ export class DashboardComponent implements OnInit {
   Animation_outsale = false;
   play_Return = false;
   inhere = false;
+  outs = false;
   out = false;
   Max = false;
   loader = false
@@ -61,6 +62,11 @@ export class DashboardComponent implements OnInit {
         this.inhere = true;
     this.play_Return = false;
   }
+  if (state.Dont_animation === true){
+     this.inhere = false;
+    this.outs = true;
+    
+  }
 
     if(!this.username || !this.email){
       this.openpopupnoti("Session not found. Redirecting to login")
@@ -73,6 +79,7 @@ export class DashboardComponent implements OnInit {
   }
 
   Animationa_out(){
+    this.outs = false;
         this.out = true;
     this.play_Return = false;
     this.Animation_out = true;
@@ -109,6 +116,16 @@ export class DashboardComponent implements OnInit {
     setTimeout(() =>{
       this.router.navigate(['/employee'],{
         state:{username: this.username , email: this.email, Move_return4:true}
+      })
+    } ,300)
+  }
+  Animation_out5(){
+            this.out = false;
+    this.play_Return = false;
+    this.Animation_outsale = true;
+    setTimeout(() =>{
+      this.router.navigate(['/suppliers'],{
+        state:{username: this.username , email: this.email, Move_return5:true ,Dont_animation:true}
       })
     } ,300)
   }
@@ -150,6 +167,7 @@ export class DashboardComponent implements OnInit {
   }
 
   toggleMenu() {
+    this.outs = false;
     this.isMenuOpen = !this.isMenuOpen;
     this.Max = !this.Max;
     this.isMenuOpenprofile = !this.isMenuOpenprofile;

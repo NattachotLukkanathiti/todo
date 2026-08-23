@@ -96,7 +96,7 @@ export class SaleComponent {
 
     setTimeout(() =>{
       this.router.navigate(['/history'],{
-        state:{username: this.username , email: this.email, Move_return:true}
+        state:{username: this.username , email: this.email, Move_return44:true}
       })
     } ,300)
   }
@@ -106,6 +106,15 @@ export class SaleComponent {
     setTimeout(() =>{
       this.router.navigate(['/employee'],{
         state:{username: this.username , email: this.email, Move_return4:true}
+      })
+    } ,300)
+  }
+  Animation_out5(){
+              this.out = false;
+    this.Animation_out = true;
+    setTimeout(() =>{
+      this.router.navigate(['/suppliers'],{
+        state:{username: this.username , email: this.email, Move_return5:true ,Open_bar:true}
       })
     } ,300)
   }

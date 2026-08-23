@@ -44,7 +44,7 @@
                 <div class="no"(click)="Animationa_out4()">
                     <img src="image/Employee.svg" alt="">Employee
                 </div>
-                <div class="no">
+                <div class="no" (click)="Animation_out5()">
                     <img src="image/car.svg" alt="">Suppliers
                 </div>
                 
@@ -158,7 +158,7 @@
     <div class="table_detail">
         <div class="sku2">{{ item.sku }}</div>
         <div class="sku2"><div class="connn">
-        <img profile_employee src="image/Example.svg" alt="">{{ item.product_name }}
+        <img class="profile_employee" [src]="item.picture" alt="">{{ item.product_name }}
     </div></div>
         <div class="sku2">{{ item.category }}</div>
         <div class="sku2">{{ item.brand }}</div>

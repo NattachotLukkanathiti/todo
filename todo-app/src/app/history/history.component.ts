@@ -64,6 +64,10 @@ export class HistoryComponent {
         this.out = false
     this.play_Return = true;
   }
+  if (state.Move_return44 === true) {
+        this.out = false
+    this.play_Return = false;
+  }
 
     if(!this.username || !this.email){
       this.openpopupnoti("Session not found. Redirecting to login")
@@ -105,6 +109,15 @@ export class HistoryComponent {
     setTimeout(() =>{
       this.router.navigate(['/employee'],{
         state:{username: this.username , email: this.email, Move_return4:true}
+      })
+    } ,300)
+  }
+  Animation_out5(){
+              this.out = false;
+    this.Animation_out = true;
+    setTimeout(() =>{
+      this.router.navigate(['/suppliers'],{
+        state:{username: this.username , email: this.email, Move_return5:true ,Open_bar:true}
       })
     } ,300)
   }

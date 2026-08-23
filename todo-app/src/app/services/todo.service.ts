@@ -105,5 +105,10 @@ getEmployee() {
     `${this.apiUrl}/employee`,
     { headers: this.headers }
   );
+}getSuppliers(){
+  return this.http.get<any[]>(
+    `${this.apiUrl}/suppliers`,
+    { headers: this.headers}
+  )
 }
 }

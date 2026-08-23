@@ -10,6 +10,8 @@ import { StepComponent } from './step/step.component';
 import { SaleComponent } from './sale/sale.component';
 import { HistoryComponent } from './history/history.component';
 import { EmployeeComponent } from './employee/employee.component';
+import { SuppliersComponent } from './suppliers/suppliers.component';
+import { ConfirmemployeeComponent } from './confirmemployee/confirmemployee.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -23,5 +25,7 @@ export const routes: Routes = [
   { path: 'step', component: StepComponent},
   { path: 'sale', component: SaleComponent},
   { path : 'history', component: HistoryComponent},
-  { path: 'employee', component: EmployeeComponent}
+  { path: 'employee', component: EmployeeComponent},
+  { path: 'suppliers', component: SuppliersComponent},
+  { path: 'confirmemployee', component: ConfirmemployeeComponent}
 ];

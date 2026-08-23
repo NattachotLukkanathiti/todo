@@ -35,20 +35,18 @@
                 <div class="no" (click)="Animationa2_out()">
                     <img  src="image/icon-wrapper-h.svg" alt="">Inventory
                 </div>
-                <div class="dash">
-                    <img class="myicon2" src="image/shop.svg" alt="">Sales Orders
-                </div>
                 <div class="no" (click)="Animationa3_out()">
-                    <img src="image/Vectorhistory.svg" alt="">Stock History
+                    <img  src="image/shop.svg" alt="">Sales Orders
                 </div>
                 <div class="no"(click)="Animationa4_out()">
+                    <img  src="image/Vectorhistory.svg" alt="">Stock History
+                </div>
+                <div class="no" (click)="Animationa5_out()">
                     <img src="image/Employee.svg" alt="">Employee
                 </div>
-                <div class="no" (click)="Animation_out5()">
-                    <img src="image/car.svg" alt="">Suppliers
+                <div class="dash">
+                    <img class="myicon2" src="image/car.svg" alt="">Suppliers
                 </div>
-                
-              
             </div>
             <div class="ge">SUPPORT</div>
             <div class="menuin">
@@ -63,10 +61,10 @@
         </div>
     </div>
     <div class="Animation_out" [class.fade-out]="Animation_out" [class.fade-out2]="Animation_outdash" [class.Return]="play_Return" [class.Boom]="stan">
-        <div class="container"  [class.fade-out]="Animation_out" [class.fade-out2]="Animation_outdash" [class.Return]="play_Return" [class.Boom]="stan">
+        <div class="container" [class.fade-out]="Animation_out" [class.fade-out2]="Animation_outdash" [class.Return]="play_Return" [class.Boom]="stan">
             <div class="static">
                 <div class="header_in">
-                    <div class="header_Inventory">Sales Orders</div>
+                    <div class="header_Inventory">Suppliers</div>
                         <div class="in_bt">
                             <div class="pdf">
                                 <img src="image/pdf.svg" alt="">
@@ -87,14 +85,14 @@
                             (input)="filterS()">
                         <img class="iconsearch" src="image/search.svg" alt="">
                     </div>
-                    <div class="custom-select">
+                    <!-- <div class="custom-select">
   <select class="text">
     <option value="all">Last 7 Days <img class="icon_down"src="image/down.svg" alt=""></option>
     <option value="option1">Option 1</option>
     <option value="option2">Option 2</option>
   </select>
-</div>  
-<div class="custom-select">
+</div>   -->
+<!-- <div class="custom-select">
   <select>
     <option value="all">Brand <img src="image/down.svg" alt=""></option>
     <option value="option1">Option 1</option>
@@ -115,18 +113,17 @@
   <span class="dots">...</span>
   <a href="#" class="page">11</a>
   <a href="#" class="next">Next &gt;</a>
-</div>
+</div> -->
                     </div>
                  <div class="table-container">
                     
     <!-- Header -->
-    <div class="table">
-        <div class="sku">Order Code</div>
-        <div class="sku">Date</div>
-        <div class="sku">Amount</div>
-        <div class="sku">Create By</div>
-        <div class="sku">Status</div>
-    </div>
+   <div class="table">
+    <div class="sku">Supplier Name</div>
+    <div class="sku">Email</div>
+    <div class="sku">Phone</div>
+    <div class="sku">Order History</div>
+</div>
     <ng-container *ngIf="loader; else realData">
                         <div class="card">
                             <div class="loader">
@@ -146,15 +143,16 @@
                     </ng-container>
     <!-- Data Rows -->
    <ng-template #realData>
-     <div  class="table_detail2" *ngFor="let order of saleOrders; let i = index" [style.animation-delay]="i * 0.15 + 's'">
+    <div  class="table_detail2" *ngFor="let order of suppliers; let i = index" [style.animation-delay]="i * 0.15 + 's'">
     <div class="table_detail">
-        <div class="sku2">{{ order.order_code }}</div>
-        <div class="sku2">{{ order.date }}</div>
-        <div class="sku2">{{ order.amount }}</div>
-        <div class="sku2"><div class="connn">
-        <img profile_employee src="image/profile.svg" alt="">{{ order.create_by }}
-    </div></div>
-        <div class="status">{{ order.status }}</div>
+        <div class="sku2">
+        <img class="profile_employee" [src]="order.logo"alt="">{{ order.created_by }}
+                <div class="sku2">{{ order.supplier_name }}</div>
+    </div>
+<div class="sku2">{{ order.email }}</div>
+<div class="sku2">{{ order.phone }}</div>
+<div class="sku2">{{ order.order_history }}
+</div>
     </div>
     <div class="line"></div>
 </div>
@@ -168,8 +166,8 @@
 
         </div>
     </div>
-    <div class="fix2" [class.open]="isMenuOpenprofile" [class.fix2]="out">
-        <div [class.open]="isMenuOpenprofile" class="profile">
+    <div class="fix2" [class.open]="isMenuOpenprofile" [class.out]="out" [class.inhere]="inhere" [class.openn]="openn">
+        <div [class.open]="isMenuOpenprofile" [class.out]="out" [class.inhere]="inhere" [class.openn]="openn">
             <div class="header_Manager">
                 <div class="header_inside">
                     <img class="icon_manager" src="/image/avatar.svg">

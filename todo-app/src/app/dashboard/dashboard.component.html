@@ -44,7 +44,7 @@
                 <div class="no"(click)="Animation_out4()">
                     <img src="image/Employee.svg" alt="">Employee
                 </div>
-                <div class="no">
+                <div class="no" (click)="Animation_out5()">
                     <img src="image/car.svg" alt="">Suppliers
                 </div>
             </div>
@@ -153,8 +153,8 @@
 
     </div>
 
-    <div class="fix2" [class.open]="isMenuOpenprofile" [class.out]="out" [class.inhere]="inhere">
-        <div [class.open]="isMenuOpenprofile" class="profile" [class.out]="out" [class.inhere]="inhere">
+    <div class="fix2" [class.open]="isMenuOpenprofile" [class.out]="out" [class.inhere]="inhere" [class.outs]="outs">
+        <div [class.open]="isMenuOpenprofile" class="profile" [class.out]="out" [class.inhere]="inhere" [class.outs]="outs">
             <div class="header_Manager">
                 <div class="header_inside">
                     <img class="icon_manager" src="/image/avatar.svg">

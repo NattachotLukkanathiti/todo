@@ -75,14 +75,34 @@ export class LoginComponent {
     this.todoService.login(this.title, this.password).subscribe({
       next: (response) => {
         this.isLoading = false; // ซ่อน Loading
-        this.router.navigate(['/dashboard'],{
-          state:{
-          username: response.user.username,
-          email: response.user.title,
-          stan: true,
-          inhere: true
+        
+        const role = response.user.role; // ปรับให้ตรงกับตัวแปร role จาก API ของคุณ
+        const navigationState = {
+          state: {
+            username: response.user.username,
+            email: response.user.title,
+            stan: true,
+            inhere: true
+          }
+        };
+
+        if (!role) {
+          this.router.navigate(['/confirmemployee'], navigationState);
+        } else {
+          switch (role.toLowerCase()) {
+            case 'admin':
+              this.router.navigate(['/dashboard'], navigationState);
+              break;
+            case 'frontend':
+              this.router.navigate(['/frontend'], navigationState);
+              break;
+            case 'backend':
+              this.router.navigate(['/backend'], navigationState);
+              break;
+            default:
+              this.router.navigate(['/dashboard'], navigationState);
+          }
         }
-        });
       },
       error: (error) => {
         this.isLoading = false; // ซ่อน Loading เมื่อเกิดข้อผิดพลาด
