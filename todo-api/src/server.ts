@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
 });
 
 
-app.get('/todos', async (req, res) => {
+app.get('/api/todos', async (req, res) => {
   try {
     const result = await pool.query(
       'SELECT * FROM todos ORDER BY id DESC'

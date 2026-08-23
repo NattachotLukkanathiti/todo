@@ -43,6 +43,7 @@ export class EmployeeComponent {
   return = false;
   play_Return = false;
   employee :any[] = []; 
+  todos :any[] = []; 
   userRole: string = '';
   
   private timeSubscription!: Subscription;
@@ -84,14 +85,14 @@ export class EmployeeComponent {
     return;
     }
 
-      this.loadEmployee(); 
+      this.loadTodos(); 
       
     this.timeSubscription = interval(1000).subscribe(() => {
       this.currentTime = new Date();
     });
   }
   reloads() {
-  this.loadEmployee();
+  this.loadTodos();
     this.isLoading = true; 
 }   
   Animationa2_out(){
@@ -163,11 +164,11 @@ export class EmployeeComponent {
     return Math.min(valueInBaht * scale, maxHeight);
   }
 
-  loadEmployee() {
+  loadTodos() {
     this.loader = true;
-  this.todoService.getEmployee().subscribe({
+  this.todoService.getTodoss().subscribe({
     next: (res) => {
-      this.employee = res;
+      this.todos = res;
         this.isLoading = false; 
         this.loader = false
     },

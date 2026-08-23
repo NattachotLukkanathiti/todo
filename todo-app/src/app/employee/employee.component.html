@@ -144,11 +144,11 @@
                     </ng-container>
     <!-- Data Rows -->
    <ng-template #realData>
-     <div  class="table_detail2" *ngFor="let order of employee; let i = index" [style.animation-delay]="i * 0.15 + 's'">
+     <div  class="table_detail2" *ngFor="let order of todos; let i = index" [style.animation-delay]="i * 0.15 + 's'">
     <div class="table_detail">
         <div class="sku2">{{ order.code }}</div>
-<div class="sku2"><div class="connn"><img src="image/profile.svg" alt="">{{ order.employee }}</div></div>
-<div class="sku2">{{ order.email }}</div>
+<div class="sku2"><div class="connn"><img src="image/profile.svg" alt="">{{ order.username }}</div></div>
+<div class="sku2">{{ order.title }}</div>
 <div class="sku2">{{ order.phone }}</div>
 <div class="button_small">
             <img class="icon_small_inventory" src="image/edit.svg" alt="">
