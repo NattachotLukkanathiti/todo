@@ -22,7 +22,7 @@ export class OtpComponent implements OnInit, OnDestroy {
   // ✏️ เปลี่ยนเป็น Array เก็บเลข 4 ช่อง เพื่อรองรับ HTML แบบ 4 กล่อง
   otpDigits: string[] = ['', '', '', ''];
 
-  userData: { username?: string; title?: string; password?: string } = {};
+  userData: { username?: string; title?: string; password?: string ;role?:string} = {};
   errorMessage: string = '';
   isLoading: boolean = false;
   showpopup = false;
@@ -126,6 +126,7 @@ export class OtpComponent implements OnInit, OnDestroy {
       username: this.userData.username,
       title: this.userData.title,
       password: this.userData.password,
+      role: this.userData.role || 'Guest',
       otp: fullOtp
     };
 

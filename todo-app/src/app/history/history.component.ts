@@ -42,7 +42,7 @@ export class HistoryComponent {
    Animation_outdash = false;
   return = false;
     stan = false;
-  
+   userRole: string = '';
   private timeSubscription!: Subscription;
   constructor(private router: Router) {}
 
@@ -51,6 +51,7 @@ export class HistoryComponent {
     const state = history.state;
     this.username = state.username || '';
     this.email = state.email || '';
+    this.userRole = state.role || 'user';
     this.loadHistory();
      if (state.Move_return === true) {
     this.out = false;
@@ -89,7 +90,7 @@ export class HistoryComponent {
 
     setTimeout(() =>{
       this.router.navigate(['/inventory'],{
-        state:{username: this.username , email: this.email, Move_return:true}
+        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole }
       })
     } ,300)
   }
@@ -98,7 +99,7 @@ export class HistoryComponent {
 
     setTimeout(() =>{
       this.router.navigate(['/sale'],{
-        state:{username: this.username , email: this.email, Move_return:true}
+        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole }
       })
     } ,300)
   }
@@ -108,7 +109,7 @@ export class HistoryComponent {
 
     setTimeout(() =>{
       this.router.navigate(['/employee'],{
-        state:{username: this.username , email: this.email, Move_return4:true}
+        state:{username: this.username , email: this.email, Move_return4:true ,role:this.userRole }
       })
     } ,300)
   }
@@ -117,7 +118,7 @@ export class HistoryComponent {
     this.Animation_out = true;
     setTimeout(() =>{
       this.router.navigate(['/suppliers'],{
-        state:{username: this.username , email: this.email, Move_return5:true ,Open_bar:true}
+        state:{username: this.username , email: this.email, Move_return5:true ,Open_bar:true ,role:this.userRole }
       })
     } ,300)
   }
@@ -126,7 +127,7 @@ export class HistoryComponent {
 
     setTimeout(() =>{
       this.router.navigate(['/dashboard'],{
-        state:{username: this.username , email: this.email, Move_return:true}
+        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole }
       })
     } ,300)
   }

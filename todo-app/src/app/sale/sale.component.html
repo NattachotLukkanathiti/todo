@@ -29,7 +29,7 @@
         <div class="sidebar" [class.open]="isMenuOpen">
             <div class="ge">GENERAL</div>
             <div class="menuin">
-                <div class="no" (click)="Animationa_out()">
+                <div class="no" *ngIf="userRole === 'admin' || userRole === 'manager'" (click)="Animationa_out()" >
                     <img class="myicon1" src="image/dashboard.svg" alt="">Dashboard
                 </div>
                 <div class="no" (click)="Animationa2_out()">
@@ -41,10 +41,10 @@
                 <div class="no" (click)="Animationa3_out()">
                     <img src="image/Vectorhistory.svg" alt="">Stock History
                 </div>
-                <div class="no"(click)="Animationa4_out()">
+                <div class="no"*ngIf="userRole === 'admin' || userRole === 'manager'" (click)="Animationa4_out()">
                     <img src="image/Employee.svg" alt="">Employee
                 </div>
-                <div class="no" (click)="Animation_out5()">
+                <div class="no" *ngIf="userRole === 'admin' || userRole === 'manager'" (click)="Animation_out5()">
                     <img src="image/car.svg" alt="">Suppliers
                 </div>
                 

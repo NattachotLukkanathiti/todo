@@ -82,7 +82,8 @@ export class LoginComponent {
             username: response.user.username,
             email: response.user.title,
             stan: true,
-            inhere: true
+            inhere: true,
+            role: role
           }
         };
 
@@ -93,11 +94,11 @@ export class LoginComponent {
             case 'admin':
               this.router.navigate(['/dashboard'], navigationState);
               break;
-            case 'frontend':
-              this.router.navigate(['/frontend'], navigationState);
+            case 'pos':
+              this.router.navigate(['/pos'], navigationState);
               break;
             case 'backend':
-              this.router.navigate(['/backend'], navigationState);
+              this.router.navigate(['/inventory'], navigationState);
               break;
             default:
               this.router.navigate(['/dashboard'], navigationState);

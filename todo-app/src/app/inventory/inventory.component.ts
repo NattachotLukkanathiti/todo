@@ -47,37 +47,38 @@ export class InventoryComponent {
   button_addd = false;
     outimport = false;
     loader = true;
+    userRole: string = '';
   private timeSubscription!: Subscription;
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-
     const state = history.state;
     this.username = state.username || '';
     this.email = state.email || '';
+    this.userRole = state.role || 'user'; // เพิ่มเติม: รับค่า role (ค่าเริ่มต้นเป็น user)
 
-     if (state.Move_return === true) {
+    if (state.Move_return === true) {
       this.stan = false;
       this.play_Return = true;
       this.out = false;
-    
-  }
+    }
 
     if(!this.username || !this.email){
       this.openpopupnoti("Session not found. Redirecting to login")
-    return;
+      return;
     }
     this.loadInventory();
     this.timeSubscription = interval(1000).subscribe(() => {
       this.currentTime = new Date();
     });
   }
+
   Animationa_out(){
     this.Animation_out = true;
     this.Animation_outdash = true;
     setTimeout(() =>{
       this.router.navigate(['/dashboard'],{
-        state:{username: this.username , email: this.email, Move_return:true}
+        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole }
       })
     } ,300)
   }
@@ -86,7 +87,7 @@ export class InventoryComponent {
     this.Animation_out = true;
     setTimeout(() =>{
       this.router.navigate(['/sale'],{
-        state:{username: this.username , email: this.email, Move_returns:true }
+        state:{username: this.username , email: this.email, Move_returns:true, role:this.userRole }
       })
     } ,300)
   }
@@ -95,7 +96,7 @@ export class InventoryComponent {
     this.Animation_out = true;
     setTimeout(() =>{
       this.router.navigate(['/history'],{
-        state:{username: this.username , email: this.email, Move_returns3:true }
+        state:{username: this.username , email: this.email, Move_returns3:true ,role:this.userRole }
       })
     } ,300)
   }
@@ -104,7 +105,7 @@ export class InventoryComponent {
     this.Animation_out = true;
     setTimeout(() =>{
       this.router.navigate(['/employee'],{
-        state:{username: this.username , email: this.email, Move_returns4:true }
+        state:{username: this.username , email: this.email, Move_returns4:true ,role:this.userRole }
       })
     } ,300)
   }
@@ -113,7 +114,7 @@ export class InventoryComponent {
     this.Animation_out = true;
     setTimeout(() =>{
       this.router.navigate(['/suppliers'],{
-        state:{username: this.username , email: this.email, Move_return5:true ,Open_bar:true}
+        state:{username: this.username , email: this.email, Move_return5:true ,Open_bar:true ,role:this.userRole }
       })
     } ,300)
   }

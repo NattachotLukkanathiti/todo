@@ -29,6 +29,10 @@ body {
     margin-bottom: 20px;
     align-items: center;
 }
+.button:hover{
+    background: #98ee80;
+    cursor: pointer;
+}
 .buttons{
     display: flex;
     justify-content: center;

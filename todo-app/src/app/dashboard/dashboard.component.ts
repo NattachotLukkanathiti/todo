@@ -41,6 +41,7 @@ export class DashboardComponent implements OnInit {
   out = false;
   Max = false;
   loader = false
+  userRole: string = '';
   private timeSubscription!: Subscription;
   constructor(private router: Router) {}
 
@@ -49,6 +50,7 @@ export class DashboardComponent implements OnInit {
     const state = history.state;
     this.username = state.username || '';
     this.email = state.email || '';
+    this.userRole = state.role || 'user';
 
      if (state.Move_return === true) {
     this.stan = false;
@@ -85,7 +87,7 @@ export class DashboardComponent implements OnInit {
     this.Animation_out = true;
     setTimeout(() =>{
       this.router.navigate(['/inventory'],{
-        state:{username: this.username , email: this.email }
+        state:{username: this.username , email: this.email ,role:this.userRole }
       })
     } ,300)
   }
@@ -95,7 +97,7 @@ export class DashboardComponent implements OnInit {
     this.Animation_outsale = true;
     setTimeout(() =>{
       this.router.navigate(['/sale'],{
-        state:{username: this.username , email: this.email, Move_return3:true}
+        state:{username: this.username , email: this.email, Move_return3:true ,role:this.userRole }
       })
     } ,300)
   }
@@ -105,7 +107,7 @@ export class DashboardComponent implements OnInit {
     this.Animation_outsale = true;
     setTimeout(() =>{
       this.router.navigate(['/history'],{
-        state:{username: this.username , email: this.email, Move_return:true}
+        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole }
       })
     } ,300)
   }
@@ -115,7 +117,7 @@ export class DashboardComponent implements OnInit {
     this.Animation_outsale = true;
     setTimeout(() =>{
       this.router.navigate(['/employee'],{
-        state:{username: this.username , email: this.email, Move_return4:true}
+        state:{username: this.username , email: this.email, Move_return4:true ,role:this.userRole }
       })
     } ,300)
   }
@@ -125,7 +127,7 @@ export class DashboardComponent implements OnInit {
     this.Animation_outsale = true;
     setTimeout(() =>{
       this.router.navigate(['/suppliers'],{
-        state:{username: this.username , email: this.email, Move_return5:true ,Dont_animation:true}
+        state:{username: this.username , email: this.email, Move_return5:true ,Dont_animation:true ,role:this.userRole }
       })
     } ,300)
   }

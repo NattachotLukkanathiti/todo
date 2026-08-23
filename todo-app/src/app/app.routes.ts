@@ -12,6 +12,7 @@ import { HistoryComponent } from './history/history.component';
 import { EmployeeComponent } from './employee/employee.component';
 import { SuppliersComponent } from './suppliers/suppliers.component';
 import { ConfirmemployeeComponent } from './confirmemployee/confirmemployee.component';
+import { PosComponent } from './pos/pos.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -27,5 +28,6 @@ export const routes: Routes = [
   { path : 'history', component: HistoryComponent},
   { path: 'employee', component: EmployeeComponent},
   { path: 'suppliers', component: SuppliersComponent},
-  { path: 'confirmemployee', component: ConfirmemployeeComponent}
+  { path: 'confirmemployee', component: ConfirmemployeeComponent},
+  { path: 'pos' , component: PosComponent}
 ];
