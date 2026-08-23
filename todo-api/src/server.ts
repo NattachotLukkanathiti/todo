@@ -146,38 +146,47 @@ app.get('/api/suppliers', async (req, res) => {
 });
 app.post('/todos', async (req, res) => {
   try {
-    // 1. เพิ่ม role เข้าไปในการรับค่าจาก req.body
-    const { username, title, password, otp, role } = req.body;
+    // ➕ [เพิ่ม] รับค่า otp เพิ่มเติมมาจาก Frontend
+    const { username, title, password, otp } = req.body;
 
+    // ➕ [เพิ่ม] เช็กว่าส่งอีเมลและ OTP มาหรือไม่
     if (!title || !otp) {
       return res.status(400).json({ success: false, message: 'กรุณากรอกอีเมลและรหัส OTP' });
     }
 
+    // ➕ [เพิ่ม] ดึงข้อมูล OTP ที่จดไว้ในสมุดโน้ต (otpStore)
     const storedData = otpStore.get(title);
 
+    // ➕ [เพิ่ม] Step 1: เช็กว่ามี OTP ของอีเมลนี้สร้างไว้ไหม
     if (!storedData) {
       return res.status(400).json({ success: false, message: 'ไม่พบรหัส OTP หรือ OTP หมดอายุแล้ว' });
     }
 
+    // ➕ [เพิ่ม] Step 2: เช็กว่า OTP หมดอายุหรือยัง (เกิน 5 นาทีไหม)
     if (Date.now() > storedData.expiresAt) {
       otpStore.delete(title);
       return res.status(400).json({ success: false, message: 'รหัส OTP หมดอายุแล้ว กรุณาขอใหม่' });
     }
 
+    // ➕ [เพิ่ม] Step 3: เช็กว่า OTP ที่ยูเซอร์พิมพ์มา ตรงกับรหัสจริงไหม
     if (storedData.otp !== otp) {
       return res.status(400).json({ success: false, message: 'รหัส OTP ไม่ถูกต้อง' });
     }
 
+    // ➕ [เพิ่ม] Step 4: ถ้ารหัสถูกต้อง -> ลบรหัสออกจากสมุดโน้ตทันที (กันเอามาใช้ซ้ำ)
     otpStore.delete(title);
 
-    // 2. เพิ่มคอลัมน์ role ในคำสั่ง SQL และส่งค่า $4 เข้าไป
+    // ------------------------------------------
+    // โค้ดเดิมของคุณ: บันทึกข้อมูลผู้ใช้ลง PostgreSQL
+    // ------------------------------------------
     const result = await pool.query(
-      `INSERT INTO todos (username, title, password, role, completed)
-       VALUES ($1, $2, $3, $4, false)
+      `INSERT INTO todos (username, title, password, completed)
+       VALUES ($1, $2, $3, false)
        RETURNING *`,
-      [username, title, password, role || 'Guest'] // กำหนดค่าเริ่มต้นเป็น 'Guest' หากไม่มีการส่งมา
+      [username, title, password]
     );
 
+    // ✏️ [ปรับแก้ไข] ส่งโครงสร้าง JSON ตอบกลับให้ละเอียดและอ่านง่ายขึ้น
     res.status(201).json({
       success: true,
       message: 'สมัครสมาชิกสำเร็จ!',
@@ -189,6 +198,7 @@ app.post('/todos', async (req, res) => {
     res.status(500).json({ success: false, message: 'Server Error' });
   }
 });
+// เพิ่ม Route สำหรับ Login
 app.post('/api/login', async (req, res) => {
   try {
     const { title, password } = req.body;
