@@ -117,4 +117,8 @@ getSuppliers(){
     { headers: this.headers}
   )
 }
+
+addInventory(productData: any) {
+    return this.http.post(`${this.apiUrl}/inventory`, productData);
+  }
 }

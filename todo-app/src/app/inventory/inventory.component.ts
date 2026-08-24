@@ -4,13 +4,15 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TodoService } from '../services/todo.service';
 import { interval, Subscription } from 'rxjs';
-
+import { createClient } from '@supabase/supabase-js';
 @Component({
   selector: 'app-inventory',
   imports: [CommonModule, DatePipe, RouterLink,FormsModule],
   templateUrl: './inventory.component.html',
   styleUrl: './inventory.component.css'
 })
+
+
 export class InventoryComponent {
 
   private todoService = inject(TodoService);
@@ -50,6 +52,25 @@ export class InventoryComponent {
     outimport = false;
     loader = true;
     userRole: string = '';
+      newProduct = {
+    sku: '',
+    product_name: '',
+    category: '',
+    brand: '',
+    price: null,
+    quantity_alert: null,
+    supplier: '',
+    invoice_no: '',
+    import_quantity: null
+  };
+
+  selectedFile: File | null = null;
+  
+  //  เพิ่มบรรทัดนี้เข้าไปค่ะ
+  imagePreview: string | null = null;
+    private supabaseUrl = '<unsafe_url>https://ehyhllaxvozjdndddfku.supabase.co</unsafe_url>';
+  private supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVoeWhsbGF4dm96amRuZGRkZmt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ4NjUyMzAsImV4cCI6MjEwMDQ0MTIzMH0.FQ98R2OopmNkIBQLTeieKGETr0asT2KAaMf-G6uSLq4';
+  private supabase = createClient(this.supabaseUrl, this.supabaseKey);
   private timeSubscription!: Subscription;
   constructor(private router: Router) {}
 
@@ -223,5 +244,83 @@ loadTodos() {
   }
   button_adds(){
     this.button_addd = true;
+  }
+
+
+  // 3. ฟังก์ชันสำหรับล้างค่าฟอร์ม
+  resetForm() {
+    this.newProduct = {
+      sku: '', product_name: '', category: '', brand: '', price: null,
+      quantity_alert: null, supplier: '', invoice_no: '', import_quantity: null
+    };
+  }
+
+  // 1. รับไฟล์เมื่อผู้ใช้เลือกรูป
+  // 1. รับไฟล์เมื่อผู้ใช้เลือกรูป และสร้างตัวอย่างรูปภาพ
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      
+      // เพิ่มโค้ดส่วนนี้ เพื่อให้แสดงรูปตัวอย่าง
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  // 2. อัปโหลดรูปและบันทึกข้อมูล
+  async saveToStock() {
+    this.isLoading = true;
+    let pictureUrl = '';
+
+    try {
+      // ถ้ามีไฟล์ ให้ทำการอัปโหลดไปที่ Supabase ก่อน
+      if (this.selectedFile) {
+        const fileExt = this.selectedFile.name.split('.').pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        const filePath = `inventory/${fileName}`;
+
+        const { data, error } = await this.supabase.storage
+          .from('Photo') // ใส่ชื่อ Bucket ของคุณ
+          .upload(filePath, this.selectedFile);
+
+        if (error) throw error;
+
+        // ดึง Public URL
+        const { data: publicUrlData } = this.supabase.storage
+          .from('Photo')
+          .getPublicUrl(filePath);
+          
+        pictureUrl = publicUrlData.publicUrl;
+      }
+
+      // เพิ่ม pictureUrl เข้าไปใน object ข้อมูล
+      const productData = {
+        ...this.newProduct,
+        picture: pictureUrl
+      };
+
+      // ส่งข้อมูลไปที่ Backend
+      this.todoService.addInventory(productData).subscribe({
+        next: (res) => {
+          this.openpopupnoti('บันทึกข้อมูลสำเร็จ');
+          this.loadInventory();
+          this.button_cancels();
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.error(err);
+          this.isLoading = false;
+        }
+      });
+
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      this.openpopupnoti('อัปโหลดรูปภาพไม่สำเร็จ');
+      this.isLoading = false;
+    }
   }
 }

@@ -198,6 +198,45 @@ app.post('/todos', async (req, res) => {
     res.status(500).json({ success: false, message: 'Server Error' });
   }
 });
+
+app.post('/api/inventory', async (req, res) => {
+  try {
+    const { 
+      sku, product_name, category, brand, price, 
+      quantity_alert, supplier, invoice_no, import_quantity 
+    } = req.body;
+
+    // ตรวจสอบข้อมูลที่จำเป็น (Validation)
+    if (!sku || !category || !brand || price === undefined) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน (SKU, Category, Brand, Price)' 
+      });
+    }
+
+    const result = await pool.query(
+      `INSERT INTO inventory 
+       (sku, product_name, category, brand, price, quantity_alert, supplier, invoice_no, import_quantity) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) 
+       RETURNING *`,
+      [sku, product_name, category, brand, price, quantity_alert, supplier, invoice_no, import_quantity]
+    );
+
+    res.status(201).json({
+      success: true,
+      message: 'บันทึกข้อมูลสินค้าสำเร็จ',
+      data: result.rows[0]
+    });
+
+  } catch (error) {
+    console.error('Error inserting into inventory:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Server Error', 
+      error: error instanceof Error ? error.message : String(error)
+    });
+  }
+});
 // เพิ่ม Route สำหรับ Login
 app.post('/api/login', async (req, res) => {
   try {
