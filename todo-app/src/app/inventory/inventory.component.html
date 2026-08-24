@@ -232,7 +232,7 @@
         <div class="serach_product">             
             Search Product         
         </div>         
-        <div class="add_image" (click)="fileInput.click()" style="cursor: pointer;">
+       <div class="add_image" (click)="fileInput.click()" style="cursor: pointer;">
     <!-- ถ้ายังไม่มีรูปที่เลือก ให้แสดงไอคอนบวก -->
     <img *ngIf="!imagePreview" src="image/Add ImageAdd_image.svg" alt="Add Image">
     
@@ -241,7 +241,7 @@
     
     <!-- Input file ที่ซ่อนไว้ -->
     <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" style="display: none;">
-</div>         
+</div>   
         
         <div class="con_sku_pro">             
             <div class="sku_pro">             

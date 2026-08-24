@@ -68,7 +68,7 @@ export class InventoryComponent {
   
   //  เพิ่มบรรทัดนี้เข้าไปค่ะ
   imagePreview: string | null = null;
-    private supabaseUrl = '<unsafe_url>https://ehyhllaxvozjdndddfku.supabase.co</unsafe_url>';
+ private supabaseUrl = 'https://ehyhllaxvozjdndddfku.supabase.co';
   private supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVoeWhsbGF4dm96amRuZGRkZmt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ4NjUyMzAsImV4cCI6MjEwMDQ0MTIzMH0.FQ98R2OopmNkIBQLTeieKGETr0asT2KAaMf-G6uSLq4';
   private supabase = createClient(this.supabaseUrl, this.supabaseKey);
   private timeSubscription!: Subscription;

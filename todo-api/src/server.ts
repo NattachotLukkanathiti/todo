@@ -202,10 +202,9 @@ app.post('/api/inventory', async (req, res) => {
   try {
     const { 
       sku, product_name, category, brand, price, 
-      quantity_alert, supplier, invoice_no, import_quantity, picture // 1. เพิ่ม picture ตรงนี้
+      quantity_alert, supplier, invoice_no, import_quantity, picture 
     } = req.body;
 
-    // ตรวจสอบข้อมูลที่จำเป็น (Validation)
     if (!sku || !category || !brand || price === undefined) {
       return res.status(400).json({ 
         success: false, 
@@ -213,13 +212,13 @@ app.post('/api/inventory', async (req, res) => {
       });
     }
 
-    // 2. เพิ่ม picture และ $10 ในคำสั่ง SQL
+    // เพิ่ม quantity และ $11 โดยใช้ค่าเดียวกับ import_quantity
     const result = await pool.query(
       `INSERT INTO inventory 
-       (sku, product_name, category, brand, price, quantity_alert, supplier, invoice_no, import_quantity, picture) 
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) 
+       (sku, product_name, category, brand, price, quantity, quantity_alert, supplier, invoice_no, import_quantity, picture) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) 
        RETURNING *`,
-      [sku, product_name, category, brand, price, quantity_alert, supplier, invoice_no, import_quantity, picture]
+      [sku, product_name, category, brand, price, import_quantity, quantity_alert, supplier, invoice_no, import_quantity, picture]
     );
 
     res.status(201).json({
