@@ -18,8 +18,10 @@
         </div>
         <div class="lin"></div>
         <img class="iconsetting1" src="image/Maximize Icon.svg" (click)="toggleMenu()" [class.Max]="Max" alt="">
-        <img class="iconsetting2" src="image/Song.svg" alt="">
+        <!-- <img class="iconsetting2" src="image/Song.svg" alt=""> -->
         <img class="iconsetting3" src="image/Chart.svg" alt="">
+        <img class="iconsetting4" [src]="profile" alt="User Profile">
+        
     </div>
 
 </div>
@@ -63,26 +65,39 @@
 
     <div class="container" [class.fade-out]="Animation_out" [class.fade-out2]="Animation_outsale"
         [class.Return]="play_Return" [class.Boom]="stan">
-    <div class="header_Inventory">Dashboard</div>
+    <div class="con_header">
+        <div class="header_Inventory">Dashboard</div>
+    </div>
         <div class="contall">
             <div class="headersum">Sales Summary</div>
         <div class="conT">
             <div class="T">
                 <img class="iconpass" src="image/Frame.svg" alt="">
+                <div class="con_sub">
+                    <div class="sub">Today’s Sale</div>
+                </div>
             </div>
             <div class="T">
                 <img class="iconpass" src="image/shop2.svg" alt="">
-
+<div class="con_sub">
+                    <div class="sub">Yearly Total Sales</div>
+                </div>
             </div>
             <div class="T">
                 <img class="iconpass" src="image/coin.svg" alt="">
+                <div class="con_sub">
+                    <div class="sub">Net Income</div>
+                </div>
             </div>
             <div class="T">
                 <img class="iconpass" src="image/bag.svg" alt="">
+                <div class="con_sub">
+                    <div class="sub">Products</div>
+                </div>
             </div>
         </div>
         </div>
-        <div class="static" [class.Max]="Max">
+        <div class="static">
             <div class="navstatic">
                 <!-- <img class="iconsale" src="image/Salegreen.svg" alt=""> -->
                 <div class="headerSale">
@@ -100,7 +115,7 @@
             <div class="line-header"></div>
             <div class="box-total">
                 <div class="total"><span class="point"></span>Total Purchase</div>
-                <div class="total"><span class="point"></span>Total Sales</div>
+                <div class="total"><span class="point2"></span>Total Sales</div>
             </div>
             <div class="bigcontainergraph">
 
@@ -157,7 +172,7 @@
         <div [class.open]="isMenuOpenprofile" class="profile" [class.out]="out" [class.inhere]="inhere" [class.outs]="outs">
             <div class="header_Manager">
                 <div class="header_inside">
-                    <img class="icon_manager" src="/image/avatar.svg">
+                    <img class="iconsetting4" [src]="profile" alt="User Profile">
                     <div class="container_header">
                         <div class="manager"> {{username}}</div>
                         <div class="small_manager">Admin</div>

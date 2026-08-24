@@ -18,7 +18,7 @@
         </div>
         <div class="lin"></div>
         <img class="iconsetting1" src="image/Maximize Icon.svg" (click)="toggleMenu()" alt="">
-        <img class="iconsetting2" src="image/Song.svg" alt="">
+        <!-- <img class="iconsetting2" src="image/Song.svg" alt=""> -->
         <img class="iconsetting3" src="image/Chart.svg" alt="">
     </div>
 
@@ -41,7 +41,7 @@
                 <div class="dash">
                     <img class="myicon2" src="image/Vectorhistory.svg" alt="">Stock History
                 </div>
-                <div class="no" *ngIf="userRole === 'admin' || userRole === 'manager'" (click)="Animationa4_out()">
+                <div class="no" (click)="Animationa4_out()">
                     <img src="image/Employee.svg" alt="">Employee
                 </div>
                 <div class="no" *ngIf="userRole === 'admin' || userRole === 'manager'" (click)="Animation_out5()">
@@ -78,8 +78,7 @@
                           
                         </div>
                 </div>
-                <div class="detail_con">
-                    <div class="bars">
+                  <div class="bars">
                         <div class="search">
                         <input class="inputser" type="text" placeholder="Search" [(ngModel)]="search"
                             (input)="filterS()">
@@ -87,25 +86,19 @@
                     </div>
                     <div class="custom-select">
   <select class="text">
-    <option value="all">Last 7 Days <img class="icon_down"src="image/down.svg" alt=""></option>
+    <option value="all">All <img class="icon_down"src="image/down.svg" alt=""></option>
     <option value="option1">Option 1</option>
     <option value="option2">Option 2</option>
   </select>
 </div>  
 <div class="custom-select">
   <select>
-    <option value="all">Brand <img src="image/down.svg" alt=""></option>
+    <option value="all">Last 7 Days <img src="image/down.svg" alt=""></option>
     <option value="option1">Option 1</option>
     <option value="option2">Option 2</option>
   </select>
 </div>
-<div class="custom-select">
-  <select>
-    <option value="all">Category</option>
-    <option value="option1">Option 1</option>
-    <option value="option2">Option 2</option>
-  </select>
-</div>
+
 <div class="pagination">
   <a href="#" class="prev">&lt; Prev</a>
   <a href="#" class="page active">1</a>
@@ -115,6 +108,8 @@
   <a href="#" class="next">Next &gt;</a>
 </div>
                     </div>
+                <div class="detail_con">
+                
                  <div class="table-container">
                     
     <!-- Header -->

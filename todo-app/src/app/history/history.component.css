@@ -53,6 +53,9 @@
     align-items: center;
     text-align: center;
 }
+.text{
+    width: 200px;
+}
 .lin{
     background: #E6EAED;
     width: 1px;
@@ -103,7 +106,7 @@
     font-size: 30px;
     color: #2B2F38;
     transform: scaleX(1.1);
-    font-weight: 450;
+    font-weight: bolder;
 }
 .iconsearch{
     position: absolute;
@@ -198,7 +201,7 @@ input::placeholder{
     cursor: pointer;
 }
 .custom-select {
-  width: 120px; /* ปรับความกว้างตามต้องการ */
+  width: 160px; /* ปรับความกว้างตามต้องการ */
   position: relative;
 }
 
@@ -250,7 +253,6 @@ input::placeholder{
 }
 .table {
     background-color: #F4F5FC;
-    margin-top: 20px;
     padding: 20px;
     width: 100%;
     gap: 1%;
@@ -301,7 +303,7 @@ input::placeholder{
     }
 
     100% {
-        transform: translateY(-5000px);
+        transform: translateY(-2000px);
         /* เลื่อนลงไปที่จุดสุดท้าย */
         opacity: 0;
         /* ค่อยๆ จางหายไปเมื่อเลื่อนลง */
@@ -488,20 +490,18 @@ input::placeholder{
     font-weight: 300;
     border-radius: 5px;
     margin-left: 20px;
-    margin-bottom: 170px;
+    margin-bottom: 170px; /* ค่านี้ดันปุ่มขึ้นมาจากด้านล่าง */
     display: flex;
     align-items: center;
     gap: 8px;
     cursor: pointer;
 }
-.Logout:hover{
+
+.Logout:hover {
     background-color: #4444447b;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    color: #fff;
+    /* ลบ margin-bottom, padding, display, align-items, gap ออกไปได้เลย */
+    /* เพราะค่าเหล่านี้จะถูกสืบทอดมาจาก .Logout ปกติอยู่แล้ว */
 }
 .dash{
     background-color:#84D46E;
@@ -576,6 +576,7 @@ input::placeholder{
     position: relative;
     border: 1px solid #E6EAED;
     width: 100%;
+    margin-bottom: 20px;
     margin-top: 0;
     height: 100%;
 }
@@ -585,6 +586,7 @@ input::placeholder{
     position: relative;
     display: flex;
     align-items: center;
+    margin-bottom: 20px;
     height: 30px;
     gap: 8px;
     

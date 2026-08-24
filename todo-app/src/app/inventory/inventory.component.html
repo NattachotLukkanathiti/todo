@@ -18,8 +18,9 @@
         </div>
         <div class="lin"></div>
         <img class="iconsetting1" src="image/Maximize Icon.svg" (click)="toggleMenu()" alt="">
-        <img class="iconsetting2" src="image/Song.svg" alt="">
+        <!-- <img class="iconsetting2" src="image/Song.svg" alt=""> -->
         <img class="iconsetting3" src="image/Chart.svg" alt="">
+        <img class="iconsetting4" [src]="profile" alt="User Profile">
     </div>
 
 </div>
@@ -41,7 +42,7 @@
                 <div class="no" (click)="Animationa_out3()">
                     <img src="image/Vectorhistory.svg" alt="">Stock History
                 </div>
-                <div class="no" *ngIf="userRole === 'admin' || userRole === 'manager'" (click)="Animationa_out4()">
+                <div class="no" (click)="Animationa_out4()">
                     <img src="image/Employee.svg" alt="">Employee
                 </div>
                 <div class="no" *ngIf="userRole === 'admin' || userRole === 'manager'" (click)="Animation_out5()">
@@ -86,8 +87,7 @@
                     </div>
                         </div>
                 </div>
-                <div class="detail_con">
-                    <div class="bars">
+                 <div class="bars">
                         <div class="search">
                         <input class="inputser" type="text" placeholder="Search" [(ngModel)]="search"
                             (input)="filterS()">
@@ -123,6 +123,8 @@
   <a href="#" class="next">Next &gt;</a>
 </div>
                     </div>
+                <div class="detail_con">
+                   
                  <div class="table-container">
     <!-- Header -->
     <div class="table">
@@ -131,6 +133,7 @@
             Product Name</div>
         <div class="sku">Category</div>
         <div class="sku">Brand</div>
+        <div class="sku">Price</div>
         <div class="sku">Quantity</div>
         <div class="sku">Quantity Alert</div>
     </div>
@@ -162,6 +165,7 @@
     </div></div>
         <div class="sku2">{{ item.category }}</div>
         <div class="sku2">{{ item.brand }}</div>
+        <div class="sku2">{{ item.price }}</div>
         <div class="sku2">{{ item.quantity }}</div>
         <div class="sku2">{{ item.quantity_alert }}</div>
         <div class="button_small">
@@ -184,7 +188,7 @@
         <div [class.open]="isMenuOpenprofile" class="profile">
             <div class="header_Manager">
                 <div class="header_inside">
-                    <img class="icon_manager" src="/image/avatar.svg">
+                    <img class="iconsetting4" [src]="profile" alt="User Profile">
                     <div class="container_header">
                         <div class="manager"> {{username}}</div>
                         <div class="small_manager">Admin</div>

@@ -21,11 +21,12 @@ export class InventoryComponent {
 
   data: any[] = [];
   months: string[] = [];
-  
+  profile = '';
   email = '';
   username = '';
   showpopup = false;
   popup = '';
+  navigationState?: any;
   showpopupnoti = false;
   isMenuOpen = false;
   isMenuOpenprofile = false;
@@ -44,6 +45,7 @@ export class InventoryComponent {
   button_importt = false;
   product = true;
   product2 = true;
+  todos: any[] = [];
   button_addd = false;
     outimport = false;
     loader = true;
@@ -56,6 +58,7 @@ export class InventoryComponent {
     this.username = state.username || '';
     this.email = state.email || '';
     this.userRole = state.role || 'user'; // เพิ่มเติม: รับค่า role (ค่าเริ่มต้นเป็น user)
+    this.profile = state.profile || '';
 
     if (state.Move_return === true) {
       this.stan = false;
@@ -78,7 +81,7 @@ export class InventoryComponent {
     this.Animation_outdash = true;
     setTimeout(() =>{
       this.router.navigate(['/dashboard'],{
-        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole }
+        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole,profile:this.profile }
       })
     } ,300)
   }
@@ -140,7 +143,25 @@ export class InventoryComponent {
     
     return Math.min(valueInBaht * scale, maxHeight);
   }
+loadTodos() {
+  
+  this.todoService.getTodoss().subscribe({
+    next: (res) => {
+      console.log("Todos Data:", res);
+      
+      // สมมติว่าคุณมีตัวแปร currentState ที่เก็บข้อมูล state ที่ส่งมา
+      const currentEmail = this.navigationState?.state?.email;
 
+      if (currentEmail) {
+        // กรองให้เหลือเฉพาะ todo ที่ email ตรงกับ state
+        this.todos = res.filter(todo => todo.email === currentEmail);
+      } else {
+        this.todos = res;
+      }
+    },
+    error: (err) => console.error(err)
+  });
+}
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
     this.isMenuOpenprofile = !this.isMenuOpenprofile;

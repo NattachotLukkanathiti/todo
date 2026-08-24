@@ -28,7 +28,7 @@
     align-items: center;
     margin-left: 10px;
 }
-.iconsetting1,.iconsetting2,.iconsetting3,.iconsetting4{
+.iconsetting1,.iconsetting2,.iconsetting3{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -37,6 +37,12 @@
     border-radius: 8px;
     padding: 10px;
     cursor: pointer;
+}
+.iconsetting4 {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    object-fit: cover; /* เพิ่มคำสั่งนี้ */
 }
 .iconsetting1:hover,.iconsetting2:hover,.iconsetting3:hover,.iconsetting4:hover{
     background: #cccdd4;
@@ -66,10 +72,11 @@
     margin-left: auto;
     margin-right: 10px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     text-align: center;
     width: 450px;
+    margin-right: 40px;
     height: 70px;
 }
 .overdate{
@@ -267,20 +274,18 @@ input::placeholder{
     font-weight: 300;
     border-radius: 5px;
     margin-left: 20px;
-    margin-bottom: 170px;
+    margin-bottom: 170px; /* ค่านี้ดันปุ่มขึ้นมาจากด้านล่าง */
     display: flex;
     align-items: center;
     gap: 8px;
     cursor: pointer;
 }
-.Logout:hover{
+
+.Logout:hover {
     background-color: #4444447b;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    color: #fff;
+    /* ลบ margin-bottom, padding, display, align-items, gap ออกไปได้เลย */
+    /* เพราะค่าเหล่านี้จะถูกสืบทอดมาจาก .Logout ปกติอยู่แล้ว */
 }
 .dash{
     background-color:#84D46E;
@@ -351,44 +356,9 @@ input::placeholder{
 }
 .Max {
    
-    animation: waveExplosion 3s ease-in-out infinite ;
+    background: #69A957;
 }
 
-@keyframes waveExplosion {
-    0% {
-        box-shadow: 3px 0px 5px 0px rgba(255, 59, 48, 0.8); 
-    }
-    10% {
-        box-shadow: 2px -2px 5px 0px rgba(255, 104, 24, 0.8);
-    }
-    20% {
-        box-shadow: 0px -3px 5px 0px rgba(255, 149, 0, 0.8); 
-    }
-    30% {
-        box-shadow: -2px -2px 5px 0px rgba(255, 176, 0, 0.8);
-    }
-    40% {
-        box-shadow: -3px 0px 5px 0px rgba(255, 204, 0, 0.8); 
-    }
-    50% {
-        box-shadow: -2px 2px 5px 0px rgba(153, 201, 44, 0.8);
-    }
-    60% {
-        box-shadow: 0px 3px 5px 0px rgba(52, 199, 89, 0.8); 
-    }
-    70% {
-        box-shadow: 2px 2px 5px 0px rgba(88, 86, 214, 0.8);
-    }
-    80% {
-        box-shadow: 3px 0px 5px 0px rgba(0, 122, 255, 0.8); 
-    }
-    90% {
-        box-shadow: 3px -1px 5px 0px rgba(131, 102, 238, 0.8);
-    }
-    100% {
-        box-shadow: 3px 0px 5px 0px rgba(175, 82, 222, 0.8);
-    }
-}
 
 .menu-item {
   display: block;
@@ -545,6 +515,14 @@ input::placeholder{
     width: 10px;
     height: 10px;
     background-color: #69A957;
+    border-radius: 100px;
+    margin-top: 4px;
+}
+.point2{
+    display: flex;
+    width: 10px;
+    height: 10px;
+    background-color: #1364D5;
     border-radius: 100px;
     margin-top: 4px;
 }
@@ -1010,13 +988,28 @@ input::placeholder{
     display: flex;
     text-align: center;
 }
-.header_Inventory{
-    margin-left:30px;
-    font-size: 30px;
+.con_header {
+    position: relative;
+    display: block;
     margin-bottom: 20px;
-    transform: scaleX(1.1);
+}
+.parent_container {
+    display: flex;
+    justify-content: flex-end;
+}
+.sub {
+    display: flex;
+    font-size: 13px;
+    justify-content: flex-end;
+    margin-right: 20px;
     color: #2B2F38;
-    font-weight: 450;
+    font-weight: 300;
+}
+.header_Inventory {
+    font-size: 30px;
+    color: #2B2F38;
+    /* ลบ transform: scaleX(1.1); ออก */
+    font-weight:bolder; /* ปรับความหนาเป็น 500 หรือ 600 แทนหากต้องการให้ดูเด่นขึ้น */
 }
 .headerpop{
     font-size: 30px;

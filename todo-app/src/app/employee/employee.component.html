@@ -18,7 +18,7 @@
         </div>
         <div class="lin"></div>
         <img class="iconsetting1" src="image/Maximize Icon.svg" (click)="toggleMenu()" alt="">
-        <img class="iconsetting2" src="image/Song.svg" alt="">
+        <!-- <img class="iconsetting2" src="image/Song.svg" alt=""> -->
         <img class="iconsetting3" src="image/Chart.svg" alt="">
     </div>
 
@@ -29,7 +29,7 @@
         <div class="sidebar" [class.open]="isMenuOpen">
             <div class="ge">GENERAL</div>
             <div class="menuin">
-                <div class="no" (click)="Animationa_out()">
+                <div class="no"  *ngIf="userRole === 'admin' || userRole === 'manager'" (click)="Animationa_out()">
                     <img class="myicon1" src="image/dashboard.svg" alt="">Dashboard
                 </div>
                 <div class="no" (click)="Animationa2_out()">
@@ -38,13 +38,13 @@
                 <div class="no"(click)="Animationa3_out()">
                     <img  src="image/shop.svg" alt="">Sales Orders
                 </div>
-                <div class="no" (click)="Animationa4_out()" >
+                <div class="no"  (click)="Animationa4_out()" >
                     <img src="image/Vectorhistory.svg" alt="">Stock History
                 </div>
                 <div class="dash">
                     <img class="myicon2" src="image/Employee.svg" alt="">Employee
                 </div>
-                <div class="no"  (click)="Animation_out5()">
+                <div class="no" *ngIf="userRole === 'admin' || userRole === 'manager'"  (click)="Animation_out5()">
                     <img src="image/car.svg" alt="">Suppliers
                 </div>
             
@@ -79,8 +79,7 @@
                           
                         </div>
                 </div>
-                <div class="detail_con">
-                    <div class="bars">
+                <div class="bars">
                         <div class="search">
                         <input class="inputser" type="text" placeholder="Search" [(ngModel)]="search"
                             (input)="filterS()">
@@ -116,6 +115,8 @@
   <a href="#" class="next">Next &gt;</a>
 </div>
                     </div>
+                <div class="detail_con">
+                    
                  <div class="table-container">
                     
     <!-- Header -->

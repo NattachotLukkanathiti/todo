@@ -64,8 +64,7 @@
 
 .iconsetting1,
 .iconsetting2,
-.iconsetting3,
-.iconsetting4 {
+.iconsetting3{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -113,19 +112,25 @@
     height: 35px;
 }
 
-.container_bar {
+.container_bar{
     gap: 10px;
 
     margin-left: auto;
     margin-right: 10px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     text-align: center;
     width: 450px;
+    margin-right: 40px;
     height: 70px;
 }
-
+.iconsetting4 {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    object-fit: cover; /* เพิ่มคำสั่งนี้ */
+}
 .overdate {
     width: 50%;
     display: flex;
@@ -162,7 +167,7 @@
     font-size: 30px;
     color: #2B2F38;
     transform: scaleX(1.1header_Inventory);
-    font-weight: 450;
+    font-weight: bolder;
 }
 
 .iconsearch {
@@ -362,7 +367,6 @@ input::placeholder {
 
 .table {
     background-color: #F4F5FC;
-    margin-top: 20px;
     padding: 20px;
     width: 100%;
     gap: 1%;
@@ -779,7 +783,7 @@ input::placeholder {
     font-size: 13px;
     height: 8px;
 
-    background: #0D4797;
+    background: #4283DD;
     cursor: pointer;
     overflow: hidden;
 
@@ -926,7 +930,7 @@ input::placeholder {
     font-weight: 300;
     border-radius: 5px;
     margin-left: 20px;
-    margin-bottom: 170px;
+    margin-bottom: 170px; /* ค่านี้ดันปุ่มขึ้นมาจากด้านล่าง */
     display: flex;
     align-items: center;
     gap: 8px;
@@ -935,14 +939,10 @@ input::placeholder {
 
 .Logout:hover {
     background-color: #4444447b;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    color: #fff;
+    /* ลบ margin-bottom, padding, display, align-items, gap ออกไปได้เลย */
+    /* เพราะค่าเหล่านี้จะถูกสืบทอดมาจาก .Logout ปกติอยู่แล้ว */
 }
-
 .dash {
     background-color: #84D46E;
     padding: 10px;
@@ -1024,6 +1024,7 @@ input::placeholder {
     display: flex;
     align-items: center;
     height: 30px;
+    margin-bottom: 20px;
     gap: 8px;
 
 }
@@ -1326,7 +1327,7 @@ input::placeholder {
     }
 
     100% {
-        transform: translateY(-5000px);
+        transform: translateY(-2000px);
         /* เลื่อนลงไปที่จุดสุดท้าย */
         opacity: 0;
         /* ค่อยๆ จางหายไปเมื่อเลื่อนลง */

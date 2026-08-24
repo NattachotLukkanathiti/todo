@@ -75,12 +75,13 @@ export class LoginComponent {
     this.todoService.login(this.title, this.password).subscribe({
       next: (response) => {
         this.isLoading = false; // ซ่อน Loading
-        
+        const profile = response.user.profile;
         const role = response.user.role; // ปรับให้ตรงกับตัวแปร role จาก API ของคุณ
         const navigationState = {
           state: {
             username: response.user.username,
             email: response.user.title,
+            profile: profile,
             stan: true,
             inhere: true,
             role: role

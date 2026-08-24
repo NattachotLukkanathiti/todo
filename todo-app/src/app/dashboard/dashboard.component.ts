@@ -25,6 +25,8 @@ export class DashboardComponent implements OnInit {
   email = '';
   username = '';
   showpopup = false;
+  profile = '';
+  navigationState?: any;
   popup = '';
   showpopupnoti = false;
   isMenuOpen = false;
@@ -39,6 +41,7 @@ export class DashboardComponent implements OnInit {
   inhere = false;
   outs = false;
   out = false;
+  todos: any[] = [];
   Max = false;
   loader = false
   userRole: string = '';
@@ -51,7 +54,8 @@ export class DashboardComponent implements OnInit {
     this.username = state.username || '';
     this.email = state.email || '';
     this.userRole = state.role || 'user';
-
+    this.profile = state.profile || '';
+    this.loadTodos()
      if (state.Move_return === true) {
     this.stan = false;
     this.play_Return = true;
@@ -78,7 +82,9 @@ export class DashboardComponent implements OnInit {
     this.timeSubscription = interval(1000).subscribe(() => {
       this.currentTime = new Date();
     });
+  
   }
+  
 
   Animationa_out(){
     this.outs = false;
@@ -87,7 +93,7 @@ export class DashboardComponent implements OnInit {
     this.Animation_out = true;
     setTimeout(() =>{
       this.router.navigate(['/inventory'],{
-        state:{username: this.username , email: this.email ,role:this.userRole }
+        state:{username: this.username , email: this.email ,role:this.userRole ,profile:this.profile}
       })
     } ,300)
   }
@@ -153,6 +159,26 @@ export class DashboardComponent implements OnInit {
     
     return Math.min(valueInBaht * scale, maxHeight);
   }
+ loadTodos() {
+  
+  this.todoService.getTodoss().subscribe({
+    next: (res) => {
+      console.log("Todos Data:", res);
+      
+      // สมมติว่าคุณมีตัวแปร currentState ที่เก็บข้อมูล state ที่ส่งมา
+      const currentEmail = this.navigationState?.state?.email;
+
+      if (currentEmail) {
+        // กรองให้เหลือเฉพาะ todo ที่ email ตรงกับ state
+        this.todos = res.filter(todo => todo.email === currentEmail);
+      } else {
+        this.todos = res;
+      }
+    },
+    error: (err) => console.error(err)
+  });
+}
+
   loadChartData() {
     this.loader = true; // Set to true before fetching data
     this.todoService.getMonth().subscribe({
