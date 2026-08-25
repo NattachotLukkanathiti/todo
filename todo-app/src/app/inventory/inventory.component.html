@@ -96,7 +96,7 @@
                     <div class="custom-select">
   <select class="text">
     <option value="all">All <img class="icon_down"src="image/down.svg" alt=""></option>
-    <option value="option1">Option 1</option>
+    <option value="option1">Low In Stock</option>
     <option value="option2">Option 2</option>
   </select>
 </div>  
@@ -170,7 +170,7 @@
         <div class="sku2">{{ item.quantity_alert }}</div>
         <div class="button_small">
             <img class="icon_small_inventory" src="image/edit.svg" alt="">
-            <img class="icon_small_inventory" src="image/delete.svg" alt="">
+            <img class="icon_small_inventory" src="image/delete.svg" (click)="button_delete(item.sku, i)" alt="">
         </div>
     </div>
     <div class="line"></div>
@@ -377,7 +377,27 @@
     </div>
 </div>
 
-<div *ngIf="isLoading" class="loading-container">
+<div *ngIf="showpopup" class="backpop">
+  <div *ngIf="showpopup" class="popupcontainer">
+  <div class="popup-content">
+    <img class="iconsuccess" src="image/success.svg" alt="">
+    <div class="headerpop">
+      Success
+    </div>
+    <div class="subheadersuccess">
+      {{popup}}
+    </div>
+    <button class="buttonclose" (click)="closepopup()">Back to Inventory</button>
+  </div>
+</div>
+</div>
+<div *ngIf="isLoading" class="import_product2" >
+    <div class="con_import_product3">
+      <span class="loader"></span>
+    </div>
+</div>
+
+<!-- <div *ngIf="isLoading" class="loading-container">
     <img class="logo_loading" src="/image/logoo.svg" alt="" >
   <div class="loading">
     <div class="loader1"></div>
@@ -385,4 +405,4 @@
     <div class="loader3"></div>
     <div class="loader4"></div>
   </div>
-</div>
+</div> -->

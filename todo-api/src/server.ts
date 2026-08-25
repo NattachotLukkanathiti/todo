@@ -460,6 +460,29 @@ app.delete('/todos/:id', async (req, res) => {
   }
 });
 
+app.delete('/api/inventory/:sku', async (req, res) => {
+  try {
+    const { sku } = req.params;
+
+    const result = await pool.query(
+      'DELETE FROM inventory WHERE sku = $1 RETURNING *',
+      [sku]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ success: false, message: 'ไม่พบสินค้านี้' });
+    }
+
+    res.json({
+      success: true,
+      message: 'ลบสินค้าเรียบร้อยแล้ว'
+    });
+
+  } catch (error) {
+    console.error('Error deleting inventory:', error);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+});
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {

@@ -121,4 +121,7 @@ getSuppliers(){
 addInventory(productData: any) {
     return this.http.post(`${this.apiUrl}/inventory`, productData);
   }
+  deleteInventory(sku: string): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/inventory/${sku}`);
+  }
 }

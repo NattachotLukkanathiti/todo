@@ -146,6 +146,10 @@ export class InventoryComponent {
     this.showpopupnoti = true;
     this.popup = message;
   }
+  openpopup(message:string){
+    this.showpopup = true;
+    this.popup = message;
+  }
   closepopup(){
     this.showpopup = false;
     this.showpopupnoti = false;
@@ -255,14 +259,13 @@ loadTodos() {
     };
   }
 
-  // 1. รับไฟล์เมื่อผู้ใช้เลือกรูป
-  // 1. รับไฟล์เมื่อผู้ใช้เลือกรูป และสร้างตัวอย่างรูปภาพ
+
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
       this.selectedFile = file;
       
-      // เพิ่มโค้ดส่วนนี้ เพื่อให้แสดงรูปตัวอย่าง
+    
       const reader = new FileReader();
       reader.onload = () => {
         this.imagePreview = reader.result as string;
@@ -306,9 +309,8 @@ loadTodos() {
       // ส่งข้อมูลไปที่ Backend
       this.todoService.addInventory(productData).subscribe({
         next: (res) => {
-          this.openpopupnoti('บันทึกข้อมูลสำเร็จ');
+          this.openpopup('New product created successfully. View changes in Stock History');
           this.loadInventory();
-          this.button_cancels();
           this.isLoading = false;
         },
         error: (err) => {
@@ -319,8 +321,28 @@ loadTodos() {
 
     } catch (error) {
       console.error('Error uploading image:', error);
-      this.openpopupnoti('อัปโหลดรูปภาพไม่สำเร็จ');
+      this.openpopup('อัปโหลดรูปภาพไม่สำเร็จ');
       this.isLoading = false;
+    }
+  }
+  button_delete(sku: string, index: number) {
+    if (confirm('คุณต้องการลบสินค้านี้ใช่หรือไม่?')) {
+      this.isLoading = true;
+      
+      // สมมติว่าใน todoService มีฟังก์ชัน deleteInventory
+      this.todoService.deleteInventory(sku).subscribe({
+        next: (res) => {
+          // ลบข้อมูลออกจาก Array บนหน้าจอทันที
+          this.Inventory.splice(index, 1);
+          this.openpopup('ลบสินค้าเรียบร้อยแล้ว');
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.error('Error deleting product:', err);
+          this.openpopup('เกิดข้อผิดพลาดในการลบสินค้า');
+          this.isLoading = false;
+        }
+      });
     }
   }
 }

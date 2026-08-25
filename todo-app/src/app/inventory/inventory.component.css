@@ -61,6 +61,43 @@
 .navstatic {
     display: flex;
 }
+.loader {
+  --color-1: #26471d;
+  --color-2: #84D46E;
+  --color-3: #fff;
+  --size: 1px;
+
+  width: calc(48 * var(--size));
+  height: calc(48 * var(--size));
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  background: linear-gradient(0deg, var(--color-1) 33%, var(--color-2) 100%);
+  box-sizing: border-box;
+  animation: rotation 0.5s linear infinite;
+   clip-path: circle(calc(26 * var(--size)) at center);
+}
+.loader::after {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(44 * var(--size));
+  height: calc(44 * var(--size));
+  border-radius: 50%;
+  background: var(--color-3);
+}
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 
 .iconsetting1,
 .iconsetting2,
@@ -433,6 +470,12 @@ input::placeholder {
     position: fixed;
     z-index: 10;
 }
+.import_product2 {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 10;
+}
 
 @keyframes moves {
     0% {
@@ -454,6 +497,28 @@ input::placeholder {
         filter: blur(2px); 
 
     }
+}
+.con_import_product3{
+     width: 40%;
+    height: 650px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column; /* ใส่หรือไม่ใส่ก็ได้ ขึ้นอยู่กับว่าต้องการให้เรียงเป็นแนวตั้งหรือแนวนอน */
+    transform: translate(-50%, -50%);
+    z-index: 7;
+    border-radius: 40px;
+    background-color: rgba(255, 255, 255, 0.866);
+    border: 1px solid #E5E7EB;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    
+
 }
 
 .con_import_product,.con_import_product2{
@@ -1143,6 +1208,23 @@ input::placeholder {
     height: 15px;
     border-radius: 8px;
     border: 1px solid #AFAFAF;
+    cursor: pointer;
+}
+.icon_small_inventory:hover {
+    padding: 7px;
+    width: 15px;
+    background-color: #d0d0d0;
+    height: 15px;
+    border-radius: 8px;
+    border: 1px solid #AFAFAF;
+}
+.icon_small_inventory:active {
+    padding: 7px;
+    width: 15px;
+    background-color: #8a8a8a;
+    height: 15px;
+    border-radius: 8px;
+    border: 1px solid #AFAFAF;
 }
 
 .num-container {
@@ -1730,7 +1812,7 @@ input::placeholder {
 }
 
 
-
+/* 
 .loading-container {
     position: fixed;
     top: -20px;
@@ -1808,7 +1890,7 @@ input::placeholder {
 }
 
 
-
+ */
 
 
 .card {
