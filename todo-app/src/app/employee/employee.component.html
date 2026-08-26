@@ -20,6 +20,7 @@
         <img class="iconsetting1" src="image/Maximize Icon.svg" (click)="toggleMenu()" alt="">
         <!-- <img class="iconsetting2" src="image/Song.svg" alt=""> -->
         <img class="iconsetting3" src="image/Chart.svg" alt="">
+        <img class="iconsetting4" [src]="profile" alt="User Profile">
     </div>
 
 </div>
@@ -100,10 +101,11 @@
   </select>
 </div> -->
 <div class="custom-select">
-  <select>
+  <select (change)="filterEmployee(selectFilter.value)" #selectFilter>
     <option value="all">Position</option>
-    <option value="option1">Back</option>
-    <option value="option2">Fornt</option>
+    <option value="Back">Back</option>
+    <option value="Front">Front</option>
+    <option value="Admin">Admin</option>
   </select>
 </div>
 <div class="pagination">
@@ -145,10 +147,10 @@
                     </ng-container>
     <!-- Data Rows -->
    <ng-template #realData>
-     <div  class="table_detail2" *ngFor="let order of todos; let i = index" [style.animation-delay]="i * 0.15 + 's'">
+     <div  class="table_detail2" *ngFor="let order of filteredEmployeeList; let i = index" [style.animation-delay]="i * 0.15 + 's'">
     <div class="table_detail">
         <div class="sku2">{{ order.code }}</div>
-<div class="sku2"><div class="connn"><img src="image/profile.svg" alt="">{{ order.username }}</div></div>
+<div class="sku2"><div class="connn"><img class="iconsetting4" [src]="order.profile || 'image/profileee.svg' " alt="">{{ order.username }}</div></div>
 <div class="sku2">{{ order.title }}</div>
 <div class="sku2">{{ order.phone }}</div>
 <div class="button_small">
@@ -172,7 +174,7 @@
         <div [class.open]="isMenuOpenprofile" class="profile">
             <div class="header_Manager">
                 <div class="header_inside">
-                    <img class="icon_manager" src="/image/avatar.svg">
+                    <img class="icon_manager" [src]="profile">
                     <div class="container_header">
                         <div class="manager"> {{username}}</div>
                         <div class="small_manager">Admin</div>

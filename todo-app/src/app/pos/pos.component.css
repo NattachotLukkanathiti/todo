@@ -1,0 +1,175 @@
+.navbaar {
+    
+    display: flex;
+    /* กระจายองค์ประกอบให้เต็มพื้นที่ */
+    align-items: center;
+    /* จัดให้อยู่ตรงกลางตามแนวตั้ง */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 3;
+    /* ปรับให้มากกว่า sidebar เพื่อให้อยู่ด้านบนสุด */
+    background-color: #FFF;
+    border: 1px solid #CED4DA;
+    animation: slide 1s ease-in-out;
+
+}
+.hamburger {
+    border: 0.5px solid #00000031;
+    background-color: white;
+    border-radius: 8px;
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+}
+
+.hamburger:hover {
+    background-color: #4444447c;
+    border-radius: 50px;
+}
+
+.headercompany {
+    display: flex;
+    margin-left: 20px;
+    flex-direction: column;
+    color: #6FAB23;
+    font-weight: 800;
+    align-items: flex-start;
+    font-family: 'Nicomoji', sans-serif;
+    /* ใช้งานฟอนต์เฉพาะตรงนี้ */
+}
+.container_bar{
+    gap: 10px;
+
+    margin-left: auto;
+    margin-right: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    text-align: center;
+    width: 450px;
+    margin-right: 40px;
+    height: 70px;
+}
+.time {
+    font-size: 15px;
+    color: white;
+    font-weight: 800;
+    background: #AD54F5;
+    width: 100px;
+    border-radius: 8px;
+    height: 10px;
+    padding: 13px;
+    display: flex;
+    justify-content: first baseline;
+    align-items: center;
+    text-align: center;
+}
+
+.lin {
+    background: #E6EAED;
+    width: 1px;
+    height: 35px;
+}
+.iconsetting1,
+.iconsetting2,
+.iconsetting3{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #F4F5FC;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.iconsetting1:hover,
+.iconsetting2:hover,
+.iconsetting3:hover,
+.iconsetting4:hover {
+    background: #cccdd4;
+
+}
+.iconsetting4 {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    object-fit: cover; /* เพิ่มคำสั่งนี้ */
+}
+.con_3btn{
+    width: 250px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    padding: 10px;
+        display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #E6EAED ;
+}
+.container_pos {
+    display: flex; /* เพิ่มเพื่อให้ justify-content ทำงาน */
+    flex-direction: column; /* กำหนดทิศทางให้เรียงลงมา (หากต้องการ) */
+    align-items: flex-start; /* จัดให้เนื้อหาภายในชิดซ้าย */
+    background-color: #FFFFFF;
+    width: 100%;
+    justify-content: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    margin-top: 30px;
+    padding: 40px; /* รวม padding ให้เหลืออันเดียว */
+    box-sizing: border-box;
+}
+.header_ca{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.line{
+    height: 1px;
+    background-color: #E6EAED;
+    width: 100%;
+    margin-bottom: 20px;
+}
+.view{
+    background-color: #00C3D0;
+    padding: 10px;
+    font-size: 13px;
+    display: flex;
+    color: #fff;
+    border-radius: 4px;
+    align-items: center;
+}
+.reset{
+    background-color: #1364D5;
+    padding: 10px;
+    color: #fff;
+    font-size: 13px;
+    display: flex;
+    border-radius: 4px;
+    align-items: center;
+}
+.tran{
+    background-color: #6197E3;
+    padding: 10px;
+    font-size: 13px;
+    display: flex;
+    color: #fff;
+    border-radius: 4px;
+    align-items: center;
+}
+.orderlist{
+    width: 50%;
+    height: 100vh;
+    background-color: #FFFFFF;
+    border: 1px solid #E6EAED ;
+}
+.all_con{
+    display: flex;
+    width: 100vw;
+}

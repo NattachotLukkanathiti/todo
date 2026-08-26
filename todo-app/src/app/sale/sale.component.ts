@@ -41,6 +41,7 @@ export class SaleComponent {
   loader = false;
   Animation_outdash = false;
   return = false;
+  profile = '';
   play_Return = false;
    userRole: string = '';
   
@@ -53,6 +54,7 @@ export class SaleComponent {
     this.username = state.username || '';
     this.email = state.email || '';
     this.userRole = state.role || 'user';
+    this.profile = state.profile || '';
 
      if (state.Move_return === true) {
     this.stan = false;
@@ -88,7 +90,7 @@ export class SaleComponent {
 
     setTimeout(() =>{
       this.router.navigate(['/inventory'],{
-        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole }
+        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole ,profile:this.profile}
       })
     } ,300)
   }
@@ -97,7 +99,7 @@ export class SaleComponent {
 
     setTimeout(() =>{
       this.router.navigate(['/history'],{
-        state:{username: this.username , email: this.email, Move_return44:true , role:this.userRole}
+        state:{username: this.username , email: this.email, Move_return44:true , role:this.userRole ,profile:this.profile}
       })
     } ,300)
   }
@@ -106,7 +108,7 @@ export class SaleComponent {
 
     setTimeout(() =>{
       this.router.navigate(['/employee'],{
-        state:{username: this.username , email: this.email, Move_return4:true ,role:this.userRole }
+        state:{username: this.username , email: this.email, Move_return4:true ,role:this.userRole ,profile:this.profile}
       })
     } ,300)
   }
@@ -115,7 +117,7 @@ export class SaleComponent {
     this.Animation_out = true;
     setTimeout(() =>{
       this.router.navigate(['/suppliers'],{
-        state:{username: this.username , email: this.email, Move_return5:true ,Open_bar:true ,role:this.userRole}
+        state:{username: this.username , email: this.email, Move_return5:true ,Open_bar:true ,role:this.userRole ,profile:this.profile}
       })
     } ,300)
   }
@@ -124,7 +126,7 @@ export class SaleComponent {
     
     setTimeout(() =>{
       this.router.navigate(['/dashboard'],{
-        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole }
+        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole ,profile:this.profile }
       })
     } ,300)
   }

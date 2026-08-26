@@ -45,7 +45,9 @@ export class EmployeeComponent {
   employee :any[] = []; 
   todos :any[] = []; 
   userRole: string = '';
-  
+  profile = '';
+  employeeList: any[] = []; 
+filteredEmployeeList: any[] = [];
   private timeSubscription!: Subscription;
   constructor(private router: Router) {}
 
@@ -55,6 +57,7 @@ export class EmployeeComponent {
     this.username = state.username || '';
     this.email = state.email || '';
     this.userRole = state.role || 'user';
+    this.profile = state.profile || '';
 
      if (state.Move_return === true) {
     this.stan = false;
@@ -100,7 +103,7 @@ export class EmployeeComponent {
 
     setTimeout(() =>{
       this.router.navigate(['/inventory'],{
-        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole }
+        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole ,profile:this.profile}
       })
     } ,300)
   }
@@ -109,7 +112,7 @@ export class EmployeeComponent {
 
     setTimeout(() =>{
       this.router.navigate(['/sale'],{
-        state:{username: this.username , email: this.email, Move_return2:true ,role:this.userRole }
+        state:{username: this.username , email: this.email, Move_return2:true ,role:this.userRole ,profile:this.profile }
       })
     } ,300)
   }
@@ -118,7 +121,7 @@ export class EmployeeComponent {
     this.Animation_outdash = true
     setTimeout(() =>{
       this.router.navigate(['/history'],{
-        state:{username: this.username , email: this.email, Move_return4:true ,role:this.userRole }
+        state:{username: this.username , email: this.email, Move_return4:true ,role:this.userRole ,profile:this.profile}
       })
     } ,300)
   }
@@ -128,7 +131,7 @@ export class EmployeeComponent {
     this.Animation_out = true;
     setTimeout(() =>{
       this.router.navigate(['/suppliers'],{
-        state:{username: this.username , email: this.email, Move_return5:true ,Open_bar:true ,role:this.userRole }
+        state:{username: this.username , email: this.email, Move_return5:true ,Open_bar:true ,role:this.userRole ,profile:this.profile }
       })
     } ,300)
   }
@@ -137,7 +140,7 @@ export class EmployeeComponent {
     
     setTimeout(() =>{
       this.router.navigate(['/dashboard'],{
-        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole }
+        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole ,profile:this.profile }
       })
     } ,300)
   }
@@ -171,12 +174,15 @@ export class EmployeeComponent {
       this.todos = res;
         this.isLoading = false; 
         this.loader = false
+        this.employeeList = res;
+        this.filteredEmployeeList = [...this.employeeList]; // คัดลอกข้อมูลมาแสดงผลเริ่มต้น
     },
     error: (err) => {
       console.error('Error fetching sale order:', err);
     }
   });
 }
+
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
@@ -198,5 +204,19 @@ export class EmployeeComponent {
 
   logout() {
     this.router.navigate(['/login']);
+}
+// ตัวแปรเก็บข้อมูล
+filterEmployee(selected: string) {
+  if (selected === 'all') {
+    this.filteredEmployeeList = [...this.employeeList];
+  } else {
+    let mappedRole = selected;
+    if (selected === 'Front') mappedRole = 'pos';
+    if (selected === 'Back') mappedRole = 'backend';
+    if (selected === 'Admin') mappedRole = 'admin';
+
+    // กรองข้อมูลโดยใช้คอลัมน์ role
+    this.filteredEmployeeList = this.employeeList.filter(emp => emp.role === mappedRole);
+  }
 }
 }

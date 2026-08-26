@@ -1,1 +1,45 @@
-<p>หน้าของหยวนนะจร๊ะ ทำมา</p>
+<div class="navbaar">
+    <button class="hamburger" (click)="hambar()">
+        <img src="image/ham.svg" alt="">
+    </button>
+    <div class="headercompany">
+        <img src="image/logo.svg" alt="">
+    </div>
+    <!--   <div class="search">
+        <input class="inputser"type="text" placeholder="Search" [(ngModel)]="search" (input)="filterS()">
+        <img class="iconsearch" src="image/search.svg" alt="">
+    </div> -->
+    <div class="container_bar">
+        <div class="time" [class.active]="isTimeOpen" (click)="isTimeOpen = !isTimeOpen">
+            <img class="icon_time" src="image/Time Icon.svg">
+            <div class="Y">
+                {{ currentTime | date:'HH:mm:ss' }}
+            </div>
+        </div>
+        <div class="lin"></div>
+        <img class="iconsetting1" src="image/Maximize Icon.svg" (click)="toggleMenu()" alt="">
+        <!-- <img class="iconsetting2" src="image/Song.svg" alt=""> -->
+        <img class="iconsetting3" src="image/Chart.svg" alt="">
+        <img class="iconsetting4" [src]="profile" alt="User Profile">
+    </div>
+
+</div>
+<div class="all_con">
+    <div class="container_pos">
+    <div class="con_3btn">
+        <div class="view">View Orders</div>
+        <div class="reset">Reset</div>
+        <div class="tran">Transaction</div>
+    </div>
+    <div class="header_ca">
+        Categories
+    </div>
+    <div class="line"></div>
+    <div class="header_pro">
+        Products
+    </div>
+</div>
+    <div class="orderlist">
+
+    </div>
+</div>

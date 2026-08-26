@@ -63,8 +63,12 @@ export class InventoryComponent {
     invoice_no: '',
     import_quantity: null
   };
-
+  item: any;  
+  showpopupconfirm = false
   selectedFile: File | null = null;
+  isEditMode = false;
+selectedProduct: any = null;
+
   
   //  เพิ่มบรรทัดนี้เข้าไปค่ะ
   imagePreview: string | null = null;
@@ -111,7 +115,7 @@ export class InventoryComponent {
     this.Animation_out = true;
     setTimeout(() =>{
       this.router.navigate(['/sale'],{
-        state:{username: this.username , email: this.email, Move_returns:true, role:this.userRole }
+        state:{username: this.username , email: this.email, Move_returns:true, role:this.userRole ,profile:this.profile}
       })
     } ,300)
   }
@@ -120,7 +124,7 @@ export class InventoryComponent {
     this.Animation_out = true;
     setTimeout(() =>{
       this.router.navigate(['/history'],{
-        state:{username: this.username , email: this.email, Move_returns3:true ,role:this.userRole }
+        state:{username: this.username , email: this.email, Move_returns3:true ,role:this.userRole ,profile:this.profile}
       })
     } ,300)
   }
@@ -129,7 +133,7 @@ export class InventoryComponent {
     this.Animation_out = true;
     setTimeout(() =>{
       this.router.navigate(['/employee'],{
-        state:{username: this.username , email: this.email, Move_returns4:true ,role:this.userRole }
+        state:{username: this.username , email: this.email, Move_returns4:true ,role:this.userRole ,profile:this.profile}
       })
     } ,300)
   }
@@ -138,7 +142,7 @@ export class InventoryComponent {
     this.Animation_out = true;
     setTimeout(() =>{
       this.router.navigate(['/suppliers'],{
-        state:{username: this.username , email: this.email, Move_return5:true ,Open_bar:true ,role:this.userRole }
+        state:{username: this.username , email: this.email, Move_return5:true ,Open_bar:true ,role:this.userRole ,profile:this.profile}
       })
     } ,300)
   }
@@ -150,12 +154,13 @@ export class InventoryComponent {
     this.showpopup = true;
     this.popup = message;
   }
+  openpopup_confirm(message:string){
+    this.popup = message;
+  }
   closepopup(){
-    this.showpopup = false;
-    this.showpopupnoti = false;
-    
+    this.showpopupconfirm = false
+    this.showpopup = false
   
-      this.router.navigate(['/login']); 
     
   }
   ngOnDestroy() {
@@ -169,16 +174,11 @@ export class InventoryComponent {
     return Math.min(valueInBaht * scale, maxHeight);
   }
 loadTodos() {
-  
   this.todoService.getTodoss().subscribe({
     next: (res) => {
       console.log("Todos Data:", res);
-      
-      // สมมติว่าคุณมีตัวแปร currentState ที่เก็บข้อมูล state ที่ส่งมา
       const currentEmail = this.navigationState?.state?.email;
-
       if (currentEmail) {
-        // กรองให้เหลือเฉพาะ todo ที่ email ตรงกับ state
         this.todos = res.filter(todo => todo.email === currentEmail);
       } else {
         this.todos = res;
@@ -274,7 +274,7 @@ loadTodos() {
     }
   }
 
-  // 2. อัปโหลดรูปและบันทึกข้อมูล
+
   async saveToStock() {
     this.isLoading = true;
     let pictureUrl = '';
@@ -325,24 +325,57 @@ loadTodos() {
       this.isLoading = false;
     }
   }
-  button_delete(sku: string, index: number) {
-    if (confirm('คุณต้องการลบสินค้านี้ใช่หรือไม่?')) {
+  // 1. สร้างตัวแปรเก็บฟังก์ชัน resolve ของ Promise
+private resolveConfirm: ((value: boolean) => void) | null = null;
+
+// 2. ฟังก์ชันหลักของคุณ (ใส่ async เพิ่มเข้าไป)
+async button_delete(sku: string, index: number) {
+    this.showpopupconfirm = true;
+    this.openpopup_confirm("Are you sure you want to delete this item? This action cannot be undone.");
+    // สร้าง Promise เพื่อหยุดรอการกดปุ่ม
+    const confirm = await new Promise<boolean>((resolve) => {
+      this.resolveConfirm = resolve;
+    });
+  
+    if (confirm) {
       this.isLoading = true;
       
-      // สมมติว่าใน todoService มีฟังก์ชัน deleteInventory
       this.todoService.deleteInventory(sku).subscribe({
         next: (res) => {
-          // ลบข้อมูลออกจาก Array บนหน้าจอทันที
           this.Inventory.splice(index, 1);
           this.openpopup('ลบสินค้าเรียบร้อยแล้ว');
           this.isLoading = false;
         },
         error: (err) => {
-          console.error('Error deleting product:', err);
-          this.openpopup('เกิดข้อผิดพลาดในการลบสินค้า');
+          this.openpopupnoti('เกิดข้อผิดพลาดในการลบสินค้า');
           this.isLoading = false;
         }
       });
     }
-  }
+}
+  confirmdelete() {
+    this.showpopupconfirm = false;
+    if (this.resolveConfirm) this.resolveConfirm(true); 
+}
+button_edit(item: any) {
+  this.isEditMode = true;
+  this.selectedProduct = { ...item }; 
+}
+saveEdit() {
+  this.isLoading = true;
+  // 👇 แก้ไขตรงนี้: ส่ง this.selectedProduct.sku เป็นตัวแรก และ this.selectedProduct เป็นตัวที่สอง
+  this.todoService.updateInventory(this.selectedProduct.sku, this.selectedProduct).subscribe({
+    next: (res) => {
+      this.openpopup('แก้ไขข้อมูลสินค้าเรียบร้อยแล้ว');
+      this.loadInventory(); // โหลดข้อมูลใหม่
+      this.isEditMode = false;
+      this.isLoading = false;
+    },
+    error: (err) => {
+      this.openpopupnoti('เกิดข้อผิดพลาดในการแก้ไขข้อมูล');
+      this.isLoading = false;
+    }
+  });
+}
+
 }

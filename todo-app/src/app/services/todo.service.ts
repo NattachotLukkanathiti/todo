@@ -124,4 +124,8 @@ addInventory(productData: any) {
   deleteInventory(sku: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/inventory/${sku}`);
   }
+  updateInventory(sku: string, productData: any): Observable<any> {
+  return this.http.put<any>(`${this.apiUrl}/inventory/${sku}`, productData,{ headers: this.headers }
+  );
+}
 }

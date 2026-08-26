@@ -169,7 +169,7 @@
         <div class="sku2">{{ item.quantity }}</div>
         <div class="sku2">{{ item.quantity_alert }}</div>
         <div class="button_small">
-            <img class="icon_small_inventory" src="image/edit.svg" alt="">
+            <img class="icon_small_inventory" src="image/edit.svg" (click)="button_edit(item)">
             <img class="icon_small_inventory" src="image/delete.svg" (click)="button_delete(item.sku, i)" alt="">
         </div>
     </div>
@@ -226,6 +226,43 @@
             </div>
         </div>
     </div>
+
+    <div *ngIf="showpopupconfirm" class="backpop">
+    <div *ngIf="showpopupconfirm" class="popupcontainer">
+        <div class="popup-content">
+            <img class="iconsuccess" src="image/notidelete.svg" alt="">
+                     <div class="line"></div>
+            <div class="headerpop">
+                Delete Product?
+            </div>
+            <div class="subheadersuccess">
+                {{popup}}
+            </div>
+            <div class="container_button">
+                      <button class="button_confirm" (click)="confirmdelete()">Confirm</button>
+            <button class="button_cancel" (click)="closepopup()">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="backpop">
+    <div  class="popupcontainer">
+        <div class="popup-content">
+            <img class="iconsuccess" src="image/editalert.svg" alt="">
+                     <div class="line"></div>
+            <div class="headerpop">
+                Edit Product?
+            </div>
+            <div class="subheadersuccess">
+                {{popup}}
+            </div>
+            <div class="container_button">
+                      <button class="button_edit" (click)="confirmdelete()">Confirm</button>
+            <button class="button_cancel" (click)="closepopup()">No</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="import_product" [class.product]="product" [class.button_cancel]="button_cancel" [class.button_importt]="button_importt">     
     <div class="con_import_product" [class.out_comimport]="outimport">         

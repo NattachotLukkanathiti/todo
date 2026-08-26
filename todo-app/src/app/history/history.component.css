@@ -18,8 +18,13 @@
 .navstatic{
     display: flex;
 }
-
-.iconsetting1,.iconsetting2,.iconsetting3,.iconsetting4{
+.iconsetting4 {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    object-fit: cover; /* เพิ่มคำสั่งนี้ */
+}
+.iconsetting1,.iconsetting2,.iconsetting3{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -67,10 +72,11 @@
     margin-left: auto;
     margin-right: 10px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     text-align: center;
     width: 450px;
+    margin-right: 40px;
     height: 70px;
 }
 .overdate{

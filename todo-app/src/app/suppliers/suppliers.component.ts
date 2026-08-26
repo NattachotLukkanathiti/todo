@@ -43,6 +43,7 @@ export class SuppliersComponent {
   return = false;
     stan = false;
     openn = false;
+    profile = '';
   userRole: string = '';
   private timeSubscription!: Subscription;
   constructor(private router: Router) {}
@@ -53,6 +54,7 @@ export class SuppliersComponent {
     this.username = state.username || '';
     this.email = state.email || '';
     this.userRole = state.role || 'user';
+    this.profile = state.profile || '';
     this.loadSuppliers();
      if (state.Move_return === true) {
     this.out = false;
@@ -113,7 +115,7 @@ export class SuppliersComponent {
     this.play_Return = false;
     setTimeout(() =>{
       this.router.navigate(['/sale'],{
-        state:{username: this.username , email: this.email, Move_return:true,role:this.userRole}
+        state:{username: this.username , email: this.email, Move_return:true,role:this.userRole ,profile:this.profile}
       })
     } ,300)
   }
@@ -125,7 +127,7 @@ export class SuppliersComponent {
 
     setTimeout(() =>{
       this.router.navigate(['/history'],{
-        state:{username: this.username , email: this.email, Move_return4:true ,role:this.userRole}
+        state:{username: this.username , email: this.email, Move_return4:true ,role:this.userRole ,profile:this.profile}
       })
     } ,300)
   }
@@ -137,7 +139,7 @@ export class SuppliersComponent {
 
     setTimeout(() =>{
       this.router.navigate(['/employee'],{
-        state:{username: this.username , email: this.email, Move_returnout:true ,role:this.userRole}
+        state:{username: this.username , email: this.email, Move_returnout:true ,role:this.userRole ,profile:this.profile}
       })
     } ,300)
   }
@@ -146,7 +148,7 @@ export class SuppliersComponent {
 
     setTimeout(() =>{
       this.router.navigate(['/dashboard'],{
-        state:{username: this.username , email: this.email, Move_return:true ,Dont_animation: true ,role:this.userRole}
+        state:{username: this.username , email: this.email, Move_return:true ,Dont_animation: true ,role:this.userRole ,profile:this.profile}
       })
     } ,300)
   }

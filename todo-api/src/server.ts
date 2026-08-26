@@ -483,6 +483,36 @@ app.delete('/api/inventory/:sku', async (req, res) => {
     res.status(500).json({ success: false, message: 'Server Error' });
   }
 });
+
+app.put('/api/inventory/:sku', async (req, res) => {
+  try {
+    const { sku } = req.params;
+    const { product_name, category, brand, price, quantity_alert, supplier } = req.body;
+
+    const result = await pool.query(
+      `UPDATE inventory 
+       SET product_name = $1, category = $2, brand = $3, price = $4, quantity_alert = $5, supplier = $6
+       WHERE sku = $7 
+       RETURNING *`,
+      [product_name, category, brand, price, quantity_alert, supplier, sku]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ success: false, message: 'ไม่พบสินค้านี้' });
+    }
+
+    res.json({
+      success: true,
+      message: 'อัปเดตข้อมูลสินค้าเรียบร้อยแล้ว',
+      data: result.rows[0]
+    });
+
+  } catch (error) {
+    console.error('Error updating inventory:', error);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
