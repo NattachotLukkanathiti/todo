@@ -146,17 +146,34 @@ app.get('/api/suppliers', async (req, res) => {
 });
 // 📌 เพิ่ม Route สำหรับเรียกดูข้อมูล Audit Log
 // 📌 Route สำหรับเรียกดูข้อมูล Audit และแปลงรูปแบบวันที่
-app.get('/api/audit', async (req, res) => {
+// 📌 Route สำหรับบันทึกข้อมูล (มีทั้ง date และ time)
+app.post('/api/audit', async (req, res) => {
   try {
+    const { date, time, username, email, activity, picture } = req.body;
+
     const result = await pool.query(
-      'SELECT * FROM audit ORDER BY id DESC'
+      `INSERT INTO audit (date, time, username, email, activity, picture) 
+       VALUES ($1, $2, $3, $4, $5, $6) 
+       RETURNING *`,
+      [date, time, username, email, activity, picture]
     );
 
-    // แปลงรูปแบบวันที่
+    res.status(201).json({ success: true, data: result.rows[0] });
+  } catch (error) {
+    console.error('Error saving audit log:', error);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+});
+
+// 📌 Route สำหรับดึงข้อมูล (แปลงรูปแบบ date)
+app.get('/api/audit', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM audit ORDER BY id DESC');
+
     const formattedRows = result.rows.map(row => {
-      if (row.time) { // หรือ row.date ขึ้นอยู่กับชื่อคอลัมน์ในฐานข้อมูลของคุณ
-        const dateObj = new Date(row.time);
-        row.time = dateObj.toLocaleDateString('en-GB', {
+      if (row.date) {
+        const dateObj = new Date(row.date);
+        row.date = dateObj.toLocaleDateString('en-GB', {
           day: 'numeric',
           month: 'long',
           year: 'numeric'

@@ -121,6 +121,7 @@
     <!-- Header -->
     <div class="table">
         <div class="sku">Date</div>
+         <div class="sku">Time</div>
         <div class="sku">Username</div>
         <div class="sku">Email</div>
          <div class="sku">Product</div>
@@ -150,10 +151,12 @@
      <div  class="table_detail2" *ngFor="let order of auditLogs; let i = index" [style.animation-delay]="i * 0.15 + 's'">
     <div class="table_detail">
         <div class="sku2">{{ order.date }}</div>
-<div class="sku2">{{ order.sku }}</div>
-<div class="sku2">{{ order.product_name }}</div>
-<div class="sku2">{{ order.brand }}</div>
-<div class="sku2">{{ order.price }}</div>
+        <div class="sku2">{{ order.time }}</div>
+<div class="sku2">{{ order.username }}</div>
+<div class="sku2">{{ order.email }}</div>
+<div class="sku2">{{ order.product }}</div>
+<div class="sku2">{{ order.activity }}</div>
+<div class="sku2">{{ order.create_by }}</div>
 <div class="sku2">
     <div class="connn">
         <img profile_employee src="image/profile.svg" alt="">{{ order.created_by }}

@@ -78,10 +78,12 @@ export class LoginComponent {
         const profile = response.user.profile;
         const role = response.user.role; // ปรับให้ตรงกับตัวแปร role จาก API ของคุณ
         // --- ส่วนที่เพิ่ม: เตรียมข้อมูลสำหรับ Audit Log ---
+         const now = new Date();
         const auditData = {
-          time: new Date().toISOString(),
+          date: now.toISOString().split('T')[0], // จะได้รูปแบบ YYYY-MM-DD
+          time: now.toTimeString().split(' ')[0], // จะได้รูปแบบ HH:MM:SS
           username: response.user.username,
-          email: response.user.title, // อ้างอิงจากที่คุณใช้ title เป็น email
+          email: response.user.title,
           activity: 'Login',
           picture: profile
         };
