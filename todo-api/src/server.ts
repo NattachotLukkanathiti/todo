@@ -149,13 +149,13 @@ app.get('/api/suppliers', async (req, res) => {
 // 📌 Route สำหรับบันทึกข้อมูล (มีทั้ง date และ time)
 app.post('/api/audit', async (req, res) => {
   try {
-    const { date, time, username, email, activity, picture } = req.body;
+    const { date, time, username, email, activity, role, picture } = req.body;
 
     const result = await pool.query(
-      `INSERT INTO audit (date, time, username, email, activity, picture) 
-       VALUES ($1, $2, $3, $4, $5, $6) 
+      `INSERT INTO audit (date, time, username, email, activity, role, picture) 
+       VALUES ($1, $2, $3, $4, $5, $6 ,$7) 
        RETURNING *`,
-      [date, time, username, email, activity, picture]
+      [date, time, username, email, activity, role, picture]
     );
 
     res.status(201).json({ success: true, data: result.rows[0] });

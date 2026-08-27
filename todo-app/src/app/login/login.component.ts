@@ -85,6 +85,7 @@ export class LoginComponent {
           username: response.user.username,
           email: response.user.title,
           activity: 'Login',
+          role: response.user.role || 'Guest',
           picture: profile
         };
 

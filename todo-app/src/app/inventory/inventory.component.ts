@@ -228,10 +228,6 @@ loadTodos() {
       item.toLowerCase().includes(this.search.toLowerCase())
     );
   }
-
-  logout() {
-    this.router.navigate(['/login']);
-}
   loadInventory() {
   this.todoService.getInventory().subscribe({
     next: (res) => {
@@ -474,5 +470,27 @@ editt(){
   }, 400);
   this.openpopup_edit('Are you sure you want to edit this product?');
 }
+logout() {
+    const now = new Date();
+    const auditData = {
+      date: now.toISOString().split('T')[0],
+      time: now.toTimeString().split(' ')[0],
+      username: this.username, 
+      email: this.email,       
+      activity: 'Logout',      
+      picture: this.profile
+    };
 
+
+    this.todoService.logAudit(auditData).subscribe({
+      next: () => {
+        console.log('Logout audit saved');
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error('Failed to save logout audit', err);
+        this.router.navigate(['/login']); 
+      }
+    });
+  }
 }

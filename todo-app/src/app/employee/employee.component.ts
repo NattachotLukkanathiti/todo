@@ -219,9 +219,7 @@ selectedaccount: any = { role: '' };
     );
   }
 
-  logout() {
-    this.router.navigate(['/login']);
-}
+
 // ตัวแปรเก็บข้อมูล
 filterEmployee(selected: string) {
   if (selected === 'all') {
@@ -267,4 +265,27 @@ button_edit_account2(item?: any) {
     if (this.selectedaccount.role === 'admin') this.selectedaccount.role = 'Admin';
   }
 }
+logout() {
+    const now = new Date();
+    const auditData = {
+      date: now.toISOString().split('T')[0],
+      time: now.toTimeString().split(' ')[0],
+      username: this.username, 
+      email: this.email,       
+      activity: 'Logout',      
+      picture: this.profile
+    };
+
+    // ส่งข้อมูลไปบันทึก แล้วค่อยเปลี่ยนหน้า
+    this.todoService.logAudit(auditData).subscribe({
+      next: () => {
+        console.log('Logout audit saved');
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error('Failed to save logout audit', err);
+        this.router.navigate(['/login']); 
+      }
+    });
+  }
 }

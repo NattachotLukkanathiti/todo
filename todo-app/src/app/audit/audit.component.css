@@ -1378,3 +1378,10 @@ input::placeholder{
     transform: translateY(-400%);
   }
 }
+.profile_employee {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px; /* ทำให้เป็นวงกลม */
+    object-fit: cover;  /* ป้องกันรูปภาพบิดเบี้ยว */
+    vertical-align: middle; /* จัดให้อยู่กึ่งกลางเมื่ออยู่คู่กับข้อความ */
+}

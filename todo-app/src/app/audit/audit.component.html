@@ -156,10 +156,10 @@
 <div class="sku2">{{ order.email }}</div>
 <div class="sku2">{{ order.product }}</div>
 <div class="sku2">{{ order.activity }}</div>
-<div class="sku2">{{ order.create_by }}</div>
 <div class="sku2">
     <div class="connn">
-        <img profile_employee src="image/profile.svg" alt="">{{ order.created_by }}
+        {{ order.role }}
+        <img class="profile_employee" [src]="order.picture" alt="">
     </div>
 </div>
     </div>
