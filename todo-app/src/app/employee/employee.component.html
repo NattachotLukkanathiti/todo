@@ -45,6 +45,9 @@
                 <div class="dash">
                     <img class="myicon2" src="image/Employee.svg" alt="">Employee
                 </div>
+                <div class="no" (click)="Animationa6_out()">
+                    <img  src="image/audit.svg" alt="">Audit Log
+                </div>
                 <div class="no" *ngIf="userRole === 'admin' || userRole === 'manager'"  (click)="Animation_out5()">
                     <img src="image/car.svg" alt="">Suppliers
                 </div>
@@ -154,7 +157,7 @@
 <div class="sku2">{{ order.title }}</div>
 <div class="sku2">{{ order.phone }}</div>
 <div class="button_small">
-            <img class="icon_small_inventory" src="image/edit.svg" alt="">
+            <img class="icon_small_inventory" src="image/edit.svg" (click)="button_edit_account2(order)">
             <img class="icon_small_inventory" src="image/delete.svg" alt="">
         </div>
     </div>
@@ -222,4 +225,38 @@
     <div class="loader3"></div>
     <div class="loader4"></div>
   </div>
+</div>
+
+<div class="import_product"  [class.button_cancel]="button_cancel" [class.button_edit_account]="button_edit_account">     
+    <div class="con_import_product2" [class.out_comimport]="outimport">         
+        <div class="serach_product"> 
+            <img src="image/main_edit2.svg" alt="">            
+            Edit Account      
+        </div> 
+        <div class="accout">
+            <label class="text_status" >Accout Status</label>
+               <div class="custom-select2">
+            <select>
+                <option value="all">Select <img class="icon_down"src="image/down.svg" alt=""></option>
+                <option value="option1">Admin</option>
+                <option value="option2">Frontend</option>
+                <option value="option2">Backend</option>
+            </select>
+            </div>
+               <label for="" class="text_status">Assign Role</label>
+               <div class="custom-select2">
+            <select [(ngModel)]="selectedaccount.role" [disabled]="selectedaccount.username === username" >
+    <option value="Admin">Admin</option>
+    <option value="Frontend">Frontend</option>
+    <option value="Backend">Backend</option>
+</select>
+            </div>
+               <label for=""class="text_status" >Admin Note</label>
+               <input type="text" class="sku_input2" >
+        </div>
+        <div class="button_import">
+                <div class="save">Confirm</div>
+                <div class="cancel" (click)="button_cancels()" >Cancel</div>
+            </div>        
+    </div>
 </div>

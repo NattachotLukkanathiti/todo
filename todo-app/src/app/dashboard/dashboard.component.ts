@@ -137,6 +137,16 @@ export class DashboardComponent implements OnInit {
       })
     } ,300)
   }
+  Animation_out6(){
+            this.out = true;
+    this.play_Return = false;
+    this.Animation_outsale = true;
+    setTimeout(() =>{
+      this.router.navigate(['/audit'],{
+        state:{username: this.username , email: this.email, Move_return6:true ,Dont_animation:true ,role:this.userRole ,profile:this.profile}
+      })
+    } ,300)
+  }
   openpopupnoti(message:string){
     this.showpopupnoti = true;
     this.popup = message;

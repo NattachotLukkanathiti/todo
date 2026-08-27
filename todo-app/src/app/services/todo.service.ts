@@ -20,7 +20,19 @@ export class TodoService {
   private headers = new HttpHeaders({
     'ngrok-skip-browser-warning': 'true'
   });
-
+   logAudit(auditData: any): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl}/audit`, 
+      auditData,
+      { headers: this.headers }
+    );
+  }
+  getAudit() {
+    return this.http.get<any[]>(
+      `${this.apiUrl}/audit`,
+      { headers: this.headers }
+    );
+  }
   getTodos() {
     return this.http.get<Todo[]>(this.api, { 
       headers: this.headers 

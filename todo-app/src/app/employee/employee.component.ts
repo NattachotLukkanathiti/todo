@@ -48,6 +48,11 @@ export class EmployeeComponent {
   profile = '';
   employeeList: any[] = []; 
 filteredEmployeeList: any[] = [];
+outimport = false;
+product = true;
+button_cancel = false;
+button_edit_account = false;
+selectedaccount: any = { role: '' };
   private timeSubscription!: Subscription;
   constructor(private router: Router) {}
 
@@ -135,6 +140,17 @@ filteredEmployeeList: any[] = [];
       })
     } ,300)
   }
+  Animationa6_out(){
+ this.out = false;
+    this.play_Return = false;
+    this.Animation_out = true;
+    setTimeout(() =>{
+      this.router.navigate(['/audit'],{
+        state:{username: this.username , email: this.email, Move_return6:true ,role:this.userRole ,profile:this.profile}
+      })
+    } ,300)
+  }
+  
   Animationa_out(){
     this.Animation_outdash = true;
     
@@ -151,6 +167,7 @@ filteredEmployeeList: any[] = [];
   closepopup(){
     this.showpopup = false;
     this.showpopupnoti = false;
+    this.button_edit_account = false;
     
   
       this.router.navigate(['/login']); 
@@ -217,6 +234,37 @@ filterEmployee(selected: string) {
 
     // กรองข้อมูลโดยใช้คอลัมน์ role
     this.filteredEmployeeList = this.employeeList.filter(emp => emp.role === mappedRole);
+  }
+}
+  button_cancels() {
+   this.outimport = true;
+  const element = document.querySelector('.con_import_product') as HTMLElement;
+  const element2 = document.querySelector('.con_import_product2') as HTMLElement;
+  if (element) {
+    element.scrollTop = 0;
+    element.classList.add('out');
+  }
+  if (element2) {
+    element2.scrollTop = 0;
+    element2.classList.add('out');
+  }
+
+  setTimeout(() => {
+    this.button_cancel = false;
+    this.outimport = false;
+    this.button_edit_account = false
+
+  }, 400);
+}
+button_edit_account2(item?: any) {
+  this.button_edit_account = true;
+  if (item) {
+    this.selectedaccount = { ...item }; 
+    
+    // แปลงค่าจากฐานข้อมูลให้ตรงกับ value ใน HTML
+    if (this.selectedaccount.role === 'pos') this.selectedaccount.role = 'Frontend';
+    if (this.selectedaccount.role === 'backend') this.selectedaccount.role = 'Backend';
+    if (this.selectedaccount.role === 'admin') this.selectedaccount.role = 'Admin';
   }
 }
 }

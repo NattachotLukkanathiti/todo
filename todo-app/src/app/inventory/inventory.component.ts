@@ -30,6 +30,7 @@ export class InventoryComponent {
   popup = '';
   navigationState?: any;
   showpopupnoti = false;
+  showpopupedit = false;
   isMenuOpen = false;
   isMenuOpenprofile = false;
   currentView = 'dashboard';
@@ -48,6 +49,7 @@ export class InventoryComponent {
   product = true;
   product2 = true;
   todos: any[] = [];
+  button_edit = false;
   button_addd = false;
     outimport = false;
     loader = true;
@@ -67,7 +69,14 @@ export class InventoryComponent {
   showpopupconfirm = false
   selectedFile: File | null = null;
   isEditMode = false;
-selectedProduct: any = null;
+  outedit = false;
+selectedProduct: any = {
+  category: '',
+  brand: '',
+  price: null,
+  quantity_alert: null
+};
+
 
   
   //  เพิ่มบรรทัดนี้เข้าไปค่ะ
@@ -146,6 +155,15 @@ selectedProduct: any = null;
       })
     } ,300)
   }
+  Animationa_out6(){
+              this.out = false;
+    this.Animation_out = true;
+    setTimeout(() =>{
+      this.router.navigate(['/audit'],{
+        state:{username: this.username , email: this.email, Move_return6:true ,Open_bar:true ,role:this.userRole ,profile:this.profile}
+      })
+    } ,300)
+  }
   openpopupnoti(message:string){
     this.showpopupnoti = true;
     this.popup = message;
@@ -157,10 +175,16 @@ selectedProduct: any = null;
   openpopup_confirm(message:string){
     this.popup = message;
   }
+  openpopup_edit(message:string){
+    this.showpopupedit = true;
+    this.popup = message;
+  }
   closepopup(){
     this.showpopupconfirm = false
     this.showpopup = false
-  
+         this.showpopupedit = false;
+         this.outimport = true;
+    this.button_edit = false;
     
   }
   ngOnDestroy() {
@@ -211,9 +235,13 @@ loadTodos() {
   loadInventory() {
   this.todoService.getInventory().subscribe({
     next: (res) => {
-      this.Inventory = res;
-        this.isLoading = false; 
-        this.loader = false;
+      // สมมติว่ามีฟิลด์ updated_at หรือ id ที่สามารถใช้เรียงลำดับได้
+      this.Inventory = res.sort((a, b) => {
+        // เรียงจากมากไปน้อย (ล่าสุดขึ้นก่อน)
+        return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+      });
+      this.isLoading = false;
+      this.loader = false;              
     },
     error: (err) => {
       console.error('Error fetching sale order:', err);
@@ -221,8 +249,7 @@ loadTodos() {
   });
 }
   button_cancels() {
-  this.outimport = true;
-
+   this.outimport = true;
   const element = document.querySelector('.con_import_product') as HTMLElement;
   const element2 = document.querySelector('.con_import_product2') as HTMLElement;
   if (element) {
@@ -237,8 +264,10 @@ loadTodos() {
   setTimeout(() => {
     this.button_importt = false;
     this.button_addd = false;
+    this.button_edit = false;
     this.button_cancel = false;
     this.outimport = false;
+    this.imagePreview = null;
   }, 400);
 }
   button_imports(){
@@ -357,25 +386,93 @@ async button_delete(sku: string, index: number) {
     this.showpopupconfirm = false;
     if (this.resolveConfirm) this.resolveConfirm(true); 
 }
-button_edit(item: any) {
+button_editt(item: any) {
+  this.outimport = false;
+  this.button_edit = true;
   this.isEditMode = true;
   this.selectedProduct = { ...item }; 
+  this.imagePreview = item.picture || null;
 }
-saveEdit() {
+async saveEdit() {
   this.isLoading = true;
-  // 👇 แก้ไขตรงนี้: ส่ง this.selectedProduct.sku เป็นตัวแรก และ this.selectedProduct เป็นตัวที่สอง
-  this.todoService.updateInventory(this.selectedProduct.sku, this.selectedProduct).subscribe({
-    next: (res) => {
-      this.openpopup('แก้ไขข้อมูลสินค้าเรียบร้อยแล้ว');
-      this.loadInventory(); // โหลดข้อมูลใหม่
-      this.isEditMode = false;
-      this.isLoading = false;
-    },
-    error: (err) => {
-      this.openpopupnoti('เกิดข้อผิดพลาดในการแก้ไขข้อมูล');
-      this.isLoading = false;
+  // เริ่มต้นโดยใช้ค่า picture ปัจจุบัน (ซึ่งอาจเป็น URL ที่ผู้ใช้เพิ่งพิมพ์เข้ามา)
+  let pictureUrl = this.selectedProduct.picture; 
+
+  try {
+    // 1. ตรวจสอบว่ามีการเลือกไฟล์ใหม่หรือไม่ (ถ้ามี จะใช้ไฟล์นี้เป็นหลัก)
+    if (this.selectedFile) {
+      const fileExt = this.selectedFile.name.split('.').pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `inventory/${fileName}`;
+
+      const { data, error } = await this.supabase.storage
+        .from('Photo')
+        .upload(filePath, this.selectedFile);
+
+      if (error) throw error;
+
+      const { data: publicUrlData } = this.supabase.storage
+        .from('Photo')
+        .getPublicUrl(filePath);
+              
+      pictureUrl = publicUrlData.publicUrl;
     }
-  });
+
+    // 2. อัปเดตข้อมูลที่จะส่งไป Backend
+    const updatedProduct = {
+      ...this.selectedProduct,
+      picture: pictureUrl // จะเป็น URL จากไฟล์ใหม่ หรือ URL ที่พิมพ์เข้ามา
+    };
+
+    this.todoService.updateInventory(updatedProduct.sku, updatedProduct).subscribe({
+      next: (res) => {
+        this.openpopup('แก้ไขข้อมูลสินค้าเรียบร้อยแล้ว');
+        
+        const index = this.Inventory.findIndex(item => item.sku === updatedProduct.sku);
+        if (index !== -1) {
+          // อัปเดตข้อมูลในตารางทันที
+          this.Inventory[index] = { ...updatedProduct };
+        } else {
+          this.loadInventory();
+        }
+
+        this.isEditMode = false;
+        this.isLoading = false;
+        this.selectedFile = null; // รีเซ็ตไฟล์
+      },
+      error: (err) => {
+        this.openpopupnoti('เกิดข้อผิดพลาดในการแก้ไขข้อมูล');
+        this.isLoading = false;
+      }
+    });
+  } catch (error) {
+    console.error('Error uploading image:', error);
+    this.openpopup('อัปโหลดรูปภาพไม่สำเร็จ');
+    this.isLoading = false;
+  }
+}
+onUrlChange(url: string) {
+  if (url && url.trim() !== '') {
+    // ตรวจสอบเบื้องต้นว่าเป็น URL รูปภาพหรือไม่ (ไม่บังคับ)
+    if (url.startsWith('http') || url.startsWith('https')) {
+      this.imagePreview = url;
+    }
+  } else {
+    // ถ้าช่อง input ว่าง ให้ล้างรูปตัวอย่างออก (หรือจะให้กลับไปใช้รูปเดิมก็ได้)
+    this.imagePreview = this.selectedProduct.picture || null;
+  }
+}
+editt(){
+  this.outimport = true;
+  setTimeout(() => {
+    this.button_importt = false;
+    this.button_addd = false;
+    this.button_edit = false;
+    this.button_cancel = false;
+    this.outimport = false;
+    this.imagePreview = null;
+  }, 400);
+  this.openpopup_edit('Are you sure you want to edit this product?');
 }
 
 }

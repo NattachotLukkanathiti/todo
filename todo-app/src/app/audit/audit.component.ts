@@ -5,14 +5,13 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TodoService } from '../services/todo.service';
 import { interval, Subscription } from 'rxjs';
-
 @Component({
-  selector: 'app-sale',
+  selector: 'app-audit',
   imports: [CommonModule, DatePipe, RouterLink,FormsModule],
-  templateUrl: './sale.component.html',
-  styleUrl: './sale.component.css'
+  templateUrl: './audit.component.html',
+  styleUrl: './audit.component.css'
 })
-export class SaleComponent {
+export class AuditComponent {
 
   private todoService = inject(TodoService);
 
@@ -22,7 +21,7 @@ export class SaleComponent {
 
   data: any[] = [];
   months: string[] = [];
-    stan = false;
+  
   email = '';
   username = '';
   showpopup = false;
@@ -34,17 +33,18 @@ export class SaleComponent {
   currentTime = new Date();
   isTimeOpen = false;
   Animation_out = false;
-  out = false;
-  saleOrders: any[] = []; 
+  out = true;
+  history: any[] = []; 
   reload = false;
   isLoading = false; 
   loader = false;
-  Animation_outdash = false;
-  return = false;
   profile = '';
-  play_Return = false;
+ play_Return = false;
+   Animation_outdash = false;
+  return = false;
+    stan = false;
    userRole: string = '';
-  
+    auditLogs: any[] = []; 
   private timeSubscription!: Subscription;
   constructor(private router: Router) {}
 
@@ -55,34 +55,42 @@ export class SaleComponent {
     this.email = state.email || '';
     this.userRole = state.role || 'user';
     this.profile = state.profile || '';
-
+    this.loadAudit();
      if (state.Move_return === true) {
-    this.stan = false;
-      this.play_Return = true;
-      this.out = false;
+    this.out = false;
   }
-    if (state.Move_return2 === true){
-      this.stan = false;
-      this.play_Return = true;
-      this.out = false;
-    }
-    if (state.Move_return3 === true){
+  if (state.Move_returns3 === true) {
+        this.play_Return = false;
+    this.out = false;
     
-    }
+  }
+   if (state.Move_return4 === true) {
+        this.out = false
+    this.play_Return = true;
+  }
+  if (state.Move_return44 === true) {
+        this.out = false
+    this.play_Return = false;
+  }
+  if (state.Move_return6 === true) {
+        this.out = false
+    this.play_Return = false;
+  }
+
 
     if(!this.username || !this.email){
       this.openpopupnoti("Session not found. Redirecting to login")
     return;
     }
+      
 
-      this.loadSaleOrders(); 
       
     this.timeSubscription = interval(1000).subscribe(() => {
       this.currentTime = new Date();
     });
   }
   reloads() {
-  this.loadSaleOrders();
+    this.history
     this.isLoading = true; 
 }   
   Animationa2_out(){
@@ -90,25 +98,36 @@ export class SaleComponent {
 
     setTimeout(() =>{
       this.router.navigate(['/inventory'],{
-        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole ,profile:this.profile}
+        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole ,profile:this.profile }
       })
     } ,300)
   }
   Animationa3_out(){
-    this.Animation_out = true;
+    this.Animation_outdash = true;
 
     setTimeout(() =>{
-      this.router.navigate(['/history'],{
-        state:{username: this.username , email: this.email, Move_return44:true , role:this.userRole ,profile:this.profile}
+      this.router.navigate(['/sale'],{
+        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole ,profile:this.profile}
       })
     } ,300)
   }
   Animationa4_out(){
-    this.Animation_out = true;
+    this.Animation_outdash = true;
+    
 
     setTimeout(() =>{
       this.router.navigate(['/employee'],{
-        state:{username: this.username , email: this.email, Move_return4:true ,role:this.userRole ,profile:this.profile}
+        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole ,profile:this.profile}
+      })
+    } ,300)
+  }
+  Animationa6_out(){
+    this.Animation_outdash = true;
+    
+
+    setTimeout(() =>{
+      this.router.navigate(['/history'],{
+        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole ,profile:this.profile}
       })
     } ,300)
   }
@@ -121,21 +140,12 @@ export class SaleComponent {
       })
     } ,300)
   }
-  Animation_out6(){
-              this.out = false;
-    this.Animation_out = true;
-    setTimeout(() =>{
-      this.router.navigate(['/audit'],{
-        state:{username: this.username , email: this.email, Move_return6:true ,Open_bar:true ,role:this.userRole ,profile:this.profile}
-      })
-    } ,300)
-  }
   Animationa_out(){
     this.Animation_outdash = true;
-    
+
     setTimeout(() =>{
       this.router.navigate(['/dashboard'],{
-        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole ,profile:this.profile }
+        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole  ,profile:this.profile}
       })
     } ,300)
   }
@@ -154,27 +164,24 @@ export class SaleComponent {
   ngOnDestroy() {
     this.timeSubscription?.unsubscribe();
   }
-  // ปรับชื่อและค่า scale ให้เหมาะกับความสูงของกราฟ
-  calculateHeight(valueInBaht: number): number {
-    const maxHeight = 300; // ความสูงสูงสุดที่ยอมรับได้ (px)
-    const scale = 0.004;    // อัตราส่วนย่อขยาย (ปรับตามความเหมาะสมของข้อมูล)
-    
-    return Math.min(valueInBaht * scale, maxHeight);
+
+
+  loadAudit() {
+    this.loader = true;
+    // ต้องไปเพิ่ม getAudit() ใน todo.service.ts ด้วย
+    this.todoService.getAudit().subscribe({
+      next: (res) => {
+        this.auditLogs = res;
+        this.isLoading = false;
+        this.loader = false;
+      },
+      error: (err) => {
+        console.error('Error fetching audit logs:', err);
+        this.loader = false;
+      }
+    });
   }
 
-  loadSaleOrders() {
-    this.loader = true;
-  this.todoService.getSaleOrders().subscribe({
-    next: (res) => {
-      this.saleOrders = res;
-        this.isLoading = false; 
-        this.loader = false
-    },
-    error: (err) => {
-      console.error('Error fetching sale order:', err);
-    }
-  });
-}
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
@@ -198,3 +205,4 @@ export class SaleComponent {
     this.router.navigate(['/login']);
 }
 }
+

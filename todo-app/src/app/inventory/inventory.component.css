@@ -185,20 +185,19 @@
         font-weight: 600;
     cursor: pointer;
 }
-.button_edit{
+.button_edit {
     width: 100%;
-    height: 20px;
-    padding: 25px;
+    padding: 15px 25px; /* ปรับ padding ให้สมดุลขึ้น */
     font-size: 16px;
     color: #FFFFFF;
     border: 2px solid #E6EAED;
     border-radius: 50px;
     background: #FCDE1D;
-    justify-content: center;
     display: flex;
+    justify-content: center; /* จัดกึ่งกลางแนวนอน */
+    align-items: center;     /* จัดกึ่งกลางแนวตั้ง */
     margin-bottom: 20px;
-    align-items: center;
-        font-weight: 600;
+    font-weight: 600;
     cursor: pointer;
 }
 .button_cancel {
@@ -298,8 +297,11 @@
     margin-top: 10px;
 }
 
-input::placeholder {
-    text-indent: 30px;
+.sku_input2::placeholder {
+    font-weight: 100; 
+}
+.inputser::placeholder {
+    text-indent: 20px !important; 
 }
 
 .hamburger {
@@ -340,6 +342,10 @@ input::placeholder {
 .button_addd{
     display: block !important;
 }
+.button_edit{
+    display: block !important;
+}
+
 
 .button_addt {   
      position: relative;
@@ -608,7 +614,7 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
     position: fixed;
     top: 50%;
     left: 50%;
-    
+    color: #212529;
     transform: translate(-50%, -50%);
     z-index: 7;
     border-radius: 40px;
@@ -671,6 +677,9 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
     width: 100%;
     padding: 20px;
     top: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-weight: 600;
     z-index: 10;
     margin-bottom: 20px;
@@ -805,9 +814,10 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
 }
 
 .label_import {
-    font-weight: 350;
+    font-weight: 300;
     font-size: 15px;
 }
+
 
 .sku_pro {
     align-items: center;
@@ -826,8 +836,45 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
     gap: 20px;
     box-sizing: border-box;
 }
+.icon_edit{
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    display: block;
+    right: 0;
+    margin-right: 10px;
+}
+.con_edit{
+    position: relative;
+    display: flex;
+    width: 60%;
+    align-items: center;
+}
+.sku_pro2 {
+    
+    margin-left: 20px;
+  display: flex; /* เพิ่มบรรทัดนี้หากยังไม่มี */
+  flex-direction: column; /* เพิ่มบรรทัดนี้เพื่อจัดเรียงในแนวตั้ง */
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
+}
 
 .sku_input {
+    box-sizing: border-box;
+    position: relative;
+    border-radius: 8px;
+    padding: 17px;
+    margin-top: 10px;
+    width: 100%;
+    height: 20px;
+    font-size: 15px;
+    font-weight: 100;
+    color: #48505E;
+    border: none;
+    border: 1px solid #E6EAED;
+}
+.sku_input2 {
     box-sizing: border-box;
     position: relative;
     border-radius: 8px;
@@ -849,7 +896,14 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
     margin-bottom: 20px;
     cursor: pointer;
 }
-
+.add_image2 {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 20px;
+    width: 100%;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
 .custom-select select {
     width: 100%;
     padding: 12px 16px;
@@ -1785,7 +1839,7 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
     background-color: #FFFFFF;
     border: 2px solid #bccbbb85;
     border-radius: 10px;
-    width: 450px;
+    width: 500px;
     padding: 20px 0px;
     height: 250px;
     position: absolute;
@@ -1799,7 +1853,7 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
 }
 
 .buttonclose {
-    width: 100%;
+    width: 80%;
     height: 20px;
     padding: 23px;
     font-size: 16px;
@@ -1811,10 +1865,15 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
     display: flex;
     margin-bottom: 20px;
     align-items: center;
+    margin: 0 auto;
+    cursor: pointer;
 }
 
 .buttonclose:hover {
-    background: #9ef387;
+    background: #77BF63;
+}
+.buttonclose:active {
+    background: #6AAA58;
 }
 
 .buttonnoti:hover {

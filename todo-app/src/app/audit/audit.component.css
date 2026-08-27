@@ -58,254 +58,13 @@
     align-items: center;
     text-align: center;
 }
+.text{
+    width: 200px;
+}
 .lin{
     background: #E6EAED;
     width: 1px;
     height: 35px;
-}
-.button_import {
-    display: flex;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    gap: 8px;
-    display: flex;
-    justify-content: center;
-    bottom: 0;
-    width: 100%;
-    box-sizing: border-box;
-}
-.cancel {
-    position: relative;
-    overflow: hidden;
-
-    background: #B9BDC7;
-    padding: 20px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    font-weight: 500;
-    cursor: pointer;
-
-    height: 15px;
-    width: 100px;
-
-    color: white;
-    border-radius: 30px;
-
-    transition: 0.3s;
-}
-
-/* เอฟเฟกต์วงกลม */
-.cancel::before {
-    content: "";
-    position: absolute;
-
-    width: 0;
-    height: 0;
-
-    background: #858D9D;
-    border-radius: 50%;
-
-    left: 50%;
-    top: 50%;
-
-    transform: translate(-50%, -50%);
-
-    transition: width 0.4s ease, height 0.4s ease;
-
-    z-index: 0;
-}
-
-/* Hover */
-.cancel:hover::before {
-    width: 200px;
-    height: 200px;
-}
-
-/* ให้ข้อความอยู่ด้านบน */
-.cancel {
-    isolation: isolate;
-}
-
-.cancel::after {
-    content: "Cancel";
-
-    position: absolute;
-    z-index: 2;
-
-    color: white;
-}
-
-/* กด */
-.cancel:active {
-    transform: scale(0.8);
-}
-
-.save {
-    background: #4283DD;
-    padding: 20px;
-    color: white;
-    font-weight: 500;
-    width: 150px;
-    height: 15px;
-    border-radius: 30px;
-    width: 100px;
-    display: flex;
-    justify-content: center;
-    cursor: pointer;
-}
-.save:hover {
-    background: #1364D5;
-}
-
-.save:active {
-    background: #115BC2;
-    transform: scale(0.98);
-    /* เพิ่มเอฟเฟกต์ให้ปุ่มยุบลงเล็กน้อยเมื่อกด */
-}
-.button_edit_account{
-    display: block !important;
-}
-.import_product{
-    display: none;
-}
-.con_import_product::-webkit-scrollbar {
-  display: none !important;
-}
-.sku_input {
-    box-sizing: border-box;
-    position: relative;
-    border-radius: 8px;
-    padding: 17px;
-    margin-top: 10px;
-    width: 100%;
-    height: 20px;
-    font-size: 15px;
-    font-weight: 100;
-    color: #2B2F38;
-    border: none;
-    border: 1px solid #E6EAED;
-    margin-bottom: 20px;
-
-}
-
-.sku_input2{
-        box-sizing: border-box;
-    position: relative;
-    border-radius: 8px;
-    padding: 17px;
-    margin-top: 10px;
-    width: 100%;
-    height: 100px;
-    font-size: 15px;
-    font-weight: 100;
-    color: #48505E;
-    border: none;
-    border: 1px solid #E6EAED;
-}
-.out_comimport{
-
-    animation: movess 0.5s ease-in-out;
-}
-@keyframes movess {
-    0% {
-         opacity: 1;
-
-        clip-path: polygon(0 0,
-                100% 0,
-                100% 100%,
-                0 100%);
-                filter: blur(0);
-    }
-    50%{
-
-        clip-path: polygon(0 0,
-                100% 0,
-                80% 100%,
-                
-                20% 100%);
-                filter: 2px;
-    }
-    100% {
-         width: 10px;
-        height: 10px;
-        margin-top: 300px;
-        clip-path: polygon(0 0,
-                100% 0,
-                80% 100%,
-                20% 100%);
-                filter: blur(5px);
-
-    }
-}
-.con_import_product,.con_import_product2{
-    width: 40%;
-    height: 550px;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    color: #212529;
-    transform: translate(-50%, -50%);
-    z-index: 7;
-    border-radius: 8px;
-    background-color: white;
-    border: 1px solid #E5E7EB;
-    padding: 20px;
-    box-sizing: border-box;
-    overflow-y: auto;
-    overflow-x: hidden;
-    
-    animation: moves 0.5s ease-in-out;
-}
-
-.serach_product {
-    background-color: #F4F5FC;
-    width: 100%;
-    padding: 20px;
-    top: 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 600;
-    z-index: 10;
-    margin-bottom: 20px;
-    box-sizing: border-box;
-}
-.con_import_product::-webkit-scrollbar {
-  display: none;
-}
-.import_product {
-    background-color: #d9d9d977;
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    z-index: 10;
-}
-.icon_small_inventory {
-    padding: 7px;
-    width: 15px;
-    height: 15px;
-    border-radius: 8px;
-    border: 1px solid #AFAFAF;
-    cursor: pointer;
-}
-.icon_small_inventory:hover {
-    padding: 7px;
-    width: 15px;
-    background-color: #d0d0d0;
-    height: 15px;
-    border-radius: 8px;
-    border: 1px solid #AFAFAF;
-}
-.icon_small_inventory:active {
-    padding: 7px;
-    width: 15px;
-    background-color: #8a8a8a;
-    height: 15px;
-    border-radius: 8px;
-    border: 1px solid #AFAFAF;
 }
 .container_bar{
     gap: 10px;
@@ -319,79 +78,6 @@
     width: 450px;
     margin-right: 40px;
     height: 70px;
-}
-.button_small {
-    position: absolute;
-    display: flex;
-    right: 50px;
-    gap: 10px;
-    align-items: center;
-}
-
-.icon_small_inventory {
-    padding: 7px;
-    width: 15px;
-    height: 15px;
-    border-radius: 8px;
-    border: 1px solid #AFAFAF;
-}
-
-.Return {
-    animation: Move_Return 0.5s ease-in-out forwards !important;
-}
-
-@keyframes Move_Return {
-    0% {
-        transform: translateY(500px);
-        opacity: 0;
-    }
-
-    50% {
-        transform: translateY(0);
-        opacity: 1;
-        transform: scaleY(1.1);
-
-    }
-
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.fade-out2 {
-    animation: Move_dashboard 1s ease-in-out !important;
-}
-
-@keyframes Move_dashboard {
-    0% {
-        transform: translateY(0px);
-        /* เริ่มต้นที่ตำแหน่งปกติ */
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateY(-2000px);
-        /* เลื่อนลงไปที่จุดสุดท้าย */
-        opacity: 0;
-        /* ค่อยๆ จางหายไปเมื่อเลื่อนลง */
-    }
-}
-
-.fade-out2 {
-    animation: Move_inventory 0.5s ease-in-out;
-}
-
-@keyframes Move_inventory {
-    0% {
-        transform: translateY(0px);
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateY(1000px);
-        opacity: 0;
-    }
 }
 .overdate{
     width: 50%;
@@ -426,7 +112,7 @@
     font-size: 30px;
     color: #2B2F38;
     transform: scaleX(1.1);
-    font-weight:bolder; /* ปรับความหนาเป็น 500 หรือ 600 แทนหากต้องการให้ดูเด่นขึ้น */
+    font-weight: bolder;
 }
 .iconsearch{
     position: absolute;
@@ -437,7 +123,7 @@
     margin-left:10px;
     margin-top: 10px;
 }
-.inputser::placeholder{
+input::placeholder{
     text-indent: 30px;
 }
 .hamburger{
@@ -521,7 +207,7 @@
     cursor: pointer;
 }
 .custom-select {
-  width: 120px; /* ปรับความกว้างตามต้องการ */
+  width: 160px; /* ปรับความกว้างตามต้องการ */
   position: relative;
 }
 
@@ -540,98 +226,6 @@
 }
 
 .custom-select::after {
-  content: url("/image/down.svg"); /* Fixed: Added url() wrapper */
-  font-size: 12px;
-  color: #6B7280;
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-.custom-select2 {
-  width: 100%; /* ปรับความกว้างตามต้องการ */
-  position: relative;
-}
-
-
-.con_import_product::-webkit-scrollbar {
-  display: none;
-}
-.con_import_product2::-webkit-scrollbar {
-  display: none;
-}
-.out_comimport{
-
-    animation: movess 0.5s ease-in-out;
-}
-
-@keyframes movess {
-    0% {
-         opacity: 1;
-
-        clip-path: polygon(0 0,
-                100% 0,
-                100% 100%,
-                0 100%);
-                filter: blur(0);
-    }
-    50%{
-
-        clip-path: polygon(0 0,
-                100% 0,
-                80% 100%,
-                
-                20% 100%);
-                filter: 2px;
-    }
-    100% {
-         width: 10px;
-        height: 10px;
-        margin-top: 300px;
-        clip-path: polygon(0 0,
-                100% 0,
-                80% 100%,
-                20% 100%);
-                filter: blur(5px);
-
-    }
-}
-@keyframes moves {
-    0% {
-        width: 0px;
-        height: 0px;
-        margin-left: 50vw;
-        margin-top: -50vh;
-        clip-path: polygon(80% 0, 50% 0, 100% 100%,40% 100%);
-        filter: blur(5px); 
-    }
-    50%{
-        clip-path: polygon(50% 0, 100% 0, 100% 100%, 10% 100%);
-    }
-    100% {
-
-
-        opacity: 1;
-        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-        filter: blur(2px); 
-
-    }
-}
-.custom-select2 select {
-  width: 100%;
-  padding: 12px 16px;
-  color: #48505E;
-  font-weight: 100;
-  background-color: #ffffff;
-  border: 1px solid #E5E7EB;
-  border-radius: 8px;
-  appearance: none;
-  font-size: 13px;
-  cursor: pointer;
-}
-
-.custom-select2::after {
   content: url("/image/down.svg"); /* Fixed: Added url() wrapper */
   font-size: 12px;
   color: #6B7280;
@@ -674,16 +268,52 @@
 .table_detail {
     margin-top: 10px;
     padding: 20px;
-    align-items: center;
+    
     width: 100%;
     gap: 1%;
     display: flex;
     box-sizing: border-box; /* เพิ่มบรรทัดนี้ */
 }
-.connn{
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.Return {
+    animation: Move_Return 0.5s ease-in-out forwards !important;
+}
+
+@keyframes Move_Return {
+    0% {
+        transform: translateY(500px);
+        opacity: 0;
+    }
+
+    50% {
+        transform: translateY(0);
+        opacity: 1;
+        transform: scaleY(1.1);
+
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.fade-out2 {
+    animation: Moveemployee 1s ease-in-out !important;
+}
+
+@keyframes Moveemployee {
+    0% {
+        transform: translateY(0px);
+        /* เริ่มต้นที่ตำแหน่งปกติ */
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-2000px);
+        /* เลื่อนลงไปที่จุดสุดท้าย */
+        opacity: 0;
+        /* ค่อยๆ จางหายไปเมื่อเลื่อนลง */
+    }
 }
 .sku {
     font-size: 15px;
@@ -791,7 +421,6 @@
     transform: translateY(-10px); /* ดันขึ้นไปด้านบนเล็กน้อย */     
     animation: showLine 1s ease forwards; /* สั่งให้เล่นแอนิเมชัน */ 
 }  
-
 @keyframes showLine {
     0% {
         opacity: 0;
@@ -926,8 +555,17 @@
     background: #fff;
     box-shadow: 0 8px 24px rgba(0,0,0,.08);
     box-sizing: border-box;
+    
 }
-
+.connn{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.profile_employee{
+    display: flex;
+    align-items: center;
+}
 .container {
     flex: 1; 
     width: 100%; /* เปลี่ยนจาก max-width เป็น width */
@@ -944,16 +582,17 @@
     position: relative;
     border: 1px solid #E6EAED;
     width: 100%;
+    margin-bottom: 20px;
     margin-top: 0;
     height: 100%;
 }
 .bars{
     margin-top: 20px;
     margin-left: -10px;
-    margin-bottom: 20px;
     position: relative;
     display: flex;
     align-items: center;
+    margin-bottom: 20px;
     height: 30px;
     gap: 8px;
     
@@ -1010,12 +649,7 @@
     align-items: center;
 }
 
-.text_status{
-    display: inline-block;
-    margin-top: 10px !important;
-    color: #2B2F38 !important;
-    margin-bottom: 10px;
-}
+
 
 @keyframes height {
   0% {
@@ -1216,19 +850,17 @@
     z-index: 2;
     width: 100%;
 }
-.fade-out {
-    animation: Move_sale 0.5s ease-in-out !important;
+.fade-out{
+    animation: Move_dashboard 1s ease-in-out !important;
 }
-
-@keyframes Move_sale {
+@keyframes Move_dashboard{
     0% {
-        transform: translateY(0px);
+        transform: translateY(0px); /* เริ่มต้นที่ตำแหน่งปกติ */
         opacity: 1;
     }
-
     100% {
-        transform: translateY(500px);
-        opacity: 0;
+        transform: translateY(5000px); /* เลื่อนลงไปที่จุดสุดท้าย */
+        opacity: 0; /* ค่อยๆ จางหายไปเมื่อเลื่อนลง */
     }
 }
 @media (max-width:768px){

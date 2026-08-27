@@ -144,6 +144,33 @@ app.get('/api/suppliers', async (req, res) => {
         res.status(500).json({ message: 'Server Error' });
     }
 });
+// 📌 เพิ่ม Route สำหรับเรียกดูข้อมูล Audit Log
+// 📌 Route สำหรับเรียกดูข้อมูล Audit และแปลงรูปแบบวันที่
+app.get('/api/audit', async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM audit ORDER BY id DESC'
+    );
+
+    // แปลงรูปแบบวันที่
+    const formattedRows = result.rows.map(row => {
+      if (row.time) { // หรือ row.date ขึ้นอยู่กับชื่อคอลัมน์ในฐานข้อมูลของคุณ
+        const dateObj = new Date(row.time);
+        row.time = dateObj.toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        });
+      }
+      return row;
+    });
+
+    res.json(formattedRows);
+  } catch (error) {
+    console.error('Error fetching audit logs:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
 app.post('/todos', async (req, res) => {
   try {
     // ➕ [เพิ่ม] รับค่า otp เพิ่มเติมมาจาก Frontend

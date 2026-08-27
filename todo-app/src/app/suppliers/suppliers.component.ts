@@ -143,6 +143,18 @@ export class SuppliersComponent {
       })
     } ,300)
   }
+  Animationa6_out(){
+    this.out = false;
+    this.Animation_outdash = true;
+     this.inhere = true;
+    this.play_Return = false;
+
+    setTimeout(() =>{
+      this.router.navigate(['/audit'],{
+        state:{username: this.username , email: this.email, Move_return4:true ,role:this.userRole ,profile:this.profile}
+      })
+    } ,300)
+  }
   Animationa_out(){
     this.Animation_outdash = true;
 

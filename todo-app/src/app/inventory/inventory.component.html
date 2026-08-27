@@ -45,6 +45,9 @@
                 <div class="no" (click)="Animationa_out4()">
                     <img src="image/Employee.svg" alt="">Employee
                 </div>
+                <div class="no" (click)="Animationa_out6()">
+                    <img src="image/audit.svg" alt="">Audit Log
+                </div>
                 <div class="no" *ngIf="userRole === 'admin' || userRole === 'manager'" (click)="Animation_out5()">
                     <img src="image/car.svg" alt="">Suppliers
                 </div>
@@ -169,7 +172,7 @@
         <div class="sku2">{{ item.quantity }}</div>
         <div class="sku2">{{ item.quantity_alert }}</div>
         <div class="button_small">
-            <img class="icon_small_inventory" src="image/edit.svg" (click)="button_edit(item)">
+            <img class="icon_small_inventory" src="image/edit.svg" (click)="button_editt(item)">
             <img class="icon_small_inventory" src="image/delete.svg" (click)="button_delete(item.sku, i)" alt="">
         </div>
     </div>
@@ -245,8 +248,8 @@
         </div>
     </div>
 </div>
-<div class="backpop">
-    <div  class="popupcontainer">
+<div *ngIf="showpopupedit" class="backpop">
+    <div *ngIf="showpopupedit" class="popupcontainer">
         <div class="popup-content">
             <img class="iconsuccess" src="image/editalert.svg" alt="">
                      <div class="line"></div>
@@ -257,7 +260,7 @@
                 {{popup}}
             </div>
             <div class="container_button">
-                      <button class="button_edit" (click)="confirmdelete()">Confirm</button>
+                      <button class="button_edit" (click)="saveEdit()">Confirm</button>
             <button class="button_cancel" (click)="closepopup()">No</button>
             </div>
         </div>
@@ -409,6 +412,90 @@
         </div>
           <div class="button_import">
                 <div class="save">Save to Stock</div>
+                <div class="cancel" (click)="button_cancels()" >Cancel</div>
+            </div>
+    </div>
+</div>
+
+<div class="import_product" [class.product2]="product2" [class.button_cancel]="button_cancel" [class.button_edit]="button_edit">
+    <div class="con_import_product2" [class.out_comimport]="outimport" >
+        <div class="serach_product">
+            <img src="image/main_edit2.svg" alt="">
+            Edit Product
+        </div>
+       <div class="add_image2">
+            <img  [src]="imagePreview || 'image/Add ImageAdd_image.svg'" style="width: 100px; height: 100px; object-fit: cover;">
+                <div class="sku_pro2">
+                    <label class="label_import" for="fileInput">Upload Image</label>
+                    <div class="con_edit">
+                    <input type="text" class="sku_input2" (ngModelChange)="onUrlChange($event)" [(ngModel)]="selectedProduct.picture" placeholder="Change Image" >
+                    <label for="fileInput" style="cursor: pointer;">
+                    <img class="icon_edit" src="image/edit_inventory.svg" alt="">
+                </label>
+            <input type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+        </div>
+    </div>
+</div>
+        <div class="con_sku_pro">
+    <div class="sku_pro">
+        <label class="label_import" for="">SKU <span class="important">*</span></label>
+        <!-- ใส่ readonly เพื่อไม่ให้แก้ไข SKU ได้ (ถ้า SKU เป็น Primary Key) -->
+        <input type="text" class="sku_input" [(ngModel)]="selectedProduct.sku" readonly>
+    </div>
+    <div class="sku_pro">
+        <label class="label_import" for="">Product Name</label>
+        <input type="text" class="sku_input" [(ngModel)]="selectedProduct.product_name">
+    </div>
+</div>
+
+<div class="con_sku_pro">
+    <div class="sku_pro">
+        <label class="label_import" for="">Category</label>
+        <input type="text" class="sku_input" [(ngModel)]="selectedProduct.category">
+    </div>
+    <div class="sku_pro">
+        <label class="label_import" for="">Brand</label>
+        <input type="text" class="sku_input" [(ngModel)]="selectedProduct.brand">
+    </div>
+</div>
+
+<div class="con_sku_pro">
+    <div class="sku_pro">
+        <label class="label_import" for="">Price</label>
+        <input type="number" class="sku_input" [(ngModel)]="selectedProduct.price">
+    </div>
+    <div class="sku_pro">
+        <label class="label_import" for="">Quantity Alert</label>
+        <input type="number" class="sku_input" [(ngModel)]="selectedProduct.quantity_alert">
+    </div>
+</div>
+
+
+        <!--  <div class="serach_product">
+            Add Product
+        </div>
+        <div class="con_sku_pro">
+            <div class="sku_pro">
+            <label class="label_import" for="">Supplier <span class="important">*</span></label>
+            <input type="text" class="sku_input">
+        </div>
+        <div class="sku_pro">
+            <label class="label_import" for="">Supplier Invoice No.<span class="important">*</span></label>
+            <input type="text" class="sku_input">
+        </div>
+        </div>
+        <div class="con_sku_pro">
+            <div class="label_import" class="sku_pro">
+            <label for="">Import Quantity <span class="important">*</span></label>
+            <input type="text" class="sku_input">
+        </div>
+        <div class="sku_pro">
+            <label class="label_import"  for="">Upload Invoice <span class="important">*</span></label>
+            <input type="text"  placeholder="Upload Invoice Image / PDF" class="sku_input">
+        </div>
+        </div> -->
+          <div class="button_import">
+                <div class="save" (click)="editt()">Save</div>
                 <div class="cancel" (click)="button_cancels()" >Cancel</div>
             </div>
     </div>

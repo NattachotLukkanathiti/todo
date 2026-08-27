@@ -77,6 +77,20 @@ export class LoginComponent {
         this.isLoading = false; // ซ่อน Loading
         const profile = response.user.profile;
         const role = response.user.role; // ปรับให้ตรงกับตัวแปร role จาก API ของคุณ
+        // --- ส่วนที่เพิ่ม: เตรียมข้อมูลสำหรับ Audit Log ---
+        const auditData = {
+          time: new Date().toISOString(),
+          username: response.user.username,
+          email: response.user.title, // อ้างอิงจากที่คุณใช้ title เป็น email
+          activity: 'Login',
+          picture: profile
+        };
+
+        // --- ส่วนที่เพิ่ม: ส่งข้อมูลไปบันทึก ---
+        this.todoService.logAudit(auditData).subscribe({
+          next: () => console.log('Audit log saved successfully'),
+          error: (err) => console.error('Failed to save audit log', err)
+        });
         const navigationState = {
           state: {
             username: response.user.username,

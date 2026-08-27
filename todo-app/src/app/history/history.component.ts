@@ -56,6 +56,8 @@ export class HistoryComponent {
     this.profile = state.profile || '';
     this.loadHistory();
      if (state.Move_return === true) {
+       this.stan = false;
+      this.play_Return = true;
     this.out = false;
   }
   if (state.Move_returns3 === true) {
@@ -121,6 +123,16 @@ export class HistoryComponent {
     setTimeout(() =>{
       this.router.navigate(['/suppliers'],{
         state:{username: this.username , email: this.email, Move_return5:true ,Open_bar:true ,role:this.userRole ,profile:this.profile}
+      })
+    } ,300)
+  }
+  Animationa6_out(){
+ this.out = false;
+    this.play_Return = false;
+    this.Animation_out = true;
+    setTimeout(() =>{
+      this.router.navigate(['/audit'],{
+        state:{username: this.username , email: this.email, Move_return6:true ,role:this.userRole ,profile:this.profile}
       })
     } ,300)
   }
