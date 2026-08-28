@@ -158,7 +158,7 @@ app.post('/api/audit', async (req, res) => {
       [date, time, username, email, activity, role, product,picture]
     );
 
-    res.status(201).jsn({ success: true, data: result.rows[0] });
+    res.status(201).json({ success: true, data: result.rows[0] });
   } catch (error) {
     console.error('Error saving audit log:', error);
     res.status(500).json({ success: false, message: 'Server Error' });
