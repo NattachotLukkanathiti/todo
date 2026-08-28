@@ -104,7 +104,7 @@ export class SuppliersComponent {
     this.play_Return = false;
     setTimeout(() =>{
       this.router.navigate(['/inventory'],{
-        state:{username: this.username , email: this.email, Move_return:true,role:this.userRole}
+        state:{username: this.username , email: this.email, Move_return:true,role:this.userRole ,profile:this.profile}
       })
     } ,300)
   }
@@ -217,6 +217,27 @@ export class SuppliersComponent {
   }
 
   logout() {
-    this.router.navigate(['/login']);
-}
+    const now = new Date();
+    const auditData = {
+      date: now.toISOString().split('T')[0],
+      time: now.toTimeString().split(' ')[0],
+      username: this.username, 
+      email: this.email,       
+      activity: 'Logout', 
+      role: this.userRole,     
+      picture: this.profile
+    };
+
+
+    this.todoService.logAudit(auditData).subscribe({
+      next: () => {
+        console.log('Logout audit saved');
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error('Failed to save logout audit', err);
+        this.router.navigate(['/login']); 
+      }
+    });
+  }
 }

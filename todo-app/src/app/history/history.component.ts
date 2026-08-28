@@ -60,6 +60,9 @@ export class HistoryComponent {
       this.play_Return = true;
     this.out = false;
   }
+  if (state.Move_returnH === true) {
+    this.out = false;
+  }
   if (state.Move_returns3 === true) {
         this.play_Return = false;
     this.out = false;
@@ -203,12 +206,12 @@ export class HistoryComponent {
       time: now.toTimeString().split(' ')[0],
       username: this.username, 
       email: this.email,       
-      activity: 'Logout',  
-      role: this.userRole,    
+      activity: 'Logout', 
+      role: this.userRole,     
       picture: this.profile
     };
 
-    // ส่งข้อมูลไปบันทึก แล้วค่อยเปลี่ยนหน้า
+
     this.todoService.logAudit(auditData).subscribe({
       next: () => {
         console.log('Logout audit saved');

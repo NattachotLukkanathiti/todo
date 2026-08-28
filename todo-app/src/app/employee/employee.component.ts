@@ -272,11 +272,12 @@ logout() {
       time: now.toTimeString().split(' ')[0],
       username: this.username, 
       email: this.email,       
-      activity: 'Logout',      
+      activity: 'Logout', 
+      role: this.userRole,     
       picture: this.profile
     };
 
-    // ส่งข้อมูลไปบันทึก แล้วค่อยเปลี่ยนหน้า
+
     this.todoService.logAudit(auditData).subscribe({
       next: () => {
         console.log('Logout audit saved');

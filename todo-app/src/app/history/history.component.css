@@ -859,7 +859,7 @@ input::placeholder{
         opacity: 1;
     }
     100% {
-        transform: translateY(5000px); /* เลื่อนลงไปที่จุดสุดท้าย */
+        transform: translateY(2000px); /* เลื่อนลงไปที่จุดสุดท้าย */
         opacity: 0; /* ค่อยๆ จางหายไปเมื่อเลื่อนลง */
     }
 }

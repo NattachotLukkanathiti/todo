@@ -76,6 +76,7 @@ selectedProduct: any = {
   price: null,
   quantity_alert: null
 };
+  originalProduct: any = null; 
 
 
   
@@ -388,6 +389,7 @@ button_editt(item: any) {
   this.isEditMode = true;
   this.selectedProduct = { ...item }; 
   this.imagePreview = item.picture || null;
+  this.originalProduct = { ...item };
 }
 async saveEdit() {
   this.isLoading = true;
@@ -419,18 +421,40 @@ async saveEdit() {
       ...this.selectedProduct,
       picture: pictureUrl // จะเป็น URL จากไฟล์ใหม่ หรือ URL ที่พิมพ์เข้ามา
     };
+    
 
     this.todoService.updateInventory(updatedProduct.sku, updatedProduct).subscribe({
       next: (res) => {
         this.openpopup('แก้ไขข้อมูลสินค้าเรียบร้อยแล้ว');
         
         const index = this.Inventory.findIndex(item => item.sku === updatedProduct.sku);
+      
         if (index !== -1) {
           // อัปเดตข้อมูลในตารางทันที
           this.Inventory[index] = { ...updatedProduct };
         } else {
           this.loadInventory();
         }
+        const changesObj = this.getChanges(this.originalProduct, updatedProduct);
+        const changedKeys = Object.keys(changesObj).join(', ');
+
+         const now = new Date();
+          const auditData = {
+          date: now.toISOString().split('T')[0],
+          time: now.toTimeString().split(' ')[0],
+          username: this.username,
+          email: this.email,
+          activity: `Edit: ${updatedProduct.sku} `,
+          product: `(${changedKeys})`,
+          role: this.userRole,
+          picture: this.profile,
+          changes: this.getChanges(this.originalProduct, updatedProduct) // <-- แก้ไขบรรทัดนี้
+        };
+
+        this.todoService.logAudit(auditData).subscribe({
+          next: () => console.log('Audit saved'),
+          error: (err) => console.error('Failed to save audit', err)
+        });
 
         this.isEditMode = false;
         this.isLoading = false;
@@ -470,6 +494,21 @@ editt(){
   }, 400);
   this.openpopup_edit('Are you sure you want to edit this product?');
 }
+getChanges(original: any, updated: any) {
+    const changes: { [key: string]: { from: any; to: any } } = {};
+    
+    Object.keys(updated).forEach(key => {
+      // ไม่ต้องเปรียบเทียบฟิลด์ที่ไม่จำเป็น เช่น updated_at
+      if (key !== 'updated_at' && original[key] !== updated[key]) {
+        changes[key] = {
+          from: original[key],
+          to: updated[key]
+        };
+      }
+    });
+    
+    return changes;
+  }
 logout() {
     const now = new Date();
     const auditData = {
@@ -477,7 +516,8 @@ logout() {
       time: now.toTimeString().split(' ')[0],
       username: this.username, 
       email: this.email,       
-      activity: 'Logout',      
+      activity: 'Logout', 
+      role: this.userRole,     
       picture: this.profile
     };
 

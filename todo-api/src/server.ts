@@ -149,16 +149,16 @@ app.get('/api/suppliers', async (req, res) => {
 // 📌 Route สำหรับบันทึกข้อมูล (มีทั้ง date และ time)
 app.post('/api/audit', async (req, res) => {
   try {
-    const { date, time, username, email, activity, role, picture } = req.body;
+    const { date, time, username, email, activity, role,product, picture } = req.body;
 
     const result = await pool.query(
-      `INSERT INTO audit (date, time, username, email, activity, role, picture) 
-       VALUES ($1, $2, $3, $4, $5, $6 ,$7) 
+      `INSERT INTO audit (date, time, username, email, activity, role, product, picture) 
+       VALUES ($1, $2, $3, $4, $5, $6 ,$7, $8) 
        RETURNING *`,
-      [date, time, username, email, activity, role, picture]
+      [date, time, username, email, activity, role, product,picture]
     );
 
-    res.status(201).json({ success: true, data: result.rows[0] });
+    res.status(201).jsn({ success: true, data: result.rows[0] });
   } catch (error) {
     console.error('Error saving audit log:', error);
     res.status(500).json({ success: false, message: 'Server Error' });

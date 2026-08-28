@@ -208,7 +208,8 @@ export class AuditComponent {
       time: now.toTimeString().split(' ')[0],
       username: this.username, 
       email: this.email,       
-      activity: 'Logout',      
+      activity: 'Logout', 
+      role: this.userRole,     
       picture: this.profile
     };
 

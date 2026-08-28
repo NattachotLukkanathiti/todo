@@ -121,12 +121,12 @@
     <!-- Header -->
     <div class="table">
         <div class="sku">Date</div>
-         <div class="sku">Time</div>
-        <div class="sku">Username</div>
+      <!--    <div class="sku">Time</div> -->
+        <div class="sku">User</div>
         <div class="sku">Email</div>
-         <div class="sku">Product</div>
+     <!--     <div class="sku">Product</div> -->
         <div class="sku">Activity</div>
-        <div class="sku">Create By</div>
+        <div class="sku">Product</div>
 
     </div>
     <ng-container *ngIf="loader; else realData">
@@ -150,18 +150,20 @@
    <ng-template #realData>
      <div  class="table_detail2" *ngFor="let order of auditLogs; let i = index" [style.animation-delay]="i * 0.15 + 's'">
     <div class="table_detail">
-        <div class="sku2">{{ order.date }}</div>
-        <div class="sku2">{{ order.time }}</div>
-<div class="sku2">{{ order.username }}</div>
-<div class="sku2">{{ order.email }}</div>
-<div class="sku2">{{ order.product }}</div>
-<div class="sku2">{{ order.activity }}</div>
-<div class="sku2">
+        <div class="sku2">{{ order.date }},{{ order.time }}</div>
+        <div class="sku2">
     <div class="connn">
-        {{ order.role }}
-        <img class="profile_employee" [src]="order.picture" alt="">
+        <img class="profile_employee" [src]="order.picture || 'image/profileee.svg' " alt="">{{ order.username }}, {{ order.role }}
     </div>
 </div>
+    <!--     <div class="sku2">{{ order.time }}</div> -->
+
+<div class="sku2">{{ order.email }}</div>
+<div class="sku2">{{ order.activity }}</div>
+<!-- <div class="sku2">{{ order.username }}</div> -->
+<div class="sku2">{{ order.product }}</div>
+
+
     </div>
     <div class="line"></div>
 </div>
