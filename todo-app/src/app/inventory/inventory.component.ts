@@ -371,6 +371,21 @@ async button_delete(sku: string, index: number) {
           this.Inventory.splice(index, 1);
           this.openpopup('ลบสินค้าเรียบร้อยแล้ว');
           this.isLoading = false;
+          const now = new Date();
+          const auditData = {
+            date: now.toISOString().split('T')[0],
+            time: now.toTimeString().split(' ')[0],
+            username: this.username,
+            email: this.email,
+            activity: `Delete Inventory SKU: ${sku}`, // ระบุว่าลบอะไร
+            role: this.userRole,
+            picture: this.profile
+          };
+
+          this.todoService.logAudit(auditData).subscribe({
+            next: () => console.log('Delete audit saved'),
+            error: (err) => console.error('Failed to save delete audit', err)
+          });
         },
         error: (err) => {
           this.openpopupnoti('เกิดข้อผิดพลาดในการลบสินค้า');
@@ -444,8 +459,8 @@ async saveEdit() {
           time: now.toTimeString().split(' ')[0],
           username: this.username,
           email: this.email,
-          activity: `Edit: ${updatedProduct.sku} `,
-          product: `(${changedKeys})`,
+          activity: `Edit:(${changedKeys})`,
+          product:  `${updatedProduct.product_name} `,
           role: this.userRole,
           picture: this.profile,
           changes: this.getChanges(this.originalProduct, updatedProduct) // <-- แก้ไขบรรทัดนี้

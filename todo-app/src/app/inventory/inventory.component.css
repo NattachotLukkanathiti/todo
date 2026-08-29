@@ -463,13 +463,17 @@
 }
 
 .pagination {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    margin-left: auto;
-    font-family: sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
-
+.con_tainer_page{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+}
 .prev {
     color: #1364D5 !important;
 }
@@ -500,7 +504,6 @@
 }
 
 .table_detail {
-    margin-top: 10px;
     padding: 20px;
     position: relative;
     width: 100%;
@@ -510,13 +513,19 @@
     box-sizing: border-box;
     /* เพิ่มบรรทัดนี้ */
 }
+.table_detail:hover{background-color: #F3FBF1;
 
+    cursor: pointer;
+}
+.table_detail:active{
+        background-color: #EDF9E9;
+}
 .table_detail2 {
     opacity: 0;
     /* ซ่อนไว้ก่อนเริ่มแอนิเมชัน */
     transform: translateY(-10px);
     /* ดันขึ้นไปด้านบนเล็กน้อย */
-    animation: showLine 1s ease forwards;
+    animation: showLine 1s ease-in-out forwards;
     /* สั่งให้เล่นแอนิเมชัน */
 }
 .profile_employee{
@@ -1320,7 +1329,6 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
 }
 
 .line {
-    margin-top: 10px;
     background-color: #E6EAED;
     width: 100%;
     height: 1px;

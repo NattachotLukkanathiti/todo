@@ -45,6 +45,7 @@ export class DashboardComponent implements OnInit {
   Max = false;
   loader = false
   userRole: string = '';
+  blur= false;
   private timeSubscription!: Subscription;
   constructor(private router: Router) {}
 
@@ -212,6 +213,7 @@ export class DashboardComponent implements OnInit {
   }
   hambar(){
     this.isMenuOpen = !this.isMenuOpen;
+    this.blur = !this.blur;
   }
 
   setView(view: string) {

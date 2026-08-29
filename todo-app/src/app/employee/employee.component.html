@@ -45,7 +45,7 @@
                 <div class="dash">
                     <img class="myicon2" src="image/Employee.svg" alt="">Employee
                 </div>
-                <div class="no" (click)="Animationa6_out()">
+                <div class="no"  *ngIf="userRole === 'admin' || userRole === 'manager'"  (click)="Animationa6_out()">
                     <img  src="image/audit.svg" alt="">Audit Log
                 </div>
                 <div class="no" *ngIf="userRole === 'admin' || userRole === 'manager'"  (click)="Animation_out5()">
@@ -111,14 +111,6 @@
     <option value="Admin">Admin</option>
   </select>
 </div>
-<div class="pagination">
-  <a href="#" class="prev">&lt; Prev</a>
-  <a href="#" class="page active">1</a>
-  <a href="#" class="page">2</a>
-  <span class="dots">...</span>
-  <a href="#" class="page">11</a>
-  <a href="#" class="next">Next &gt;</a>
-</div>
                     </div>
                 <div class="detail_con">
                     
@@ -158,14 +150,23 @@
 <div class="sku2">{{ order.phone }}</div>
 <div class="button_small">
             <img class="icon_small_inventory" src="image/edit.svg" (click)="button_edit_account2(order)">
-            <img class="icon_small_inventory" src="image/delete.svg" alt="">
+            <img class="icon_small_inventory"  *ngIf="userRole === 'admin' || userRole === 'manager'"  src="image/delete.svg" alt="">
         </div>
     </div>
     <div class="line"></div>
 </div>
    </ng-template>
 </div>
-  
+   <div class="con_tainer_page">
+     <div class="pagination">
+  <a href="#" class="prev">&lt; Prev</a>
+  <a href="#" class="page active">1</a>
+  <a href="#" class="page">2</a>
+  <span class="dots">...</span>
+  <a href="#" class="page">11</a>
+  <a href="#" class="next">Next &gt;</a>
+</div>
+ </div>
                 </div>
                 
             </div>

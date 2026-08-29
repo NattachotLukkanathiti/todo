@@ -1142,3 +1142,25 @@ input::placeholder{
     transform: translateY(-400%);
   }
 }
+.con_sale_order{
+    margin-top: 20px;
+    padding: 30px;
+    height: 100vh;
+    width: 100%;
+    border-radius: 10px;
+    background-color: #fff;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.06);
+}
+.header_sale{
+    font-size: 20px;
+    font-weight: 500;
+}
+.con_header_colum {
+    display: flex;
+    margin-top: 20px;
+    width: 100%;
+    align-items: center;
+    box-sizing: border-box;
+    justify-content: space-between; /* เว้นช่องว่างระหว่าง element ให้เท่ากัน */
+}

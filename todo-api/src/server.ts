@@ -16,7 +16,8 @@ app.use(cors({
     'https://coruscating-donut-62bb86.netlify.app',
     'https://tamraidee.netlify.app',
     'https://tamraidee.nat-lukkanathiti.workers.dev',
-    'https://trd.tamraidee.workers.dev'
+    'https://trd.tamraidee.workers.dev',
+    'https://trd2.tamraidee.workers.dev/'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'ngrok-skip-browser-warning'],

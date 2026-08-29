@@ -1,369 +1,239 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule, DatePipe } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
-import { TodoService } from '../services/todo.service';
-import { interval, Subscription } from 'rxjs';
-import { createClient } from '@supabase/supabase-js';
-interface Product {
-  id: number;
-  name: string;
-  category: string;
-  price: number;
-  stock: number;
-  image: string;
+import { CommonModule } from '@angular/common';
+
+interface Category {
+  label: string;
+  count: number;
+  icon: string;
 }
+
+interface Product {
+  id: string;
+  category: string;
+  name: string;
+  stock: number;
+  price: number;
+  image: string;
+  imageWidth: number;
+  imageHeight: number;
+}
+
+interface CartItem extends Product {
+  quantity: number;
+}
+
+type HeaderPanel = 'orders' | 'cash' | 'printer' | 'progress' | 'chart' | 'settings' | null;
 
 @Component({
   selector: 'app-pos',
-  imports: [CommonModule, DatePipe, RouterLink,FormsModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './pos.component.html',
-  styleUrls: ['./pos.component.css']
+  styleUrls: ['./pos.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PosComponent implements OnInit {
+export class PosComponent implements OnInit, OnDestroy {
+  private readonly changeDetector = inject(ChangeDetectorRef);
+  private clockTimer?: ReturnType<typeof setInterval>;
 
-  private todoService = inject(TodoService);
+  readonly navItems = [
+    { label: 'Pos', icon: 'assets/figma-pos/icon.svg' },
+    { label: 'Inventory', icon: 'assets/figma-pos/icon-wrapper.svg' },
+    { label: 'Sales Orders', icon: 'assets/figma-pos/icon-wrapper1.svg' },
+    { label: 'Stock History', icon: 'assets/figma-pos/icon-wrapper2.svg' },
+    { label: 'Employee', icon: 'assets/figma-pos/icon-wrapper3.svg' }
+  ];
 
-  search = '';
-  items: string[] = ['รายการที่ 1', 'รายการที่ 2', 'รายการที่ 3'];
-  filteredItems: string[] = [...this.items];
+  readonly categories: Category[] = [
+    { label: 'All Categories', count: 54, icon: 'assets/figma-pos/black.svg' },
+    { label: 'Headphones', count: 12, icon: 'assets/figma-pos/image385.png' },
+    { label: 'Notebook', count: 15, icon: 'assets/figma-pos/product-image.png' },
+    { label: 'Charger', count: 14, icon: 'assets/figma-pos/image444.png' },
+    { label: 'Mobiles', count: 8, icon: 'assets/figma-pos/image383.png' },
+    { label: 'Watches', count: 16, icon: 'assets/figma-pos/image445.png' },
+    { label: 'Tablet', count: 18, icon: 'assets/figma-pos/image446.png' },
+    { label: 'Mouse', count: 12, icon: 'assets/figma-pos/image.png' }
+  ];
 
-  data: any[] = [];
-  months: string[] = [];
-  profile = '';
-  email = '';
-  username = '';
-  showpopup = false;
-  popup = '';
-  navigationState?: any;
-  showpopupnoti = false;
-  isMenuOpen = false;
-  isMenuOpenprofile = false;
-  currentView = 'dashboard';
-  currentTime = new Date();
-  isTimeOpen = false;
-  Animation_out = false;
-  Animation_outdash = false;
-  return = false;
-  play_Return = false;
-  out = false;
-  stan = false;
-  Inventory: any[] = [];
-  isLoading = false; 
-  button_cancel = false;
-  button_importt = false;
-  product = true;
-  product2 = true;
-  todos: any[] = [];
-  button_addd = false;
-    outimport = false;
-    loader = true;
-    userRole: string = '';
-      newProduct = {
-    sku: '',
-    product_name: '',
-    category: '',
-    brand: '',
-    price: null,
-    quantity_alert: null,
-    supplier: '',
-    invoice_no: '',
-    import_quantity: null
-  };
-  item: any;  
-  showpopupconfirm = false
-  selectedFile: File | null = null;
-  
-  //  เพิ่มบรรทัดนี้เข้าไปค่ะ
-  imagePreview: string | null = null;
- private supabaseUrl = 'https://ehyhllaxvozjdndddfku.supabase.co';
-  private supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVoeWhsbGF4dm96amRuZGRkZmt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ4NjUyMzAsImV4cCI6MjEwMDQ0MTIzMH0.FQ98R2OopmNkIBQLTeieKGETr0asT2KAaMf-G6uSLq4';
-  private supabase = createClient(this.supabaseUrl, this.supabaseKey);
-  private timeSubscription!: Subscription;
-  constructor(private router: Router) {}
+  readonly products: Product[] = [
+    { id: 'P-001', category: 'Mobiles', name: 'IPhone 14 64GB', stock: 30, price: 15800, image: 'assets/figma-pos/product-image1.png', imageWidth: 50, imageHeight: 96 },
+    { id: 'P-002', category: 'Computer', name: 'MacBook Pro', stock: 140, price: 1000, image: 'assets/figma-pos/image1.png', imageWidth: 111, imageHeight: 59 },
+    { id: 'P-003', category: 'Watches', name: 'Rolex Tribute V3', stock: 220, price: 6800, image: 'assets/figma-pos/image448.png', imageWidth: 78, imageHeight: 81 },
+    { id: 'P-004', category: 'Charger', name: 'Red Nike Angelo', stock: 220, price: 78, image: 'assets/figma-pos/image450.png', imageWidth: 78, imageHeight: 80 },
+    { id: 'P-005', category: 'Headphones', name: 'Airpod 2', stock: 47, price: 5478, image: 'assets/figma-pos/image385.png', imageWidth: 74, imageHeight: 90 },
+    { id: 'P-006', category: 'Charger', name: 'Blue White OGR', stock: 30, price: 987, image: 'assets/figma-pos/image385.png', imageWidth: 74, imageHeight: 90 },
+    { id: 'P-007', category: 'Computer', name: 'Idea Slim 5 Gen 7', stock: 74, price: 1454, image: 'assets/figma-pos/product-image2.png', imageWidth: 94, imageHeight: 77 },
+    { id: 'P-008', category: 'Headphones', name: 'SWAGME', stock: 14, price: 6587, image: 'assets/figma-pos/image448.png', imageWidth: 78, imageHeight: 81 },
+    { id: 'P-009', category: 'Watches', name: 'Red Nike Angelo', stock: 220, price: 1457, image: 'assets/figma-pos/image450.png', imageWidth: 74, imageHeight: 90 },
+    { id: 'P-010', category: 'Computer', name: 'Tablet 1.02 inch', stock: 47, price: 4744, image: 'assets/figma-pos/image383.png', imageWidth: 78, imageHeight: 81 },
+    { id: 'P-011', category: 'Watches', name: 'Fossil Pair Of 3 in 1', stock: 40, price: 789, image: 'assets/figma-pos/image445.png', imageWidth: 74, imageHeight: 90 },
+    { id: 'P-012', category: 'Computer', name: 'Idea Slim 5 Gen 7', stock: 74, price: 1454, image: 'assets/figma-pos/image453.png', imageWidth: 111, imageHeight: 79 },
+    { id: 'P-013', category: 'Shoes', name: 'Green Nike Fe', stock: 78, price: 1454, image: 'assets/figma-pos/image454.png', imageWidth: 93, imageHeight: 78 },
+    { id: 'P-014', category: 'Laptop', name: 'Yoga Book 9i', stock: 65, price: 4784, image: 'assets/figma-pos/image455.png', imageWidth: 111, imageHeight: 79 },
+    { id: 'P-015', category: 'Watches', name: 'Rolex Tribute V3', stock: 220, price: 6800, image: 'assets/figma-pos/image448.png', imageWidth: 78, imageHeight: 81 }
+  ];
+
+  searchTerm = '';
+  selectedCategory = 'All Categories';
+  selectedPayment = 'Choose';
+  selectedInsurance = '0';
+  discount = 0;
+  customerName = 'Walk In Customer';
+  cartItems: CartItem[] = [];
+  selectedNav = 'Pos';
+  isSidebarOpen = false;
+  isRightPanelOpen = true;
+  openPanel: HeaderPanel = null;
+  clock = '09:25:32';
+  notice = '';
+
+  get filteredProducts(): Product[] {
+    const query = this.searchTerm.trim().toLowerCase();
+    return this.products.filter((product) => {
+      const categoryMatches = this.selectedCategory === 'All Categories' || product.category === this.selectedCategory;
+      const queryMatches = !query || `${product.name} ${product.category}`.toLowerCase().includes(query);
+      return categoryMatches && queryMatches;
+    });
+  }
+
+  get itemCount(): number {
+    return this.cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  }
+
+  get subtotal(): number {
+    return this.cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  }
+
+  get total(): number {
+    return Math.max(0, this.subtotal - this.discount);
+  }
 
   ngOnInit(): void {
-    const state = history.state;
-    this.username = state.username || '';
-    this.email = state.email || '';
-    this.userRole = state.role || 'user'; // เพิ่มเติม: รับค่า role (ค่าเริ่มต้นเป็น user)
-    this.profile = state.profile || '';
+    this.clockTimer = setInterval(() => {
+      this.clock = new Date().toLocaleTimeString('en-GB', { hour12: false });
+      this.changeDetector.markForCheck();
+    }, 1000);
+  }
 
-    if (state.Move_return === true) {
-      this.stan = false;
-      this.play_Return = true;
-      this.out = false;
-    }
+  ngOnDestroy(): void {
+    if (this.clockTimer) clearInterval(this.clockTimer);
+  }
 
-    if(!this.username || !this.email){
-      this.openpopupnoti("Session not found. Redirecting to login")
+  toggleSidebar(): void {
+    this.isSidebarOpen = !this.isSidebarOpen;
+    this.openPanel = null;
+  }
+
+  selectNav(label: string): void {
+    this.selectedNav = label;
+    this.isSidebarOpen = false;
+    if (label !== 'Pos') this.showNotice(`${label} is ready for page integration`);
+  }
+
+  selectSupport(label: 'Help' | 'Settings', message: string): void {
+    this.selectedNav = label;
+    this.isSidebarOpen = false;
+    this.showNotice(message);
+  }
+
+  togglePanel(panel: Exclude<HeaderPanel, null>): void {
+    this.openPanel = this.openPanel === panel ? null : panel;
+  }
+
+  openRightSide(): void {
+    this.isRightPanelOpen = true;
+    this.openPanel = null;
+    this.showNotice('Order panel opened');
+  }
+
+  openCatalogScreen(): void {
+    this.isRightPanelOpen = false;
+    this.openPanel = null;
+    this.showNotice('Full screen catalog opened');
+  }
+
+  closePanel(): void {
+    this.openPanel = null;
+  }
+
+  selectCategory(category: Category): void {
+    this.selectedCategory = category.label;
+  }
+
+  scrollCategories(direction: 'left' | 'right'): void {
+    const row = document.querySelector<HTMLElement>('.category-row');
+    row?.scrollBy({ left: direction === 'right' ? 180 : -180, behavior: 'smooth' });
+  }
+
+  addToCart(product: Product): void {
+    const item = this.cartItems.find((entry) => entry.id === product.id);
+    if (item) item.quantity = Math.min(item.quantity + 1, product.stock);
+    else this.cartItems = [...this.cartItems, { ...product, quantity: 1 }];
+    this.showNotice(`${product.name} added to order`);
+  }
+
+  changeQuantity(item: CartItem, change: number): void {
+    const next = item.quantity + change;
+    if (next <= 0) {
+      this.removeFromCart(item);
       return;
     }
-    this.loadInventory();
-    this.timeSubscription = interval(1000).subscribe(() => {
-      this.currentTime = new Date();
-    });
+    item.quantity = Math.min(next, item.stock);
+    this.changeDetector.markForCheck();
   }
 
-  Animationa_out(){
-    this.Animation_out = true;
-    this.Animation_outdash = true;
-    setTimeout(() =>{
-      this.router.navigate(['/dashboard'],{
-        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole,profile:this.profile }
-      })
-    } ,300)
-  }
-  Animationa_out2(){
-      this.out = false;
-    this.Animation_out = true;
-    setTimeout(() =>{
-      this.router.navigate(['/sale'],{
-        state:{username: this.username , email: this.email, Move_returns:true, role:this.userRole ,profile:this.profile}
-      })
-    } ,300)
-  }
-  Animationa_out3(){
-      this.out = false;
-    this.Animation_out = true;
-    setTimeout(() =>{
-      this.router.navigate(['/history'],{
-        state:{username: this.username , email: this.email, Move_returns3:true ,role:this.userRole ,profile:this.profile}
-      })
-    } ,300)
-  }
-  Animationa_out4(){
-      this.out = false;
-    this.Animation_out = true;
-    setTimeout(() =>{
-      this.router.navigate(['/employee'],{
-        state:{username: this.username , email: this.email, Move_returns4:true ,role:this.userRole ,profile:this.profile}
-      })
-    } ,300)
-  }
-  Animation_out5(){
-              this.out = false;
-    this.Animation_out = true;
-    setTimeout(() =>{
-      this.router.navigate(['/suppliers'],{
-        state:{username: this.username , email: this.email, Move_return5:true ,Open_bar:true ,role:this.userRole ,profile:this.profile}
-      })
-    } ,300)
-  }
-  openpopupnoti(message:string){
-    this.showpopupnoti = true;
-    this.popup = message;
-  }
-  openpopup(message:string){
-    this.showpopup = true;
-    this.popup = message;
-  }
-  openpopup_confirm(message:string){
-    this.popup = message;
-  }
-  closepopup(){
-    this.showpopupconfirm = false
-    this.showpopup = false
-  
-    
-  }
-  ngOnDestroy() {
-    this.timeSubscription?.unsubscribe();
-  }
-  // ปรับชื่อและค่า scale ให้เหมาะกับความสูงของกราฟ
-  calculateHeight(valueInBaht: number): number {
-    const maxHeight = 300; // ความสูงสูงสุดที่ยอมรับได้ (px)
-    const scale = 0.004;    // อัตราส่วนย่อขยาย (ปรับตามความเหมาะสมของข้อมูล)
-    
-    return Math.min(valueInBaht * scale, maxHeight);
-  }
-loadTodos() {
-  
-  this.todoService.getTodoss().subscribe({
-    next: (res) => {
-      console.log("Todos Data:", res);
-      
-      // สมมติว่าคุณมีตัวแปร currentState ที่เก็บข้อมูล state ที่ส่งมา
-      const currentEmail = this.navigationState?.state?.email;
-
-      if (currentEmail) {
-        // กรองให้เหลือเฉพาะ todo ที่ email ตรงกับ state
-        this.todos = res.filter(todo => todo.email === currentEmail);
-      } else {
-        this.todos = res;
-      }
-    },
-    error: (err) => console.error(err)
-  });
-}
-  toggleMenu() {
-    this.isMenuOpen = !this.isMenuOpen;
-    this.isMenuOpenprofile = !this.isMenuOpenprofile;
-  }
-  hambar(){
-    this.isMenuOpen = !this.isMenuOpen;
+  removeFromCart(item: CartItem): void {
+    this.cartItems = this.cartItems.filter((entry) => entry.id !== item.id);
+    this.changeDetector.markForCheck();
   }
 
-  setView(view: string) {
-    this.currentView = view;
+  clearOrder(): void {
+    this.cartItems = [];
+    this.showNotice('Order cleared');
   }
 
-  filterS() {
-    this.filteredItems = this.items.filter(item =>
-      item.toLowerCase().includes(this.search.toLowerCase())
-    );
+  resetOrder(): void {
+    this.searchTerm = '';
+    this.selectedCategory = 'All Categories';
+    this.selectedPayment = 'Choose';
+    this.selectedInsurance = '0';
+    this.discount = 0;
+    this.customerName = 'Walk In Customer';
+    this.cartItems = [];
+    this.showNotice('POS reset');
   }
 
-  logout() {
-    this.router.navigate(['/login']);
-}
-  loadInventory() {
-  this.todoService.getInventory().subscribe({
-    next: (res) => {
-      this.Inventory = res;
-        this.isLoading = false; 
-        this.loader = false;
-    },
-    error: (err) => {
-      console.error('Error fetching sale order:', err);
+  startTransaction(): void {
+    this.resetOrder();
+    this.showNotice('New transaction started');
+  }
+
+  addCustomer(): void {
+    this.customerName = 'New Customer';
+    this.showNotice('Customer form is ready for integration');
+  }
+
+  completePayment(): void {
+    if (!this.cartItems.length) {
+      this.showNotice('No products selected');
+      return;
     }
-  });
-}
-  button_cancels() {
-  this.outimport = true;
-
-  const element = document.querySelector('.con_import_product') as HTMLElement;
-  const element2 = document.querySelector('.con_import_product2') as HTMLElement;
-  if (element) {
-    element.scrollTop = 0;
-    element.classList.add('out');
-  }
-  if (element2) {
-    element2.scrollTop = 0;
-    element2.classList.add('out');
+    this.showNotice(`Payment completed: ${this.formatCurrency(this.total)}`);
+    this.cartItems = [];
   }
 
-  setTimeout(() => {
-    this.button_importt = false;
-    this.button_addd = false;
-    this.button_cancel = false;
-    this.outimport = false;
-  }, 400);
-}
-  button_imports(){
-       this.outimport = false;
-    this.button_importt = true;
-    
-  }
-  button_adds(){
-    this.button_addd = true;
+  formatCurrency(amount: number): string {
+    if (amount === 0) return '$0.00';
+    return `$${amount.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
   }
 
-
-  // 3. ฟังก์ชันสำหรับล้างค่าฟอร์ม
-  resetForm() {
-    this.newProduct = {
-      sku: '', product_name: '', category: '', brand: '', price: null,
-      quantity_alert: null, supplier: '', invoice_no: '', import_quantity: null
-    };
+  showNotice(message: string): void {
+    this.notice = message;
+    this.changeDetector.markForCheck();
+    window.setTimeout(() => {
+      this.notice = '';
+      this.changeDetector.markForCheck();
+    }, 2200);
   }
-
-
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
-      
-    
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imagePreview = reader.result as string;
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  // 2. อัปโหลดรูปและบันทึกข้อมูล
-  async saveToStock() {
-    this.isLoading = true;
-    let pictureUrl = '';
-
-    try {
-      // ถ้ามีไฟล์ ให้ทำการอัปโหลดไปที่ Supabase ก่อน
-      if (this.selectedFile) {
-        const fileExt = this.selectedFile.name.split('.').pop();
-        const fileName = `${Math.random()}.${fileExt}`;
-        const filePath = `inventory/${fileName}`;
-
-        const { data, error } = await this.supabase.storage
-          .from('Photo') // ใส่ชื่อ Bucket ของคุณ
-          .upload(filePath, this.selectedFile);
-
-        if (error) throw error;
-
-        // ดึง Public URL
-        const { data: publicUrlData } = this.supabase.storage
-          .from('Photo')
-          .getPublicUrl(filePath);
-          
-        pictureUrl = publicUrlData.publicUrl;
-      }
-
-      // เพิ่ม pictureUrl เข้าไปใน object ข้อมูล
-      const productData = {
-        ...this.newProduct,
-        picture: pictureUrl
-      };
-
-      // ส่งข้อมูลไปที่ Backend
-      this.todoService.addInventory(productData).subscribe({
-        next: (res) => {
-          this.openpopup('New product created successfully. View changes in Stock History');
-          this.loadInventory();
-          this.isLoading = false;
-        },
-        error: (err) => {
-          console.error(err);
-          this.isLoading = false;
-        }
-      });
-
-    } catch (error) {
-      console.error('Error uploading image:', error);
-      this.openpopup('อัปโหลดรูปภาพไม่สำเร็จ');
-      this.isLoading = false;
-    }
-  }
-  // 1. สร้างตัวแปรเก็บฟังก์ชัน resolve ของ Promise
-private resolveConfirm: ((value: boolean) => void) | null = null;
-
-// 2. ฟังก์ชันหลักของคุณ (ใส่ async เพิ่มเข้าไป)
-async button_delete(sku: string, index: number) {
-    this.showpopupconfirm = true;
-    this.openpopup_confirm("Are you sure you want to delete this item? This action cannot be undone.");
-    // สร้าง Promise เพื่อหยุดรอการกดปุ่ม
-    const confirm = await new Promise<boolean>((resolve) => {
-      this.resolveConfirm = resolve;
-    });
-  
-    if (confirm) {
-      this.isLoading = true;
-      
-      this.todoService.deleteInventory(sku).subscribe({
-        next: (res) => {
-          this.Inventory.splice(index, 1);
-          this.openpopup('ลบสินค้าเรียบร้อยแล้ว');
-          this.isLoading = false;
-        },
-        error: (err) => {
-          this.openpopupnoti('เกิดข้อผิดพลาดในการลบสินค้า');
-          this.isLoading = false;
-        }
-      });
-    }
-}
-  confirmdelete() {
-    this.showpopupconfirm = false;
-    if (this.resolveConfirm) this.resolveConfirm(true); // ส่งค่า true ไปให้ if (confirm)
-}
 }

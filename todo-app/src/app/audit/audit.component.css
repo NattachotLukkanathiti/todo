@@ -266,7 +266,6 @@ input::placeholder{
     box-sizing: border-box; /* เพิ่มบรรทัดนี้ */
 }
 .table_detail {
-    margin-top: 10px;
     padding: 20px;
     
     width: 100%;
@@ -682,7 +681,6 @@ input::placeholder{
 
 
 .line{
-    margin-top: 10px;
     background-color: #E6EAED;
     width: 100%;
     height: 1px;
@@ -853,13 +851,20 @@ input::placeholder{
 .fade-out{
     animation: Move_dashboard 1s ease-in-out !important;
 }
+.table_detail:hover{background-color: #F3FBF1;
+
+    cursor: pointer;
+}
+.table_detail:active{
+        background-color: #EDF9E9;
+}
 @keyframes Move_dashboard{
     0% {
         transform: translateY(0px); /* เริ่มต้นที่ตำแหน่งปกติ */
         opacity: 1;
     }
     100% {
-        transform: translateY(5000px); /* เลื่อนลงไปที่จุดสุดท้าย */
+        transform: translateY(2000px); /* เลื่อนลงไปที่จุดสุดท้าย */
         opacity: 0; /* ค่อยๆ จางหายไปเมื่อเลื่อนลง */
     }
 }

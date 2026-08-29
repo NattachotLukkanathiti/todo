@@ -45,7 +45,7 @@
                 <div class="no" (click)="Animationa5_out()">
                     <img src="image/Employee.svg" alt="">Employee
                 </div>
-                <div class="no" (click)="Animationa6_out()">
+                <div class="no"  *ngIf="userRole === 'admin' || userRole === 'manager'"  (click)="Animationa6_out()">
                     <img  src="image/audit.svg" alt="">Audit Log
                 </div>
                 <div class="dash">

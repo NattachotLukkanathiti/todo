@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="lin"></div>
-        <img class="iconsetting1" src="image/Maximize Icon.svg" (click)="toggleMenu()" alt="">
+<!--         <img class="iconsetting1" src="image/Maximize Icon.svg" (click)="toggleMenu()" alt=""> -->
         <!-- <img class="iconsetting2" src="image/Song.svg" alt=""> -->
         <img class="iconsetting3" src="image/Chart.svg" alt="">
         <img class="iconsetting4" [src]="profile" alt="User Profile">
@@ -45,7 +45,7 @@
                 <div class="no" (click)="Animationa_out4()">
                     <img src="image/Employee.svg" alt="">Employee
                 </div>
-                <div class="no" (click)="Animationa_out6()">
+                <div class="no"  *ngIf="userRole === 'admin' || userRole === 'manager'"  (click)="Animationa_out6()">
                     <img src="image/audit.svg" alt="">Audit Log
                 </div>
                 <div class="no" *ngIf="userRole === 'admin' || userRole === 'manager'" (click)="Animation_out5()">
@@ -117,14 +117,6 @@
     <option value="option2">Option 2</option>
   </select>
 </div>
-<div class="pagination">
-  <a href="#" class="prev">&lt; Prev</a>
-  <a href="#" class="page active">1</a>
-  <a href="#" class="page">2</a>
-  <span class="dots">...</span>
-  <a href="#" class="page">11</a>
-  <a href="#" class="next">Next &gt;</a>
-</div>
                     </div>
                 <div class="detail_con">
                    
@@ -181,7 +173,16 @@
     </ng-template>
 </div>
                 </div>
-                
+                <div class="con_tainer_page">
+     <div class="pagination">
+  <a href="#" class="prev">&lt; Prev</a>
+  <a href="#" class="page active">1</a>
+  <a href="#" class="page">2</a>
+  <span class="dots">...</span>
+  <a href="#" class="page">11</a>
+  <a href="#" class="next">Next &gt;</a>
+</div>
+ </div>
             </div>
 
 
