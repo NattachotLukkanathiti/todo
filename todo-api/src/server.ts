@@ -589,12 +589,18 @@ app.put('/api/employee/:username', async (req, res) => {
 });
 app.get('/api/summary', async (req, res) => {
   try {
-    // ดึงข้อมูลทั้งหมดมาคำนวณ โดยไม่กรองวันที่ก่อน เพื่อทดสอบว่าตัวเลขขึ้นหรือไม่
     const query = `
       SELECT 
-        COALESCE((SELECT SUM(amount) FROM sale_order), 0) AS todays_sale,
-        COALESCE((SELECT SUM(amount) FROM sale_order), 0) AS yearly_total_sales,
-        COALESCE((SELECT SUM(amount) * 0.30 FROM sale_order), 0) AS net_income,
+        -- นับจำนวน Order ของวันนี้
+        COALESCE((SELECT COUNT(*) FROM sale_order WHERE date = CURRENT_DATE), 0) AS todays_sale,
+        
+        -- นับจำนวน Order ทั้งหมดในปีนี้
+        COALESCE((SELECT COUNT(*) FROM sale_order WHERE EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM CURRENT_DATE)), 0) AS yearly_total_sales,
+        
+        -- นับจำนวน Order ที่มีสถานะ Completed
+        COALESCE((SELECT COUNT(*) FROM sale_order WHERE status = 'Completed'), 0) AS net_income,
+        
+        -- นับจำนวนสินค้าใน Inventory
         COALESCE((SELECT COUNT(*) FROM inventory), 0) AS products
     `;
 

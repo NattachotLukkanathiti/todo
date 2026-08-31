@@ -149,9 +149,10 @@ updateEmployee(username: string, employeeData: any): Observable<any> {
   );
 }
 // ดึงข้อมูลสรุปสำหรับ Dashboard
+  // ตรวจสอบให้แน่ใจว่าใช้ this.apiUrl (ซึ่งชี้ไปที่ onrender.com)
   getSummary(): Observable<any[]> {
     return this.http.get<any[]>(
-      `${this.apiUrl}/summary`,
+      `${this.apiUrl}/summary`, 
       { headers: this.headers }
     );
   }
