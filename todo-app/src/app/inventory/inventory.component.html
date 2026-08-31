@@ -77,7 +77,7 @@
                             <div class="xs">
                                     <img src="image/XS.svg" alt="">
                                 </div>
-                                <div class="reload">
+                                <div class="reload" (click)="reloads()">
                                     <img src="image/Group.svg" alt="">
                                 </div>
                             <div class="button_addt" (click)="button_adds()">
@@ -96,7 +96,8 @@
                             (input)="filterS()">
                         <img class="iconsearch" src="image/search.svg" alt="">
                     </div>
-                    <div class="custom-select">
+                  <div class="con_3btn">
+                      <div class="custom-select">
   <select class="text">
     <option value="all">All <img class="icon_down"src="image/down.svg" alt=""></option>
     <option value="option1">Low In Stock</option>
@@ -104,19 +105,22 @@
   </select>
 </div>  
 <div class="custom-select">
-  <select>
-    <option value="all">Brand <img class="icon_down"src="image/down.svg" alt=""></option>
-    <option value="option1">Option 1</option>
-    <option value="option2">Option 2</option>
+  <select [(ngModel)]="selectedSupplier" (change)="filterBySupplier()">
+    <option value="all">All Brand</option>
+    <option *ngFor="let sup of suppliers" [value]="sup.supplier_name">
+      {{ sup.supplier_name }}
+    </option>
   </select>
 </div>
+
 <div class="custom-select">
   <select>
-    <option value="all">Category <img class="icon_down"src="image/down.svg" alt=""></option>
+    <option value="all">Category </option>
     <option value="option1">Option 1</option>
     <option value="option2">Option 2</option>
   </select>
 </div>
+                  </div>
                     </div>
                 <div class="detail_con">
                    
@@ -151,7 +155,7 @@
                     </ng-container>
     <!-- Data Rows -->
     <ng-template #realData>
-        <div class="table_detail2" *ngFor="let item of Inventory; let i = index" 
+        <div class="table_detail2" *ngFor="let item of filteredInventory; let i = index" 
      [style.animation-delay]="i * 0.15 + 's'">
     <div class="table_detail">
         <div class="sku2">{{ item.sku }}</div>
@@ -165,7 +169,7 @@
         <div class="sku2">{{ item.quantity_alert }}</div>
         <div class="button_small">
             <img class="icon_small_inventory" src="image/edit.svg" (click)="button_editt(item)">
-            <img class="icon_small_inventory" src="image/delete.svg" (click)="button_delete(item.sku, i)" alt="">
+            <img class="icon_small_inventory2" src="image/delete.svg" (click)="button_delete(item.sku, i)" alt="">
         </div>
     </div>
     <div class="line"></div>
@@ -271,17 +275,27 @@
 <div class="import_product" [class.product]="product" [class.button_cancel]="button_cancel" [class.button_importt]="button_importt">     
     <div class="con_import_product" [class.out_comimport]="outimport">         
         <div class="serach_product">             
-            Search Product         
+            import Product         
         </div>         
        <div class="add_image" (click)="fileInput.click()" style="cursor: pointer;">
     <!-- ถ้ายังไม่มีรูปที่เลือก ให้แสดงไอคอนบวก -->
     <img *ngIf="!imagePreview" src="image/Add ImageAdd_image.svg" alt="Add Image">
     
     <!-- ถ้าเลือกรูปแล้ว ให้แสดงรูปภาพตัวอย่าง -->
-    <img *ngIf="imagePreview" [src]="imagePreview" alt="Product Preview" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+    <img *ngIf="imagePreview" [src]="imagePreview" alt="Product Preview" style="width: 100px; height: 100px; object-fit: cover;">
     
     <!-- Input file ที่ซ่อนไว้ -->
     <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+    <div class="sku_pro2">
+    <label class="label_import">Image URL</label>
+    <div class="con_edit">
+        <input type="text" 
+               class="sku_input2" 
+               (ngModelChange)="onUrlChange($event)" 
+               [(ngModel)]="selectedProduct.picture" 
+               placeholder="Enter Image URL">
+    </div>
+</div>
 </div>   
         
         <div class="con_sku_pro">             
@@ -353,11 +367,21 @@
 <div class="import_product" [class.product2]="product2" [class.button_cancel]="button_cancel" [class.button_addd]="button_addd">
     <div class="con_import_product2" [class.out_comimport]="outimport" >
         <div class="serach_product">
-            Import Product
+            Search Product
         </div>
-        <div class="add_image">
-            <img src="image/Add ImageAdd_image.svg" alt="">
+        <div class="add_image2">
+            <img  [src]="imagePreview || 'image/Add ImageAdd_image.svg'" style="width: 100px; height: 100px; object-fit: cover;">
+                <div class="sku_pro2">
+                    <label class="label_import" for="fileInput">Upload Image</label>
+                    <div class="con_edit">
+                    <input type="text" class="sku_input2" (ngModelChange)="onUrlChange($event)" [(ngModel)]="selectedProduct.picture" placeholder="Change Image" >
+                    <label for="fileInput" style="cursor: pointer;">
+                    <img class="icon_edit" src="image/edit_inventory.svg" alt="">
+                </label>
+            <input type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
         </div>
+    </div>
+</div>
         <div class="con_sku_pro">
             <div class="sku_pro">
             <label class="label_import" for="">SKU <span class="important">*</span></label>

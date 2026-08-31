@@ -436,7 +436,35 @@ app.put('/todos/:id', async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 });
+// 📌 Route สำหรับอัปเดตข้อมูลพนักงานในตาราง todos
+app.put('/api/employee/:username', async (req, res) => {
+  try {
+    const { username } = req.params;
+    const { role, status, note } = req.body;
 
+    const result = await pool.query(
+      `UPDATE todos 
+       SET role = $1, status = $2, note = $3
+       WHERE username = $4 
+       RETURNING *`,
+      [role, status, note, username]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ success: false, message: 'ไม่พบข้อมูลผู้ใช้งานนี้ในระบบ' });
+    }
+
+    res.json({
+      success: true,
+      message: 'อัปเดตข้อมูลพนักงานเรียบร้อยแล้ว',
+      data: result.rows[0]
+    });
+
+  } catch (error) {
+    console.error('Error updating employee in todos:', error);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+});
 app.put('/api/reset-password', async (req, res) => {
   try {
     const { title, password } = req.body;

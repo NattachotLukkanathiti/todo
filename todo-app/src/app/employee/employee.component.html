@@ -103,13 +103,16 @@
     <option value="option2">Option 2</option>
   </select>
 </div> -->
-<div class="custom-select">
+<div class="con_position">
+    <div class="custom-select">
   <select (change)="filterEmployee(selectFilter.value)" #selectFilter>
     <option value="all">Position</option>
+    <option value="Guest">Guest</option>
     <option value="Back">Back</option>
     <option value="Front">Front</option>
     <option value="Admin">Admin</option>
   </select>
+</div>
 </div>
                     </div>
                 <div class="detail_con">
@@ -149,8 +152,8 @@
 <div class="sku2">{{ order.title }}</div>
 <div class="sku2">{{ order.phone }}</div>
 <div class="button_small">
-            <img class="icon_small_inventory" src="image/edit.svg" (click)="button_edit_account2(order)">
-            <img class="icon_small_inventory"  *ngIf="userRole === 'admin' || userRole === 'manager'"  src="image/delete.svg" alt="">
+            <img class="icon_small_inventory"  *ngIf="userRole === 'admin' || userRole === 'manager'" src="image/edit.svg" (click)="button_edit_account2(order)">
+            <img class="icon_small_inventory"  *ngIf="(userRole === 'admin' || userRole === 'manager') && isGuest(order.role)" src="image/delete.svg" alt="">
         </div>
     </div>
     <div class="line"></div>
@@ -237,12 +240,13 @@
         <div class="accout">
             <label class="text_status" >Accout Status</label>
                <div class="custom-select2">
-            <select>
-                <option value="all">Select <img class="icon_down"src="image/down.svg" alt=""></option>
-                <option value="option1">Admin</option>
-                <option value="option2">Frontend</option>
-                <option value="option2">Backend</option>
-            </select>
+                <select [(ngModel)]="selectedaccount.status">
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                    <option value="Suspended">Suspended</option>
+                    <option value="Pending">Inactive</option>
+                    <option value="Pending">Locked</option>
+                </select>
             </div>
                <label for="" class="text_status">Assign Role</label>
                <div class="custom-select2">
@@ -255,9 +259,8 @@
                <label for=""class="text_status" >Admin Note</label>
                <input type="text" class="sku_input2" >
         </div>
-        <div class="button_import">
-                <div class="save">Confirm</div>
-                <div class="cancel" (click)="button_cancels()" >Cancel</div>
-            </div>        
-    </div>
+       <div class="button_import">
+            <div class="save" (click)="saveAccountChanges()">Confirm</div>
+            <div class="cancel" (click)="button_cancels()" >Cancel</div>
+        </div>
 </div>

@@ -140,4 +140,8 @@ addInventory(productData: any) {
   return this.http.put<any>(`${this.apiUrl}/inventory/${sku}`, productData,{ headers: this.headers }
   );
 }
+// ใน todo.service.ts
+updateEmployee(employeeData: any) {
+  return this.http.put(`${this.apiUrl}/todos/${employeeData.code}`, employeeData);
+}
 }

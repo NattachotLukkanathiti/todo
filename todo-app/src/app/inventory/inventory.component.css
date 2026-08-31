@@ -404,7 +404,12 @@
     border: 1px solid #E6EAED;
     cursor: pointer;
 }
-
+.reload:hover{
+    background-color: #F4F5FD;
+}
+.reload:active{
+    background-color: #B9BDC7;
+}
 .xs {
     display: flex;
     justify-content: center;
@@ -428,22 +433,26 @@
 }
 
 .custom-select {
-    width: 120px;
-    /* ปรับความกว้างตามต้องการ */
+    width: 100%;
+    max-width: 135px;
 }
-
 .custom-select select {
     width: 100%;
-    padding: 12px 16px;
+    padding: 12px 40px 12px 16px; /* เพิ่ม padding ด้านขวาเป็น 40px เพื่อไม่ให้ตัวหนังสือทับลูกศร */
     color: #48505E;
     font-weight: 100;
     background-color: #ffffff;
+    
+    /* ส่วนที่ปรับปรุงเรื่องรูปภาพ */
+    background-image: url('/image/down.svg'); 
+    background-repeat: no-repeat; /* ป้องกันรูปภาพซ้ำ */
+    background-position: right 16px center; /* จัดให้ลูกศรอยู่ทางขวา ห่างจากขอบ 16px และอยู่ตรงกลางแนวตั้ง */
+    background-size: 10px; /* กำหนดขนาดลูกศรให้พอดี (ปรับขนาดได้ตามต้องการ) */
+
     border: 1px solid #E5E7EB;
-    /* สีขอบเทาอ่อน */
     border-radius: 8px;
-    /* ขอบมน */
     appearance: none;
-    /* ซ่อนลูกศรเริ่มต้นของระบบ */
+    -webkit-appearance: none; /* สำหรับ Safari */
     font-size: 13px;
     cursor: pointer;
 }
@@ -809,12 +818,6 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
 /* กด */
 .cancel:active {
     transform: scale(0.8);
-}
-
-.custom-select {
-    width: 120px;
-    /* ปรับความกว้างตามต้องการ */
-    position: relative;
 }
 
 
@@ -1197,7 +1200,7 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
     height: 100%;
     padding: 20px;
     background: #fff;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, .08);
+   /*  box-shadow: 0 8px 24px rgba(0, 0, 0, .08); */
     box-sizing: border-box;
 }
 
@@ -1274,7 +1277,16 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
     box-shadow: 0px 2px 6px 0px #00000013;
 
 }
-
+.icon_down{
+    position: relative;
+    z-index: 999;
+}
+.con_3btn{
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    gap: 10px;
+}
 .conT {
     margin-left: 30px;
     display: flex;
@@ -1347,7 +1359,7 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
     width: 15px;
     height: 15px;
     border-radius: 8px;
-    border: 1px solid #AFAFAF;
+    background-color: #FFFCE8;
     cursor: pointer;
 }
 .icon_small_inventory:hover {
@@ -1359,6 +1371,30 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
     border: 1px solid #AFAFAF;
 }
 .icon_small_inventory:active {
+    padding: 7px;
+    width: 15px;
+    background-color: #8a8a8a;
+    height: 15px;
+    border-radius: 8px;
+    border: 1px solid #AFAFAF;
+}
+.icon_small_inventory2 {
+    padding: 7px;
+    width: 15px;
+    height: 15px;
+    background-color: #FCE8E8;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.icon_small_inventory2:hover {
+    padding: 7px;
+    width: 15px;
+    background-color: #d0d0d0;
+    height: 15px;
+    border-radius: 8px;
+    border: 1px solid #AFAFAF;
+}
+.icon_small_inventory2:active {
     padding: 7px;
     width: 15px;
     background-color: #8a8a8a;

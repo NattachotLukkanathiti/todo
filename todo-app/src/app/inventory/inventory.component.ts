@@ -42,6 +42,7 @@ export class InventoryComponent {
   play_Return = false;
   out = false;
   stan = false;
+  reload = false;
   Inventory: any[] = [];
   isLoading = false; 
   button_cancel = false;
@@ -63,7 +64,8 @@ export class InventoryComponent {
     quantity_alert: null,
     supplier: '',
     invoice_no: '',
-    import_quantity: null
+    import_quantity: null,
+    picture: ''
   };
   item: any;  
   showpopupconfirm = false
@@ -77,8 +79,9 @@ selectedProduct: any = {
   quantity_alert: null
 };
   originalProduct: any = null; 
-
-
+  suppliers: any[] = [];
+    selectedSupplier: string = 'all';
+    filteredInventory: any[] = [];
   
   //  เพิ่มบรรทัดนี้เข้าไปค่ะ
   imagePreview: string | null = null;
@@ -109,8 +112,36 @@ selectedProduct: any = {
     this.timeSubscription = interval(1000).subscribe(() => {
       this.currentTime = new Date();
     });
+    this.loadSuppliers(); 
+    
   }
-
+  filterBySupplier() {
+    if (this.selectedSupplier === 'all') {
+      this.filteredInventory = [...this.Inventory]; // ถ้าเลือก all ให้แสดงทั้งหมด
+    } else {
+      this.filteredInventory = this.Inventory.filter(item => 
+        item.brand === this.selectedSupplier // ตรวจสอบว่าชื่อ supplier ตรงกันไหม
+      );
+    }
+  }
+  loadSuppliers() {
+    // สมมติว่าใน todoService มีฟังก์ชัน getSuppliers()
+    // ถ้ายังไม่มี ให้สร้างเพิ่มใน todoService ด้วยครับ
+    this.todoService.getSuppliers().subscribe({
+      next: (res) => {
+        this.suppliers = res;
+        
+      },
+      error: (err) => {
+        console.error('Error fetching suppliers:', err);
+      }
+    });
+  }
+  reloads() {
+    this.loadInventory();
+    this.isLoading = true; 
+    
+}   
   Animationa_out(){
     this.Animation_out = true;
     this.Animation_outdash = true;
@@ -232,11 +263,14 @@ loadTodos() {
   loadInventory() {
   this.todoService.getInventory().subscribe({
     next: (res) => {
+      this.Inventory = res;
       // สมมติว่ามีฟิลด์ updated_at หรือ id ที่สามารถใช้เรียงลำดับได้
       this.Inventory = res.sort((a, b) => {
         // เรียงจากมากไปน้อย (ล่าสุดขึ้นก่อน)
         return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
       });
+      this.filteredInventory = [...this.Inventory]; 
+
       this.isLoading = false;
       this.loader = false;              
     },
@@ -281,7 +315,7 @@ loadTodos() {
   resetForm() {
     this.newProduct = {
       sku: '', product_name: '', category: '', brand: '', price: null,
-      quantity_alert: null, supplier: '', invoice_no: '', import_quantity: null
+      quantity_alert: null, supplier: '', invoice_no: '', import_quantity: null,picture: ''
     };
   }
 
@@ -303,29 +337,11 @@ loadTodos() {
 
   async saveToStock() {
     this.isLoading = true;
-    let pictureUrl = '';
+    
+    // ใช้ค่า URL ที่ผู้ใช้กรอกเข้ามาโดยตรง
+    let pictureUrl = this.selectedProduct.picture || '';
 
     try {
-      // ถ้ามีไฟล์ ให้ทำการอัปโหลดไปที่ Supabase ก่อน
-      if (this.selectedFile) {
-        const fileExt = this.selectedFile.name.split('.').pop();
-        const fileName = `${Math.random()}.${fileExt}`;
-        const filePath = `inventory/${fileName}`;
-
-        const { data, error } = await this.supabase.storage
-          .from('Photo') // ใส่ชื่อ Bucket ของคุณ
-          .upload(filePath, this.selectedFile);
-
-        if (error) throw error;
-
-        // ดึง Public URL
-        const { data: publicUrlData } = this.supabase.storage
-          .from('Photo')
-          .getPublicUrl(filePath);
-          
-        pictureUrl = publicUrlData.publicUrl;
-      }
-
       // เพิ่ม pictureUrl เข้าไปใน object ข้อมูล
       const productData = {
         ...this.newProduct,
@@ -337,7 +353,23 @@ loadTodos() {
         next: (res) => {
           this.openpopup('New product created successfully. View changes in Stock History');
           this.loadInventory();
+          
+          const now = new Date();
+          const auditData = {
+            date: now.toISOString().split('T')[0],
+            time: now.toTimeString().split(' ')[0],
+            username: this.username,
+            email: this.email,
+            activity: `Import Product`,
+            role: this.userRole,
+            picture: this.profile
+          };
+          
           this.isLoading = false;
+          this.todoService.logAudit(auditData).subscribe({
+            next: () => console.log('Audit saved'),
+            error: (err) => console.error('Failed to save audit', err)
+          });
         },
         error: (err) => {
           console.error(err);
@@ -346,11 +378,11 @@ loadTodos() {
       });
 
     } catch (error) {
-      console.error('Error uploading image:', error);
-      this.openpopup('อัปโหลดรูปภาพไม่สำเร็จ');
+      console.error('Error saving product:', error);
+      this.openpopup('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
       this.isLoading = false;
     }
-  }
+}
   // 1. สร้างตัวแปรเก็บฟังก์ชัน resolve ของ Promise
 private resolveConfirm: ((value: boolean) => void) | null = null;
 

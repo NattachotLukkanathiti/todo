@@ -521,7 +521,8 @@
     cursor: pointer;
 }
 .custom-select {
-  width: 120px; /* ปรับความกว้างตามต้องการ */
+  width: 100%;
+  max-width: 135px; /* ปรับความกว้างตามต้องการ */
   position: relative;
 }
 
@@ -645,6 +646,12 @@
   display: flex;
   align-items: center;
   gap: 4px;
+}
+.con_position{
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    width: 100%;
 }
 .con_tainer_page{
     display: flex;
@@ -928,7 +935,7 @@
     height: 100%;
     padding: 20px;
     background: #fff;
-    box-shadow: 0 8px 24px rgba(0,0,0,.08);
+/*     box-shadow: 0 8px 24px rgba(0,0,0,.08); */
     box-sizing: border-box;
 }
 

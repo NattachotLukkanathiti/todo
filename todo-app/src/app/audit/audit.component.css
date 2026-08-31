@@ -207,8 +207,8 @@ input::placeholder{
     cursor: pointer;
 }
 .custom-select {
-  width: 160px; /* ปรับความกว้างตามต้องการ */
-  position: relative;
+    width: 100%;
+    max-width: 135px;
 }
 
 
@@ -552,9 +552,21 @@ input::placeholder{
     height: 100%;
     padding: 20px;
     background: #fff;
-    box-shadow: 0 8px 24px rgba(0,0,0,.08);
+/*     box-shadow: 0 8px 24px rgba(0,0,0,.08); */
     box-sizing: border-box;
     
+}
+.con_btn{
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    justify-content: flex-end;
+}
+.pagination{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
 }
 .connn{
     display: flex;

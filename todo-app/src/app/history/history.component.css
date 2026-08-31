@@ -555,7 +555,12 @@ input::placeholder{
     padding: 20px;
 }
 /* เมื่อมีคลาส .open ให้เลื่อน Sidebar กลับเข้ามาในจอ */
-
+.con_3btn{
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    gap: 10px;
+}
 .static {
     width: 100%;
     padding: 20px;
@@ -563,7 +568,7 @@ input::placeholder{
     height: 100%;
     padding: 20px;
     background: #fff;
-    box-shadow: 0 8px 24px rgba(0,0,0,.08);
+   /*  box-shadow: 0 8px 24px rgba(0,0,0,.08); */
     box-sizing: border-box;
     
 }

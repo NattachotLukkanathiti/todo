@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="lin"></div>
-        <img class="iconsetting1" src="image/Maximize Icon.svg" (click)="toggleMenu()" alt="">
+        <!-- <img class="iconsetting1" src="image/Maximize Icon.svg" (click)="toggleMenu()" alt=""> -->
         <!-- <img class="iconsetting2" src="image/Song.svg" alt=""> -->
         <img class="iconsetting3" src="image/Chart.svg" alt="">
         <img class="iconsetting4" [src]="profile" alt="User Profile">
@@ -90,7 +90,8 @@
                             (input)="filterS()">
                         <img class="iconsearch" src="image/search.svg" alt="">
                     </div>
-                    <div class="custom-select">
+                    <div class="con_3btn">
+                        <div class="custom-select">
   <select class="text">
     <option value="all">Last 7 Days <img class="icon_down"src="image/down.svg" alt=""></option>
     <option value="option1">Option 1</option>
@@ -111,6 +112,7 @@
     <option value="option2">Option 2</option>
   </select>
 </div>
+                    </div>
 
                     </div>
                 <div class="detail_con">
