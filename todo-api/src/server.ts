@@ -557,31 +557,33 @@ app.delete('/api/inventory/:sku', async (req, res) => {
   }
 });
 
-app.put('/api/inventory/:sku', async (req, res) => {
+// 📌 Route สำหรับอัปเดตเฉพาะ Role, Status, และ Note
+app.put('/api/employee/:username', async (req, res) => {
   try {
-    const { sku } = req.params;
-    const { product_name, category, brand, price, quantity_alert, supplier } = req.body;
+    const { username } = req.params;
+    const { role, status, note } = req.body;
 
+    // อัปเดตเฉพาะ 3 คอลัมน์นี้เท่านั้น
     const result = await pool.query(
-      `UPDATE inventory 
-       SET product_name = $1, category = $2, brand = $3, price = $4, quantity_alert = $5, supplier = $6
-       WHERE sku = $7 
+      `UPDATE todos 
+       SET role = $1, status = $2, note = $3
+       WHERE username = $4 
        RETURNING *`,
-      [product_name, category, brand, price, quantity_alert, supplier, sku]
+      [role, status, note, username]
     );
 
     if (result.rowCount === 0) {
-      return res.status(404).json({ success: false, message: 'ไม่พบสินค้านี้' });
+      return res.status(404).json({ success: false, message: 'ไม่พบผู้ใช้งานนี้' });
     }
 
     res.json({
       success: true,
-      message: 'อัปเดตข้อมูลสินค้าเรียบร้อยแล้ว',
+      message: 'อัปเดตข้อมูลสำเร็จ (Role, Status, Note)',
       data: result.rows[0]
     });
 
   } catch (error) {
-    console.error('Error updating inventory:', error);
+    console.error('Error updating specific fields:', error);
     res.status(500).json({ success: false, message: 'Server Error' });
   }
 });

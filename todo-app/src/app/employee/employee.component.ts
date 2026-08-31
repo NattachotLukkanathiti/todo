@@ -306,6 +306,7 @@ logout() {
     });
   }
   // เพิ่มฟังก์ชันนี้เข้าไปใน class EmployeeComponent
+  // ฟังก์ชันสำหรับบันทึกข้อมูลและส่งไปยัง Backend
   saveAccountChanges() {
     // 1. แปลงค่า Role กลับให้ตรงกับที่ฐานข้อมูลต้องการ
     let mappedRole = this.selectedaccount.role;
@@ -318,10 +319,8 @@ logout() {
       role: mappedRole
     };
 
-    // 2. ส่งข้อมูลไปอัปเดตที่ Backend (สมมติว่าใช้ todoService)
-    // ปรับแก้ชื่อ API ให้ตรงกับ Service ของคุณ
-    /*
-    this.todoService.updateEmployee(updatedAccount).subscribe({
+    // 2. ส่งข้อมูลไปอัปเดตที่ Backend
+    this.todoService.updateEmployee(updatedAccount.username, updatedAccount).subscribe({
       next: (res) => {
         this.openpopupnoti("Account updated successfully");
         this.loadTodos(); // โหลดข้อมูลใหม่
@@ -332,15 +331,5 @@ logout() {
         this.openpopupnoti("Failed to update account");
       }
     });
-    */
-
-    // ตัวอย่างการจำลองการอัปเดตในหน้าจอ (ลบออกได้เมื่อเชื่อมต่อ Backend แล้ว)
-    console.log('Saving account with data:', updatedAccount);
-    const index = this.employeeList.findIndex(emp => emp.code === updatedAccount.code);
-    if (index !== -1) {
-      this.employeeList[index] = { ...updatedAccount };
-      this.filterEmployee('all'); // รีเฟรชหน้าจอ
-    }
-    this.button_cancels(); // ปิดหน้าต่าง
   }
 }

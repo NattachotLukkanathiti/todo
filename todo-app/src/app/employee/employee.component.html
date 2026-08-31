@@ -256,8 +256,8 @@
     <option value="Backend">Backend</option>
 </select>
             </div>
-               <label for=""class="text_status" >Admin Note</label>
-               <input type="text" class="sku_input2" >
+               <label for="" class="text_status">Admin Note</label>
+            <input type="text" class="sku_input2" [(ngModel)]="selectedaccount.note" placeholder="Add a note...">
         </div>
        <div class="button_import">
             <div class="save" (click)="saveAccountChanges()">Confirm</div>

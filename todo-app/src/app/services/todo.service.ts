@@ -141,7 +141,11 @@ addInventory(productData: any) {
   );
 }
 // ใน todo.service.ts
-updateEmployee(employeeData: any) {
-  return this.http.put(`${this.apiUrl}/todos/${employeeData.code}`, employeeData);
+updateEmployee(username: string, employeeData: any): Observable<any> {
+  return this.http.put<any>(
+    `${this.apiUrl}/employee/${username}`, 
+    employeeData,
+    { headers: this.headers }
+  );
 }
 }
