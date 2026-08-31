@@ -67,6 +67,7 @@ export class DashboardComponent implements OnInit {
     this.stan = false;
     this.play_Return = true;
     this.inhere = true;
+    this.loadSummary(); 
   }
 
   // เข้ามาจาก Login
@@ -93,16 +94,22 @@ export class DashboardComponent implements OnInit {
   }
   
   loadSummary() {
-  // สมมติว่าคุณมีฟังก์ชัน getSummary() ใน todo.service
-  this.todoService.getSummary().subscribe({
-    next: (res) => {
-      if (res && res.length > 0) {
-        this.summary = res[0]; // ดึงข้อมูลแถวแรกมาใช้งาน
-      }
-    },
-    error: (err) => console.error('Error loading summary:', err)
-  });
-}
+    this.todoService.getSummary().subscribe({
+      next: (res) => {
+        if (res && res.length > 0) {
+          const data = res[0];
+          // แปลงค่าเป็น Number เพื่อให้ Pipe ของ Angular ทำงานได้ถูกต้อง
+          this.summary = {
+            todays_sale: Number(data.todays_sale) || 0,
+            yearly_total_sales: Number(data.yearly_total_sales) || 0,
+            net_income: Number(data.net_income) || 0,
+            products: Number(data.products) || 0
+          };
+        }
+      },
+      error: (err) => console.error('Error loading summary:', err)
+    });
+  }
   Animationa_out(){
     this.outs = false;
         this.out = true;

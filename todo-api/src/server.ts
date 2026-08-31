@@ -589,24 +589,16 @@ app.put('/api/employee/:username', async (req, res) => {
 });
 app.get('/api/summary', async (req, res) => {
   try {
+    // ดึงข้อมูลทั้งหมดมาคำนวณ โดยไม่กรองวันที่ก่อน เพื่อทดสอบว่าตัวเลขขึ้นหรือไม่
     const query = `
       SELECT 
-        -- 1. คำนวณยอดขายวันนี้ (จากตาราง sale_order)
-        COALESCE((SELECT SUM(amount) FROM sale_order WHERE date::date = CURRENT_DATE), 0) AS todays_sale,
-        
-        -- 2. คำนวณยอดขายทั้งปี (จากตาราง sale_order)
-        COALESCE((SELECT SUM(amount) FROM sale_order WHERE EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM CURRENT_DATE)), 0) AS yearly_total_sales,
-        
-        -- 3. กำไรสุทธิ (สมมติให้เป็น 30% ของยอดขายทั้งปี หรือปรับแก้ตามสูตรของคุณ)
-        COALESCE((SELECT SUM(amount) * 0.30 FROM sale_order WHERE EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM CURRENT_DATE)), 0) AS net_income,
-        
-        -- 4. จำนวนรายการสินค้าทั้งหมด (จากตาราง inventory)
+        COALESCE((SELECT SUM(amount) FROM sale_order), 0) AS todays_sale,
+        COALESCE((SELECT SUM(amount) FROM sale_order), 0) AS yearly_total_sales,
+        COALESCE((SELECT SUM(amount) * 0.30 FROM sale_order), 0) AS net_income,
         COALESCE((SELECT COUNT(*) FROM inventory), 0) AS products
     `;
 
     const result = await pool.query(query);
-    
-    // ส่งข้อมูลกลับไปในรูปแบบ Array เพื่อให้เข้ากับโครงสร้างเดิมของ Angular
     res.json(result.rows);
   } catch (error) {
     console.error('Error calculating summary:', error);
