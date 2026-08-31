@@ -46,6 +46,12 @@ export class DashboardComponent implements OnInit {
   loader = false
   userRole: string = '';
   blur= false;
+  summary: any = {
+  todays_sale: 0,
+  yearly_total_sales: 0,
+  net_income: 0,
+  products: 0
+};
   private timeSubscription!: Subscription;
   constructor(private router: Router) {}
 
@@ -86,7 +92,17 @@ export class DashboardComponent implements OnInit {
   
   }
   
-
+  loadSummary() {
+  // สมมติว่าคุณมีฟังก์ชัน getSummary() ใน todo.service
+  this.todoService.getSummary().subscribe({
+    next: (res) => {
+      if (res && res.length > 0) {
+        this.summary = res[0]; // ดึงข้อมูลแถวแรกมาใช้งาน
+      }
+    },
+    error: (err) => console.error('Error loading summary:', err)
+  });
+}
   Animationa_out(){
     this.outs = false;
         this.out = true;

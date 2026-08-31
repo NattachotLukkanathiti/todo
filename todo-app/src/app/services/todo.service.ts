@@ -148,4 +148,11 @@ updateEmployee(username: string, employeeData: any): Observable<any> {
     { headers: this.headers }
   );
 }
+// ดึงข้อมูลสรุปสำหรับ Dashboard
+  getSummary(): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.apiUrl}/summary`,
+      { headers: this.headers }
+    );
+  }
 }

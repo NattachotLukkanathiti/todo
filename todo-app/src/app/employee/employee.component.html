@@ -20,7 +20,7 @@
         <img class="iconsetting1" src="image/Maximize Icon.svg" (click)="toggleMenu()" alt="">
         <!-- <img class="iconsetting2" src="image/Song.svg" alt=""> -->
         <img class="iconsetting3" src="image/Chart.svg" alt="">
-        <img class="iconsetting4" [src]="profile" alt="User Profile">
+        <img class="iconsetting4" [src]="profile || 'image/profileee.svg'" alt="User Profile">
     </div>
 
 </div>
@@ -219,7 +219,20 @@
             </div>
         </div>
     </div>
-
+<div *ngIf="showpopup" class="backpop">
+  <div *ngIf="showpopup" class="popupcontainer">
+  <div class="popup-content">
+    <img class="iconsuccess" src="image/success.svg" alt="">
+    <div class="headerpop">
+      Success
+    </div>
+    <div class="subheadersuccess">
+      {{popup}}
+    </div>
+    <button class="buttonclose" (click)="closepopup()">Back to Inventory</button>
+  </div>
+</div>
+</div>
 
     <div *ngIf="isLoading" class="loading-container">
   <img class="logo_loading" src="/image/logoo.svg" alt="" >
@@ -254,6 +267,7 @@
     <option value="Admin">Admin</option>
     <option value="Frontend">Frontend</option>
     <option value="Backend">Backend</option>
+    <option value="">Guest</option>
 </select>
             </div>
                <label for="" class="text_status">Admin Note</label>

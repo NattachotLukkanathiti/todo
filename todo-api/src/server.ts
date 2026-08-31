@@ -587,7 +587,32 @@ app.put('/api/employee/:username', async (req, res) => {
     res.status(500).json({ success: false, message: 'Server Error' });
   }
 });
+app.get('/api/summary', async (req, res) => {
+  try {
+    const query = `
+      SELECT 
+        -- 1. คำนวณยอดขายวันนี้ (จากตาราง sale_order)
+        COALESCE((SELECT SUM(amount) FROM sale_order WHERE date::date = CURRENT_DATE), 0) AS todays_sale,
+        
+        -- 2. คำนวณยอดขายทั้งปี (จากตาราง sale_order)
+        COALESCE((SELECT SUM(amount) FROM sale_order WHERE EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM CURRENT_DATE)), 0) AS yearly_total_sales,
+        
+        -- 3. กำไรสุทธิ (สมมติให้เป็น 30% ของยอดขายทั้งปี หรือปรับแก้ตามสูตรของคุณ)
+        COALESCE((SELECT SUM(amount) * 0.30 FROM sale_order WHERE EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM CURRENT_DATE)), 0) AS net_income,
+        
+        -- 4. จำนวนรายการสินค้าทั้งหมด (จากตาราง inventory)
+        COALESCE((SELECT COUNT(*) FROM inventory), 0) AS products
+    `;
 
+    const result = await pool.query(query);
+    
+    // ส่งข้อมูลกลับไปในรูปแบบ Array เพื่อให้เข้ากับโครงสร้างเดิมของ Angular
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error calculating summary:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {

@@ -164,13 +164,15 @@ selectedaccount: any = { role: '' };
     this.showpopupnoti = true;
     this.popup = message;
   }
+  openpopup(message:string){
+    this.showpopup = true;
+    this.popup = message;
+  }
   closepopup(){
     this.showpopup = false;
     this.showpopupnoti = false;
     this.button_edit_account = false;
     
-  
-      this.router.navigate(['/login']); 
     
   }
   ngOnDestroy() {
@@ -322,7 +324,7 @@ logout() {
     // 2. ส่งข้อมูลไปอัปเดตที่ Backend
     this.todoService.updateEmployee(updatedAccount.username, updatedAccount).subscribe({
       next: (res) => {
-        this.openpopupnoti("Account updated successfully");
+        this.openpopup("Account updated successfully");
         this.loadTodos(); // โหลดข้อมูลใหม่
         this.button_cancels(); // ปิดหน้าต่าง
       },
