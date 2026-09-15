@@ -30,7 +30,7 @@ export class DashboardComponent implements OnInit {
   popup = '';
   showpopupnoti = false;
   isMenuOpen = false;
-  isMenuOpenprofile = false;
+  isMenuOpenprofile = true;
   currentView = 'dashboard';
   stan = false;
   currentTime = new Date();
@@ -52,6 +52,7 @@ export class DashboardComponent implements OnInit {
   net_income: 0,
   products: 0
 };
+  openpro = false;
   private timeSubscription!: Subscription;
   constructor(private router: Router) {}
 
@@ -92,7 +93,7 @@ export class DashboardComponent implements OnInit {
     });
   
   }
-  
+
   loadSummary() {
     this.todoService.getSummary().subscribe({
       next: (res) => {
@@ -272,5 +273,8 @@ export class DashboardComponent implements OnInit {
         this.router.navigate(['/login']); 
       }
     });
+  }
+   openPro(){
+    this.isMenuOpenprofile = !this.isMenuOpenprofile;
   }
 }

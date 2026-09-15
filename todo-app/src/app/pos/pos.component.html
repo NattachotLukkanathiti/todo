@@ -43,8 +43,8 @@
           <div class="section-heading">
             <h1>Categories</h1>
             <div class="category-arrows">
-              <button type="button" aria-label="Previous categories" (click)="scrollCategories('left')"><img src="assets/figma-pos/left.svg" alt="" /></button>
-              <button type="button" aria-label="Next categories" (click)="scrollCategories('right')"><img src="assets/figma-pos/right.svg" alt="" /></button>
+              <button class="category-arrow category-arrow--previous" type="button" aria-label="Previous categories" (click)="scrollCategories('left')"><img class="category-arrow__default" src="assets/figma-pos/left.svg" alt="" /><img class="category-arrow__active" src="assets/figma-pos/right.svg" alt="" /></button>
+              <button class="category-arrow category-arrow--next" type="button" aria-label="Next categories" (click)="scrollCategories('right')"><img class="category-arrow__default" src="assets/figma-pos/left.svg" alt="" /><img class="category-arrow__active" src="assets/figma-pos/right.svg" alt="" /></button>
             </div>
           </div>
           <div class="category-row">

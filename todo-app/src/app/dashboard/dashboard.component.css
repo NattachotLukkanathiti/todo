@@ -1,7 +1,12 @@
-
-:host{
-    background-color: #F4F5FC !important;
+.container2{
+    display: flex;
+    width: 100%;
+    padding: 20px;
+    height: 100%;
+    box-sizing: border-box;
+    background-color: #fff;
 }
+
 .navbaar {
   display: flex;
   align-items: center; 
@@ -9,13 +14,15 @@
   top: 0;
   left: 0;
   width: 100vw;
-  z-index: 3;
+  z-index: 8;
   background-color: #FFF;
   border: 1px solid #CED4DA ;
   animation: slide 1s ease-in-out;
   
 }
-
+.consale{
+    z-index: 4;
+}
 .navstatic{
     display: flex;
     z-index: 2;
@@ -39,6 +46,37 @@
     padding: 10px;
     cursor: pointer;
 }
+.con_nav {
+    width: 100%;
+    gap: 39px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.he{
+    cursor: pointer;
+    color: #1D1D1F;
+    font-weight: 300;
+    font-size: 12px;
+}
+.he:hover{
+    color: #89898b;
+}
+.con_sub{
+    width: 100%;
+    position: relative;
+}
+.con_sub2{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+}
 .iconsetting4 {
     width: 35px;
     height: 35px;
@@ -47,6 +85,8 @@
 }
 .iconsetting1:hover,.iconsetting2:hover,.iconsetting3:hover,.iconsetting4:hover{
     background: #cccdd4;
+    cursor: pointer;
+    z-index: 10;
 }
 .time{
     font-size: 15px;
@@ -126,6 +166,7 @@ input::placeholder{
     border-radius: 8px;
     margin-left: 20px;
     display: flex;
+    display:none;
     align-items: center;
     justify-content: center;
     cursor: pointer;
@@ -196,6 +237,7 @@ input::placeholder{
     position: relative;
     width: 280px;
     padding: 20px;
+    display: none;
     overflow: hidden;
     background: #F4F5FC;
     transition: all .3s ease;
@@ -212,7 +254,6 @@ input::placeholder{
     padding: 0;
 }
 .fix2{
-     display: flex;
     position: relative;
   top: 0;
   margin-left: auto;
@@ -391,6 +432,7 @@ input::placeholder{
 .T {
     height: 70px;
     width: 180px;
+    display: flex;
     background-color: #FFF; 
     border-radius: 10px;
     box-shadow: 0px 2px 6px 0px #00000013;
@@ -431,6 +473,7 @@ input::placeholder{
 }
 .bar {
   width: 100%;
+  z-index: 10;
   background-color: #84D46E;
   border-radius: 10px;
   animation: height 1s ease-out forwards;
@@ -441,17 +484,11 @@ input::placeholder{
 
 @keyframes height {
   0% {
-    transform: scaleY(0);
     box-shadow:0px 10px 200px 20px #69ff4a;
   }     
-  50% {
-    transform: scaleY(1);
-    box-shadow:0px 10px 200px 20px #fbfffa;
 
-  }
   100% {
     transform: scaleY(1);
-    
     box-shadow: 0px 0px 30px 5px #69a95700;
   }
 }
@@ -686,12 +723,6 @@ input::placeholder{
     0% {
         transform: translateY(500px); 
         opacity: 0;
-    }
-    50% {
-       transform: translateY(0); 
-        opacity: 1;
-            transform: scaleY(1.1);
-    
     }
     100%{
          transform: translateY(0); 
@@ -998,6 +1029,14 @@ input::placeholder{
     display: flex;
     justify-content: flex-end;
 }
+.value{
+    display: flex;
+    font-size: 13px;
+    font-size: 20px;
+    font-weight: 400;
+    justify-content: flex-end;
+    margin-right: 20px;
+}
 .sub {
     display: flex;
     font-size: 13px;
@@ -1143,25 +1182,84 @@ input::placeholder{
     transform: translateY(-400%);
   }
 }
+.in_bt{
+    display: flex;
+    margin-left: auto;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+.xs{
+     display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #E6EAED;
+    cursor: pointer;
+}
+.pdf{
+      display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #E6EAED;
+    cursor: pointer;
+}
+.reload{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #E6EAED;
+    cursor: pointer;
+}
+.reload:hover{
+    background-color: #dadada;
+}
+.hea{
+    display: flex;
+    width: 100%;
+    margin-bottom: 20px;
+}
 .con_sale_order{
     margin-top: 20px;
-    padding: 30px;
     height: 100vh;
-    width: 100%;
+        
+    width: 50vw;
     border-radius: 10px;
     background-color: #fff;
+    z-index: 5;
     box-sizing: border-box;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.06);
+    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.149);
 }
 .header_sale{
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 600;
+    padding: 30px;
+    display: flex;
+}
+.last{
+    margin-left: auto;
+    border: none;
+    color: #84D46E;
+    font-weight: 800;
+    font-size: 20px;
 }
 .con_header_colum {
     display: flex;
-    margin-top: 20px;
+    padding:20px 35px;
     width: 100%;
     align-items: center;
+    background-color: #F4F5FC;
     box-sizing: border-box;
     justify-content: space-between; /* เว้นช่องว่างระหว่าง element ให้เท่ากัน */
+}
+.CH{
+    font-weight: 600;
 }

@@ -9,6 +9,19 @@
         <input class="inputser"type="text" placeholder="Search" [(ngModel)]="search" (input)="filterS()">
         <img class="iconsearch" src="image/search.svg" alt="">
     </div> -->
+       <div class="con_nav">
+       <!--   <img class="iconweb" src="image/logo.svg" alt=""> -->
+<!--         <img class="apple" src="image/apple.png" alt=""> -->
+                    <div class="he"  (click)="Animationa_out()">Dashboard</div>
+<div  class="he"(click)="Animationa_out()">Inventory</div>
+<div class="he" (click)="Animation_out2()">Sales Orders</div>
+<div class="he" (click)="Animation_out3()">Stock History</div>
+<div class="he" (click)="Animation_out4()">Employee</div>
+<div class="he" (click)="Animation_out6()">Audit Log</div>
+<div class="he" (click)="Animation_out5()">Suppliers</div>
+<!-- <div class="he" (click)="Animation_out5()">Help</div>
+<div class="he" (click)="Animation_out5()">Setting</div> -->
+    </div>
     <div class="container_bar">
         <div class="time" [class.active]="isTimeOpen" (click)="isTimeOpen = !isTimeOpen">
             <img class="icon_time" src="image/Time Icon.svg">
@@ -17,10 +30,10 @@
             </div>
         </div>
         <div class="lin"></div>
-        <img class="iconsetting1" src="image/Maximize Icon.svg" (click)="toggleMenu()" [class.Max]="Max" alt="">
+<!--         <img class="iconsetting1" src="image/Maximize Icon.svg" (click)="toggleMenu()" [class.Max]="Max" alt=""> -->
         <!-- <img class="iconsetting2" src="image/Song.svg" alt=""> -->
-        <img class="iconsetting3" src="image/Chart.svg" alt="">
-        <img class="iconsetting4" [src]="profile || 'image/profileee.svg'" alt="User Profile">
+        <img class="iconsetting3" (click)="openPro()" src="image/Chart.svg" alt="">
+        <img class="iconsetting4" (click)="openPro()" [src]="profile || 'image/profileee.svg'" alt="User Profile">
         
     </div>
 
@@ -66,10 +79,25 @@
         </div>
     </div>
 
-    <div class="container" [class.fade-out]="Animation_out" [class.fade-out2]="Animation_outsale"
+   <div class="container2">
+     <div class="container" [class.fade-out]="Animation_out" [class.fade-out2]="Animation_outsale"
         [class.Return]="play_Return" [class.Boom]="stan">
-    <div class="con_header">
+    <div class="hea">
+        <div class="con_header">
         <div class="header_Inventory">Dashboard</div>
+    </div>
+     <div class="in_bt">
+                            <div class="pdf">
+                                <img src="image/pdf.svg" alt="">
+                            </div>
+                            <div class="xs">
+                                    <img src="image/XS.svg" alt="">
+                                </div>
+                                <div class="reload" >
+                                    <img src="image/Group.svg" alt="">
+                                </div>
+                          
+                        </div>
     </div>
         <div class="contall">
             <div class="headersum">Sales Summary</div>
@@ -77,30 +105,31 @@
         <div class="conT">
     <div class="T">
         <img class="iconpass" src="image/Frame.svg" alt="">
-        <div class="con_sub">
-            <div class="sub">Today’s Sale</div>
+        <div class="con_sub2">
             <div class="value">{{ summary.todays_sale | number:'1.2-2' }}</div>
+            <div class="sub">Today’s Sale</div>
         </div>
     </div>
     <div class="T">
         <img class="iconpass" src="image/shop2.svg" alt="">
-        <div class="con_sub">
-            <div class="sub">Yearly Total Sales</div>
+        <div class="con_sub2">
             <div class="value">{{ summary.yearly_total_sales | number:'1.2-2' }}</div>
+            <div class="sub">Yearly Total Sales</div>
         </div>
     </div>
     <div class="T">
         <img class="iconpass" src="image/coin.svg" alt="">
-        <div class="con_sub">
-            <div class="sub">Net Income</div>
+        <div class="con_sub2">
             <div class="value">{{ summary.net_income | number:'1.2-2' }}</div>
+            <div class="sub">Net Income</div>
         </div>
     </div>
     <div class="T">
-        <img class="iconpass" src="image/bag.svg" alt="">
-        <div class="con_sub">
-            <div class="sub">Products</div>
+        <div class="con_sub"> <img class="iconpass" src="image/bag.svg" alt=""></div>
+       
+        <div class="con_sub2">
             <div class="value">{{ summary.products }}</div>
+            <div class="sub">Products</div>
         </div>
     </div>
 </div>
@@ -172,8 +201,28 @@
         </div>
 
 
+
+    </div>
+    <div class="consale" [class.fade-out]="Animation_out" [class.fade-out2]="Animation_outsale"
+        [class.Return]="play_Return" [class.Boom]="stan">
+        <div class="con_sale_order">
+        <div class="header_sale">Sale Order
+            <div class="last">
+                <select class="last">
+                    <option value="last-7-days">Last 7 Days</option>
+                </select>
+            </div>
+        </div>
+         <div class="con_header_colum">
+            <div class="CH">Channel</div>
+            <div class="CH">Draft</div>
+            <div class="CH">Confirmed</div>
+            <div class="CH">Shipped</div>
+            <div class="CH">Invoiced</div>
+         </div>
+    </div>
     <div class="con_sale_order">
-        <div class="header_sale">Sale Order</div>
+        <div class="header_sale">Sale Order
          <div class="con_header_colum">
             <div class="div">Channel</div>
             <div class="">Draft</div>
@@ -182,14 +231,15 @@
             <div class="">Invoiced</div>
          </div>
     </div>
-
     </div>
+    
 
-    <div class="fix2" [class.open]="isMenuOpenprofile" [class.out]="out" [class.inhere]="inhere" [class.outs]="outs">
+   </div>
+    <div class="fix2" [class.open]="isMenuOpenprofile" [class.out]="out"  [class.outs]="outs">
         <div [class.open]="isMenuOpenprofile" class="profile" [class.out]="out" [class.inhere]="inhere" [class.outs]="outs">
             <div class="header_Manager">
                 <div class="header_inside">
-                    <img class="iconsetting4" [src]="profile || 'image/profileee.svg'" alt="User Profile">
+                    <img class="iconsetting4"  [src]="profile || 'image/profileee.svg'" alt="User Profile">
                     <div class="container_header">
                         <div class="manager"> {{username}}</div>
                         <div class="small_manager">Admin</div>
@@ -201,13 +251,14 @@
             </div>
             <div class="linee"></div>
             <div class="container_qu">
-                <!-- <div class="qu">Quick Actions</div>
+<!--                 <div class="qu">Quick Actions</div> -->
                 <div class="action">
-                    <div class="co"><img class="icon_managerr" src="/icon_manager/add.svg">Create Order </div>
-                    <div class="co"><img class="icon_managerr" src="/icon_manager/box.svg">Add Product</div>
-                    <div class="co"><img class="icon_managerr" src="/icon_manager/deli.svg">Add Supplier</div>
-                    <div class="co"><img class="icon_managerr" src="/icon_manager/up.svg">Export</div>
-                </div> -->
+                    <div class="co"><img class="icon_managerr" src="image/Employee.svg" >Profile</div>
+                    <div class="co"><img class="icon_managerr" src="image/help.svg">Help</div>
+                    <div class="co"><img class="icon_managerr" src="image/setting.svg">Setting</div>
+      <!--               <div class="co"><img class="icon_managerr" src="/icon_manager/up.svg">Export</div> -->
+                </div>
+                <div class="Logout" (click)="logout()"><img class="" src="/icon_manager/Logout.svg">Log Out</div>
             </div>
         </div>
     </div>

@@ -28,7 +28,7 @@ export class SaleComponent {
   showpopup = false;
   popup = '';
   showpopupnoti = false;
-  isMenuOpen = false;
+  isMenuOpen = true;
   isMenuOpenprofile = false;
   currentView = 'dashboard';
   currentTime = new Date();
@@ -217,5 +217,8 @@ export class SaleComponent {
         this.router.navigate(['/login']); 
       }
     });
+  }
+  openPro(){
+    this.isMenuOpenprofile = !this.isMenuOpenprofile;
   }
 }

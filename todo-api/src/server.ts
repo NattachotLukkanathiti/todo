@@ -514,6 +514,39 @@ app.put('/api/reset-password', async (req, res) => {
     });
   }
 });
+
+app.put('/api/inventory/:sku', async (req, res) => {
+  try {
+    const { sku } = req.params;
+    const { 
+      product_name, category, brand, price, 
+      quantity, quantity_alert, supplier, invoice_no, picture 
+    } = req.body;
+
+    const result = await pool.query(
+      `UPDATE inventory 
+       SET product_name = $1, category = $2, brand = $3, price = $4, 
+           quantity = $5, quantity_alert = $6, supplier = $7, invoice_no = $8, picture = $9
+       WHERE sku = $10 
+       RETURNING *`,
+      [product_name, category, brand, price, quantity, quantity_alert, supplier, invoice_no, picture, sku]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ success: false, message: 'ไม่พบสินค้านี้ในระบบ' });
+    }
+
+    res.json({
+      success: true,
+      message: 'อัปเดตข้อมูลสินค้าเรียบร้อยแล้ว',
+      data: result.rows[0]
+    });
+
+  } catch (error) {
+    console.error('Error updating inventory:', error);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+});
 app.delete('/todos/:id', async (req, res) => {
   try {
     const { id } = req.params;

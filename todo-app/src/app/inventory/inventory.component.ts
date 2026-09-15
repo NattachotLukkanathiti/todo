@@ -32,7 +32,7 @@ export class InventoryComponent {
   showpopupnoti = false;
   showpopupedit = false;
   isMenuOpen = false;
-  isMenuOpenprofile = false;
+  isMenuOpenprofile = true;
   currentView = 'dashboard';
   currentTime = new Date();
   isTimeOpen = false;
@@ -82,7 +82,7 @@ selectedProduct: any = {
   suppliers: any[] = [];
     selectedSupplier: string = 'all';
     filteredInventory: any[] = [];
-  
+  openpro = false;
   //  เพิ่มบรรทัดนี้เข้าไปค่ะ
   imagePreview: string | null = null;
  private supabaseUrl = 'https://ehyhllaxvozjdndddfku.supabase.co';
@@ -579,5 +579,8 @@ logout() {
         this.router.navigate(['/login']); 
       }
     });
+  }
+  openPro(){
+    this.isMenuOpenprofile = !this.isMenuOpenprofile;
   }
 }

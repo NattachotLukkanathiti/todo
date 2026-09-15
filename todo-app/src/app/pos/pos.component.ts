@@ -1,6 +1,6 @@
+
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 
 interface Category {
   label: string;
@@ -26,11 +26,11 @@ interface CartItem extends Product {
 type HeaderPanel = 'orders' | 'cash' | 'printer' | 'progress' | 'chart' | 'settings' | null;
 
 @Component({
-  selector: 'app-pos',
+  selector: 'app-pos-page',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './pos.component.html',
-  styleUrls: ['./pos.component.css'],
+  styleUrl: './pos.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PosComponent implements OnInit, OnDestroy {

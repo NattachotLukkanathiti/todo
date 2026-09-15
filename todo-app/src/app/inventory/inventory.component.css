@@ -20,20 +20,13 @@
 }
 
 .Return {
-    animation: Move_Return 0.5s ease-in-out forwards !important;
+    animation: Move_Return 1s ease-in-out forwards !important;
 }
 
 @keyframes Move_Return {
     0% {
         transform: translateY(500px);
         opacity: 0;
-    }
-
-    50% {
-        transform: translateY(0);
-        opacity: 1;
-        transform: scaleY(1.1);
-
     }
 
     100% {
@@ -310,6 +303,7 @@
     border-radius: 8px;
     margin-left: 20px;
     display: flex;
+    display:none;
     align-items: center;
     justify-content: center;
     cursor: pointer;
@@ -1083,6 +1077,7 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
 .fix {
     position: relative;
     width: 280px;
+    display: none;
     padding: 20px;
     overflow: hidden;
     background: #F4F5FC;
@@ -1283,9 +1278,14 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
 }
 .con_3btn{
     display: flex;
-    justify-content: flex-end;
     width: 100%;
     gap: 10px;
+}
+.con_am{
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    justify-content: flex-end;
 }
 .conT {
     margin-left: 30px;
@@ -1311,12 +1311,6 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
     0% {
         transform: scaleY(0);
         box-shadow: 0px 10px 200px 20px #69ff4a;
-    }
-
-    50% {
-        transform: scaleY(1);
-        box-shadow: 0px 10px 200px 20px #fbfffa;
-        /* เพิ่มการเรืองแสงสีขาวตรงกลาง */
     }
 
     100% {
@@ -1528,22 +1522,6 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
         box-shadow: 0px 42px 234px 0px #e3ffdc;
         transform: translateY(-500px);
         opacity: 0;
-
-    }
-
-    30% {
-        opacity: 1;
-
-
-    }
-
-    40% {
-        transform: translateY(100px);
-    }
-
-    80% {
-        box-shadow: none;
-        transform: scaleY(1.1);
 
     }
 
@@ -2183,4 +2161,24 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
     -webkit-transform: translateY(-400%);
     transform: translateY(-400%);
   }
+}
+.con_nav {
+    width: 100%;
+    gap: 39px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.he{
+    cursor: pointer;
+    color: #1D1D1F;
+    font-weight: 300;
+    font-size: 12px;
+}
+.he:hover{
+    color: #89898b;
 }
