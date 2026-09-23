@@ -4,9 +4,8 @@ import { pool } from './database/db';
 
 
 
-// 1. ตั้งค่าให้ DNS เลือกใช้ IPv4 ก่อนเสมอ (ป้องกัน IPv6 ENETUNREACH)
 const app = express();
-// เก็บ OTP ชั่วคราว (ในระบบจริงควรใช้ Redis หรือ Database)
+
 const otpStore = new Map<string, { otp: string; expiresAt: number }>();
 
 app.use(cors({
@@ -166,7 +165,6 @@ app.post('/api/audit', async (req, res) => {
   }
 });
 
-// 📌 Route สำหรับดึงข้อมูล (แปลงรูปแบบ date)
 app.get('/api/audit', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM audit ORDER BY id DESC');
@@ -189,12 +187,24 @@ app.get('/api/audit', async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 });
+
+
+app.get('/api/notification', async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM notification ORDER BY created_at DESC'
+    );
+    
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error fetching notifications:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
 app.post('/todos', async (req, res) => {
   try {
-    // ➕ [เพิ่ม] รับค่า otp เพิ่มเติมมาจาก Frontend
     const { username, title, password, otp } = req.body;
-
-    // ➕ [เพิ่ม] เช็กว่าส่งอีเมลและ OTP มาหรือไม่
     if (!title || !otp) {
       return res.status(400).json({ success: false, message: 'กรุณากรอกอีเมลและรหัส OTP' });
     }

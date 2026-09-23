@@ -1,0 +1,276 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap');
+
+/* ================================================= self-contained base
+   Design tokens and the shared rules this page uses, so this folder looks
+   right when copied into another Angular project on its own. Keep it before
+   the page rules below: at equal specificity the page rules must win. */
+
+:host {
+  /* Typography — H1 16 / H2 20 / H3 32, weights Regular 400 → Heavy 800 */
+  --font-sans: 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-data: 'Montserrat', var(--font-sans);
+  --text-h1: 16px;
+  --text-h2: 20px;
+  --text-h3: 32px;
+
+  /* Green */
+  --green-light: #f3fbf1;
+  --green-light-hover: #edf9e9;
+  --green-light-active: #d9f2d2;
+  --green: #84d46e;
+  --green-hover: #77bf63;
+  --green-active: #6aaa58;
+  --green-dark: #639f53;
+  --green-dark-hover: #4f7f42;
+  --green-dark-active: #3b5f31;
+  --green-darker: #2e4a27;
+
+  /* Neutrals */
+  --ink: #2b2f38;
+  --ink-soft: #48505e;
+  --ink-faint: #a4abb2;
+  --line: #e6eaed;
+  --surface: #fff;
+  --surface-muted: #f4f5fc;
+  --surface-hover: #fafafa;
+
+  /* Accents */
+  --logo: #6fab23;
+  --blue: #1364d5;
+  --purple: #ad54f5;
+  --purple-light: #f3e6fe;
+  --yellow-light: #fffbe8;
+  --red-light: #fbe9eb;
+  --danger: #dc1818;
+  --alert: #ff2222;
+  --unread: #3b86ff;
+  --pending: #e8a317;
+
+  --topbar-height: 56px;
+
+  --radius-sm: 4px;
+  --radius: 5px;
+  --shadow-card: 0 1px 4px rgba(0, 0, 0, .08);
+
+  /* Fill the viewport no matter what wraps the page: without an explicit width,
+     a flex parent (e.g. the default `ng new` shell) shrinks it and centres it. */
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  flex: 1 1 100%;
+  align-self: stretch;
+  justify-self: stretch;
+  color: var(--ink);
+  font: 400 var(--text-h1)/1.5 var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+* { box-sizing: border-box; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: default; }
+:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+
+/* ---- square icon buttons (header) */
+
+.icon-btn {
+  position: relative;
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius);
+  color: var(--ink-soft);
+  background: var(--surface-muted);
+  display: inline-grid;
+  place-items: center;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+.icon-btn app-icon { width: 16px; height: 16px; }
+.icon-btn:hover:not(:disabled) { color: var(--green-dark-hover); background: var(--green-light-hover); }
+.icon-btn:active:not(:disabled) { background: var(--green-light-active); }
+.icon-btn--active, .icon-btn--active:hover:not(:disabled) { color: #fff; background: var(--green); }
+.icon-btn--active:active:not(:disabled) { background: var(--green-active); }
+.icon-btn:disabled { opacity: .45; }
+/* Unread marker on the bell. */
+.icon-btn__badge {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--alert);
+  box-shadow: 0 2px 4px rgba(255, 34, 34, .35);
+}
+
+/* ================================================================ page */
+
+:host {
+  /* Fill the viewport no matter what wraps the page. Without an explicit
+     width, a flex/grid parent (e.g. the default `ng new` shell with
+     `justify-content: center`) shrinks the page to its content and centres it. */
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  flex: 1 1 100%;
+  align-self: stretch;
+  justify-self: stretch;
+  min-height: 100vh;
+  color: var(--ink);
+}
+
+.app-shell { width: 100%; min-height: 100vh; overflow-x: clip; background: var(--surface); }
+
+/* ---------------------------------------------------------------- header */
+
+.topbar {
+  position: sticky;
+  z-index: 30;
+  top: 0;
+  min-height: var(--topbar-height);
+  padding: 0 24px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto);
+  align-items: center;
+  gap: 16px;
+}
+
+.brand-logo { min-width: 0; padding: 4px 0; border: 0; background: transparent; display: flex; align-items: center; }
+
+.main-nav { min-width: 0; display: flex; align-items: center; justify-content: center; gap: clamp(24px, 7.5vw, 108px); }
+.main-nav__link {
+  min-width: 0;
+  text-decoration: none;
+  padding: 6px 12px;
+  border: 0;
+  color: var(--ink);
+  background: transparent;
+  font: 400 var(--text-h1)/24px var(--font-sans);
+  white-space: nowrap;
+  transition: color 120ms ease;
+}
+.main-nav__link:hover { color: var(--ink-soft); }
+
+.topbar__actions { min-width: 0; display: flex; align-items: center; justify-content: flex-end; gap: 12px; }
+
+.time-pill {
+  flex: 0 0 auto;
+  height: 29px;
+  padding: 4px 12px;
+  border-radius: var(--radius);
+  color: #fff;
+  background: var(--purple);
+  box-shadow: 0 4px 30px rgba(231, 231, 231, .47);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 700 14px/21px var(--font-data);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.time-pill img { width: 20px; height: 20px; object-fit: cover; }
+.topbar__divider { flex: 0 0 auto; width: 1px; height: 36px; background: var(--line); }
+
+.avatar-button { flex: 0 0 auto; width: 32px; height: 32px; padding: 0; border: 0; border-radius: var(--radius); background: transparent; overflow: hidden; }
+.avatar-button img { display: block; width: 32px; height: 32px; object-fit: cover; }
+.menu-button { display: none; }
+
+.account-sidebar {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: clamp(300px, 26vw, 350px);
+  border-left: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: -16px 0 40px rgba(43, 47, 56, .1);
+  display: flex;
+  flex-direction: column;
+}
+
+.account-sidebar__header { flex: 0 0 auto; min-height: 108px; padding: 0 32px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 16px; }
+.account-sidebar__header img { width: 44px; height: 44px; border-radius: 4px; object-fit: cover; }
+.account-sidebar__header strong { display: block; color: var(--ink); font: 500 var(--text-h2)/26px var(--font-sans); }
+.account-sidebar__header span { color: var(--ink-soft); font: 500 var(--text-h1)/24px var(--font-sans); }
+
+.account-sidebar__menu { padding: 46px 32px 0; display: grid; gap: 12px; }
+.account-sidebar__menu a, .account-sidebar__menu button, .account-sidebar__logout {
+  width: 100%;
+  padding: 12px;
+  border: 0;
+  border-radius: var(--radius);
+  color: var(--ink);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font: 600 var(--text-h2)/28px var(--font-sans);
+  text-align: left;
+  text-decoration: none;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+.account-sidebar__menu a:active, .account-sidebar__menu button:active { background: var(--green-light-active); }
+.account-sidebar__menu app-icon, .account-sidebar__logout app-icon { width: 24px; height: 24px; }
+.account-sidebar__logout { width: auto; margin: auto 32px 30vh; }
+
+.nav-backdrop { position: fixed; z-index: 28; inset: var(--topbar-height) 0 0; border: 0; background: rgba(43, 47, 56, .2); }
+.nav-backdrop--clear { background: transparent; }
+
+.main-nav__link[aria-disabled='true'] { cursor: default; }
+.main-nav__link[aria-disabled='true']:hover { color: var(--ink); }
+
+/* ------------------------------------------------------------ responsive */
+
+@media (max-width: 1024px) {
+  .topbar { gap: 12px; }
+  .main-nav { gap: clamp(16px, 4vw, 40px); }
+}
+
+/* Header collapses into a drawer before the links can overlap the logo. */
+@media (max-width: 900px) {
+  .topbar { grid-template-columns: minmax(0, 1fr) minmax(0, auto); }
+  .menu-button { display: inline-grid; }
+  .main-nav {
+    position: absolute;
+    z-index: 35;
+    top: 100%;
+    right: 0;
+    left: 0;
+    padding: 8px 24px 16px;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+    box-shadow: 0 12px 24px rgba(43, 47, 56, .1);
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+  }
+  .main-nav--open { display: flex; }
+  .main-nav__link { padding: 10px 12px; border-bottom: 0; text-align: left; }
+  .main-nav__link:hover { color: var(--ink-soft); }
+}
+
+@media (max-width: 720px) {
+  .topbar { padding: 0 16px; gap: 10px; }
+  .topbar__actions { gap: 8px; }
+  .topbar__divider { display: none; }
+  .brand-logo app-brand-logo { width: 120px; }
+  .time-pill { padding: 4px 8px; font-size: 13px; }
+  .time-pill img { width: 16px; height: 16px; }
+  .main-nav { padding-inline: 16px; }
+}
+
+@media (max-width: 480px) {
+  .time-pill span { display: none; }
+  .time-pill { padding: 4px 6px; }
+  .brand-logo app-brand-logo { width: 104px; }
+  .topbar { padding-inline: 12px; }
+  .main-nav { padding-inline: 12px; }
+}

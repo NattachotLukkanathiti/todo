@@ -156,4 +156,25 @@ updateEmployee(username: string, employeeData: any): Observable<any> {
       { headers: this.headers }
     );
   }
+  
+  getProducts(): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.apiUrl}/inventory`, 
+      { headers: this.headers }
+    );
+  }
+
+  getCategories(): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.apiUrl}/categories`, 
+      { headers: this.headers }
+    );
+  }
+  // เพิ่มฟังก์ชันดึงข้อมูลแจ้งเตือน
+  getNotifications(): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.apiUrl}/notification`, 
+      { headers: this.headers }
+    );
+  }
 }

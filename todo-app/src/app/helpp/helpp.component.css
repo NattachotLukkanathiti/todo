@@ -1,0 +1,499 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap');
+
+/* ================================================= self-contained base
+   Design tokens and the shared rules this page uses, so this folder looks
+   right when copied into another Angular project on its own. Keep it before
+   the page rules below: at equal specificity the page rules must win. */
+.navbaar {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 8;
+    background-color: #FFF;
+    border: 1px solid #CED4DA;
+    animation: slide 1s ease-in-out;
+}
+.avatar-button {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  overflow: hidden;
+}
+.avatar-button:hover{
+  cursor: pointer;
+}
+.avatar-button img {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+}
+.con_nav {
+    width: 100%;
+    gap: 39px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.he {
+    cursor: pointer;
+    color: #1D1D1F;
+    font-weight: 300;
+    font-size: 12px;
+    transition: color 0.2s ease;
+}
+.he:hover {
+    color: #89898b;
+}
+.time {
+    font-size: 15px;
+    color: white;
+    font-weight: 800;
+    background: #AD54F5;
+    width: auto;
+    border-radius: 8px;
+    height: 36px;
+    padding: 0 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    cursor: pointer;
+}
+.container_bar {
+    gap: 10px;
+    margin-left: auto;
+    margin-right: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    text-align: center;
+    width: 450px;
+    margin-right: 40px;
+    height: 70px;
+}
+.iconsetting1, .iconsetting3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #F4F5FC;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+}
+.iconsetting4 {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+.headercompany {
+    display: flex;
+    margin-left: 20px;
+    flex-direction: column;
+    color: #6FAB23;
+    font-weight: 800;
+}
+.lin {
+    background: #E6EAED;
+    width: 1px;
+    height: 35px;
+}
+:host {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    flex: 1 1 100%;
+    align-self: stretch;
+    justify-self: stretch;
+    color: #2b2f38;
+    font: 400 16px/1.5 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+* {
+    box-sizing: border-box;
+}
+button, input, select, textarea {
+    font: inherit;
+    color: inherit;
+}
+button {
+    cursor: pointer;
+}
+button:disabled {
+    cursor: default;
+}
+:focus-visible {
+    outline: 2px solid #84d46e;
+    outline-offset: 2px;
+}
+.field {
+    position: relative;
+    min-width: 0;
+    height: 38px;
+    padding: 0 12px;
+    border: 1px solid #e6eaed;
+    border-radius: 4px;
+    color: #48505e;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+.field:focus-within {
+    border-color: #84d46e;
+    box-shadow: 0 0 0 3px #d9f2d2;
+}
+.field>app-icon {
+    width: 12px;
+    height: 12px;
+    color: #2b2f38;
+}
+.field input, .field select, .field textarea {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    color: #2b2f38;
+    background: transparent;
+    font: inherit;
+}
+.field input::placeholder, .field textarea::placeholder {
+    color: #48505e;
+    opacity: 1;
+}
+.field input[type='search']::-webkit-search-cancel-button {
+    cursor: pointer;
+}
+.field--select {
+    padding: 0;
+}
+.field--select select {
+    appearance: none;
+    padding: 0 34px 0 12px;
+    color: #48505e;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+.field--select>app-icon {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    margin-top: -6px;
+    color: #48505e;
+    pointer-events: none;
+}
+.field--area {
+    height: auto;
+    padding: 9px 12px;
+    align-items: flex-start;
+}
+.field--area textarea {
+    min-height: 72px;
+    resize: vertical;
+}
+.page {
+    min-height: calc(100vh - 56px);
+    padding: 8px 24px 24px;
+    background: #fff;
+}
+.detail{
+    margin-top: 60px;
+}
+.page-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.page-heading h1 {
+    flex: 1;
+    margin: 0;
+    color: #2b2f38;
+    font: 600 32px/40px 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+.back-button {
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    border-radius: 5px;
+    color: #000;
+    background: transparent;
+    display: grid;
+    place-items: center;
+    transition: background-color 120ms ease;
+}
+.back-button:hover {
+    background: #f4f5fc;
+}
+.back-button app-icon {
+    width: 24px;
+    height: 24px;
+}
+.page-description {
+    margin: 8px 0 0;
+    color: #48505e;
+    font: 400 16px/24px 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+.page-subheading {
+    margin: 0 0 16px;
+    color: #2b2f38;
+    font: 600 20px/28px 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+.form-label {
+    display: grid;
+    gap: 8px;
+    color: #2b2f38;
+    font: 500 16px/22px 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+.card-list {
+    display: grid;
+    gap: 12px;
+}
+.empty-state {
+    grid-column: 1 / -1;
+    padding: 60px 20px;
+    color: #48505e;
+    text-align: center;
+}
+@media (max-width: 720px) {
+    .page {
+        padding: 8px 16px 16px;
+    }
+    .page-heading h1 {
+        font-size: 24px;
+        line-height: 32px;
+    }
+}
+:host {
+    display: block;
+}
+.help-page .page-description {
+    margin-left: 44px;
+}
+.help-search-row {
+    margin: 16px 0 0 44px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.help-search-row .form-label:first-child {
+    flex: 1 1 320px;
+    max-width: 556px;
+}
+.help-search-row .form-label:last-child {
+    flex: 0 0 158px;
+}
+.help-layout {
+    margin: 16px 0 0 44px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 318px);
+    gap: 50px;
+    align-items: start;
+}
+.help-layout .page-subheading {
+    margin-bottom: 12px;
+    font-weight: 400;
+}
+.help-panel {
+    padding: 20px;
+    border: 1px solid #e6eaed;
+    border-radius: 4px;
+    background: #fff;
+    display: grid;
+    gap: 10px;
+}
+.faq-row {
+    width: 100%;
+    min-height: 100px;
+    padding: 16px 28px;
+    border: 1px solid #e6eaed;
+    border-radius: 4px;
+    color: #2b2f38;
+    background: #fafafa;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    text-align: left;
+}
+.faq-row:hover {
+    background: #f3fbf1;
+}
+.faq-row__body {
+    display: grid;
+    gap: 10px;
+    font: 400 16px/20px 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+.faq-row__body strong {
+    font-weight: 500;
+}
+.faq-row__body span {
+    font-size: 20px;
+    line-height: 26px;
+}
+.faq-row__icon {
+    width: 24px;
+    height: 24px;
+    color: #000;
+}
+.contact-support {
+    display: grid;
+}
+.contact-card {
+    padding: 16px 24px;
+    border: 1px solid #e6eaed;
+    border-radius: 4px;
+    background: #F4F5FC;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+.contact-card>div {
+    min-width: 0;
+    display: grid;
+    gap: 6px;
+}
+.contact-card strong {
+    color: #2b2f38;
+    font: 500 16px/22px 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+.contact-card span {
+    color: #48505e;
+    font: 400 14px/20px 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+.contact-card .contact-card__highlight {
+    color: #2b2f38;
+}
+.contact-card app-icon {
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    color: #000;
+}
+@media (max-width: 900px) {
+    .help-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+@media (max-width: 720px) {
+    .help-page .page-description,
+    .help-search-row,
+    .help-layout {
+        margin-left: 0;
+    }
+}
+.user {
+  font-size: 18px;
+  font-weight: 600;
+}
+.role {
+  font-size: 14px;
+  font-weight: 400;
+}
+.con_pro {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.A {
+  padding: 30px;
+}
+.sidebar-backdrop {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 49;
+}
+.account-sidebar {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: clamp(300px, 26vw, 360px);
+  border-left: 1px solid #e6eaed;
+  background: #fff;
+  box-shadow: -16px 0 40px rgba(33, 43, 54, .1);
+  display: flex;
+  flex-direction: column;
+  animation: slideIn 0.3s ease-out forwards;
+}
+.account-sidebar.closing {
+  animation: slideOut 0.3s ease-in forwards;
+}
+@keyframes slideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+@keyframes slideOut {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+.account-sidebar__header {
+  flex: 0 0 auto;
+  min-height: 73px;
+  padding: 0 24px;
+  border-bottom: 1px solid #e6eaed;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.account-sidebar__header img {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+.account-sidebar__menu {
+  padding: 32px 24px 0;
+  display: grid;
+  gap: 32px;
+}
+.account-sidebar__menu button, .account-sidebar__logout {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: #212b36;
+  font: 600 17px/24px 'Nunito Sans', sans-serif;
+  text-align: left;
+}
+.account-sidebar__menu button:hover {
+  color: #6fab23;
+}
+.account-sidebar__menu button svg, .account-sidebar__logout svg {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+}
+.account-sidebar__logout {
+  margin: 180px 24px 24px;
+  color: #dc1818;
+}
+.account-sidebar__logout:hover {
+  color: #b81212;
+}

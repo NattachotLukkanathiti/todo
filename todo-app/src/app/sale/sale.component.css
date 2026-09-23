@@ -230,9 +230,8 @@ input::placeholder{
 }
 .reload{
     display: flex;
-    justify-content: center;
+    justify-content: flex-end ;
     align-items: center;
-    text-align: center;
     border-radius: 8px;
     padding: 10px;
     border: 1px solid #E6EAED;
@@ -588,9 +587,13 @@ input::placeholder{
 }
 .con_3btn{
     display: flex;
-    justify-content: flex-end;
     width: 100%;
     gap: 10px;
+}
+.con_reload{
+    display: flex;
+    margin-left: auto;
+    margin-top: 20px;
 }
 .container {
     flex: 1; 

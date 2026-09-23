@@ -1,0 +1,141 @@
+<div class="navbaar">
+    <button class="hamburger" (click)="hambar()">
+        <img src="image/ham.svg" alt="">
+    </button>
+    <div class="headercompany">
+        <img src="image/logo.svg" alt="">
+    </div>
+
+    <!-- เมนูตรงกลาง Navbar -->
+    <div class="con_nav">
+        <div class="he" *ngIf="userRole === 'pos' || userRole === 'pos'" (click)="Animationa_out1()">Pos</div>
+        <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'" (click)="Animationa_out()">Dashboard</div>
+        <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'">Inventory</div> <!-- แก้ไขให้แยกฟังก์ชัน -->
+        <div class="he" (click)="Animation_out2()">Sales Orders</div>
+        <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'" (click)="Animation_out3()">Stock History</div>
+        <div class="he" (click)="Animation_out4()">Employee</div>
+        <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'"(click)="Animation_out6()">Audit Log</div>
+        <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'"(click)="Animation_out5()">Suppliers</div>
+    </div>
+
+    <div class="container_bar">
+        <div class="time" [class.active]="isTimeOpen" (click)="isTimeOpen = !isTimeOpen">
+            <img class="icon_time" src="image/Time Icon.svg">
+            <div class="Y">
+                {{ currentTime | date:'HH:mm:ss' }}
+            </div>
+        </div>
+        <div class="lin"></div>
+        <img class="iconsetting3" (click)="openPro()" src="image/Chart.svg" alt="">
+        <img class="iconsetting4" (click)="openPro()" [src]="profile || 'image/profileee.svg'" alt="User Profile">
+    </div>
+</div>
+
+<div class="over">
+    <div class="fix" [class.open]="isMenuOpen">
+        <div class="sidebar" [class.open]="isMenuOpen">
+            <div class="ge">GENERAL</div>
+            <div class="menuin">
+                <div class="no" (click)="Animationa_out()"><img class="myicon1" src="image/dashboard.svg" alt="">Dashboard</div>
+                <div class="no" (click)="Animationa_out()"><img src="image/icon-wrapper-h.svg" alt="">Inventory</div>
+                <div class="no" (click)="Animationa_out()"><img src="image/shop.svg" alt="">Sales Orders</div>
+                <div class="no" (click)="Animationa_out()"><img src="image/Vectorhistory.svg" alt="">Stock History</div>
+                <div class="no" (click)="Animationa_out()"><img src="image/Employee.svg" alt="">Employee</div>
+                <div class="no" *ngIf="userRole === 'admin' || userRole === 'manager'" (click)="Animationa_out()"><img src="image/audit.svg" alt="">Audit Log</div>
+                <div class="dash"><img class="myicon2" src="image/car.svg" alt="">Suppliers</div>
+            </div>
+            <div class="ge">SUPPORT</div>
+            <div class="menuin">
+                <div class="no"><img src="image/help.svg" alt="">Help</div>
+                <div class="no"><img src="image/setting.svg" alt="">Settings</div>
+            </div>
+            <div class="Logout" (click)="logout()"><img src="/icon_manager/Logout.svg">Log Out</div>
+        </div>
+    </div>
+
+    <div class="Animation_out" [class.fade-out]="Animation_out" [class.Return]="play_Return" [class.Boom]="stan">
+        <div class="container" [class.fade-out]="Animation_out"  [class.Return]="play_Return" [class.Boom]="stan">
+            
+            <!-- ส่วนของ Notification สไตล์ใหม่ -->
+            <main class="page-noti">
+    <div class="notification-banner">
+        <h1>Notification</h1>
+        <div class="notification-stats">
+            <div class="stat-card stat-card--blue">
+                <div class="stat-card__icon">
+                    <div class="icon-inner">&#9203;</div>
+                </div>
+                <div class="stat-card__content">
+                    <strong class="stat-card__value">{{ pendingApprovals() }}</strong>
+                    <div class="stat-card__label">Pending Approvals</div>
+                </div>
+            </div>
+            <div class="stat-card stat-card--orange">
+                <div class="stat-card__icon">
+                    <div class="icon-inner">&#9888;</div>
+                </div>
+                <div class="stat-card__content">
+                    <strong class="stat-card__value">{{ inventoryAlerts() }}</strong>
+                    <div class="stat-card__label">Inventory Alerts</div>
+                </div>
+            </div>
+            <div class="stat-card stat-card--green">
+                <div class="stat-card__icon">
+                    <div class="icon-inner">&#128337;</div>
+                </div>
+                <div class="stat-card__content">
+                    <strong class="stat-card__value">{{ stockUpdates() }}</strong>
+                    <div class="stat-card__label">Stock Updates</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="page-subheading">View All</h2>
+    <div class="card-list">
+    @for (item of notifications(); track item.id) {
+        <div class="list-card">
+            <div class="list-card__icon">&#128276;</div>
+            <div class="list-card__body">
+                <!-- ใช้ title จากฐานข้อมูล -->
+                <strong class="list-card__title">{{ item.title }}</strong>
+                <!-- เปลี่ยนจาก subtitle เป็น description -->
+                <div class="list-card__subtitle">{{ item.description }}</div>
+            </div>
+            <!-- เปลี่ยนจาก time เป็น time_ago -->
+            <div class="list-card__meta">{{ item.time_ago }}</div>
+            
+            <!-- เช็คสถานะ is_read (ถ้าเป็น false คือยังไม่อ่าน) -->
+            <div class="list-card__dot" [class.list-card__dot--unread]="!item.is_read">
+                @if (!item.is_read) { <div class="visually-hidden">Unread</div> }
+            </div>
+        </div>
+    } @empty {
+        <div class="empty-state">No notifications.</div>
+    }
+</div>
+</main>
+            <!-- จบส่วนของ Notification -->
+
+        </div>
+    </div>
+
+    <!-- Popup และ Loading เดิมของคุณ -->
+<!--     <div *ngIf="showpopupnoti" class="backpop">
+        <div class="popupcontainer">
+            <div class="popup-content">
+                <img class="iconsuccess" src="image/cross.svg" alt="">
+                <div class="headerpop">Something went Wrong</div>
+                <div class="subheadersuccess">{{popup}}</div>
+                <button class="buttonnoti" (click)="closepopup()">OK</button>
+            </div>
+        </div>
+    </div> -->
+
+    <div *ngIf="isLoading" class="loading-container">
+        <img class="logo_loading" src="/image/logoo.svg" alt="">
+        <div class="loading">
+            <div class="loader1"></div><div class="loader2"></div><div class="loader3"></div><div class="loader4"></div>
+        </div>
+    </div>
+</div>

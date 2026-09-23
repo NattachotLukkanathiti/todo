@@ -1,132 +1,205 @@
-<div class="pos-shell">
-  <aside class="sidebar" [class.sidebar--open]="isSidebarOpen" aria-label="Primary navigation">
-    <p class="sidebar__label">General</p>
-    <nav class="sidebar__nav">
-      @for (item of navItems; track item.label) {
-        <button class="nav-item" [class.nav-item--active]="item.label === selectedNav" type="button" (click)="selectNav(item.label)">
-          <img [src]="item.icon" alt="" /><span>{{ item.label }}</span>
-        </button>
-      }
-    </nav>
-    <p class="sidebar__label">Support</p>
-    <button class="nav-item" [class.nav-item--active]="selectedNav === 'Help'" type="button" (click)="selectSupport('Help', 'Help center is ready for integration')"><img src="assets/figma-pos/info-circle.svg" alt="" /><span>Help</span></button>
-    <button class="nav-item" [class.nav-item--active]="selectedNav === 'Settings'" type="button" (click)="selectSupport('Settings', 'Settings are ready for integration')"><img src="assets/figma-pos/gear.svg" alt="" /><span>Settings</span></button>
-    <button class="nav-item nav-item--logout" type="button" (click)="showNotice('You are signed in to this mock workspace')"><img src="assets/figma/nav-logout.svg" alt="" /><span>Log Out</span></button>
-  </aside>
-  @if (isSidebarOpen) { <button class="sidebar-backdrop" type="button" aria-label="Close navigation" (click)="toggleSidebar()"></button> }
+<header class="topbar">
+  <img src="image/logo.svg" alt="">
 
-  <header class="topbar">
-    <button class="menu-button" [class.menu-button--active]="isSidebarOpen" type="button" aria-label="Toggle navigation" (click)="toggleSidebar()"><img src="assets/figma-pos/ri-menu-line.svg" alt="" /></button>
-    <div class="brand-logo">TRD.CO.TH</div>
-    <div class="topbar__actions">
-      <div class="time-pill"><img src="assets/figma-pos/time-icon.png" alt="" /><span>{{ clock }}</span></div>
-      <span class="topbar__divider"><img src="assets/figma-pos/divider3.svg" alt="" /></span>
-      <button class="header-icon header-icon--calculator" [class.header-icon--active]="isRightPanelOpen" type="button" aria-label="Open order panel" (click)="openRightSide()"><img src="assets/figma-pos/calculator-icon.svg" alt="" /></button>
-      <button class="header-icon" [class.header-icon--active]="!isRightPanelOpen" type="button" aria-label="Open full screen catalog" (click)="openCatalogScreen()"><img src="assets/figma-pos/maximize-icon.svg" alt="" /></button>
-      <button class="avatar-button" type="button" aria-label="Open profile" (click)="togglePanel('settings')"><img src="assets/figma-pos/image5.png" alt="Profile" /></button>
-    </div>
-    @if (openPanel) {
-      <div class="header-popover"><strong>{{ openPanel }}</strong><span>Local mock action is ready for integration.</span><button type="button" (click)="closePanel()">Close</button></div>
+  <div class="con_nav">
+    @for (item of navItems; track item.label) {
+      <div class="he" [class.active]="selectedNav === item.label" (click)="selectNav(item.label)">
+        {{ item.label }}
+      </div>
     }
-  </header>
+  </div>
 
-  <main class="pos-main" [class.pos-main--without-right]="!isRightPanelOpen">
-    <section class="left-side">
-      <div class="quick-options">
-        <button class="quick-button quick-button--teal" type="button" (click)="showNotice('Order history is ready for integration')"><img src="assets/figma-pos/ushopping-cart.svg" alt="" />View Orders</button>
-        <button class="quick-button quick-button--blue" type="button" (click)="resetOrder()"><img src="assets/figma-pos/uredo.svg" alt="" />Reset</button>
-        <button class="quick-button quick-button--light-blue" type="button" (click)="startTransaction()"><img src="assets/figma-pos/urefresh.svg" alt="" />Transaction</button>
+  <div class="topbar__actions">
+    <div class="time-pill"><img src="image/Time Icon.svg" alt="Time"><div>{{ clock | date:'HH:mm:ss'}}</div></div>
+    <button class="header-icon" [class.header-icon--active]="!isRightPanelOpen" type="button" aria-label="Toggle full screen catalog" (click)="toggleFullScreen()"><img src="image/Maximize Icon.svg" alt="" /></button>
+    
+    <div class="red_noti">
+      <div class="red_notification" *ngIf = "notification && notification.length > 0"></div>
+      <button class="header-icon" type="button" aria-label="Notifications" (click)="openNotifications()"><img src="image/Chart.svg" alt="" /></button>
+    </div>
+    
+    <button class="avatar-button" type="button" aria-label="Open account menu" [attr.aria-expanded]="openPanel === 'account'" (click)="toggleAccountMenu()"><img [src]="profile || 'image/profileee.svg'" /></button>
+    <button class="menu-button" [class.menu-button--active]="isNavOpen" type="button" aria-label="Toggle navigation" [attr.aria-expanded]="isNavOpen" (click)="toggleNav()"><img src="assets/figma-pos/ri-menu-line.svg" alt="" /></button>
+  </div>
+</header>
+
+<div class="pos-shell" >
+  <div class="container_all">
+
+    @if (openPanel === 'account') { <button class="nav-backdrop nav-backdrop--clear" type="button" aria-label="Close account menu" (click)="closePanel()"></button> }
+    @if (isNavOpen) { <button class="nav-backdrop" type="button" aria-label="Close navigation" (click)="toggleNav()"></button> }
+
+    @if (openPanel === 'account') {
+  <!-- ฉากหลังสำหรับกดปิด -->
+  <div class="sidebar-backdrop" (click)="closePanel()"></div>
+
+  <div class="account-sidebar" [class.closing]="isClosing" aria-label="Account menu">
+    <div class="account-sidebar__header">
+      <img [src]="profile || 'image/profileee.svg'" alt="Profile" />
+      <div class="con_pro">
+        <div class="user">{{username}}</div>
+        <div class="role">{{userRole}}</div>
       </div>
+    </div>
+    <div class="A">
+      <nav class="account-sidebar__menu">
+      <button type="button" (click)="openProfile()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/></svg>
+        Profile
+      </button>
+      <button type="button" (click)="openHelp()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"/></svg>
+        Help
+      </button>
+       <button type="button" (click)="openHelp()">
+        <img src="image/setting_bar.svg" alt="">
+        Setting
+      </button>
+    </nav>
+    <button type="button" class="account-sidebar__logout" (click)="closePanel()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 4h-4.5A1.5 1.5 0 0 0 9 5.5v13A1.5 1.5 0 0 0 10.5 20H15"/><path d="M19 12H10m9 0-3-3m3 3-3 3"/></svg>
+      Log Out
+    </button>
+  </div>
+    </div>
+}
 
-      <div class="left-content">
-        <section class="category-slider" aria-label="Categories">
-          <div class="section-heading">
-            <h1>Categories</h1>
-            <div class="category-arrows">
-              <button class="category-arrow category-arrow--previous" type="button" aria-label="Previous categories" (click)="scrollCategories('left')"><img class="category-arrow__default" src="assets/figma-pos/left.svg" alt="" /><img class="category-arrow__active" src="assets/figma-pos/right.svg" alt="" /></button>
-              <button class="category-arrow category-arrow--next" type="button" aria-label="Next categories" (click)="scrollCategories('right')"><img class="category-arrow__default" src="assets/figma-pos/left.svg" alt="" /><img class="category-arrow__active" src="assets/figma-pos/right.svg" alt="" /></button>
+    <main class="pos-main" [class.pos-main--without-right]="!isRightPanelOpen">
+      <div class="left-side">
+        <div class="quick-options">
+          <button class="quick-button quick-button--teal" type="button" ><img src="image/u_shopping-cart.svg" alt="" />View Orders</button>
+          <button class="quick-button quick-button--blue" type="button" (click)="resetOrder()"><img src="image/u_redo.svg" alt="" />Reset</button>
+        </div>
+
+        <div class="left-content">
+          <div class="category-slider" aria-label="Categories">
+            <div class="section-heading">
+              <h1>Categories</h1>
+              <div class="category-arrows">
+                <div class="buttonback"></div>
+                <div class="buttonnext"></div>
+              </div>
             </div>
-          </div>
-          <div class="category-row">
-            @for (category of categories; track category.label) {
-              <button class="category-card" [class.category-card--active]="selectedCategory === category.label" type="button" (click)="selectCategory(category)">
-                <span class="category-card__image"><img [src]="category.icon" alt="" /></span>
-                <span class="category-card__title">{{ category.label }}</span>
-                <span class="category-card__count">{{ category.count }} Items</span>
-              </button>
-            }
-          </div>
-        </section>
-
-        <section class="products-section" aria-label="Products">
-          <div class="products-heading">
-            <h2>Products</h2>
-            <label class="product-search"><img src="assets/figma-pos/search.svg" alt="" /><input [(ngModel)]="searchTerm" type="search" placeholder="Search Product" aria-label="Search Product" /></label>
-          </div>
-          <div class="product-grid">
-            @for (product of filteredProducts; track product.id) {
-              <button class="product-card" type="button" (click)="addToCart(product)">
-                <span class="product-card__image"><img [src]="product.image" [alt]="product.name" [style.width.px]="product.imageWidth" [style.height.px]="product.imageHeight" /></span>
-                <span class="product-card__content">
-                  <span class="product-card__category">{{ product.category }}</span>
-                  <strong>{{ product.name }}</strong>
-                  <span class="product-card__divider"></span>
-                  <span class="product-card__meta"><span>{{ product.stock }} Pcs</span><em>{{ formatCurrency(product.price) }}</em></span>
-                </span>
-              </button>
-            } @empty {
-              <div class="empty-products">No products found.</div>
-            }
-          </div>
-        </section>
-      </div>
-    </section>
-
-    <aside class="right-side" [class.right-side--closed]="!isRightPanelOpen" aria-label="Order list">
-      <section class="order-title">
-        <div><h2>Order List</h2><span>Id : #0</span></div>
-        <button type="button" aria-label="Clear order" (click)="clearOrder()"><img src="assets/figma-pos/trash-xfilled.svg" alt="" /></button>
-      </section>
-
-      <div class="right-content">
-        <section class="customer-section">
-          <h2>Customer Information</h2>
-          <div class="customer-form">
-            <div class="select-control"><span>{{ customerName }}</span><span class="select-control__arrow"><img src="assets/figma-pos/dropdown-icon.svg" alt="" /></span></div>
-            <button class="add-customer" type="button" aria-label="Add customer" (click)="addCustomer()"><img src="assets/figma-pos/user-plus.svg" alt="" /></button>
-          </div>
-          <div class="select-control"><span>Search Products</span><span class="select-control__arrow"><img src="assets/figma-pos/dropdown-icon.svg" alt="" /></span></div>
-        </section>
-
-        <section class="added-section">
-          <div class="added-heading"><h2>Product Added <span>{{ itemCount }}</span></h2><button type="button" (click)="clearOrder()"><img src="assets/figma-pos/x.svg" alt="" />Clear all</button></div>
-          @if (cartItems.length) {
-            <div class="cart-list">
-              @for (item of cartItems; track item.id) {
-                <div class="cart-row">
-                  <img [src]="item.image" [alt]="item.name" />
-                  <div><strong>{{ item.name }}</strong><span>{{ formatCurrency(item.price) }}</span><div class="quantity"><button type="button" (click)="changeQuantity(item, -1)">−</button><span>{{ item.quantity }}</span><button type="button" (click)="changeQuantity(item, 1)">+</button></div></div>
-                  <button class="cart-remove" type="button" aria-label="Remove product" (click)="removeFromCart(item)">×</button>
-                </div>
+            <div class="category-row">
+              @for (category of categories; track category.label) {
+                <button class="category-card" [class.category-card--active]="selectedCategory === category.label" type="button" (click)="selectCategory(category)">
+                  <div class="category-card__image"><img [src]="category.icon || 'image/Black.svg'" alt="{{ category.label }}" /></div>
+                  <div class="category-card__title">{{ category.label }}</div>
+                  <div class="category-card__count">{{ category.count }} Items</div>
+                </button>
               }
             </div>
-          } @else {
-            <div class="no-products"><img src="assets/figma-pos/icons-feather-shopping-cart.svg" alt="" /><strong>No Products Selected</strong></div>
-          }
-        </section>
-
-        <section class="payment-info">
-          <div class="payment-fields">
-            <label>Payment<span class="select-field"><select [(ngModel)]="selectedPayment"><option>Choose</option><option>Cash</option><option>Card</option><option>QR payment</option></select><img src="assets/figma-pos/bx-chevron-down-svg.svg" alt="" /></span></label>
-            <label>Product insurance<span class="select-field"><select [(ngModel)]="selectedInsurance"><option>0</option><option>1</option><option>2</option></select><img src="assets/figma-pos/bx-chevron-down-svg.svg" alt="" /></span></label>
-            <label>Discount<div class="discount-control"><span>%</span><select [(ngModel)]="discount"><option [ngValue]="0">0</option><option [ngValue]="10">10</option><option [ngValue]="20">20</option></select><img src="assets/figma-pos/bx-chevron-down-svg1.svg" alt="" /></div></label>
           </div>
-          <div class="payment-divider"></div>
-          <button class="grand-total" type="button" (click)="completePayment()">Grand Total : {{ formatCurrency(total) }}</button>
-        </section>
-      </div>
-    </aside>
-  </main>
 
-  @if (notice) { <div class="toast" role="status">{{ notice }}</div> }
+          <div class="products-section" aria-label="Products">
+            <div class="products-heading">
+              <h2>Products</h2>
+              <label class="product-search"><img src="image/search.svg" alt="" /><input [(ngModel)]="searchTerm" type="search" placeholder="Search Product" aria-label="Search Product" /></label>
+            </div>
+            <div class="product-grid">
+              @for (product of filteredProducts; track product.id) {
+                <button class="product-card" type="button" (click)="addToCart(product)">
+                  <div class="product-card__image"><img [src]="product.image" [alt]="product.name" /></div>
+                  <div class="product-card__content">
+                    <div class="product-card__category">{{ product.category }}</div>
+                    <strong>{{ product.name }}</strong>
+                    <div class="product-card__divider"></div>
+                    <div class="product-card__meta"><div>{{ product.stock }} Pcs</div><em>{{ formatCurrency(product.price) }}</em></div>
+                  </div>
+                </button>
+              } @empty {
+                <div class="empty-products">No products found.</div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-side" [class.right-side--closed]="!isRightPanelOpen" aria-label="Order list">
+        <div class="order-title">
+          <div class="T">
+            <div class="C">
+              <div class="header_order_list">
+                Order List
+              </div>
+            <div>Order Code : #{{ orderCode }}</div>
+            </div>
+             <div class="X">
+              <img  src="image/trash-x-filled.svg" alt="">
+             </div>
+          </div>
+        </div>
+
+        <div class="right-content">
+          <div class="added-section">
+            <div class="added-heading">
+              <h2>Product Added <div>{{ itemCount }}</div></h2>
+              <button class="clear"type="button" (click)="clearOrder()">Clear all</button>
+            </div>
+
+            @if (cartItems.length) {
+              <div class="cart-table">
+                <div class="cart-table__head">
+                  <div>Product</div>
+                  <div>Batch No</div>
+                  <div class="is-right">Price</div>
+                  <div class="is-center">QTY</div>
+                  <div class="is-right">Sub total</div>
+                  <div></div>
+                </div>
+
+                <div class="cart-table__body">
+                  @for (item of cartItems; track item.id) {
+                    <div class="cart-row" tabindex="0">
+                      <div class="cart-row__product"><strong>{{ item.name }}</strong><em>In Stock: {{ formatStock(item.stock) }}</em></div>
+                      <div class="cart-row__batch"><input type="text" [(ngModel)]="item.batchNo" [attr.aria-label]="'Batch number for ' + item.name" /></div>
+                      <div class="cart-row__price is-right">{{ formatCurrency(item.price) }}</div>
+                      <div class="cart-row__qty">
+                        <div class="quantity">
+                          <button type="button" aria-label="Increase quantity" (click)="changeQuantity(item, 1)"><img src="assets/figma-pos/plus-circle.svg" alt="" /></button>
+                          <div>{{ item.quantity }}</div>
+                          <button type="button" aria-label="Decrease quantity" (click)="changeQuantity(item, -1)"><img src="assets/figma-pos/minus-circle.svg" alt="" /></button>
+                        </div>
+                      </div>
+                      <div class="cart-row__subtotal is-right">{{ formatCurrency(item.price * item.quantity) }}</div>
+                      <button class="cart-row__remove" type="button" aria-label="Remove product" (click)="removeFromCart(item)"><img src="assets/figma-pos/trash-row.svg" alt="" /></button>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="payment-info">
+            <div class="payment-fields">
+              <label>Payments
+                <div class="select-field">
+                  <select [(ngModel)]="selectedPayment">@for (option of paymentOptions; track option) {<option [value]="option">{{ option }}</option>}</select>
+                  <img src="image/down.svg" alt="" />
+                </div>
+              </label>
+              <label>Product insurance
+                <div class="select-field">
+                  <select [(ngModel)]="selectedInsurance">@for (option of insuranceOptions; track option) {<option [value]="option">{{ option }}</option>}</select>
+                  <img src="image/down.svg" alt="" />
+                </div>
+              </label>
+              <label>Discount
+                <div class="discount-control">
+                  <div class="discount-control__unit">
+                    <select [(ngModel)]="discountUnit" aria-label="Discount unit"><option value="%">%</option><option value="$">$</option></select>
+                    <img src="image/down.svg" alt="" />
+                  </div>
+                  <input type="number" min="0" step="1" [(ngModel)]="discount" aria-label="Discount value" />
+                </div>
+              </label>
+            </div>
+            <div class="payment-divider"></div>
+            <button class="grand-total" type="button" (click)="completePayment()">Grand Total : {{ formatCurrency(total) }}</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+  </div>
 </div>

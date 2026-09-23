@@ -1,0 +1,32 @@
+<main class="page profile-page">
+  <div class="page-heading">
+    <button type="button" class="back-button" aria-label="Back" (click)="cancel()"><app-icon name="arrow-left" /></button>
+    <h1>Profile</h1>
+  </div>
+
+  <div class="profile-card">
+    <div class="edit-profile-banner"><app-icon name="edit" />Edit Profile</div>
+
+    <div class="profile-card__top">
+      <img class="profile-avatar" [src]="editProfile.avatar || defaultAvatar" alt="" />
+      <label class="profile-field">Upload Image
+        <span class="field"><input type="text" placeholder="Or Attach link" [(ngModel)]="avatarLinkInput" /><app-icon name="paperclip" /></span>
+      </label>
+      <label class="profile-field">Role<span class="field"><input type="text" [(ngModel)]="editProfile.roleShort" /></span></label>
+    </div>
+
+    <div class="profile-grid">
+      <label class="profile-field">Full Name<span class="field"><input type="text" [(ngModel)]="editProfile.name" /></span></label>
+      <label class="profile-field">Date of Birth<span class="field"><input type="text" [(ngModel)]="editProfile.dob" /></span></label>
+      <label class="profile-field">National ID Number<span class="field"><input type="text" [(ngModel)]="editProfile.nationalId" /></span></label>
+    </div>
+
+    <label class="profile-field">Current Address<span class="field field--area"><textarea rows="3" [(ngModel)]="editProfile.address"></textarea></span></label>
+    <label class="profile-field">Emergency Contact<span class="field field--area"><textarea rows="3" [(ngModel)]="editProfile.emergencyContact"></textarea></span></label>
+
+    <div class="profile-actions">
+      <button type="button" class="btn btn--primary" (click)="save()">Save</button>
+      <button type="button" class="btn btn--secondary" (click)="cancel()">Back</button>
+    </div>
+  </div>
+</main>

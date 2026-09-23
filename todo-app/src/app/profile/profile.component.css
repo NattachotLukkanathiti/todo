@@ -1,0 +1,378 @@
+:host {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    flex: 1 1 100%;
+    align-self: stretch;
+    justify-self: stretch;
+    color: #2b2f38;
+    font: 400 16px/1.5 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.navbaar {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 8;
+    background-color: #FFF;
+    border: 1px solid #CED4DA;
+    animation: slide 1s ease-in-out;
+}
+
+.con_nav {
+    width: 100%;
+    gap: 39px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.he {
+    cursor: pointer;
+    color: #1D1D1F;
+    font-weight: 300;
+    font-size: 12px;
+    transition: color 0.2s ease;
+}
+
+.he:hover {
+    color: #89898b;
+}
+
+.time {
+    font-size: 15px;
+    color: white;
+    font-weight: 800;
+    background: #AD54F5;
+    width: auto;
+    border-radius: 8px;
+    height: 36px;
+    padding: 0 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.container_bar {
+    gap: 10px;
+    margin-left: auto;
+    margin-right: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    text-align: center;
+    width: 450px;
+    margin-right: 40px;
+    height: 70px;
+}
+
+.iconsetting1,
+.iconsetting3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #F4F5FC;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.iconsetting4 {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.headercompany {
+    display: flex;
+    margin-left: 20px;
+    flex-direction: column;
+    color: #6FAB23;
+    font-weight: 800;
+}
+
+.lin {
+    background: #E6EAED;
+    width: 1px;
+    height: 35px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+    color: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor: default;
+}
+
+:focus-visible {
+    outline: 2px solid #84d46e;
+    outline-offset: 2px;
+}
+
+/* ---- row actions (PDF / edit / delete) */
+.page-heading {
+    margin-top: 60px;
+}
+
+.action-btn {
+    flex: 0 0 auto;
+    width: 26px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    border-radius: 5px;
+    color: #2b2f38;
+    display: inline-grid;
+    place-items: center;
+    transition: filter 120ms ease;
+}
+
+.action-btn app-icon {
+    width: 14px;
+    height: 14px;
+}
+
+.action-btn:hover {
+    filter: brightness(.96);
+}
+
+.action-btn:active {
+    filter: brightness(.9);
+}
+
+.action-btn--pdf {
+    background: #f3e6fe;
+}
+
+.action-btn--edit {
+    background: #fffbe8;
+}
+
+.action-btn--delete {
+    background: #fbe9eb;
+}
+
+/* ================================================================= pages
+   Scaffolding every secondary page (Notifications, Help, Profile) uses. */
+
+.page {
+    min-height: calc(100vh - 56px);
+    padding: 8px 24px 24px;
+    background: #fff;
+}
+
+.page-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.page-heading h1 {
+    flex: 1;
+    margin: 0;
+    color: #2b2f38;
+    font: 600 32px/40px 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.back-button {
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    margin-top: 70px;
+
+    padding: 0;
+    border: 0;
+    border-radius: 5px;
+    color: #2b2f38;
+    background: transparent;
+    display: grid;
+    place-items: center;
+    transition: background-color 120ms ease;
+}
+
+.back-button:hover {
+    background: #f4f5fc;
+}
+
+.back-button app-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.page-description {
+    margin: 8px 0 0;
+    color: #48505e;
+    font: 400 16px/24px 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.page-subheading {
+    margin: 0 0 16px;
+    color: #2b2f38;
+    font: 600 20px/28px 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.form-label {
+    display: grid;
+    gap: 8px;
+    color: #2b2f38;
+    font: 500 16px/22px 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.card-list {
+    display: grid;
+    gap: 12px;
+}
+
+.empty-state {
+    grid-column: 1 / -1;
+    padding: 60px 20px;
+    color: #48505e;
+    text-align: center;
+}
+
+@media (max-width: 720px) {
+    .page {
+        padding: 8px 16px 16px;
+    }
+
+    .page-heading h1 {
+        font-size: 24px;
+        line-height: 32px;
+    }
+}
+
+/* ================================================================ page */
+
+:host {
+    display: block;
+}
+
+.profile-card {
+    width: 100%;
+    margin-top: 24px;
+    padding: 24px;
+    border: 1px solid #e6eaed;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .08);
+    display: grid;
+    gap: 24px;
+}
+
+.profile-card__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 20px;
+}
+
+.profile-avatar {
+    flex: 0 0 auto;
+    width: 96px;
+    height: 96px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.profile-field {
+    min-width: 0;
+    display: grid;
+    gap: 8px;
+    color: #2b2f38;
+    font: 500 16px/22px 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.profile-card__top .profile-field {
+    flex: 1 1 200px;
+}
+
+.profile-field .field>app-icon {
+    width: 16px;
+    height: 16px;
+    color: #48505e;
+}
+
+.profile-field__value {
+    min-height: 38px;
+    padding: 9px 12px;
+    border: 1px solid #e6eaed;
+    border-radius: 4px;
+    color: #48505e;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+}
+.p{
+    display: flex;
+    padding: 20px;
+    background-color: white;
+}
+.con{
+    width: 100vw;
+}
+.role{
+      min-height: 38px;
+    padding: 9px 12px;
+    border: 1px solid #e6eaed;
+    border-radius: 4px;
+    color: #48505e;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    max-width: 200px;
+}
+.profile-field__value--area {
+    min-height: 76px;
+}
+
+@media (max-width: 720px) {
+    .profile-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .profile-card {
+        padding: 18px;
+    }
+}
+
+/* Profile page only */
+.edit-profile-button {
+    width: 36px;
+    height: 36px;
+}
+
+.edit-profile-button app-icon {
+    width: 18px;
+    height: 18px;
+}

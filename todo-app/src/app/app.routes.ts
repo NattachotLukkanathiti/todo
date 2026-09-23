@@ -14,6 +14,10 @@ import { SuppliersComponent } from './suppliers/suppliers.component';
 import { ConfirmemployeeComponent } from './confirmemployee/confirmemployee.component';
 import { PosComponent } from './pos/pos.component';
 import { AuditComponent } from './audit/audit.component';
+import { NotificationComponent } from './notification/notification.component';
+import { ProfileComponent } from './profile/profile.component';
+import { HelppComponent } from './helpp/helpp.component';
+import { EditComponent } from './edit/edit.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -31,5 +35,9 @@ export const routes: Routes = [
   { path: 'suppliers', component: SuppliersComponent},
   { path: 'confirmemployee', component: ConfirmemployeeComponent},
   { path: 'pos' , component: PosComponent},
-  { path: 'audit' ,component: AuditComponent}
+  { path: 'audit' ,component: AuditComponent},
+  { path: 'notification', component: NotificationComponent},
+  { path: 'profile', component: ProfileComponent},
+  { path: 'helpp', component: HelppComponent},
+  { path: 'edit', component: EditComponent}
 ];

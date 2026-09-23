@@ -1,0 +1,357 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap');
+
+/* ================================================= self-contained base
+   Design tokens and the shared rules this page uses, so this folder looks
+   right when copied into another Angular project on its own. Keep it before
+   the page rules below: at equal specificity the page rules must win. */
+
+:host {
+    /* Typography — H1 16 / H2 20 / H3 32, weights Regular 400 → Heavy 800 */
+    --font-sans: 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --font-data: 'Montserrat', var(--font-sans);
+    --text-h1: 16px;
+    --text-h2: 20px;
+    --text-h3: 32px;
+
+    /* Green */
+    --green-light: #f3fbf1;
+    --green-light-hover: #edf9e9;
+    --green-light-active: #d9f2d2;
+    --green: #84d46e;
+    --green-hover: #77bf63;
+    --green-active: #6aaa58;
+    --green-dark: #639f53;
+    --green-dark-hover: #4f7f42;
+    --green-dark-active: #3b5f31;
+    --green-darker: #2e4a27;
+
+    /* Neutrals */
+    --ink: #2b2f38;
+    --ink-soft: #48505e;
+    --ink-faint: #a4abb2;
+    --line: #e6eaed;
+    --surface: #fff;
+    --surface-muted: #f4f5fc;
+    --surface-hover: #fafafa;
+
+    /* Accents */
+    --logo: #6fab23;
+    --blue: #1364d5;
+    --purple: #ad54f5;
+    --purple-light: #f3e6fe;
+    --yellow-light: #fffbe8;
+    --red-light: #fbe9eb;
+    --danger: #dc1818;
+    --alert: #ff2222;
+    --unread: #3b86ff;
+    --pending: #e8a317;
+
+    --topbar-height: 56px;
+
+    --radius-sm: 4px;
+    --radius: 5px;
+    --shadow-card: 0 1px 4px rgba(0, 0, 0, .08);
+
+    /* Fill the viewport no matter what wraps the page: without an explicit width,
+     a flex parent (e.g. the default `ng new` shell) shrinks it and centres it. */
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    flex: 1 1 100%;
+    align-self: stretch;
+    justify-self: stretch;
+    color: var(--ink);
+    font: 400 var(--text-h1)/1.5 var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+    color: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor: default;
+}
+
+:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 2px;
+}
+
+/* ---- buttons ("Generate" is .btn--primary.btn--sm) */
+
+.btn {
+    min-height: 38px;
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font: 500 14px/20px var(--font-sans);
+    white-space: nowrap;
+    transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+.btn--sm {
+    min-height: 24px;
+    padding: 2px 9px;
+    font-size: 12px;
+    line-height: 18px;
+}
+
+.btn--primary {
+    color: #fff;
+    background: var(--green);
+}
+
+.btn--primary:hover {
+    background: var(--green-hover);
+}
+
+.btn--primary:active {
+    background: var(--green-active);
+}
+
+.btn--secondary {
+    color: var(--green-dark-hover);
+    background: var(--green-light);
+    border-color: var(--green-light-active);
+}
+
+.btn--secondary:hover {
+    background: var(--green-light-hover);
+}
+
+.btn--secondary:active {
+    background: var(--green-light-active);
+}
+
+/* ---- form fields (inputs and selects share one 38px box) */
+
+.field {
+    position: relative;
+    min-width: 0;
+    height: 38px;
+    padding: 0 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    color: var(--ink-soft);
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.field:focus-within {
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px var(--green-light-active);
+}
+
+.field>app-icon {
+    width: 12px;
+    height: 12px;
+    color: var(--ink);
+}
+
+.field input,
+.field select,
+.field textarea {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    color: var(--ink);
+    background: transparent;
+    font: inherit;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+    color: var(--ink-soft);
+    opacity: 1;
+}
+
+.field input[type='search']::-webkit-search-cancel-button {
+    cursor: pointer;
+}
+
+.field--select {
+    padding: 0;
+}
+
+.field--select select {
+    appearance: none;
+    padding: 0 34px 0 12px;
+    color: var(--ink-soft);
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.field--select>app-icon {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    margin-top: -6px;
+    color: var(--ink-soft);
+    pointer-events: none;
+}
+
+.field--area {
+    height: auto;
+    padding: 9px 12px;
+    align-items: flex-start;
+}
+
+.field--area textarea {
+    min-height: 72px;
+    resize: vertical;
+}
+
+/* ================================================================= pages
+   Scaffolding every secondary page (Notifications, Help, Profile) uses. */
+
+.page {
+    min-height: calc(100vh - var(--topbar-height));
+    padding: 8px 24px 24px;
+    background: var(--surface);
+}
+
+.page-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.page-heading h1 {
+    flex: 1;
+    margin: 0;
+    color: var(--ink);
+    font: 600 var(--text-h3)/40px var(--font-sans);
+}
+
+.back-button {
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius);
+    color: #000;
+    background: transparent;
+    display: grid;
+    place-items: center;
+    transition: background-color 120ms ease;
+}
+
+.back-button:hover {
+    background: var(--surface-muted);
+}
+
+.back-button app-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.page-description {
+    margin: 8px 0 0;
+    color: var(--ink-soft);
+    font: 400 var(--text-h1)/24px var(--font-sans);
+}
+
+.page-subheading {
+    margin: 0 0 16px;
+    color: var(--ink);
+    font: 600 var(--text-h2)/28px var(--font-sans);
+}
+
+.form-label {
+    display: grid;
+    gap: 8px;
+    color: var(--ink);
+    font: 500 var(--text-h1)/22px var(--font-sans);
+}
+
+.card-list {
+    display: grid;
+    gap: 12px;
+}
+
+.empty-state {
+    grid-column: 1 / -1;
+    padding: 60px 20px;
+    color: var(--ink-soft);
+    text-align: center;
+}
+
+@media (max-width: 720px) {
+    .page {
+        padding: 8px 16px 16px;
+    }
+
+    .page-heading h1 {
+        font-size: 24px;
+        line-height: 32px;
+    }
+}
+
+/* ================================================================ page */
+
+.edit-profile-banner {
+    margin: -24px -24px 0;
+    padding: 14px 24px;
+    border-radius: 8px 8px 0 0;
+    color: var(--ink);
+    background: var(--yellow-light);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font: 600 var(--text-h1)/22px var(--font-sans);
+}
+
+.edit-profile-banner app-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.profile-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+}
+
+.profile-actions .btn {
+    min-width: 140px;
+    min-height: 46px;
+    font-size: var(--text-h1);
+    font-weight: 600;
+}
+
+@media (max-width: 720px) {
+    .edit-profile-banner {
+        margin: -18px -18px 0;
+        padding: 12px 18px;
+    }
+}

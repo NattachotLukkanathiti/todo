@@ -1,0 +1,345 @@
+/* ==================== Layout & Navbar ==================== */
+:host { 
+    display: block; 
+    box-sizing: border-box; 
+    width: 100%; 
+    color: #2b2f38; 
+    font: 400 16px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+}
+
+* { 
+    box-sizing: border-box; 
+}
+
+.navbaar {
+    display: flex;
+    align-items: center; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 8;
+    background-color: #FFF;
+    border: 1px solid #CED4DA;
+    animation: slide 1s ease-in-out;
+}
+
+.con_nav {
+    width: 100%;
+    gap: 39px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.he {
+    cursor: pointer;
+    color: #1D1D1F;
+    font-weight: 300;
+    font-size: 12px;
+    transition: color 0.2s ease;
+}
+
+.he:hover {
+    color: #89898b;
+}
+
+.headercompany { 
+    display: flex; 
+    margin-left: 20px; 
+    flex-direction: column; 
+    color: #6FAB23; 
+    font-weight: 800; 
+}
+
+.container_bar {
+    gap: 10px;
+    margin-left: auto;
+    margin-right: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    text-align: center;
+    width: 450px;
+    margin-right: 40px;
+    height: 70px;
+}
+
+.iconsetting1, .iconsetting3 { 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    background: #F4F5FC; 
+    border-radius: 8px; 
+    padding: 10px; 
+    cursor: pointer; 
+}
+
+.iconsetting4 { 
+    width: 35px; 
+    height: 35px; 
+    border-radius: 8px; 
+    object-fit: cover; 
+}
+
+.time {
+    font-size: 15px;
+    color: white;
+    font-weight: 800;
+    background: #AD54F5;
+    width: auto;
+    border-radius: 8px;
+    height: 36px;
+    padding: 0 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.lin { 
+    background: #E6EAED; 
+    width: 1px; 
+    height: 35px; 
+}
+
+.hamburger { 
+    border: 0.5px solid #00000031; 
+    background-color: white; 
+    border-radius: 8px; 
+    margin-left: 20px; 
+    display: none; 
+    align-items: center; 
+    justify-content: center; 
+    cursor: pointer; 
+    width: 40px; 
+    height: 40px; 
+}
+
+/* ==================== Sidebar ==================== */
+.over { 
+    display: flex; 
+    margin-top: 30px; 
+    min-height: calc(100vh - 50px); 
+    overflow: hidden; 
+    width: 100vw; 
+}
+
+.sidebar { 
+    position: fixed; 
+    width: 280px; 
+    height: 100vh; 
+    padding: 20px; 
+    background: #F4F5FC; 
+    transition: all .3s ease; 
+    z-index: 1; 
+    overflow-y: auto; 
+}
+
+.fix { 
+    position: relative; 
+    width: 280px; 
+    padding: 20px; 
+    display: none; 
+    overflow: hidden; 
+    background: #F4F5FC; 
+    transition: all .3s ease; 
+}
+
+.sidebar.open, .fix.open { 
+    width: 0; 
+    padding: 0; 
+}
+
+.ge { 
+    font-size: 12px; 
+    margin-top: 20px; 
+    color: #6C757D; 
+    font-weight: 600; 
+    margin-left: 20px; 
+}
+
+.menuin { 
+    padding: 20px; 
+}
+
+.no, .dash, .Logout { 
+    padding: 10px; 
+    border-radius: 5px; 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    cursor: pointer; 
+}
+
+.no, .Logout { 
+    color: #6C757D; 
+    font-weight: 300; 
+    margin-bottom: 20px; 
+}
+
+.dash { 
+    background-color: #84D46E; 
+    color: #FFF; 
+    font-weight: bolder; 
+    margin-bottom: 20px; 
+}
+
+.no:hover, .Logout:hover { 
+    background-color: #4444447b; 
+    color: white; 
+}
+
+/* ==================== Notification Page ==================== */
+.page { 
+    min-height: 100vh; 
+    padding: 8px 24px 24px; 
+    background: #fff; 
+    width: 100%; 
+}
+
+.page-subheading { 
+    margin: 0 0 20px; 
+    color: #2b2f38; 
+    font: 600 32px/40px sans-serif; 
+}
+
+.card-list { 
+    display: grid; 
+    gap: 12px; 
+}
+.pag-noti{
+    width: 100%;
+}
+.notification-banner { 
+    min-height: 198px; 
+    margin: -8px -24px 24px; 
+    padding: 24px 42px; 
+    background: linear-gradient(90deg, #84d46e, #4287f5); 
+    display: flex; 
+    flex-wrap: wrap; 
+    width: 100vw;
+    box-sizing: border-box;
+    align-items: center; 
+
+}
+.stat-card__content {
+    display: flex;
+    width: 10vw;
+    
+    flex-direction: column; /* จัดให้เรียงลงมาเป็นแนวตั้ง */
+}
+.stat-card stat-card--blue{
+    border-radius: 20px;
+}
+.notification-stats { 
+    flex: 0 1 auto; /* เปลี่ยนเป็น auto เพื่อให้ขนาดพอดีกับการ์ดข้างใน */
+    display: flex; 
+    justify-content: flex-end; /* ดันการ์ดข้างในไปชิดขวา */
+    flex-wrap: wrap; 
+    gap: 16px; 
+    margin-left: auto; /* เพิ่มคำสั่งนี้เพื่อดันตัวเองไปชิดขวาสุดของ Banner */
+}
+.notification-banner h1 { 
+    margin: 0; 
+    color: #fff; 
+    font: 700 32px/40px sans-serif; 
+}
+
+
+.stat-card { 
+    flex: 1 1 200px; 
+    padding: 16px 24px; 
+    border-radius: 4px; 
+    background: #fff; 
+    box-shadow: 0 4px 12px rgba(0,0,0,.12); 
+    display: flex; 
+    align-items: center; 
+    gap: 16px; 
+}
+
+.stat-card__icon { 
+    width: 44px; 
+    height: 44px; 
+    border-radius: 50%; 
+    display: grid; 
+    place-items: center; 
+}
+
+.stat-card--blue .stat-card__icon { color: #1364d5; background: #e7effb; }
+.stat-card--orange .stat-card__icon { color: #e08a00; background: #fdf0e0; }
+.stat-card--green .stat-card__icon { color: #4f7f42; background: #d9f2d2; }
+
+.list-card { 
+    width: 100%; 
+    padding: 16px 32px; 
+    border: 1px solid #e6eaed; 
+    border-radius: 4px; 
+    background: #fff; 
+    display: flex; 
+    align-items: center; 
+    gap: 32px; 
+}
+
+.list-card__dot--unread { 
+    background: #3b86ff; 
+    width: 12px; 
+    height: 12px; 
+    border-radius: 50%; 
+}
+
+/* ==================== Popups & Loading ==================== */
+.backpop { 
+    background-color: rgba(0, 0, 0, 0.28); 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100vw; 
+    height: 100vh; 
+    justify-content: center; 
+    align-items: center; 
+    display: flex; 
+    z-index: 9999; 
+}
+
+.popupcontainer { 
+    background-color: #FFF; 
+    border-radius: 40px; 
+    padding: 50px; 
+    width: 400px; 
+    text-align: center; 
+}
+
+.buttonnoti { 
+    width: 100%; 
+    padding: 15px; 
+    color: #FFF; 
+    border-radius: 8px; 
+    background: #DC1818; 
+    border: none; 
+    cursor: pointer; 
+}
+
+/* ==================== Animations ==================== */
+.Animation_out { 
+    flex: 1; 
+    width: 100%; 
+    padding: 20px; 
+    background: #F4F5FC; 
+    z-index: 2; 
+}
+
+.fade-out2 { 
+    animation: Move_sale 0.5s ease-in-out forwards; 
+}
+
+@keyframes Move_sale { 
+    0% { transform: translateY(0); opacity: 1; } 
+    100% { transform: translateY(1000px); opacity: 0; } 
+}
