@@ -79,6 +79,7 @@ export class PosComponent implements OnInit, OnDestroy {
   notification: any[] = [];
 
   ngOnInit(): void {
+     this.loadNotifications();
     const navigation = this.router.lastSuccessfulNavigation;
     const state = navigation?.extras.state || history.state;
 
@@ -287,5 +288,13 @@ export class PosComponent implements OnInit, OnDestroy {
     this.isClosing = false;
     this.openPanel = 'account';
   }
-
+loadNotifications(): void {
+    this.todoService.getNotifications().subscribe({
+      next: (res: any) => {
+        this.notification = Array.isArray(res) ? res : (res.data || []);
+        this.changeDetector.markForCheck(); // สั่งให้ Angular อัปเดต UI
+      },
+      error: (err) => console.error('Error loading notifications:', err)
+    });
+  }
 }

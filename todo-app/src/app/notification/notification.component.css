@@ -343,3 +343,56 @@
     0% { transform: translateY(0); opacity: 1; } 
     100% { transform: translateY(1000px); opacity: 0; } 
 }
+
+.table_detail2 {
+    width: 100%; /* เปลี่ยนจาก 100vw เป็น 100% เพื่อไม่ให้ล้นขอบจอ */
+    box-shadow: 0px 0px 8px 0px #1d1d1f35;
+    padding: 20px;
+    border-radius: 10px;
+    box-sizing: border-box; /* ช่วยให้ padding ไม่ดันขนาดกล่องให้ใหญ่ขึ้น */
+}
+
+.table_detail {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+}
+
+/* สั่งให้ .con และ .sku2 ที่เป็นลูกตรงๆ ของ .table_detail แบ่งพื้นที่เท่ากัน */
+.table_detail > .con,
+.table_detail > .sku2 {
+    flex: 1;
+    min-width: 0;
+}
+
+/* จัดการให้ title และ description ใน .con เรียงเป็นแนวตั้ง */
+.con {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sku2 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.sku3 {
+    display: flex;
+    justify-content: center; /* จัดกึ่งกลางแนวนอน */
+    align-items: center;     /* จัดกึ่งกลางแนวตั้ง */
+    gap: 8px;               /* ระยะห่างระหว่างตัวหนังสือกับจุดสีฟ้า */
+}
+.sku1{
+    font-weight: 600;
+}
+.blue_noti {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #3B86FF;
+    box-shadow: 0px 0px 4px 0px #3B86FF;
+    flex-shrink: 0; /* ป้องกันไม่ให้จุดสีฟ้าโดนบีบ */
+}

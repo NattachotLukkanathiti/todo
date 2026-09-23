@@ -14,7 +14,7 @@ export interface Todo {
 })
 export class TodoService {
   private http = inject(HttpClient);
-  private api = 'https://todo-igjj.onrender.com/todos';
+  private api = 'https://todo-igjj.onrender.com/api/todos';
   private apiUrl = 'https://todo-igjj.onrender.com/api'; 
 
   private headers = new HttpHeaders({
@@ -174,6 +174,21 @@ updateEmployee(username: string, employeeData: any): Observable<any> {
   getNotifications(): Observable<any[]> {
     return this.http.get<any[]>(
       `${this.apiUrl}/notification`, 
+      { headers: this.headers }
+    );
+  }
+  // แก้ไขให้รับ 4 Arguments แทนการรับ Object ก้อนเดียว
+  addNotification(title: string, description: string, type: string, timeAgo: string): Observable<any> {
+    const notificationData = {
+      title: title,
+      description: description,
+      type: type,
+      time_ago: timeAgo
+    };
+
+    return this.http.post<any>(
+      `${this.apiUrl}/notification`, 
+      notificationData,
       { headers: this.headers }
     );
   }

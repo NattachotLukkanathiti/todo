@@ -201,7 +201,29 @@ app.get('/api/notification', async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 });
+// 📌 เพิ่ม Route สำหรับบันทึกข้อมูล Notification
+app.post('/api/notification', async (req, res) => {
+  try {
+    const { title, description, type, time_ago } = req.body;
 
+    // ตรวจสอบว่ามีข้อมูล title ส่งมาหรือไม่ (ตามที่ฐานข้อมูลตั้งค่า NOT NULL ไว้)
+    if (!title) {
+      return res.status(400).json({ success: false, message: 'Title is required' });
+    }
+
+    const result = await pool.query(
+      `INSERT INTO notification (title, description, type, time_ago) 
+       VALUES ($1, $2, $3, $4) 
+       RETURNING *`,
+      [title, description, type, time_ago]
+    );
+
+    res.status(201).json({ success: true, data: result.rows[0] });
+  } catch (error) {
+    console.error('Error saving notification:', error);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+});
 app.post('/todos', async (req, res) => {
   try {
     const { username, title, password, otp } = req.body;

@@ -93,26 +93,34 @@
 
     <h2 class="page-subheading">View All</h2>
     <div class="card-list">
-    @for (item of notifications(); track item.id) {
-        <div class="list-card">
-            <div class="list-card__icon">&#128276;</div>
-            <div class="list-card__body">
-                <!-- ใช้ title จากฐานข้อมูล -->
-                <strong class="list-card__title">{{ item.title }}</strong>
-                <!-- เปลี่ยนจาก subtitle เป็น description -->
-                <div class="list-card__subtitle">{{ item.description }}</div>
-            </div>
-            <!-- เปลี่ยนจาก time เป็น time_ago -->
-            <div class="list-card__meta">{{ item.time_ago }}</div>
-            
-            <!-- เช็คสถานะ is_read (ถ้าเป็น false คือยังไม่อ่าน) -->
-            <div class="list-card__dot" [class.list-card__dot--unread]="!item.is_read">
-                @if (!item.is_read) { <div class="visually-hidden">Unread</div> }
-            </div>
+    <div class="table_detail2" *ngFor="let item of notifications; let i = index" 
+     [style.animation-delay]="i * 0.15 + 's'">
+    <div class="table_detail">
+        
+        <!-- ส่วนของไอคอนด้านหน้า -->
+        <div class="noti_icon">
+            <img *ngIf="item.type === 'success'" src="image/stock_update.svg" alt="Stock">
+            <img *ngIf="item.type === 'warning'" src="image/famicons_alert-outline.svg" alt="Alert">
+            <img *ngIf="item.type === 'info'" src="image/pedding.svg" alt="Info">
         </div>
-    } @empty {
-        <div class="empty-state">No notifications.</div>
-    }
+
+        <div class="con">
+            <div class="sku1">{{ item.title }}</div>
+            <div class="sku2">{{ item.description }}</div>
+        </div>
+        
+        <div class="sku3">
+            <span>{{ item.time_ago }}</span>
+            <!-- เปลี่ยนสีจุดตามประเภทโดยใช้ ngClass -->
+            <div [ngClass]="{
+                'blue_noti': item.type === 'info',
+                'red_noti_dot': item.type === 'warning',
+                'green_noti': item.type === 'success'
+            }"></div>
+        </div>
+    </div>
+    <div class="line"></div>
+</div>
 </div>
 </main>
             <!-- จบส่วนของ Notification -->

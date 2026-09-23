@@ -14,9 +14,13 @@
     <button class="header-icon" [class.header-icon--active]="!isRightPanelOpen" type="button" aria-label="Toggle full screen catalog" (click)="toggleFullScreen()"><img src="image/Maximize Icon.svg" alt="" /></button>
     
     <div class="red_noti">
-      <div class="red_notification" *ngIf = "notification && notification.length > 0"></div>
-      <button class="header-icon" type="button" aria-label="Notifications" (click)="openNotifications()"><img src="image/Chart.svg" alt="" /></button>
-    </div>
+  <!-- จุดสีแดงจะแสดง ก็ต่อเมื่อมีข้อมูลในตาราง notifications เท่านั้น -->
+  <div class="red_notification" *ngIf="notification && notification.length > 0"></div>
+  
+  <button class="header-icon" type="button" aria-label="Notifications" (click)="openNotifications()">
+    <img src="image/Chart.svg" alt="" />
+  </button>
+</div>
     
     <button class="avatar-button" type="button" aria-label="Open account menu" [attr.aria-expanded]="openPanel === 'account'" (click)="toggleAccountMenu()"><img [src]="profile || 'image/profileee.svg'" /></button>
     <button class="menu-button" [class.menu-button--active]="isNavOpen" type="button" aria-label="Toggle navigation" [attr.aria-expanded]="isNavOpen" (click)="toggleNav()"><img src="assets/figma-pos/ri-menu-line.svg" alt="" /></button>

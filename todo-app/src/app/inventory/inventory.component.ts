@@ -347,14 +347,14 @@ loadTodos() {
         ...this.newProduct,
         picture: pictureUrl
       };
-
-      // ส่งข้อมูลไปที่ Backend
-      this.todoService.addInventory(productData).subscribe({
+ this.todoService.addInventory(productData).subscribe({
         next: (res) => {
           this.openpopup('New product created successfully. View changes in Stock History');
           this.loadInventory();
           
           const now = new Date();
+          
+          // 1. บันทึก Audit Log
           const auditData = {
             date: now.toISOString().split('T')[0],
             time: now.toTimeString().split(' ')[0],
@@ -365,14 +365,27 @@ loadTodos() {
             picture: this.profile
           };
           
-          this.isLoading = false;
           this.todoService.logAudit(auditData).subscribe({
             next: () => console.log('Audit saved'),
             error: (err) => console.error('Failed to save audit', err)
           });
+
+          // 2. บันทึก Notification
+          const productName = this.newProduct.product_name || this.newProduct.sku;
+          this.todoService.addNotification(
+            `Stock Update : ${productName}`, // title
+            'Add Product',                   // description
+            'success',                       // type
+            'Just now'                       // time_ago
+          ).subscribe({
+            next: () => console.log('Notification saved'),
+            error: (err) => console.error('Failed to save notification', err)
+          });
+
+          this.isLoading = false;
         },
         error: (err) => {
-          console.error(err);
+          console.error('Error adding inventory:', err);
           this.isLoading = false;
         }
       });
@@ -382,7 +395,7 @@ loadTodos() {
       this.openpopup('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
       this.isLoading = false;
     }
-}
+  }
   // 1. สร้างตัวแปรเก็บฟังก์ชัน resolve ของ Promise
 private resolveConfirm: ((value: boolean) => void) | null = null;
 
@@ -582,5 +595,17 @@ logout() {
   }
   openPro(){
     this.isMenuOpenprofile = !this.isMenuOpenprofile;
+  }
+  createNotification(title: string, description: string, type: 'info' | 'warning' | 'success') {
+    // ส่งค่าแยกเป็น 4 arguments ให้ตรงกับที่ Service ต้องการ
+    this.todoService.addNotification(
+      title,
+      description,
+      type,
+      'Just now'
+    ).subscribe({
+      next: () => console.log('Notification sent successfully'),
+      error: (err) => console.error('Error sending notification', err)
+    });
   }
 }
