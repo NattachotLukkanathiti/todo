@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit, inject , ElementRef, ViewChild  } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -36,6 +36,7 @@ type MainView = 'pos' | 'notifications' | 'help' | 'profile' | 'profile-edit';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PosComponent implements OnInit, OnDestroy {
+      @ViewChild('categoryRow') categoryRow!: ElementRef;
   private router = inject(Router);
   private changeDetector = inject(ChangeDetectorRef);
   private todoService = inject(TodoService); // เรียกใช้ TodoService
@@ -354,5 +355,16 @@ loadNotifications(): void {
       },
       error: (err) => console.error('Error loading notifications:', err)
     });
+  }
+
+
+  // ฟังก์ชันเลื่อนไปทางซ้าย
+  // รับ element เข้ามาตรงๆ จาก HTML
+  scrollLeft(element: HTMLElement) {
+    element.scrollBy({ left: -200, behavior: 'smooth' });
+  }
+
+  scrollRight(element: HTMLElement) {
+    element.scrollBy({ left: 200, behavior: 'smooth' });
   }
 }

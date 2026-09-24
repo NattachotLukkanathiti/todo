@@ -1,6 +1,8 @@
 <div class="navbaar">
 
-   
+    <div class="headercompany">
+        <img src="image/logo.svg" alt="">
+    </div>
     <!--   <div class="search">
         <input class="inputser"type="text" placeholder="Search" [(ngModel)]="search" (input)="filterS()">
         <img class="iconsearch" src="image/search.svg" alt="">
@@ -20,17 +22,25 @@
 <div class="he" (click)="Animation_out5()">Setting</div> -->
     </div>
     <div class="container_bar">
-       <!--  <div class="time" [class.active]="isTimeOpen" (click)="isTimeOpen = !isTimeOpen">
+        <div class="time" >
             <img class="icon_time" src="image/Time Icon.svg">
             <div class="Y">
-                {{ currentTime | date:'HH:mm:ss' }}
+                {{ clock | date:'HH:mm:ss' }}
             </div>
-        </div> -->
+        </div>
         <div class="lin"></div>
         <img class="iconsetting1" src="image/Maximize Icon.svg" (click)="toggleFullScreen()"  alt="">
         <!-- <img class="iconsetting2" src="image/Song.svg" alt=""> -->
-<!--         <img class="iconsetting3" (click)="openPro()" src="image/Chart.svg" alt="">
-        <button class="avatar-button" type="button" aria-label="Open account menu" [attr.aria-expanded]="openPanel === 'account'" (click)="toggleAccountMenu()"><img [src]="profile || 'image/profileee.svg'" /></button> -->
+        <div class="red_noti">
+  <!-- จุดสีแดงจะแสดง ก็ต่อเมื่อมีข้อมูลในตาราง notifications เท่านั้น -->
+  <div class="red_notification" *ngIf="notification && notification.length > 0"></div>
+  
+  <button class="header-icon" type="button" aria-label="Notifications" (click)="openNotifications()">
+    <img src="image/Chart.svg" alt="" />
+  </button>
+      
+</div>
+        <button class="avatar-button" type="button" aria-label="Open account menu" [attr.aria-expanded]="openPanel === 'account'" (click)="toggleAccountMenu()"><img [src]="profile || 'image/profileee.svg'" /></button>
         
     </div>
 
@@ -87,12 +97,12 @@
           <div class="category-slider" aria-label="Categories">
             <div class="section-heading">
               <h1>Categories</h1>
-              <div class="category-arrows">
-                <div class="buttonback"></div>
-                <div class="buttonnext"></div>
+              <div class="category-arrows" >
+                      <div class="buttonback" (click)="scrollLeft(categoryRow)"></div>
+      <div class="buttonnext" (click)="scrollRight(categoryRow)"></div>
               </div>
             </div>
-            <div class="category-row">
+            <div class="category-row" #categoryRow>
               @for (category of categories; track category.label) {
                 <button class="category-card" [class.category-card--active]="selectedCategory === category.label" type="button" (click)="selectCategory(category)">
                   <div class="category-card__image"><img [src]="category.icon || 'image/Black.svg'" alt="{{ category.label }}" /></div>

@@ -130,8 +130,12 @@ getSuppliers(){
   )
 }
 
-addInventory(productData: any) {
-    return this.http.post(`${this.apiUrl}/inventory`, productData);
+addInventory(productData: any): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl}/inventory`, 
+      productData,
+      { headers: this.headers }
+    );
   }
   deleteInventory(sku: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/inventory/${sku}`);
@@ -200,4 +204,18 @@ updateEmployee(username: string, employeeData: any): Observable<any> {
     { headers: this.headers }
   );
 }
+// ดึงข้อมูล SKU ล่าสุดจากฐานข้อมูล (สมมติว่า Backend มี Endpoint นี้)
+  getLastSku(): Observable<{ lastSku: string }> {
+    return this.http.get<{ lastSku: string }>(
+      `${this.apiUrl}/inventory/last-sku`,
+      { headers: this.headers }
+    );
+  }
+   addSupplier(supplierData: any): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl}/suppliers`, 
+      supplierData, 
+      { headers: this.headers }
+    );
+  }
 }

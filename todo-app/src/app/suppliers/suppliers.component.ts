@@ -1,10 +1,10 @@
-
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ViewChild, ElementRef } from '@angular/core'; // เพิ่ม ViewChild, ElementRef
 import { FormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TodoService } from '../services/todo.service';
 import { interval, Subscription } from 'rxjs';
+
 @Component({
   selector: 'app-suppliers',
   imports: [CommonModule, DatePipe, RouterLink,FormsModule],
@@ -12,7 +12,7 @@ import { interval, Subscription } from 'rxjs';
   styleUrl: './suppliers.component.css'
 })
 export class SuppliersComponent {
-
+  @ViewChild('fileInput') fileInput!: ElementRef; // เพิ่มบรรทัดนี้
   private todoService = inject(TodoService);
 
   search = '';
@@ -38,214 +38,130 @@ export class SuppliersComponent {
   reload = false;
   isLoading = false; 
   loader = false;
- play_Return = false;
-   Animation_outdash = false;
+  play_Return = false;
+  Animation_outdash = false;
   return = false;
-    stan = false;
-    openn = false;
-    profile = '';
+  stan = false;
+  openn = false;
+  profile = '';
   userRole: string = '';
+  
+  // --- ส่วนที่เพิ่มเข้ามาใหม่ (ตัวแปรสำหรับฟอร์ม) ---
+  button_importt = false;
+  button_cancel = false;
+  outimport = false;
+  product = true;
+  imagePreview: string | null = null;
+  selectedFile: File | null = null;
+  // -------------------------------------------
+
+  newSupplier = {
+    supplier_name: '',
+    created_by: '',
+    email: '',
+    phone: '',
+    logo: ''
+  };
+
   private timeSubscription!: Subscription;
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-
     const state = history.state;
     this.username = state.username || '';
     this.email = state.email || '';
     this.userRole = state.role || 'user';
     this.profile = state.profile || '';
     this.loadSuppliers();
-     if (state.Move_return === true) {
-    this.out = false;
     
-  }
-  if (state.Move_returns3 === true) {
-        this.play_Return = false;
-    this.out = false;
-    
-  }
-  if (state.Open_bar === true){
-    this.openn = true;
-  }
-  if (state.Dont_animation === true){
-    this.openn = false;
-    this.out = true;
-  }
-   if (state.Move_return4 === true) {
-        this.out = false
-    this.play_Return = true;
-  }
-  if (state.Move_return5 === true) {
-       this.stan = false;
-      this.play_Return = false;
-      this.Animation_outdash = false
-  }
+    if (state.Move_return === true) { this.out = false; }
+    if (state.Move_returns3 === true) { this.play_Return = false; this.out = false; }
+    if (state.Open_bar === true){ this.openn = true; }
+    if (state.Dont_animation === true){ this.openn = false; this.out = true; }
+    if (state.Move_return4 === true) { this.out = false; this.play_Return = true; }
+    if (state.Move_return5 === true) { this.stan = false; this.play_Return = false; this.Animation_outdash = false; }
 
     if(!this.username || !this.email){
-      this.openpopupnoti("Session not found. Redirecting to login")
-    return;
+      this.openpopupnoti("Session not found. Redirecting to login");
+      return;
     }
-      
-
       
     this.timeSubscription = interval(1000).subscribe(() => {
       this.currentTime = new Date();
     });
   }
+
   reloads() {
-    this.suppliers
+    this.suppliers;
     this.isLoading = true; 
-}   
-  Animationa2_out(){
-     this.out = false;
-    this.Animation_outdash = true;
-     this.inhere = true;
-    this.play_Return = false;
-    setTimeout(() =>{
-      this.router.navigate(['/inventory'],{
-        state:{username: this.username , email: this.email, Move_return:true,role:this.userRole ,profile:this.profile}
-      })
-    } ,300)
-  }
-  Animationa3_out(){
-     this.out = false;
-    this.Animation_outdash = true;
-     this.inhere = true;
-    this.play_Return = false;
-    setTimeout(() =>{
-      this.router.navigate(['/sale'],{
-        state:{username: this.username , email: this.email, Move_return:true,role:this.userRole ,profile:this.profile}
-      })
-    } ,300)
-  }
-  Animationa4_out(){
-     this.out = false;
-    this.Animation_outdash = true;
-     this.inhere = true;
-    this.play_Return = false;
+  }   
 
-    setTimeout(() =>{
-      this.router.navigate(['/history'],{
-        state:{username: this.username , email: this.email, Move_return4:true ,role:this.userRole ,profile:this.profile}
-      })
-    } ,300)
-  }
-   Animationa5_out(){
-    this.out = false;
-    this.Animation_outdash = true;
-     this.inhere = true;
-    this.play_Return = false;
-
-    setTimeout(() =>{
-      this.router.navigate(['/employee'],{
-        state:{username: this.username , email: this.email, Move_returnout:true ,role:this.userRole ,profile:this.profile}
-      })
-    } ,300)
-  }
-  Animationa6_out(){
-    this.out = false;
-    this.Animation_outdash = true;
-     this.inhere = true;
-    this.play_Return = false;
-
-    setTimeout(() =>{
-      this.router.navigate(['/audit'],{
-        state:{username: this.username , email: this.email, Move_return4:true ,role:this.userRole ,profile:this.profile}
-      })
-    } ,300)
-  }
-  Animationa_out1(){
-
-    setTimeout(() =>{
-      this.router.navigate(['/pos'],{
-        state:{username: this.username , email: this.email, Move_return6:true ,role:this.userRole ,profile:this.profile}
-      })
-    } ,300)
-  }
-  Animationa_out(){
-    this.Animation_outdash = true;
-
-    setTimeout(() =>{
-      this.router.navigate(['/dashboard'],{
-        state:{username: this.username , email: this.email, Move_return:true ,Dont_animation: true ,role:this.userRole ,profile:this.profile}
-      })
-    } ,300)
-  }
-  openpopupnoti(message:string){
-    this.showpopupnoti = true;
-    this.popup = message;
-  }
-  closepopup(){
-    this.showpopup = false;
-    this.showpopupnoti = false;
-    
+  Animationa2_out(){ this.out = false; this.Animation_outdash = true; this.inhere = true; this.play_Return = false; setTimeout(() =>{ this.router.navigate(['/inventory'],{ state:{username: this.username , email: this.email, Move_return:true,role:this.userRole ,profile:this.profile} }) } ,300) }
+  Animationa3_out(){ this.out = false; this.Animation_outdash = true; this.inhere = true; this.play_Return = false; setTimeout(() =>{ this.router.navigate(['/sale'],{ state:{username: this.username , email: this.email, Move_return:true,role:this.userRole ,profile:this.profile} }) } ,300) }
+  Animationa4_out(){ this.out = false; this.Animation_outdash = true; this.inhere = true; this.play_Return = false; setTimeout(() =>{ this.router.navigate(['/history'],{ state:{username: this.username , email: this.email, Move_return4:true ,role:this.userRole ,profile:this.profile} }) } ,300) }
+  Animationa5_out(){ this.out = false; this.Animation_outdash = true; this.inhere = true; this.play_Return = false; setTimeout(() =>{ this.router.navigate(['/employee'],{ state:{username: this.username , email: this.email, Move_returnout:true ,role:this.userRole ,profile:this.profile} }) } ,300) }
+  Animationa6_out(){ this.out = false; this.Animation_outdash = true; this.inhere = true; this.play_Return = false; setTimeout(() =>{ this.router.navigate(['/audit'],{ state:{username: this.username , email: this.email, Move_return4:true ,role:this.userRole ,profile:this.profile} }) } ,300) }
+  Animationa_out1(){ setTimeout(() =>{ this.router.navigate(['/pos'],{ state:{username: this.username , email: this.email, Move_return6:true ,role:this.userRole ,profile:this.profile} }) } ,300) }
+  Animationa_out(){ this.Animation_outdash = true; setTimeout(() =>{ this.router.navigate(['/dashboard'],{ state:{username: this.username , email: this.email, Move_return:true ,Dont_animation: true ,role:this.userRole ,profile:this.profile} }) } ,300) }
   
-      this.router.navigate(['/login']); 
-    
-  }
-  ngOnDestroy() {
-    this.timeSubscription?.unsubscribe();
-  }
-
+  openpopupnoti(message:string){ this.showpopupnoti = true; this.popup = message; }
+  closepopup(){ this.showpopup = false; this.showpopupnoti = false; this.router.navigate(['/login']); }
+  ngOnDestroy() { this.timeSubscription?.unsubscribe(); }
 
   loadSuppliers() {
-  this.loader = true;
-  this.todoService.getSuppliers().subscribe({
-    next: (res) => {
-      this.suppliers = res;
-      this.isLoading = false;
-      this.loader = false;
-    },
-    error: (err) => {
-      console.error('Error fetching history:', err);
-      this.loader = false; // เพิ่มการปิด loader เมื่อเกิด error
-    }
-  });
-}
-
-
-  toggleMenu() {
-    this.out = false;
-    this.isMenuOpen = !this.isMenuOpen;
-    this.isMenuOpenprofile = !this.isMenuOpenprofile;
-  }
-  hambar(){
-    this.isMenuOpen = !this.isMenuOpen;
+    this.loader = true;
+    this.todoService.getSuppliers().subscribe({
+      next: (res) => { this.suppliers = res; this.isLoading = false; this.loader = false; },
+      error: (err) => { console.error('Error fetching history:', err); this.loader = false; }
+    });
   }
 
-  setView(view: string) {
-    this.currentView = view;
-  }
-
-  filterS() {
-    this.filteredItems = this.items.filter(item =>
-      item.toLowerCase().includes(this.search.toLowerCase())
-    );
-  }
+  toggleMenu() { this.out = false; this.isMenuOpen = !this.isMenuOpen; this.isMenuOpenprofile = !this.isMenuOpenprofile; }
+  hambar(){ this.isMenuOpen = !this.isMenuOpen; }
+  setView(view: string) { this.currentView = view; }
+  filterS() { this.filteredItems = this.items.filter(item => item.toLowerCase().includes(this.search.toLowerCase()) ); }
 
   logout() {
     const now = new Date();
-    const auditData = {
-      date: now.toISOString().split('T')[0],
-      time: now.toTimeString().split(' ')[0],
-      username: this.username, 
-      email: this.email,       
-      activity: 'Logout', 
-      role: this.userRole,     
-      picture: this.profile
-    };
-
-
+    const auditData = { date: now.toISOString().split('T')[0], time: now.toTimeString().split(' ')[0], username: this.username, email: this.email, activity: 'Logout', role: this.userRole, picture: this.profile };
     this.todoService.logAudit(auditData).subscribe({
-      next: () => {
-        console.log('Logout audit saved');
-        this.router.navigate(['/login']);
-      },
-      error: (err) => {
-        console.error('Failed to save logout audit', err);
-        this.router.navigate(['/login']); 
-      }
+      next: () => { console.log('Logout audit saved'); this.router.navigate(['/login']); },
+      error: (err) => { console.error('Failed to save logout audit', err); this.router.navigate(['/login']); }
     });
   }
+
+  button_imports() {
+    this.outimport = false;
+    this.button_importt = true;
+  }
+
+  saveSupplier() {
+    console.log('Saving Supplier:', this.newSupplier);
+    // this.todoService.addSupplier(this.newSupplier).subscribe(...);
+  }
+
+  // --- ส่วนที่เพิ่มเข้ามาใหม่ (ฟังก์ชันสำหรับฟอร์ม) ---
+  button_cancels() {
+    this.outimport = true;
+    setTimeout(() => {
+      this.button_importt = false;
+      this.outimport = false;
+      this.imagePreview = null;
+    }, 400);
+  }
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      const reader = new FileReader();
+      reader.onload = () => { this.imagePreview = reader.result as string; };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  onUrlChange(url: string) {
+    this.imagePreview = (url && url.trim() !== '') ? url : null;
+  }
+  // -------------------------------------------
 }

@@ -309,8 +309,24 @@ export class NavbarComponent implements OnInit {
     this.isNavOpen = false; 
   }
  openProfile() {
+    // 1. ค้นหาข้อมูลผู้ใช้ปัจจุบันจาก todos ที่โหลดมาแล้ว
+    const currentUser = this.todos.find(u => u.username === this.username);
+
     this.router.navigate(['/profile'], {
-      state: { username: this.username, email: this.email, role: this.userRole, profile: this.profile }
+      state: { 
+        // 2. ส่ง ID และข้อมูลพื้นฐาน
+        id: currentUser?.id || 0,
+        username: this.username, 
+        email: this.email, 
+        role: this.userRole, 
+        profile: this.profile,
+
+        // 3. ส่งข้อมูลส่วนตัวไปด้วย (ถ้ามี)
+        dob: currentUser?.dob || '',
+        national_id: currentUser?.national_id || '',
+        address: currentUser?.address || '',
+        emergency_contact: currentUser?.emergency_contact || ''
+      }
     });
   }
 
@@ -345,5 +361,12 @@ loadNotifications(): void {
       error: (err) => console.error('Error loading notifications:', err)
     });
   }
-  
+  // เพิ่มฟังก์ชันนี้เพื่อแปลงค่า Role สำหรับแสดงผล
+  getDisplayRole(): string {
+    if (this.userRole.toLowerCase() === 'pos') {
+      return 'Frontend';
+    }
+    // ทำให้ตัวอักษรตัวแรกเป็นตัวพิมพ์ใหญ่สำหรับ Role อื่นๆ
+    return this.userRole.charAt(0).toUpperCase() + this.userRole.slice(1);
+  }
 }

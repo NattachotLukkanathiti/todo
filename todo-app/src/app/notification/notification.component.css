@@ -173,6 +173,7 @@
     padding: 10px; 
     border-radius: 5px; 
     display: flex; 
+    z-index: 9999 !important;
     align-items: center; 
     gap: 8px; 
     cursor: pointer; 

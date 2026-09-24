@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, OnDestroy, inject, ChangeDetectorRef } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { CommonModule, DatePipe, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
 import { Subscription } from 'rxjs';
+import { TodoService } from '../services/todo.service';
 
 export interface UserEdit{
   name?: string;
@@ -26,31 +27,35 @@ export interface UserEdit{
 export class EditComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private location = inject(Location);
-  readonly defaultAvatar = 'assets/images/default-avatar.svg'; 
+  private todoService = inject(TodoService);
+  private cdr = inject(ChangeDetectorRef);
 
-  // --- Navbar & User Variables ---
-  userId: number = 0; // ตัวแปรเก็บ ID
+  readonly defaultAvatar = 'assets/images/default-avatar.svg'; 
+  
+  userId: number = 0; 
   username = '';
   email = '';
   userRole = '';
   profile = '';
-  
-  // --- Form Variables ---
+  isLoading = false;
   dob = '';
   nationalId = '';
   address = '';
   emergencyContact = '';
 
-  // --- Navbar UI & Time State ---
   isMenuOpen = false; 
   isTimeOpen = false;
   currentTime = new Date();
   private timeSubscription!: Subscription;
 
+  // --- เพิ่มตัวแปรสำหรับ Popup ---
+  showpopup = false;
+  popup = '';
+
   navigateTo(route: string, extraState: any = {}) {
     this.router.navigate([route], {
       state: { 
-        id: this.userId, // ส่ง ID ไปด้วย
+        id: this.userId, 
         username: this.username, 
         email: this.email, 
         role: this.userRole, 
@@ -62,21 +67,46 @@ export class EditComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const state = history.state;
-    
-    this.userId = state.id|| 0; // รับค่า ID
+        
     this.username = state.username || '';
     this.email = state.email || '';
     this.userRole = state.role || '';
     this.profile = state.profile || this.defaultAvatar; 
 
     this.dob = state.dob || '';
-    this.nationalId = state.nationalId || '';
+    this.nationalId = state.national_id || state.nationalId || ''; 
     this.address = state.address || '';
-    this.emergencyContact = state.emergencyContact || '';
+    this.emergencyContact = state.emergency_contact || state.emergencyContact || ''; 
+
+    this.todoService.getTodos().subscribe({
+      next: (todos: any[]) => {
+        const currentUser = todos.find(u => u.username === this.username);
+        if (currentUser) {
+          this.userId = currentUser.id;
+          console.log('Found ID automatically:', this.userId);
+          this.cdr.markForCheck();
+        } else {
+          this.openpopup('ไม่พบผู้ใช้งานนี้ในระบบ'); // แทนที่ alert
+        }
+      }
+    });
   }
 
   ngOnDestroy(): void {
     this.timeSubscription?.unsubscribe();
+  }
+
+  // --- ฟังก์ชันจัดการ Popup ---
+  openpopup(message: string) {
+    this.showpopup = true;
+    this.popup = message;
+    this.cdr.markForCheck();
+  }
+
+  closepopup() {
+     this.router.navigate(['/']);
+    this.showpopup = false;
+    this.cdr.markForCheck();
   }
 
   // --- Navigation Functions ---
@@ -91,30 +121,36 @@ export class EditComponent implements OnInit, OnDestroy {
 
   // --- UI Functions ---
   hambar() { this.isMenuOpen = !this.isMenuOpen; }
-  openPro() { /* Logic สำหรับเปิดเมนูโปรไฟล์ */ }
+  openPro() { /* Logic */ }
   back() { this.location.back(); }
   edit(){ this.router.navigate(['/edit']); }
 
-  // --- เพิ่มฟังก์ชัน Save ---
   saveProfile() {
+    if (this.userId === 0) {
+      this.openpopup('Error: ไม่พบ ID ของผู้ใช้ กรุณาลองใหม่อีกครั้ง'); // แทนที่ alert
+      return;
+    }
+        this.isLoading = true;
     const updatedData = {
+      username: this.username,
       dob: this.dob,
-      nationalId: this.nationalId,
+      national_id: this.nationalId,         
       address: this.address,
-      emergencyContact: this.emergencyContact,
+      emergency_contact: this.emergencyContact, 
       profile: this.profile
     };
-
-    console.log('Saving Profile Data for ID:', this.userId, updatedData);
-    
-    // เมื่อคุณพร้อมเชื่อมต่อ Service ให้ใช้ this.userId ตรงนี้
-    // this.todoService.updateProfile(this.userId, updatedData).subscribe(...);
-    
-    alert('Profile saved successfully!');
-    this.back();
+    this.todoService.updateProfile(this.userId, updatedData).subscribe({
+      next: (response) => {
+           this.isLoading = false;
+        this.openpopup('Profile saved successfully!'); // แทนที่ alert
+        // หน่วงเวลาเล็กน้อยเพื่อให้ผู้ใช้เห็น Popup ก่อนเปลี่ยนหน้า (ถ้าต้องการ)
+      },
+      error: (error) => {
+        console.error('Error updating profile:', error);
+        this.openpopup('Failed to save profile. Please try again.'); // แทนที่ alert
+      }
+    });
   }
 
-  button_cancels() {
-    this.back();
-  }
+  button_cancels() { this.back(); }
 }

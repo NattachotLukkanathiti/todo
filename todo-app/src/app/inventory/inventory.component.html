@@ -13,8 +13,8 @@
        <!--   <img class="iconweb" src="image/logo.svg" alt=""> -->
 <!--         <img class="apple" src="image/apple.png" alt=""> -->
                     <div class="he"  *ngIf="userRole === 'admin' || userRole === 'manager'"  (click)="Animationa_out()">Dashboard</div>
-<div  class="he"(click)="Animationa_out()">Inventory</div>
-<div class="he" (click)="Animationa_out2()">Sales Orders</div>
+<div  class="he"  *ngIf="userRole === 'admin' || userRole === 'backend'" >Inventory</div>
+<div class="he" *ngIf="userRole === 'admin' || userRole === 'pos'"  (click)="Animationa_out2()">Sales Orders</div>
 <div class="he" (click)="Animationa_out3()">Stock History</div>
 <div class="he" (click)="Animationa_out4()">Employee</div>
 <div class="he"*ngIf="userRole === 'admin' || userRole === 'manager'"  (click)="Animationa_out6()">Audit Log</div>
@@ -305,9 +305,9 @@
         <div class="serach_product">             
             import Product         
         </div>         
-       <div class="add_image" (click)="fileInput.click()" style="cursor: pointer;">
+       <div class="add_image"  style="cursor: pointer;">
     <!-- ถ้ายังไม่มีรูปที่เลือก ให้แสดงไอคอนบวก -->
-    <img *ngIf="!imagePreview" src="image/Add ImageAdd_image.svg" alt="Add Image">
+    <img *ngIf="!imagePreview" (click)="fileInput.click()" src="image/Add ImageAdd_image.svg" alt="Add Image">
     
     <!-- ถ้าเลือกรูปแล้ว ให้แสดงรูปภาพตัวอย่าง -->
     <img *ngIf="imagePreview" [src]="imagePreview" alt="Product Preview" style="width: 100px; height: 100px; object-fit: cover;">
@@ -329,10 +329,10 @@
         <div class="con_sku_pro">             
             <div class="sku_pro">             
                 <label class="label_import" for="">SKU <span class="important">*</span></label>             
-                <input type="text" class="sku_input" [(ngModel)]="newProduct.sku" name="sku">         
+                <input type="text" class="sku_input" [(ngModel)]="newProduct.sku"  name="sku">         
             </div>         
             <div class="sku_pro">             
-                <label class="label_import" for="">Product Name</label>             
+                <label class="label_import" for="">Product Name<span class="important">*</span></label>             
                 <input type="text" class="sku_input" [(ngModel)]="newProduct.product_name" name="product_name">         
             </div>         
         </div>         

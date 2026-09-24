@@ -11,7 +11,7 @@
         <div class="he" *ngIf="userRole === 'pos' || userRole === 'pos'" >Pos</div>
         <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'" (click)="Animationa_out()">Dashboard</div>
         <div class="he" (click)="Animationa2_out()" >Inventory</div> <!-- แก้ไขให้แยกฟังก์ชัน -->
-        <div class="he" (click)="Animationa3_out()">Sales Orders</div>
+        <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'"(click)="Animationa3_out()">Sales Orders</div>
         <div class="he" >Stock History</div>
         <div class="he" (click)="Animationa4_out()">Employee</div>
         <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'"(click)="Animationa6_out()">Audit Log</div>

@@ -9,9 +9,9 @@
      <div class="con_nav">
         <div class="he" *ngIf="userRole === 'pos' || userRole === 'pos'" (click)="Animationa_out1()">Pos</div>
         <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'" (click)="Animationa_out()">Dashboard</div>
-        <div class="he"*ngIf="userRole === 'admin' || userRole === 'manager'"  >Inventory</div> <!-- แก้ไขให้แยกฟังก์ชัน -->
-        <div class="he" (click)="Animation_out2()">Sales Orders</div>
-        <div class="he"  *ngIf="userRole === 'admin' || userRole === 'manager'" (click)="Animation_out3()">Stock History</div>
+        <div class="he" *ngIf="userRole === 'admin' || userRole === 'backend'"  >Inventory</div> <!-- แก้ไขให้แยกฟังก์ชัน -->
+        <div class="he" *ngIf="userRole === 'admin' || userRole === 'pos'"(click)="Animation_out2()">Sales Orders</div>
+        <div class="he"  *ngIf="userRole === 'admin' || userRole === 'backend'" (click)="Animation_out3()">Stock History</div>
         <div class="he" (click)="Animation_out4()">Employee</div>
         <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'"(click)="Animation_out6()">Audit Log</div>
         <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'"(click)="Animation_out5()">Suppliers</div>
@@ -39,7 +39,7 @@
   </div>
 
   <div class="profile-card">
-     <div class="edit-profile-banner">Edit Profile</div>
+     <div class="edit-profile-banner"><img src="image/main_edit2.svg" alt="">Edit Profile</div>
     <div class="profile-card__top">
       <img class="profile-avatar" [src]="profile" />
        <div class="sku_pro2">
@@ -51,8 +51,14 @@
                placeholder="Or Attach link">
     </div>
 </div>
+
       <!-- Role ห้ามแก้ไข ใช้ span เหมือนเดิม -->
       <div class="profile-field">Role<span class="role">{{ userRole }}</span></div>
+        <div class="phone">
+        <div class="profile-field">Phone
+        <input type="text" class="profile-field__value" style="border: none; background: transparent; width: 100%;" [(ngModel)]="nationalId">
+      </div>
+      </div>
     </div>
 
     <div class="profile-grid">
@@ -65,6 +71,7 @@
       <div class="profile-field">National ID Number
         <input type="text" class="profile-field__value" style="border: none; background: transparent; width: 100%;" [(ngModel)]="nationalId">
       </div>
+      
     </div>
 
     <div class="profile-field">Current Address
@@ -82,3 +89,30 @@
   </div>
   
 </main>
+
+
+
+<div *ngIf="showpopup" class="backpop">
+  <div *ngIf="showpopup" class="popupcontainer">
+  <div class="popup-content">
+    <img class="iconsuccess" src="image/success.svg" alt="">
+    <div class="headerpop">
+      Success
+    </div>
+    <div class="subheadersuccess">
+      {{popup}}
+    </div>
+    <button class="buttonclose" (click)="closepopup()">Back to Inventory</button>
+  </div>
+</div>
+</div>
+
+<div *ngIf="isLoading" class="loading-container">
+    <img class="logo_loading" src="/image/logoo.svg" alt="" >
+  <div class="loading">
+    <div class="loader1"></div>
+    <div class="loader2"></div>
+    <div class="loader3"></div>
+    <div class="loader4"></div>
+  </div>
+</div>

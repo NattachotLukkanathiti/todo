@@ -1862,7 +1862,8 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
     border: 2px solid #bccbbb85;
     border-radius: 10px;
     width: 500px;
-    padding: 20px 0px;
+    
+    padding: 30px 50px;
     height: 250px;
     position: absolute;
     z-index: 1;

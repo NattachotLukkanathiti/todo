@@ -275,6 +275,57 @@ app.post('/todos', async (req, res) => {
     res.status(500).json({ success: false, message: 'Server Error' });
   }
 });
+// (โค้ดส่วนบนของคุณยังคงเดิมทั้งหมด)
+
+app.get('/api/suppliers', async (req, res) => {
+    try {
+        const result = await pool.query(
+            'SELECT id ,logo, supplier_name, email, phone , order_history FROM suppliers'
+        );
+        
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
+
+// --- ส่วนที่เพิ่มเข้ามาใหม่: Route สำหรับบันทึกข้อมูล Supplier ---
+app.post('/api/suppliers', async (req, res) => {
+  try {
+    const { supplier_name, created_by, email, phone, logo } = req.body;
+
+    if (!supplier_name || !email || !phone) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน (Supplier Name, Email, Phone)' 
+      });
+    }
+
+    const result = await pool.query(
+      `INSERT INTO suppliers (supplier_name, created_by, email, phone, logo, order_history) 
+       VALUES ($1, $2, $3, $4, $5, $6) 
+       RETURNING *`,
+      [supplier_name, created_by, email, phone, logo, 0] // กำหนด order_history เริ่มต้นเป็น 0
+    );
+
+    res.status(201).json({
+      success: true,
+      message: 'บันทึกข้อมูล Supplier สำเร็จ',
+      data: result.rows[0]
+    });
+
+  } catch (error) {
+    console.error('Error inserting into suppliers:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Server Error' 
+    });
+  }
+});
+// -----------------------------------------------------------
+
+// (โค้ดส่วนล่างของคุณยังคงเดิมทั้งหมด)
 app.post('/api/inventory', async (req, res) => {
   try {
     const { 
@@ -628,9 +679,9 @@ app.put('/api/todos/:id', async (req, res) => {
 
     const result = await pool.query(
       `UPDATE todos 
-       SET dob = $1, national_id = $2, address = $3, emergency_contact = $4, profile = $5
-       WHERE id = $6 
-       RETURNING *`,
+   SET username = $1, dob = $2, national_id = $3, address = $4, emergency_contact = $5, profile = $6
+   WHERE id = $7 
+   RETURNING *`,
       [dob, national_id, address, emergency_contact, profile, id]
     );
 

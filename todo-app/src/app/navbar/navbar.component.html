@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="lin"></div>
-        <img class="iconsetting1" src="image/Maximize Icon.svg" (click)="toggleMenu()" [class.Max]="Max" alt="">
+<!--         <img class="iconsetting1" src="image/Maximize Icon.svg" (click)="toggleMenu()" [class.Max]="Max" alt=""> -->
         <!-- <img class="iconsetting2" src="image/Song.svg" alt=""> -->
         <div class="red_noti">
   <!-- จุดสีแดงจะแสดง ก็ต่อเมื่อมีข้อมูลในตาราง notifications เท่านั้น -->
@@ -55,7 +55,7 @@
       <img [src]="profile || 'image/profileee.svg'" alt="Profile" />
       <div class="con_pro">
         <div class="user">{{username}}</div>
-        <div class="role">{{userRole}}</div>
+        <div class="role">{{getDisplayRole()}}</div>
       </div>
     </div>
     <div class="A">

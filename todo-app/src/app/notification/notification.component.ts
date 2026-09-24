@@ -147,7 +147,15 @@ loadNotifications() {
       })
     } ,300)
   }
-  
+   inventory(){
+    
+    setTimeout(() =>{
+      this.router.navigate(['/inventory'],{
+        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole ,profile:this.profile }
+      })
+    } ,300)
+  }
+
   
   Animationa_out(){
 

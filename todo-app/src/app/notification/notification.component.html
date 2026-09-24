@@ -10,9 +10,9 @@
     <div class="con_nav">
         <div class="he" *ngIf="userRole === 'pos' || userRole === 'pos'" (click)="Animationa_out1()">Pos</div>
         <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'" (click)="Animationa_out()">Dashboard</div>
-        <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'" >Inventory</div> <!-- แก้ไขให้แยกฟังก์ชัน -->
-        <div class="he" (click)="Animation_out2()">Sales Orders</div>
-        <div class="he"  *ngIf="userRole === 'admin' || userRole === 'manager'" (click)="Animation_out3()">Stock History</div>
+        <div class="he" *ngIf="userRole === 'admin' || userRole === 'backend'" (click)="inventory()">Inventory</div> <!-- แก้ไขให้แยกฟังก์ชัน -->
+        <div class="he" *ngIf="userRole === 'admin' || userRole === 'pos'" (click)="Animation_out2()">Sales Orders</div>
+        <div class="he"  *ngIf="userRole === 'admin' || userRole === 'backend'" (click)="Animation_out3()">Stock History</div>
         <div class="he" (click)="Animation_out4()">Employee</div>
         <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'"(click)="Animation_out6()">Audit Log</div>
         <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'"(click)="Animation_out5()">Suppliers</div>
@@ -37,7 +37,7 @@
             <div class="ge">GENERAL</div>
             <div class="menuin">
                 <div class="no" (click)="Animationa_out()"><img class="myicon1" src="image/dashboard.svg" alt="">Dashboard</div>
-                <div class="no" (click)="Animationa_out()"><img src="image/icon-wrapper-h.svg" alt="">Inventory</div>
+                <div class="no" ><img src="image/icon-wrapper-h.svg" alt="">Inventory</div>
                 <div class="no" (click)="Animationa_out()"><img src="image/shop.svg" alt="">Sales Orders</div>
                 <div class="no" (click)="Animationa_out()"><img src="image/Vectorhistory.svg" alt="">Stock History</div>
                 <div class="no" (click)="Animationa_out()"><img src="image/Employee.svg" alt="">Employee</div>

@@ -9,9 +9,9 @@
      <div class="con_nav">
         <div class="he" *ngIf="userRole === 'pos' || userRole === 'pos'" (click)="Animationa_out1()">Pos</div>
         <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'" (click)="Animationa_out()">Dashboard</div>
-        <div class="he"*ngIf="userRole === 'admin' || userRole === 'manager'"  >Inventory</div> <!-- แก้ไขให้แยกฟังก์ชัน -->
-        <div class="he" (click)="Animation_out2()">Sales Orders</div>
-        <div class="he"  *ngIf="userRole === 'admin' || userRole === 'manager'" (click)="Animation_out3()">Stock History</div>
+        <div class="he"*ngIf="userRole === 'admin' || userRole === 'backend'"  >Inventory</div> <!-- แก้ไขให้แยกฟังก์ชัน -->
+        <div class="he" *ngIf="userRole === 'admin' || userRole === 'pos'"(click)="Animation_out2()">Sales Orders</div>
+        <div class="he"  *ngIf="userRole === 'admin' || userRole === 'backend'" (click)="Animation_out3()">Stock History</div>
         <div class="he" (click)="Animation_out4()">Employee</div>
         <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'"(click)="Animation_out6()">Audit Log</div>
         <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'"(click)="Animation_out5()">Suppliers</div>
@@ -47,12 +47,12 @@
 
     <div class="profile-grid">
       <div class="profile-field">Full Name<span class="profile-field__value">{{ username }}</span></div>
-      <div class="profile-field">Date of Birth<span class="profile-field__value"></span></div>
-      <div class="profile-field">National ID Number<span class="profile-field__value"></span></div>
+      <div class="profile-field">Date of Birth<span class="profile-field__value">{{dob}}</span></div>
+      <div class="profile-field">National ID Number<span class="profile-field__value">{{nationnal}}</span></div>
     </div>
 
-    <div class="profile-field">Current Address<span class="profile-field__value profile-field__value--area"></span></div>
-    <div class="profile-field">Emergency Contact<span class="profile-field__value profile-field__value--area"></span></div>
+    <div class="profile-field">Current Address<span class="profile-field__value profile-field__value--area">{{address}}</span></div>
+    <div class="profile-field">Emergency Contact<span class="profile-field__value profile-field__value--area">{{emergency}}</span></div>
   </div>
   </div>
   </div>

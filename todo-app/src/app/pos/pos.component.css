@@ -6,7 +6,158 @@
   --topbar-height: 73px;
   --right-panel-width: clamp(440px, 33vw, 472px);
 }
+.navbaar {
+  display: flex;
+  align-items: center; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  width: 100vw;
+  z-index: 10;
+  border: 1px solid #CED4DA;
+  animation: slide 1s ease-in-out;
+  
+  /* เพิ่ม 2 บรรทัดนี้ เพื่อให้เมาส์คลิกทะลุ Navbar ได้ */
+  pointer-events: none; 
+  background: transparent; 
+}
 
+/* เพิ่มส่วนนี้: เพื่อให้ปุ่มเมนูและไอคอนต่างๆ ยังคงกดได้ตามปกติ */
+.con_nav, .container_bar, .hamburger, .headercompany {
+  pointer-events: none;
+  pointer-events: auto;
+}
+.headercompany {
+  
+    display: flex;
+    margin-left: 20px;
+    flex-direction: column;
+    color: #6FAB23;
+    font-weight: 800;
+    align-items: flex-start;
+    font-family: 'Nicomoji', sans-serif; 
+}
+.consale{
+    z-index: 4;
+}
+.navstatic{
+    display: flex;
+    z-index: 2;
+}
+.headerSale{
+    font-size: 20px;
+     display: flex;
+     color: #2B2F38;
+     font-weight: 600;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+}
+.iconsetting1,.iconsetting2,.iconsetting3{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #F4F5FC;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+}
+.con_nav {
+    width: 100%;
+    gap: 39px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.he{
+    cursor: pointer;
+    color: #1D1D1F;
+    font-weight: 300;
+    font-size: 12px;
+}
+.he:hover{
+    color: #89898b;
+}
+.con_sub{
+    width: 100%;
+    position: relative;
+}
+.con_sub2{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+}
+.iconsetting4 {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    object-fit: cover; /* เพิ่มคำสั่งนี้ */
+}
+.iconsetting1:hover,.iconsetting2:hover,.iconsetting3:hover,.iconsetting4:hover{
+    background: #cccdd4;
+    cursor: pointer;
+    z-index: 10;
+}
+.time{
+    font-size: 15px;
+    z-index: 10;
+    color: white;
+    font-weight: 800;
+    background: #AD54F5;
+    width: 100px;
+    border-radius: 8px;
+    height: 10px;
+    padding: 13px;
+    display: flex;
+    justify-content: first baseline;
+    align-items: center;
+    text-align: center;
+}
+.lin{
+    background: #E6EAED;
+    width: 1px;
+    height: 35px;
+}
+
+.A{
+  padding: 30px;
+}
+
+.container_bar{
+    gap: 10px;
+    
+    margin-left: auto;
+    margin-right: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    text-align: center;
+    width: 20%;
+    margin-right: 40px;
+    height: 70px;
+}
+.account-sidebar {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: clamp(300px, 26vw, 360px);
+  border-left: 1px solid #e6eaed;
+  background: #fff;
+  box-shadow: -16px 0 40px rgba(33, 43, 54, .1);
+  display: flex;
+  flex-direction: column;
+  animation: slideIn 0.3s ease-out forwards;
+}
 .pos-shell {
   min-height: 100vh;
   min-width: 100vw;
@@ -205,24 +356,34 @@
 .menu-button {
   display: none;
 }
-
 .avatar-button {
   flex: 0 0 auto;
   width: 32px;
   height: 32px;
   padding: 0;
   border: 0;
+  cursor: pointer;
+  z-index: 100000 !important;
   border-radius: 10px;
   background: transparent;
   overflow: hidden;
+  
+  /* เพิ่มบรรทัดนี้: บังคับให้ปุ่มรับการคลิกเสมอ */
+  pointer-events: auto !important; 
 }
-.avatar-button:hover{
-  cursor: pointer;
+
+.avatar-button:hover {
+  background-color: rgba(0, 0, 0, 0.05); /* เพิ่มสีพื้นหลังตอน Hover เพื่อให้รู้ว่าโดนทั้งปุ่ม */
 }
+
 .avatar-button img {
-  width: 32px;
-  height: 32px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  display: block; /* ลบช่องว่างใต้รูป */
+  
+  /* เพิ่มบรรทัดนี้: ให้เมาส์ทะลุรูปไปโดนปุ่มโดยตรง */
+  pointer-events: none; 
 }
 .category-arrow category-arrow--previous{
   background-color: #84d46e;
@@ -252,14 +413,17 @@
   width: clamp(300px, 26vw, 360px);
   border-left: 1px solid #e6eaed;
   background: #fff;
-  box-shadow: -16px 0 40px rgba(33, 43, 54, .1);
   display: flex;
   flex-direction: column;
 }
+
 .sidebar-backdrop {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
   z-index: 49; /* อยู่ใต้ Sidebar */
+  
+  /* เปลี่ยนจาก auto เป็น none เพื่อให้คลิกทะลุได้ */
+  pointer-events: none !important; 
 }
 
 .account-sidebar {
@@ -501,11 +665,20 @@
   border: 1px solid #E6EAED;
   padding: 15px;
   border-radius: 50%;
+  cursor: pointer;
 }
 .buttonnext{
   background:#84D46E;
   padding: 15px;
   border-radius: 50%;
+  cursor: pointer;
+}
+.buttonback:hover{
+
+}
+
+.buttonnext:hover{
+    background:#82c171;
 }
 .category-arrows button {
   position: relative;
@@ -564,21 +737,25 @@
 
 /* One row that fills the available width and only scrolls once the cards
    would drop under their minimum size. */
- .category-row {
+.category-row {
   min-width: 0;
-  padding: 10px 4px 14px; /* เพิ่ม padding ด้านบนและล่าง เพื่อให้มีพื้นที่ตอนการ์ดลอยขึ้น */
-  margin: -10px -4px -14px; /* ใช้ margin ลบเพื่อดึงพื้นที่กลับมาให้เท่าเดิม */
+  padding: 10px 4px 14px; 
+  margin: -10px -4px -14px; 
   display: flex;
   gap: 8px;
-  overflow-x: auto;
+  overflow-x: auto; /* แก้ไขให้เลื่อนแนวนอนได้ */
   scroll-snap-type: x proximity;
-  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch; /* เพิ่มให้เลื่อนลื่นไหลบนมือถือ */
+  scrollbar-width: none; /* ซ่อน Scrollbar สำหรับ Firefox */
 }
 
+/* เพิ่มเติม: ซ่อน Scrollbar สำหรับ Chrome, Safari และ Opera */
 .category-row::-webkit-scrollbar {
   display: none;
 }
+
 .category-card {
+  flex: 0 0 auto; /* เพิ่มเติม: ป้องกันการ์ดหดตัว ทำให้เรียงต่อกันออกไปนอกจอได้ */
   width: 130px;
   padding: 20px 10px;
   border: 1px solid #e6eaed;
@@ -594,7 +771,6 @@
   transition: all 0.3s ease;
   transform: translateY(0);
   cursor: pointer;
-  
 }
 
 .category-card--active {
@@ -1931,6 +2107,7 @@
   height: 96px;
   border-radius: 12px;
   object-fit: cover;
+  
   flex: 0 0 auto;
 }
 

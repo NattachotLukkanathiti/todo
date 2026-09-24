@@ -77,9 +77,12 @@ export class AppComponent implements OnInit {
     });
   }
 
-  // ฟังก์ชันเช็คหน้า Login/Register
   isLoginPage(): boolean {
-    const hiddenRoutes = ['/', '/register','/otp','/forgot'];
-    return hiddenRoutes.includes(this.router.url);
-  }
+  const hiddenRoutes = ['/', '/register', '/otp', '/forgot', '/pos', '/login', '/confirmemployee'];
+  
+  // ใช้ .split('?')[0] เพื่อตัด Query Parameters (เช่น ?fbclid=...) ออกไป
+  const currentRoute = this.router.url.split('?')[0];
+  
+  return hiddenRoutes.includes(currentRoute);
+}
 }

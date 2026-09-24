@@ -96,12 +96,19 @@ export class LoginComponent {
         });
         const navigationState = {
           state: {
+            id: response.user.id, // <--- เพิ่มบรรทัดนี้ (ส่ง ID ไปด้วย)
             username: response.user.username,
             email: response.user.title,
             profile: profile,
             stan: true,
             inhere: true,
-            role: role
+            role: role,
+            
+            // เพิ่มข้อมูลส่วนตัวไปด้วย เพื่อให้หน้า Profile แสดงผลได้ทันที
+            dob: response.user.dob,
+            national_id: response.user.national_id,
+            address: response.user.address,
+            emergency_contact: response.user.emergency_contact
           }
         };
 

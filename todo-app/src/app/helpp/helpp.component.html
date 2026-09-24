@@ -8,25 +8,25 @@
 
     <!-- เมนูตรงกลาง Navbar -->
     <div class="con_nav">
-        <div class="he" >Dashboard</div>
+        <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'" >Dashboard</div>
         <div class="he" >Inventory</div> <!-- แก้ไขให้แยกฟังก์ชัน -->
-        <div class="he" >Sales Orders</div>
+        <div class="he"*ngIf="userRole === 'admin' || userRole === ''" >Sales Orders</div>
         <div class="he" >Stock History</div>
         <div class="he" >Employee</div>
-        <div class="he" >Audit Log</div>
-        <div class="he" >Suppliers</div>
+        <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'" >Audit Log</div>
+        <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'">Suppliers</div>
     </div>
 
     <div class="container_bar">
-        <div class="time" [class.active]="isTimeOpen" (click)="isTimeOpen = !isTimeOpen">
+       <!--  <div class="time" [class.active]="isTimeOpen" (click)="isTimeOpen = !isTimeOpen">
             <img class="icon_time" src="image/Time Icon.svg">
             <div class="Y">
                 {{ currentTime | date:'HH:mm:ss' }}
             </div>
-        </div>
-        <div class="lin"></div>
+        </div> -->
+    <!--     <div class="lin"></div>
         <img class="iconsetting3" (click)="openPro()" src="image/Chart.svg" alt="">
-        <button class="avatar-button" type="button" aria-label="Open account menu" [attr.aria-expanded]="openPanel === 'account'" (click)="toggleAccountMenu()"><img [src]="profile || 'image/profileee.svg'" /></button>
+        <button class="avatar-button" type="button" aria-label="Open account menu" [attr.aria-expanded]="openPanel === 'account'" (click)="toggleAccountMenu()"><img [src]="profile || 'image/profileee.svg'" /></button> -->
     </div>
 </div>
 

@@ -1,10 +1,11 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject , ViewChild, ElementRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TodoService } from '../services/todo.service';
 import { interval, Subscription } from 'rxjs';
 import { createClient } from '@supabase/supabase-js';
+
 @Component({
   selector: 'app-inventory',
   imports: [CommonModule, DatePipe, RouterLink,FormsModule],
@@ -14,7 +15,8 @@ import { createClient } from '@supabase/supabase-js';
 
 
 export class InventoryComponent {
-
+  
+  @ViewChild('fileInput') fileInput!: ElementRef; 
   private todoService = inject(TodoService);
 
   search = '';
@@ -212,10 +214,14 @@ selectedProduct: any = {
     this.popup = message;
   }
   closepopup(){
-    this.showpopupconfirm = false
-    this.showpopup = false
+        this.resetForm();
+        this.loadInventory();
+       this.showpopup = false;
+       this.showpopupnoti = false;
+    this.showpopupconfirm = false;
          this.showpopupedit = false;
          this.outimport = true;
+             this.button_importt = false;
     this.button_edit = false;
     
   }
@@ -230,6 +236,7 @@ selectedProduct: any = {
     return Math.min(valueInBaht * scale, maxHeight);
   }
 loadTodos() {
+      this.resetForm();
   this.todoService.getTodoss().subscribe({
     next: (res) => {
       console.log("Todos Data:", res);
@@ -302,6 +309,7 @@ loadTodos() {
   }, 400);
 }
   button_imports(){
+        this.resetForm();
        this.outimport = false;
     this.button_importt = true;
     
@@ -312,11 +320,12 @@ loadTodos() {
 
 
   // 3. ฟังก์ชันสำหรับล้างค่าฟอร์ม
-  resetForm() {
+ resetForm() {
     this.newProduct = {
       sku: '', product_name: '', category: '', brand: '', price: null,
-      quantity_alert: null, supplier: '', invoice_no: '', import_quantity: null,picture: ''
+      quantity_alert: null, supplier: '', invoice_no: '', import_quantity: null, picture: ''
     };
+    this.imagePreview = null; // เพิ่มบรรทัดนี้เพื่อล้างรูปภาพตัวอย่าง
   }
 
 
@@ -337,7 +346,52 @@ loadTodos() {
 
   async saveToStock() {
     this.isLoading = true;
+     // 1. ดึงค่า Prefix จาก SKU ที่ผู้ใช้กรอก หรือจาก Category
+    let prefix = '';
     
+    if (this.newProduct.sku && this.newProduct.sku.trim() !== '') {
+      // ถ้าผู้ใช้กรอก SKU มา (เช่น ELEC) ให้ใช้คำนั้นเป็น Prefix
+      prefix = this.newProduct.sku.trim().toUpperCase();
+    } else if (this.newProduct.category) {
+      // ถ้าไม่ได้กรอก SKU ให้ใช้ Category แทน
+      prefix = this.newProduct.category.trim().toUpperCase();
+    } else {
+      this.openpopupnoti('กรุณากรอก SKU หรือ Category');
+      this.isLoading = false;
+      return;
+    }
+
+    // 2. สร้าง SKU ใหม่ (ถ้าผู้ใช้กรอกแค่ Prefix หรือไม่ได้กรอกเลย)
+    if (!this.newProduct.sku || !this.newProduct.sku.includes('-')) {
+      let maxNumber = 0;
+
+      // หาตัวเลขสูงสุดของ Prefix นั้นๆ
+      this.Inventory.forEach(item => {
+        if (item.sku && item.sku.startsWith(prefix + '-')) {
+          const parts = item.sku.split('-');
+          if (parts.length === 2) {
+            const num = parseInt(parts[1], 10);
+            if (!isNaN(num) && num > maxNumber) {
+              maxNumber = num;
+            }
+          }
+        }
+      });
+
+      // เติม -001 ต่อท้าย
+      const nextNumber = (maxNumber + 1).toString().padStart(3, '0');
+      this.newProduct.sku = `${prefix}-${nextNumber}`;
+    }
+
+    // 3. ตรวจสอบการซ้ำของ SKU
+    const isDuplicate = this.Inventory.some(item => item.sku === this.newProduct.sku);
+
+    if (isDuplicate) {
+      this.openpopupnoti('Error: SKU นี้มีอยู่ในระบบแล้ว');
+      this.isLoading = false;
+      return; 
+    }
+
     // ใช้ค่า URL ที่ผู้ใช้กรอกเข้ามาโดยตรง
     let pictureUrl = this.selectedProduct.picture || '';
 
@@ -351,7 +405,7 @@ loadTodos() {
         next: (res) => {
           this.openpopup('New product created successfully. View changes in Stock History');
           this.loadInventory();
-          
+          this.resetForm();
           const now = new Date();
           
           // 1. บันทึก Audit Log
@@ -623,5 +677,31 @@ logout() {
     if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
     
     return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+  }
+   generateSKU(category: string) {
+    // ถ้าไม่มีการเลือกหมวดหมู่ ให้ใช้ค่าเริ่มต้นเป็น 'ITEM'
+    const prefix = category ? category.toUpperCase() : 'ITEM';
+    let maxNumber = 0;
+
+    this.Inventory.forEach(item => {
+      if (item.sku && item.sku.startsWith(prefix + '-')) {
+        const parts = item.sku.split('-');
+        if (parts.length === 2) {
+          const num = parseInt(parts[1], 10);
+          if (!isNaN(num) && num > maxNumber) {
+            maxNumber = num;
+          }
+        }
+      }
+    });
+
+    const nextNumber = (maxNumber + 1).toString().padStart(3, '0');
+    this.newProduct.sku = `${prefix}-${nextNumber}`;
+  }
+  onCategoryChange() {
+    // จะทำงานเมื่อผู้ใช้พิมพ์หรือเลือก Category
+    if (this.newProduct.category && this.newProduct.category.length >= 3) {
+      this.generateSKU(this.newProduct.category);
+    }
   }
 }
