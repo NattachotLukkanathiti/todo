@@ -29,6 +29,7 @@ export class EditComponent implements OnInit, OnDestroy {
   readonly defaultAvatar = 'assets/images/default-avatar.svg'; 
 
   // --- Navbar & User Variables ---
+  userId: number = 0; // ตัวแปรเก็บ ID
   username = '';
   email = '';
   userRole = '';
@@ -49,6 +50,7 @@ export class EditComponent implements OnInit, OnDestroy {
   navigateTo(route: string, extraState: any = {}) {
     this.router.navigate([route], {
       state: { 
+        id: this.userId, // ส่ง ID ไปด้วย
         username: this.username, 
         email: this.email, 
         role: this.userRole, 
@@ -61,6 +63,7 @@ export class EditComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const state = history.state;
     
+    this.userId = state.id|| 0; // รับค่า ID
     this.username = state.username || '';
     this.email = state.email || '';
     this.userRole = state.role || '';
@@ -95,7 +98,6 @@ export class EditComponent implements OnInit, OnDestroy {
   // --- เพิ่มฟังก์ชัน Save ---
   saveProfile() {
     const updatedData = {
-      username: this.username,
       dob: this.dob,
       nationalId: this.nationalId,
       address: this.address,
@@ -103,14 +105,16 @@ export class EditComponent implements OnInit, OnDestroy {
       profile: this.profile
     };
 
-    console.log('Saving Profile Data:', updatedData);
+    console.log('Saving Profile Data for ID:', this.userId, updatedData);
     
-    // คุณสามารถใส่โค้ดเชื่อมต่อ Supabase ตรงนี้ได้
-    // หลังจากบันทึกเสร็จแล้ว ให้ย้อนกลับไปหน้าเดิม
+    // เมื่อคุณพร้อมเชื่อมต่อ Service ให้ใช้ this.userId ตรงนี้
+    // this.todoService.updateProfile(this.userId, updatedData).subscribe(...);
+    
     alert('Profile saved successfully!');
     this.back();
   }
-   button_cancels() {
- 
-}
+
+  button_cancels() {
+    this.back();
+  }
 }

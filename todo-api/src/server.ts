@@ -621,32 +621,25 @@ app.delete('/api/inventory/:sku', async (req, res) => {
     res.status(500).json({ success: false, message: 'Server Error' });
   }
 });
-// 📌 แก้ไข Route ให้ตรงกับ Service (เปลี่ยนจาก /api/profile/ เป็น /api/todos/)
-app.put('/api/todos/:username', async (req, res) => {
+app.put('/api/todos/:id', async (req, res) => {
   try {
-    const { username } = req.params;
+    const { id } = req.params;
     const { dob, national_id, address, emergency_contact, profile } = req.body;
 
     const result = await pool.query(
       `UPDATE todos 
        SET dob = $1, national_id = $2, address = $3, emergency_contact = $4, profile = $5
-       WHERE username = $6 
+       WHERE id = $6 
        RETURNING *`,
-      [dob, national_id, address, emergency_contact, profile, username]
+      [dob, national_id, address, emergency_contact, profile, id]
     );
 
     if (result.rowCount === 0) {
       return res.status(404).json({ success: false, message: 'ไม่พบผู้ใช้งานนี้ในระบบ' });
     }
 
-    res.json({
-      success: true,
-      message: 'อัปเดตข้อมูลโปรไฟล์เรียบร้อยแล้ว',
-      data: result.rows[0]
-    });
-
+    res.json({ success: true, data: result.rows[0] });
   } catch (error) {
-    console.error('Error updating profile in todos:', error);
     res.status(500).json({ success: false, message: 'Server Error' });
   }
 });
