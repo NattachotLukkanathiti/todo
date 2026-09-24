@@ -621,8 +621,8 @@ app.delete('/api/inventory/:sku', async (req, res) => {
     res.status(500).json({ success: false, message: 'Server Error' });
   }
 });
-// 📌 Route สำหรับอัปเดตข้อมูล Profile (dob, national_id, address, emergency_contact)
-app.put('/api/profile/:username', async (req, res) => {
+// 📌 แก้ไข Route ให้ตรงกับ Service (เปลี่ยนจาก /api/profile/ เป็น /api/todos/)
+app.put('/api/todos/:username', async (req, res) => {
   try {
     const { username } = req.params;
     const { dob, national_id, address, emergency_contact, profile } = req.body;
@@ -646,7 +646,7 @@ app.put('/api/profile/:username', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error updating profile:', error);
+    console.error('Error updating profile in todos:', error);
     res.status(500).json({ success: false, message: 'Server Error' });
   }
 });
