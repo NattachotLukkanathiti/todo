@@ -28,7 +28,7 @@ export class EmployeeComponent {
   showpopup = false;
   popup = '';
   showpopupnoti = false;
-  isMenuOpen = false;
+  isMenuOpen = true;
   isMenuOpenprofile = false;
   currentView = 'dashboard';
   currentTime = new Date();
@@ -103,6 +103,16 @@ selectedaccount: any = { role: '' };
   this.loadTodos();
     this.isLoading = true; 
 }   
+
+
+    Animationa_out1(){
+
+    setTimeout(() =>{
+      this.router.navigate(['/pos'],{
+        state:{username: this.username , email: this.email, Move_return6:true ,role:this.userRole ,profile:this.profile}
+      })
+    } ,300)
+  }
   Animationa2_out(){
     this.Animation_outdash = true;
 

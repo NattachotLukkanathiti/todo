@@ -58,9 +58,6 @@
     align-items: center;
     text-align: center;
 }
-.text{
-    width: 200px;
-}
 .lin{
     background: #E6EAED;
     width: 1px;
@@ -78,6 +75,63 @@
     width: 450px;
     margin-right: 40px;
     height: 70px;
+}
+.button_small {
+    position: absolute;
+    display: flex;
+    right: 50px;
+
+    align-items: center;
+}
+.Return {
+    animation: Move_Return 0.5s ease-in-out forwards !important;
+}
+
+@keyframes Move_Return {
+    0% {
+        transform: translateY(500px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.fade-out2 {
+    animation: Move_dashboard 1s ease-in-out !important;
+}
+
+@keyframes Move_dashboard {
+    0% {
+        transform: translateY(0px);
+        /* เริ่มต้นที่ตำแหน่งปกติ */
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-1000px);
+        /* เลื่อนลงไปที่จุดสุดท้าย */
+        opacity: 0;
+        /* ค่อยๆ จางหายไปเมื่อเลื่อนลง */
+    }
+}
+
+.fade-out2 {
+    animation: Move_inventory 0.5s ease-in-out;
+}
+
+@keyframes Move_inventory {
+    0% {
+        transform: translateY(0px);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(1000px);
+        opacity: 0;
+    }
 }
 .overdate{
     width: 50%;
@@ -131,6 +185,7 @@ input::placeholder{
     background-color: white;
     border-radius: 8px;
     margin-left: 20px;
+    display: none !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -173,12 +228,10 @@ input::placeholder{
     text-align: center;
     background-color:#84D46E;
 }
-
 .reload{
     display: flex;
-    justify-content: center;
+    justify-content: flex-end ;
     align-items: center;
-    text-align: center;
     border-radius: 8px;
     padding: 10px;
     border: 1px solid #E6EAED;
@@ -208,7 +261,7 @@ input::placeholder{
     cursor: pointer;
 }
 .custom-select {
-  width: 160px; /* ปรับความกว้างตามต้องการ */
+  width: 120px; /* ปรับความกว้างตามต้องการ */
   position: relative;
 }
 
@@ -273,51 +326,23 @@ input::placeholder{
 }
 .table_detail {
     padding: 20px;
+    align-items: center;
     width: 100%;
     gap: 1%;
     display: flex;
     box-sizing: border-box; /* เพิ่มบรรทัดนี้ */
 }
-.Return {
-    animation: Move_Return 0.5s ease-in-out forwards !important;
+.table_detail:hover{background-color: #F3FBF1;
+
+    cursor: pointer;
 }
-
-@keyframes Move_Return {
-    0% {
-        transform: translateY(500px);
-        opacity: 0;
-    }
-
-    50% {
-        transform: translateY(0);
-        opacity: 1;
-        transform: scaleY(1.1);
-
-    }
-
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
+.table_detail:active{
+        background-color: #EDF9E9;
 }
-
-.fade-out2 {
-    animation: Moveemployee 1s ease-in-out !important;
-}
-
-@keyframes Moveemployee {
-    0% {
-        transform: translateY(0px);
-        /* เริ่มต้นที่ตำแหน่งปกติ */
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateY(-2000px);
-        /* เลื่อนลงไปที่จุดสุดท้าย */
-        opacity: 0;
-        /* ค่อยๆ จางหายไปเมื่อเลื่อนลง */
-    }
+.connn{
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 .sku {
     font-size: 15px;
@@ -423,12 +448,13 @@ input::placeholder{
 .table_detail2 {     
     opacity: 0; /* ซ่อนไว้ก่อนเริ่มแอนิเมชัน */     
     transform: translateY(-10px); /* ดันขึ้นไปด้านบนเล็กน้อย */     
-    animation: showLine 1.7s ease-in-out forwards; /* สั่งให้เล่นแอนิเมชัน */ 
+    animation: showLine 1s ease forwards; /* สั่งให้เล่นแอนิเมชัน */ 
 }  
+
 @keyframes showLine {
     0% {
         opacity: 0;
-        transform: translateX(500px);
+        transform: translateX(1000px);
         background-color: #ffffff;
         box-shadow: 0 0 0px rgba(26, 255, 0, 0);
     }
@@ -445,13 +471,6 @@ input::placeholder{
                 opacity: 1;
 
     }
-}
-.table_detail:hover{background-color: #F3FBF1;
-
-    cursor: pointer;
-}
-.table_detail:active{
-        background-color: #EDF9E9;
 }
 .fix {
     position: relative;
@@ -556,12 +575,7 @@ input::placeholder{
     padding: 20px;
 }
 /* เมื่อมีคลาส .open ให้เลื่อน Sidebar กลับเข้ามาในจอ */
-.con_3btn{
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-    gap: 10px;
-}
+
 .static {
     width: 100%;
     padding: 20px;
@@ -569,28 +583,28 @@ input::placeholder{
     height: 100%;
     padding: 20px;
     background: #fff;
-   /*  box-shadow: 0 8px 24px rgba(0,0,0,.08); */
     box-sizing: border-box;
-    
 }
-.connn{
+.con_3btn{
     display: flex;
-    align-items: center;
+    width: 100%;
     gap: 10px;
 }
-.profile_employee{
+.con_reload{
     display: flex;
-    align-items: center;
+    margin-left: auto;
+    margin-top: 20px;
 }
 .container {
     flex: 1; 
     width: 100%; /* เปลี่ยนจาก max-width เป็น width */
     box-sizing: border-box; /* ป้องกันไม่ให้ padding ทำให้เกิด Scrollbar หรือพื้นที่เกิน */
     min-width: 0; 
+    height: 100%;
+    max-height: 600%;
     background: #F4F5FC; 
     margin-right: 0;
     z-index: 2;
-    height: 100%;
     margin-top: 0;
     animation: Boom 0.7s ease-in-out;
 }
@@ -598,18 +612,16 @@ input::placeholder{
     position: relative;
     border: 1px solid #E6EAED;
     width: 100%;
-    margin-bottom: 20px;
     margin-top: 0;
-    
     height: 100%;
 }
 .bars{
     margin-top: 20px;
+    margin-bottom: 20px;
     margin-left: -10px;
     position: relative;
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
     height: 30px;
     gap: 8px;
     
@@ -670,16 +682,9 @@ input::placeholder{
 
 @keyframes height {
   0% {
-    transform: scaleY(0);
     box-shadow:0px 10px 200px 20px #69ff4a;
   }     
-  50% {
-    transform: scaleY(1);
-    box-shadow:0px 10px 200px 20px #fbfffa;
-    /* เพิ่มการเรืองแสงสีขาวตรงกลาง */
-  }
   100% {
-    transform: scaleY(1);
     /* ลดขนาดลงมาเล็กน้อยเพื่อให้ดูมีจังหวะการเต้นของแสง */
     box-shadow: 0px 0px 30px 5px #69a95700;
   }
@@ -836,19 +841,6 @@ input::placeholder{
         opacity: 0;
 
     }
-    30%{
-         opacity: 1;
-         
-         
-    }
-    40%{
-        transform: translateY(100px); 
-    }
-    80%{
-        box-shadow: none;
-        transform: scaleY(1.1);
-
-    }
     100%{
         box-shadow: none;
 
@@ -866,17 +858,19 @@ input::placeholder{
     z-index: 2;
     width: 100%;
 }
-.fade-out{
-    animation: Move_dashboard 1s ease-in-out !important;
+.fade-out {
+    animation: Move_sale 0.5s ease-in-out !important;
 }
-@keyframes Move_dashboard{
+
+@keyframes Move_sale {
     0% {
-        transform: translateY(0px); /* เริ่มต้นที่ตำแหน่งปกติ */
+        transform: translateY(0px);
         opacity: 1;
     }
+
     100% {
-        transform: translateY(2000px); /* เลื่อนลงไปที่จุดสุดท้าย */
-        opacity: 0; /* ค่อยๆ จางหายไปเมื่อเลื่อนลง */
+        transform: translateY(500px);
+        opacity: 0;
     }
 }
 @media (max-width:768px){
@@ -1393,4 +1387,25 @@ input::placeholder{
     -webkit-transform: translateY(-400%);
     transform: translateY(-400%);
   }
+}.con_nav {
+    width: 100%;
+    gap: 39px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
+.he{
+    cursor: pointer;
+    color: #1D1D1F;
+    font-weight: 300;
+    font-size: 12px;
+}
+.he:hover{
+    color: #89898b;
+}
+
+

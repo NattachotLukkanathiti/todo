@@ -81,8 +81,11 @@ export class PosComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
      this.loadNotifications();
     const navigation = this.router.lastSuccessfulNavigation;
-    const state = navigation?.extras.state || history.state;
-
+    const state = history.state;
+    this.username = state.username || '';
+    this.email = state.email || '';
+    this.userRole = state.role || 'user'; // เพิ่มเติม: รับค่า role (ค่าเริ่มต้นเป็น user)
+    this.profile = state.profile || '';
     if (state || state.inhere) {
       this.profile = state.profile || '';
       this.username = state.username || '';
@@ -198,7 +201,62 @@ export class PosComponent implements OnInit, OnDestroy {
     this.openPanel = null;
     this.changeDetector.markForCheck();
   }
+   Animationa_out(){
+ 
+    setTimeout(() =>{
+      this.router.navigate(['/inventory'],{
+        state:{username: this.username , email: this.email ,role:this.userRole ,profile:this.profile}
+      })
+    } ,300)
+  }
+  Animationa_out1(){
 
+    setTimeout(() =>{
+      this.router.navigate(['/pos'],{
+        state:{username: this.username , email: this.email, Move_return6:true ,role:this.userRole ,profile:this.profile}
+      })
+    } ,300)
+  }
+  Animation_out2(){
+        
+    setTimeout(() =>{
+      this.router.navigate(['/sale'],{
+        state:{username: this.username , email: this.email, Move_return3:true ,role:this.userRole ,profile:this.profile}
+      })
+    } ,300)
+  }
+  Animation_out3(){
+           
+    setTimeout(() =>{
+      this.router.navigate(['/history'],{
+        state:{username: this.username , email: this.email, Move_returnH:true ,role:this.userRole ,profile:this.profile}
+      })
+    } ,300)
+  }
+  Animation_out4(){
+        
+    setTimeout(() =>{
+      this.router.navigate(['/employee'],{
+        state:{username: this.username , email: this.email, Move_return4:true ,role:this.userRole ,profile:this.profile }
+      })
+    } ,300)
+  }
+  Animation_out5(){
+            
+    setTimeout(() =>{
+      this.router.navigate(['/suppliers'],{
+        state:{username: this.username , email: this.email, Move_return5:true ,Dont_animation:true ,role:this.userRole ,profile:this.profile}
+      })
+    } ,300)
+  }
+  Animation_out6(){
+          
+    setTimeout(() =>{
+      this.router.navigate(['/audit'],{
+        state:{username: this.username , email: this.email, Move_return6:true ,Dont_animation:true ,role:this.userRole ,profile:this.profile}
+      })
+    } ,300)
+  }
   toggleNav(): void { this.isNavOpen = !this.isNavOpen; this.openPanel = null; }
   selectNav(label: string): void { if (label !== 'Pos') return; this.selectedNav = label; this.isNavOpen = false; this.currentView = 'pos'; }
   toggleAccountMenu(): void { this.openPanel = this.openPanel === 'account' ? null : 'account'; this.isNavOpen = false; }

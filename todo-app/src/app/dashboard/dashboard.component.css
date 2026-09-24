@@ -14,7 +14,6 @@
   top: 0;
   left: 0;
   width: 100vw;
-  z-index: 8;
   background-color: #FFF;
   border: 1px solid #CED4DA ;
   animation: slide 1s ease-in-out;
@@ -259,6 +258,7 @@ input::placeholder{
   margin-left: auto;
   width: 270px;
   height: 120vh;
+  display: none;
   background-color: #FFF;
   color: #212529;
       transition: all .3s ease;
@@ -272,7 +272,7 @@ input::placeholder{
     width: 270px;
   height: 120vh;
 }
-@keyframes inhere{
+/* @keyframes inhere{
     0%{
         padding: 0;
         width: 0;
@@ -281,7 +281,7 @@ input::placeholder{
   width: 270px;
   height: 120vh;
     }
-}
+} */
 @keyframes sliderightt{
     0%{
         
@@ -1262,4 +1262,79 @@ input::placeholder{
 }
 .CH{
     font-weight: 600;
+}
+
+
+
+.account-sidebar {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: clamp(300px, 26vw, 360px);
+  border-left: 1px solid #e6eaed;
+  background: #fff;
+  box-shadow: -16px 0 40px rgba(33, 43, 54, .1);
+  display: flex;
+  flex-direction: column;
+  animation: slideIn 0.3s ease-out forwards;
+}
+.account-sidebar.closing {
+  animation: slideOut 0.3s ease-in forwards;
+}
+@keyframes slideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+@keyframes slideOut {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+.account-sidebar__header {
+  flex: 0 0 auto;
+  min-height: 73px;
+  padding: 0 24px;
+  border-bottom: 1px solid #e6eaed;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.account-sidebar__header img {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+.account-sidebar__menu {
+  padding: 32px 24px 0;
+  display: grid;
+  gap: 32px;
+}
+.account-sidebar__menu button, .account-sidebar__logout {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: #212b36;
+  font: 600 17px/24px 'Nunito Sans', sans-serif;
+  text-align: left;
+}
+.account-sidebar__menu button:hover {
+  color: #6fab23;
+}
+.account-sidebar__menu button svg, .account-sidebar__logout svg {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+}
+.account-sidebar__logout {
+  margin: 180px 24px 24px;
+  color: #dc1818;
+}
+.account-sidebar__logout:hover {
+  color: #b81212;
 }

@@ -1,1 +1,5 @@
+<!-- แสดง Navbar เฉพาะหน้าที่ไม่ใช่ Login/Register -->
+<app-navbar *ngIf="!isLoginPage()"></app-navbar>
+
+<!-- พื้นที่แสดงผลของหน้าอื่นๆ -->
 <router-outlet></router-outlet>

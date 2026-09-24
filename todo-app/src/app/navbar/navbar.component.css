@@ -1,0 +1,272 @@
+.navbaar {
+  display: flex;
+  align-items: center; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 10;
+  border: 1px solid #CED4DA;
+  animation: slide 1s ease-in-out;
+  
+  /* เพิ่ม 2 บรรทัดนี้ เพื่อให้เมาส์คลิกทะลุ Navbar ได้ */
+  pointer-events: none; 
+  background: transparent; 
+}
+
+/* เพิ่มส่วนนี้: เพื่อให้ปุ่มเมนูและไอคอนต่างๆ ยังคงกดได้ตามปกติ */
+.con_nav, .container_bar, .hamburger, .headercompany {
+  pointer-events: auto;
+}
+.headercompany {
+    display: flex;
+    margin-left: 20px;
+    flex-direction: column;
+    color: #6FAB23;
+    font-weight: 800;
+    align-items: flex-start;
+    font-family: 'Nicomoji', sans-serif; 
+}
+.consale{
+    z-index: 4;
+}
+.navstatic{
+    display: flex;
+    z-index: 2;
+}
+.headerSale{
+    font-size: 20px;
+     display: flex;
+     color: #2B2F38;
+     font-weight: 600;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+}
+.iconsetting1,.iconsetting2,.iconsetting3{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #F4F5FC;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+}
+.con_nav {
+    width: 100%;
+    gap: 39px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.he{
+    cursor: pointer;
+    color: #1D1D1F;
+    font-weight: 300;
+    font-size: 12px;
+}
+.he:hover{
+    color: #89898b;
+}
+.con_sub{
+    width: 100%;
+    position: relative;
+}
+.con_sub2{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+}
+.iconsetting4 {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    object-fit: cover; /* เพิ่มคำสั่งนี้ */
+}
+.iconsetting1:hover,.iconsetting2:hover,.iconsetting3:hover,.iconsetting4:hover{
+    background: #cccdd4;
+    cursor: pointer;
+    z-index: 10;
+}
+.time{
+    font-size: 15px;
+    z-index: 10;
+    color: white;
+    font-weight: 800;
+    background: #AD54F5;
+    width: 100px;
+    border-radius: 8px;
+    height: 10px;
+    padding: 13px;
+    display: flex;
+    justify-content: first baseline;
+    align-items: center;
+    text-align: center;
+}
+.lin{
+    background: #E6EAED;
+    width: 1px;
+    height: 35px;
+}
+.container_bar{
+    gap: 10px;
+    
+    margin-left: auto;
+    margin-right: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    text-align: center;
+    width: 20%;
+    margin-right: 40px;
+    height: 70px;
+}
+.account-sidebar {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: clamp(300px, 26vw, 360px);
+  border-left: 1px solid #e6eaed;
+  background: #fff;
+  box-shadow: -16px 0 40px rgba(33, 43, 54, .1);
+  display: flex;
+  flex-direction: column;
+  animation: slideIn 0.3s ease-out forwards;
+}
+.account-sidebar.closing {
+  animation: slideOut 0.3s ease-in forwards;
+}
+@keyframes slideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+@keyframes slideOut {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+.account-sidebar__header {
+  flex: 0 0 auto;
+  min-height: 73px;
+  padding: 20px 40px;
+  border-bottom: 1px solid #e6eaed;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.account-sidebar__header img {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+.account-sidebar__menu {
+  padding: 32px 24px 0;
+  display: grid;
+  gap: 32px;
+}
+.account-sidebar__menu button, .account-sidebar__logout {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: #212b36;
+  font: 600 17px/24px 'Nunito Sans', sans-serif;
+  text-align: left;
+}
+.account-sidebar__menu button:hover {
+  color: #6fab23;
+}
+.account-sidebar__menu button svg, .account-sidebar__logout svg {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+}
+.account-sidebar__logout {
+  margin: 180px 24px 24px;
+  color: #dc1818;
+}
+.account-sidebar__logout:hover {
+  color: #b81212;
+}
+.sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.074); /* สีดำจางๆ */
+  z-index: 9; /* ต้องอยู่ใต้ Sidebar แต่เหนือ Navbar */
+  
+  pointer-events: auto; /* <--- เพิ่มบรรทัดนี้ เพื่อให้คลิกได้ */
+}
+.avatar-button {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  overflow: hidden;
+}
+.A{
+  padding: 30px;
+}
+.avatar-button:hover{
+  cursor: pointer;
+}
+.avatar-button img {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+}
+.red_noti {
+  position: relative;
+  
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+.red_notification {
+  width: 10px;
+  height: 10px;
+  background-color: #FF2222;
+  border-radius: 50%;
+  position: absolute;
+  border: 2px solid white;
+  box-shadow: 0px 0px 4px 0px #ff2222b1;
+  right: 0;
+  transform: translate(30%, -30%); 
+}
+.header-icon,
+.menu-button {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: #f4f5fc;
+  display: grid;
+  place-items: center;
+}
+.header-icon:hover{
+  cursor: pointer;
+}
+.header-icon img,
+.menu-button img {
+  width: 16px;
+  height: 16px;
+}

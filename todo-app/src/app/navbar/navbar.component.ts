@@ -5,14 +5,15 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TodoService } from '../services/todo.service';
 import { interval, Subscription } from 'rxjs';
+import { Output, EventEmitter } from '@angular/core';
 type HeaderPanel = 'account' | null;
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-navbar',
   imports: [FormsModule, CommonModule, RouterLink],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  templateUrl: './navbar.component.html',
+  styleUrl: './navbar.component.css'
 })
-export class DashboardComponent implements OnInit {
+export class NavbarComponent implements OnInit {
 
   private todoService = inject(TodoService);
     private changeDetector = inject(ChangeDetectorRef); // <-- เพิ่มบรรทัดนี้
@@ -50,6 +51,8 @@ export class DashboardComponent implements OnInit {
   openPanel: HeaderPanel = null;
   isNavOpen = false;
    isClosing = false;
+     isRightPanelOpen = true;
+     notification: any[] = [];
   summary: any = {
   todays_sale: 0,
   yearly_total_sales: 0,
@@ -62,7 +65,7 @@ export class DashboardComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-
+  this.loadNotifications();
     const state = history.state;
     this.username = state.username || '';
     this.email = state.email || '';
@@ -115,6 +118,17 @@ export class DashboardComponent implements OnInit {
       },
       error: (err) => console.error('Error loading summary:', err)
     });
+  }
+  Animationa_out1(){
+    this.outs = false;
+        this.out = true;
+    this.play_Return = false;
+    this.Animation_out = true;
+    setTimeout(() =>{
+      this.router.navigate(['/dashboard'],{
+        state:{username: this.username , email: this.email ,role:this.userRole ,profile:this.profile}
+      })
+    } ,300)
   }
   Animationa_out(){
     this.outs = false;
@@ -233,7 +247,13 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
-
+  
+    @Output() toggleRightPanel = new EventEmitter<void>();
+  toggleFullScreen(): void { 
+    // 2. เมื่อกดปุ่ม ให้ส่งสัญญาณออกไป
+    this.toggleRightPanel.emit();
+  }
+  toggleNav(): void { this.isNavOpen = !this.isNavOpen; this.openPanel = null; }
   toggleMenu() {
     this.outs = false;
     this.isMenuOpen = !this.isMenuOpen;
@@ -271,7 +291,8 @@ export class DashboardComponent implements OnInit {
     this.todoService.logAudit(auditData).subscribe({
       next: () => {
         console.log('Logout audit saved');
-        this.router.navigate(['/login']);
+        this.router.navigate(['/']);
+        this.closePanel
       },
       error: (err) => {
         console.error('Failed to save logout audit', err);
@@ -294,6 +315,9 @@ export class DashboardComponent implements OnInit {
   }
 
   openHelp() {
+       this.router.navigate(['/helpp'], {
+      state: { username: this.username, email: this.email, role: this.userRole, profile: this.profile }
+    });
     // ปิด Sidebar หากอยู่ที่หน้า Help อยู่แล้ว หรือจะสั่ง reload ก็ได้
     this.closePanel();
   }
@@ -307,4 +331,19 @@ export class DashboardComponent implements OnInit {
     }, 300);
   }
 
+  openNotifications(): void {
+    this.router.navigate(['/notification'],{
+          state: { username: this.username, email: this.email, Move_returns3: true, role: this.userRole, profile: this.profile }
+    });
+  }
+loadNotifications(): void {
+    this.todoService.getNotifications().subscribe({
+      next: (res: any) => {
+        this.notification = Array.isArray(res) ? res : (res.data || []);
+        this.changeDetector.markForCheck(); // สั่งให้ Angular อัปเดต UI
+      },
+      error: (err) => console.error('Error loading notifications:', err)
+    });
+  }
+  
 }

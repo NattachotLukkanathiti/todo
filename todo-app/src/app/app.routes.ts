@@ -19,6 +19,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { HelppComponent } from './helpp/helpp.component';
 import { EditComponent } from './edit/edit.component';
 
+
 export const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -39,5 +40,5 @@ export const routes: Routes = [
   { path: 'notification', component: NotificationComponent},
   { path: 'profile', component: ProfileComponent},
   { path: 'helpp', component: HelppComponent},
-  { path: 'edit', component: EditComponent}
+  { path: 'edit' , component: EditComponent}
 ];

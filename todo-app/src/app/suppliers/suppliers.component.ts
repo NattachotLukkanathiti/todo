@@ -27,8 +27,8 @@ export class SuppliersComponent {
   showpopup = false;
   popup = '';
   showpopupnoti = false;
-  isMenuOpen = false;
-  isMenuOpenprofile = false;
+  isMenuOpen = true;
+  isMenuOpenprofile = true;
   currentView = 'dashboard';
   currentTime = new Date();
   isTimeOpen = false;
@@ -152,6 +152,14 @@ export class SuppliersComponent {
     setTimeout(() =>{
       this.router.navigate(['/audit'],{
         state:{username: this.username , email: this.email, Move_return4:true ,role:this.userRole ,profile:this.profile}
+      })
+    } ,300)
+  }
+  Animationa_out1(){
+
+    setTimeout(() =>{
+      this.router.navigate(['/pos'],{
+        state:{username: this.username , email: this.email, Move_return6:true ,role:this.userRole ,profile:this.profile}
       })
     } ,300)
   }

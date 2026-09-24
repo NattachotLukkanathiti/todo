@@ -192,4 +192,12 @@ updateEmployee(username: string, employeeData: any): Observable<any> {
       { headers: this.headers }
     );
   }
+  // 📌 เพิ่มฟังก์ชันสำหรับอัปเดตข้อมูล Profile
+  updateProfile(username: string, profileData: any): Observable<any> {
+    return this.http.put<any>(
+      `${this.apiUrl}/profile/${username}`, 
+      profileData,
+      { headers: this.headers }
+    );
+  }
 }

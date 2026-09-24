@@ -374,7 +374,7 @@ loadTodos() {
           const productName = this.newProduct.product_name || this.newProduct.sku;
           this.todoService.addNotification(
             `Stock Update : ${productName}`, // title
-            'Add Product',                   // description
+            'import Product',                   // description
             'success',                       // type
             'Just now'                       // time_ago
           ).subscribe({
@@ -607,5 +607,21 @@ logout() {
       next: () => console.log('Notification sent successfully'),
       error: (err) => console.error('Error sending notification', err)
     });
+  }
+  // เพิ่มฟังก์ชันนี้ใน InventoryComponent
+  getTimeAgo(dateString: string): string {
+    const now = new Date();
+    const past = new Date(dateString);
+    const diffMs = now.getTime() - past.getTime();
+    
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMins / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diffMins < 1) return 'Just now';
+    if (diffMins < 60) return `${diffMins} min${diffMins > 1 ? 's' : ''} ago`;
+    if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+    
+    return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
   }
 }

@@ -27,7 +27,7 @@ export class AuditComponent {
   showpopup = false;
   popup = '';
   showpopupnoti = false;
-  isMenuOpen = false;
+  isMenuOpen = true;
   isMenuOpenprofile = false;
   currentView = 'dashboard';
   currentTime = new Date();

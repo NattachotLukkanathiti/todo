@@ -621,7 +621,35 @@ app.delete('/api/inventory/:sku', async (req, res) => {
     res.status(500).json({ success: false, message: 'Server Error' });
   }
 });
+// 📌 Route สำหรับอัปเดตข้อมูล Profile (dob, national_id, address, emergency_contact)
+app.put('/api/profile/:username', async (req, res) => {
+  try {
+    const { username } = req.params;
+    const { dob, national_id, address, emergency_contact, profile } = req.body;
 
+    const result = await pool.query(
+      `UPDATE todos 
+       SET dob = $1, national_id = $2, address = $3, emergency_contact = $4, profile = $5
+       WHERE username = $6 
+       RETURNING *`,
+      [dob, national_id, address, emergency_contact, profile, username]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ success: false, message: 'ไม่พบผู้ใช้งานนี้ในระบบ' });
+    }
+
+    res.json({
+      success: true,
+      message: 'อัปเดตข้อมูลโปรไฟล์เรียบร้อยแล้ว',
+      data: result.rows[0]
+    });
+
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+});
 // 📌 Route สำหรับอัปเดตเฉพาะ Role, Status, และ Note
 app.put('/api/employee/:username', async (req, res) => {
   try {

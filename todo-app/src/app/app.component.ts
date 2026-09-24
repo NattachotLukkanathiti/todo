@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterOutlet, RouterLink } from '@angular/router';
+import { RouterOutlet, RouterLink, Router } from '@angular/router'; // <-- เพิ่ม Router ตรงนี้
 
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
@@ -10,6 +10,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 
 import { TodoService, Todo } from './services/todo.service';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,8 @@ import { TodoService, Todo } from './services/todo.service';
     MatCheckboxModule,
     MatIconModule,
     RouterOutlet,
+    NavbarComponent 
+
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
@@ -30,6 +33,8 @@ import { TodoService, Todo } from './services/todo.service';
 export class AppComponent implements OnInit {
 
   private todoService = inject(TodoService);
+  private router = inject(Router); // <-- ย้ายขึ้นมาไว้ด้านบนเพื่อให้เป็นระเบียบ
+
   username = '';
   title = '';
   password = '';
@@ -51,7 +56,7 @@ export class AppComponent implements OnInit {
   addTodo() {
     if (!this.title.trim()) return;
 
-    this.todoService.addTodo(this.username, this.title, this.password,this.confirmPassword).subscribe(() => {
+    this.todoService.addTodo(this.username, this.title, this.password, this.confirmPassword).subscribe(() => {
       this.username = '';
       this.title = '';
       this.password = '';
@@ -70,5 +75,11 @@ export class AppComponent implements OnInit {
     this.todoService.updateTodo(todo).subscribe(() => {
       this.loadTodos();
     });
+  }
+
+  // ฟังก์ชันเช็คหน้า Login/Register
+  isLoginPage(): boolean {
+    const hiddenRoutes = ['/', '/register','/otp','/forgot'];
+    return hiddenRoutes.includes(this.router.url);
   }
 }

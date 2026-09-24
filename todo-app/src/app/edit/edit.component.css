@@ -1,59 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap');
-
-/* ================================================= self-contained base
-   Design tokens and the shared rules this page uses, so this folder looks
-   right when copied into another Angular project on its own. Keep it before
-   the page rules below: at equal specificity the page rules must win. */
-
 :host {
-    /* Typography — H1 16 / H2 20 / H3 32, weights Regular 400 → Heavy 800 */
-    --font-sans: 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    --font-data: 'Montserrat', var(--font-sans);
-    --text-h1: 16px;
-    --text-h2: 20px;
-    --text-h3: 32px;
-
-    /* Green */
-    --green-light: #f3fbf1;
-    --green-light-hover: #edf9e9;
-    --green-light-active: #d9f2d2;
-    --green: #84d46e;
-    --green-hover: #77bf63;
-    --green-active: #6aaa58;
-    --green-dark: #639f53;
-    --green-dark-hover: #4f7f42;
-    --green-dark-active: #3b5f31;
-    --green-darker: #2e4a27;
-
-    /* Neutrals */
-    --ink: #2b2f38;
-    --ink-soft: #48505e;
-    --ink-faint: #a4abb2;
-    --line: #e6eaed;
-    --surface: #fff;
-    --surface-muted: #f4f5fc;
-    --surface-hover: #fafafa;
-
-    /* Accents */
-    --logo: #6fab23;
-    --blue: #1364d5;
-    --purple: #ad54f5;
-    --purple-light: #f3e6fe;
-    --yellow-light: #fffbe8;
-    --red-light: #fbe9eb;
-    --danger: #dc1818;
-    --alert: #ff2222;
-    --unread: #3b86ff;
-    --pending: #e8a317;
-
-    --topbar-height: 56px;
-
-    --radius-sm: 4px;
-    --radius: 5px;
-    --shadow-card: 0 1px 4px rgba(0, 0, 0, .08);
-
-    /* Fill the viewport no matter what wraps the page: without an explicit width,
-     a flex parent (e.g. the default `ng new` shell) shrinks it and centres it. */
     display: block;
     box-sizing: border-box;
     width: 100%;
@@ -61,9 +6,108 @@
     flex: 1 1 100%;
     align-self: stretch;
     justify-self: stretch;
-    color: var(--ink);
-    font: 400 var(--text-h1)/1.5 var(--font-sans);
+    color: #2b2f38;
+    font: 400 16px/1.5 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
+}
+
+.navbaar {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 4;
+    background-color: #FFF;
+    border: 1px solid #CED4DA;
+    animation: slide 1s ease-in-out;
+}
+
+.con_nav {
+    width: 100%;
+    gap: 39px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.he {
+    cursor: pointer;
+    color: #1D1D1F;
+    font-weight: 300;
+    font-size: 12px;
+    transition: color 0.2s ease;
+}
+
+.he:hover {
+    color: #89898b;
+}
+
+.time {
+    font-size: 15px;
+    color: white;
+    font-weight: 800;
+    background: #AD54F5;
+    width: auto;
+    border-radius: 8px;
+    height: 36px;
+    padding: 0 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.container_bar {
+    gap: 10px;
+    margin-left: auto;
+    margin-right: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    text-align: center;
+    width: 450px;
+    margin-right: 40px;
+    height: 70px;
+}
+
+.iconsetting1,
+.iconsetting3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #F4F5FC;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.iconsetting4 {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.headercompany {
+    display: flex;
+    margin-left: 20px;
+    flex-direction: column;
+    color: #6FAB23;
+    font-weight: 800;
+}
+
+.lin {
+    background: #E6EAED;
+    width: 1px;
+    height: 35px;
 }
 
 * {
@@ -87,155 +131,60 @@ button:disabled {
 }
 
 :focus-visible {
-    outline: 2px solid var(--green);
+    outline: 2px solid #84d46e;
     outline-offset: 2px;
 }
 
-/* ---- buttons ("Generate" is .btn--primary.btn--sm) */
-
-.btn {
-    min-height: 38px;
-    padding: 8px 16px;
-    border: 1px solid transparent;
-    border-radius: var(--radius-sm);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    font: 500 14px/20px var(--font-sans);
-    white-space: nowrap;
-    transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+/* ---- row actions (PDF / edit / delete) */
+.page-heading {
+    margin-top: 60px;
 }
 
-.btn--sm {
-    min-height: 24px;
-    padding: 2px 9px;
-    font-size: 12px;
-    line-height: 18px;
-}
-
-.btn--primary {
-    color: #fff;
-    background: var(--green);
-}
-
-.btn--primary:hover {
-    background: var(--green-hover);
-}
-
-.btn--primary:active {
-    background: var(--green-active);
-}
-
-.btn--secondary {
-    color: var(--green-dark-hover);
-    background: var(--green-light);
-    border-color: var(--green-light-active);
-}
-
-.btn--secondary:hover {
-    background: var(--green-light-hover);
-}
-
-.btn--secondary:active {
-    background: var(--green-light-active);
-}
-
-/* ---- form fields (inputs and selects share one 38px box) */
-
-.field {
-    position: relative;
-    min-width: 0;
-    height: 38px;
-    padding: 0 12px;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-sm);
-    color: var(--ink-soft);
-    background: var(--surface);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 20px;
-    transition: border-color 120ms ease, box-shadow 120ms ease;
-}
-
-.field:focus-within {
-    border-color: var(--green);
-    box-shadow: 0 0 0 3px var(--green-light-active);
-}
-
-.field>app-icon {
-    width: 12px;
-    height: 12px;
-    color: var(--ink);
-}
-
-.field input,
-.field select,
-.field textarea {
-    flex: 1;
-    width: 100%;
-    min-width: 0;
-    height: 100%;
+.action-btn {
+    flex: 0 0 auto;
+    width: 26px;
+    height: 24px;
     padding: 0;
     border: 0;
-    outline: 0;
-    color: var(--ink);
-    background: transparent;
-    font: inherit;
+    border-radius: 5px;
+    color: #2b2f38;
+    display: inline-grid;
+    place-items: center;
+    transition: filter 120ms ease;
 }
 
-.field input::placeholder,
-.field textarea::placeholder {
-    color: var(--ink-soft);
-    opacity: 1;
+.action-btn app-icon {
+    width: 14px;
+    height: 14px;
 }
 
-.field input[type='search']::-webkit-search-cancel-button {
-    cursor: pointer;
+.action-btn:hover {
+    filter: brightness(.96);
 }
 
-.field--select {
-    padding: 0;
+.action-btn:active {
+    filter: brightness(.9);
 }
 
-.field--select select {
-    appearance: none;
-    padding: 0 34px 0 12px;
-    color: var(--ink-soft);
-    text-overflow: ellipsis;
-    cursor: pointer;
+.action-btn--pdf {
+    background: #f3e6fe;
 }
 
-.field--select>app-icon {
-    position: absolute;
-    top: 50%;
-    right: 14px;
-    margin-top: -6px;
-    color: var(--ink-soft);
-    pointer-events: none;
+.action-btn--edit {
+    background: #fffbe8;
 }
 
-.field--area {
-    height: auto;
-    padding: 9px 12px;
-    align-items: flex-start;
-}
-
-.field--area textarea {
-    min-height: 72px;
-    resize: vertical;
+.action-btn--delete {
+    background: #fbe9eb;
 }
 
 /* ================================================================= pages
    Scaffolding every secondary page (Notifications, Help, Profile) uses. */
 
 .page {
-    min-height: calc(100vh - var(--topbar-height));
+    min-height: calc(100vh - 56px);
     padding: 8px 24px 24px;
-    background: var(--surface);
+    background: #fff;
 }
 
 .page-heading {
@@ -247,18 +196,20 @@ button:disabled {
 .page-heading h1 {
     flex: 1;
     margin: 0;
-    color: var(--ink);
-    font: 600 var(--text-h3)/40px var(--font-sans);
+    color: #2b2f38;
+    font: 600 32px/40px 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 .back-button {
     flex: 0 0 auto;
     width: 36px;
     height: 36px;
+    margin-top: 70px;
+
     padding: 0;
     border: 0;
-    border-radius: var(--radius);
-    color: #000;
+    border-radius: 5px;
+    color: #2b2f38;
     background: transparent;
     display: grid;
     place-items: center;
@@ -266,7 +217,7 @@ button:disabled {
 }
 
 .back-button:hover {
-    background: var(--surface-muted);
+    background: #f4f5fc;
 }
 
 .back-button app-icon {
@@ -276,21 +227,21 @@ button:disabled {
 
 .page-description {
     margin: 8px 0 0;
-    color: var(--ink-soft);
-    font: 400 var(--text-h1)/24px var(--font-sans);
+    color: #48505e;
+    font: 400 16px/24px 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 .page-subheading {
     margin: 0 0 16px;
-    color: var(--ink);
-    font: 600 var(--text-h2)/28px var(--font-sans);
+    color: #2b2f38;
+    font: 600 20px/28px 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 .form-label {
     display: grid;
     gap: 8px;
-    color: var(--ink);
-    font: 500 var(--text-h1)/22px var(--font-sans);
+    color: #2b2f38;
+    font: 500 16px/22px 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 .card-list {
@@ -301,7 +252,7 @@ button:disabled {
 .empty-state {
     grid-column: 1 / -1;
     padding: 60px 20px;
-    color: var(--ink-soft);
+    color: #48505e;
     text-align: center;
 }
 
@@ -318,40 +269,226 @@ button:disabled {
 
 /* ================================================================ page */
 
+:host {
+    display: block;
+}
+
+.profile-card {
+    width: 100%;
+    margin-top: 24px;
+    padding: 24px;
+    border: 1px solid #e6eaed;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .08);
+    display: grid;
+    gap: 24px;
+}
+
+.profile-card__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 20px;
+}
+
+.profile-avatar {
+    flex: 0 0 auto;
+    width: 96px;
+    height: 96px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.profile-field {
+    min-width: 0;
+    display: grid;
+    gap: 8px;
+    color: #2b2f38;
+    font: 500 16px/22px 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.profile-card__top .profile-field {
+    flex: 1 1 200px;
+}
+
+.profile-field .field>app-icon {
+    width: 16px;
+    height: 16px;
+    color: #48505e;
+}
+
+.profile-field__value {
+    min-height: 38px;
+    padding: 9px 12px;
+    border: 1px solid #e6eaed;
+    border-radius: 4px;
+    color: #48505e;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.p {
+    display: flex;
+    padding: 20px;
+    background-color: white;
+}
+
+.con {
+    width: 100vw;
+}
+
+.role {
+    min-height: 38px;
+    padding: 9px 12px;
+    border: 1px solid #e6eaed;
+    border-radius: 4px;
+    color: #48505e;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    max-width: 200px;
+}
+
+.profile-field__value--area {
+    min-height: 76px;
+}
+
+@media (max-width: 720px) {
+    .profile-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .profile-card {
+        padding: 18px;
+    }
+}
+
+/* Profile page only */
+.edit-profile-button {
+    width: 36px;
+    height: 36px;
+}
+
 .edit-profile-banner {
-    margin: -24px -24px 0;
-    padding: 14px 24px;
-    border-radius: 8px 8px 0 0;
+    margin: 0;
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
     color: var(--ink);
-    background: var(--yellow-light);
+    background: var(--surface-muted);
     display: flex;
     align-items: center;
     gap: 10px;
-    font: 600 var(--text-h1)/22px var(--font-sans);
+    font: 600 var(--text-h1)/21px var(--font-sans);
 }
 
-.edit-profile-banner app-icon {
+.edit-profile-button app-icon {
     width: 18px;
     height: 18px;
 }
 
-.profile-actions {
+
+.edit-profile-banner {
+    margin: 0;
+    padding: 20px;
+    border-radius: 10px;
+    color: var(--ink);
+    background: var(--surface-muted);
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+        background-color: #F4F5FC;
+    font: 600 var(--text-h1)/21px var(--font-sans);
+}
+
+.edit-profile-banner app-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.button_import {
+    display: flex;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    gap: 8px;
     justify-content: center;
-    gap: 16px;
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.profile-actions .btn {
-    min-width: 140px;
-    min-height: 46px;
-    font-size: var(--text-h1);
-    font-weight: 600;
+.save {
+    background: #4283DD;
+    color: white;
+    font-weight: 500;
+    height: 45px; /* ปรับความสูงให้พอดีแทนการใช้ padding หนาๆ */
+    border-radius: 30px;
+    width: 140px;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* เพิ่มคำสั่งนี้เพื่อให้ตัวหนังสืออยู่ตรงกลางแนวตั้ง */
+    cursor: pointer;
 }
 
-@media (max-width: 720px) {
-    .edit-profile-banner {
-        margin: -18px -18px 0;
-        padding: 12px 18px;
-    }
+.save:hover {
+    background: #1364D5;
+}
+
+.save:active {
+    background: #115BC2;
+    transform: scale(0.98);
+}
+
+.cancel {
+    position: relative;
+    overflow: hidden;
+    background: #B9BDC7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    cursor: pointer;
+    height: 45px; /* ปรับความสูงให้เท่ากับปุ่ม save */
+    width: 140px;
+    color: white;
+    border-radius: 30px;
+    transition: 0.3s;
+    isolation: isolate;
+}
+
+.cancel::before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    background: #858D9D;
+    border-radius: 50%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+    z-index: 0;
+}
+
+.cancel:hover::before {
+    width: 200px;
+    height: 200px;
+}
+
+.cancel::after {
+    content: "Cancel";
+    position: absolute;
+    z-index: 2;
+    color: white;
+}
+
+.cancel:active {
+    transform: scale(0.8);
 }

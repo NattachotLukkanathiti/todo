@@ -1,0 +1,82 @@
+<div class="navbaar">
+<!--     <button class="hamburger" (click)="hambar()">
+        <img src="image/ham.svg" alt="">
+    </button> -->
+    <div class="headercompany">
+        <img src="image/logo.svg" alt="">
+    </div>
+    <!--   <div class="search">
+        <input class="inputser"type="text" placeholder="Search" [(ngModel)]="search" (input)="filterS()">
+        <img class="iconsearch" src="image/search.svg" alt="">
+    </div> -->
+       <div class="con_nav">
+       <!--   <img class="iconweb" src="image/logo.svg" alt=""> -->
+<!--         <img class="apple" src="image/apple.png" alt=""> -->
+       <!--              <div class="he"  (click)="Animationa_out1()">Dashboard</div>
+<div  class="he"(click)="Animationa_out()">Inventory</div>
+<div class="he" (click)="Animation_out2()">Sales Orders</div>
+<div class="he" (click)="Animation_out3()">Stock History</div>
+<div class="he" (click)="Animation_out4()">Employee</div>
+<div class="he" (click)="Animation_out6()">Audit Log</div>
+<div class="he" (click)="Animation_out5()">Suppliers</div> -->
+<!-- <div class="he" (click)="Animation_out5()">Help</div>
+<div class="he" (click)="Animation_out5()">Setting</div> -->
+    </div>
+    <div class="container_bar">
+        <div class="time" [class.active]="isTimeOpen" (click)="isTimeOpen = !isTimeOpen">
+            <img class="icon_time" src="image/Time Icon.svg">
+            <div class="Y">
+                {{ currentTime | date:'HH:mm:ss' }}
+            </div>
+        </div>
+        <div class="lin"></div>
+        <img class="iconsetting1" src="image/Maximize Icon.svg" (click)="toggleMenu()" [class.Max]="Max" alt="">
+        <!-- <img class="iconsetting2" src="image/Song.svg" alt=""> -->
+        <div class="red_noti">
+  <!-- จุดสีแดงจะแสดง ก็ต่อเมื่อมีข้อมูลในตาราง notifications เท่านั้น -->
+  <div class="red_notification" *ngIf="notification && notification.length > 0"></div>
+  
+  <button class="header-icon" type="button" aria-label="Notifications" (click)="openNotifications()">
+    <img src="image/Chart.svg" alt="" />
+  </button>
+      
+</div>
+<button class="avatar-button" type="button" aria-label="Open account menu" [attr.aria-expanded]="openPanel === 'account'" (click)="toggleAccountMenu()"><img [src]="profile || 'image/profileee.svg'" /></button>
+    </div>
+
+</div>
+
+   @if (openPanel === 'account') {
+  <!-- ฉากหลังสำหรับกดปิด -->
+  <div class="sidebar-backdrop" (click)="closePanel()"></div>
+
+  <div class="account-sidebar" [class.closing]="isClosing" aria-label="Account menu">
+    <div class="account-sidebar__header">
+      <img [src]="profile || 'image/profileee.svg'" alt="Profile" />
+      <div class="con_pro">
+        <div class="user">{{username}}</div>
+        <div class="role">{{userRole}}</div>
+      </div>
+    </div>
+    <div class="A">
+      <nav class="account-sidebar__menu">
+      <button type="button" (click)="openProfile()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/></svg>
+        Profile
+      </button>
+      <button type="button" (click)="openHelp()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"/></svg>
+        Help
+      </button>
+       <button type="button" (click)="openHelp()">
+        <img src="image/setting_bar.svg" alt="">
+        Setting
+      </button>
+    </nav>
+    <button type="button" class="account-sidebar__logout" (click)="logout()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 4h-4.5A1.5 1.5 0 0 0 9 5.5v13A1.5 1.5 0 0 0 10.5 20H15"/><path d="M19 12H10m9 0-3-3m3 3-3 3"/></svg>
+      Log Out
+    </button>
+  </div>
+    </div>
+}

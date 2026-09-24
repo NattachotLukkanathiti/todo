@@ -40,6 +40,19 @@
   right: 0;
   transform: translate(30%, -30%); 
 }
+.navbaar {
+  display: flex;
+  align-items: center; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 70px; /* เพิ่มความสูง เพื่อให้มีพื้นที่แสดงพื้นหลัง */
+  z-index: 3;
+  background-color: #FFF;
+  border: 1px solid #CED4DA ;
+  animation: slide 1s ease-in-out;
+}
 .con_nav {
     width: 100%;
     gap: 39px;
@@ -60,30 +73,11 @@
 .he:hover{
     color: #89898b;
 }
-.navbaar {
-    display: flex;
-    /* กระจายองค์ประกอบให้เต็มพื้นที่ */
-    align-items: center;
-    /* จัดให้อยู่ตรงกลางตามแนวตั้ง */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    z-index: 3;
-    /* ปรับให้มากกว่า sidebar เพื่อให้อยู่ด้านบนสุด */
-    background-color: #FFF;
-    border: 1px solid #CED4DA;
-    animation: slide 1s ease-in-out;
-
-}
-
-/* ---------------------------------------------------------------- header */
-
 .topbar {
   box-sizing: border-box;
   position: fixed;
   width: 100vw;
-  z-index: 30;
+  z-index: 5;
   top: 0;
   padding: 20px;
   border-bottom: 1px solid #e6eaed;
@@ -570,9 +564,10 @@
 
 /* One row that fills the available width and only scrolls once the cards
    would drop under their minimum size. */
-.category-row {
+ .category-row {
   min-width: 0;
-  padding-bottom: 4px;
+  padding: 10px 4px 14px; /* เพิ่ม padding ด้านบนและล่าง เพื่อให้มีพื้นที่ตอนการ์ดลอยขึ้น */
+  margin: -10px -4px -14px; /* ใช้ margin ลบเพื่อดึงพื้นที่กลับมาให้เท่าเดิม */
   display: flex;
   gap: 8px;
   overflow-x: auto;
@@ -583,10 +578,9 @@
 .category-row::-webkit-scrollbar {
   display: none;
 }
-
 .category-card {
   width: 130px;
-  padding: 20px;
+  padding: 20px 10px;
   border: 1px solid #e6eaed;
   border-radius: 8px;
   background: #fff;
@@ -597,11 +591,16 @@
   justify-content: center;
   gap: 8px;
   scroll-snap-align: start;
+  transition: all 0.3s ease;
+  transform: translateY(0);
+  cursor: pointer;
+  
 }
 
 .category-card--active {
   border: 2px solid #84d46e;
-  padding: 11px 5px;
+  padding: 20px 10px;
+  transform: translateY(-4px) scale(1.03);
 }
 
 .category-card__image {

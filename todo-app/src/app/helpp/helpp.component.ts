@@ -3,8 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { Location } from '@angular/common';
 
-import { IconComponent } from '../shared/icon';
 
 interface FaqItem {
   title: string;
@@ -17,7 +17,7 @@ type HeaderPanel = 'account' | null;
 @Component({
   selector: 'app-help-page',
   standalone: true,
-  imports: [FormsModule, RouterLink, IconComponent, CommonModule, DatePipe],
+  imports: [FormsModule, RouterLink, CommonModule, DatePipe],
   templateUrl: './helpp.component.html',
   styleUrl: './helpp.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -25,7 +25,7 @@ type HeaderPanel = 'account' | null;
 export class HelppComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private changeDetector = inject(ChangeDetectorRef);
-
+  private location = inject(Location)
   // --- Navbar Variables ---
   username = '';
   email = '';
@@ -84,19 +84,15 @@ export class HelppComponent implements OnInit, OnDestroy {
   }
 
   openHelp() {
+       this.router.navigate(['/helpp'], {
+      state: { username: this.username, email: this.email, role: this.userRole, profile: this.profile }
+    });
     // ปิด Sidebar หากอยู่ที่หน้า Help อยู่แล้ว หรือจะสั่ง reload ก็ได้
     this.closePanel();
   }
 
   back() {
-    this.router.navigate(['/pos'], {
-      state: { 
-        username: this.username, 
-        email: this.email, 
-        Move_returns3: true, 
-        role: this.userRole, 
-        profile: this.profile 
-      }
-    });
+    // สั่งให้ย้อนกลับไปหน้าก่อนหน้า
+    this.location.back();
   }
 }

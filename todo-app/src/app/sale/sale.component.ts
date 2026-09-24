@@ -69,6 +69,7 @@ export class SaleComponent {
     if (state.Move_return3 === true){
     
     }
+   
 
     if(!this.username || !this.email){
       this.openpopupnoti("Session not found. Redirecting to login")
@@ -136,6 +137,14 @@ export class SaleComponent {
     setTimeout(() =>{
       this.router.navigate(['/dashboard'],{
         state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole ,profile:this.profile }
+      })
+    } ,300)
+  }
+    Animationa_out1(){
+
+    setTimeout(() =>{
+      this.router.navigate(['/pos'],{
+        state:{username: this.username , email: this.email, Move_return6:true ,role:this.userRole ,profile:this.profile}
       })
     } ,300)
   }

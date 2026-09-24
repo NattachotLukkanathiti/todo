@@ -80,13 +80,84 @@ loadNotifications() {
     }, 300);
   }
   
-  Animationa_out1() { this.navigateTo('/pos'); }
-  Animationa_out() { this.navigateTo('/inventory'); }
-  Animation_out2() { this.navigateTo('/sale', { Move_return3: true }); }
-  Animation_out3() { this.navigateTo('/history', { Move_returnH: true }); }
-  Animation_out4() { this.navigateTo('/employee', { Move_return4: true }); }
-  Animation_out5() { this.navigateTo('/suppliers', { Move_return5: true, Dont_animation: true }); }
-  Animation_out6() { this.navigateTo('/audit', { Move_return6: true, Dont_animation: true }); }
+   Animationa2_out(){
+
+
+    setTimeout(() =>{
+      this.router.navigate(['/inventory'],{
+        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole ,profile:this.profile}
+      })
+    } ,300)
+  }
+  Animation_out2(){
+
+
+    setTimeout(() =>{
+      this.router.navigate(['/sale'],{
+        state:{username: this.username , email: this.email, Move_return2:true ,role:this.userRole ,profile:this.profile }
+      })
+    } ,300)
+  }
+  Animation_out3(){
+
+
+    setTimeout(() =>{
+      this.router.navigate(['/history'],{
+        state:{username: this.username , email: this.email, Move_return4:true ,role:this.userRole ,profile:this.profile}
+      })
+    } ,300)
+  }
+  Animation_out5(){
+            this.out = false;
+    this.play_Return = false;
+    this.Animation_out = true;
+    setTimeout(() =>{
+      this.router.navigate(['/suppliers'],{
+        state:{username: this.username , email: this.email, Move_return5:true ,Open_bar:true ,role:this.userRole ,profile:this.profile }
+      })
+    } ,300)
+  }
+  Animation_out6(){
+ this.out = false;
+    this.play_Return = false;
+    this.Animation_out = true;
+    setTimeout(() =>{
+      this.router.navigate(['/audit'],{
+        state:{username: this.username , email: this.email, Move_return6:true ,role:this.userRole ,profile:this.profile}
+      })
+    } ,300)
+  }
+  Animationa_out1(){
+ this.out = false;
+    this.play_Return = false;
+    this.Animation_out = true;
+    setTimeout(() =>{
+      this.router.navigate(['/pos'],{
+        state:{username: this.username , email: this.email, Move_return6:true ,role:this.userRole ,profile:this.profile}
+      })
+    } ,300)
+  }
+  Animation_out4(){
+ this.out = false;
+    this.play_Return = false;
+    this.Animation_out = true;
+    setTimeout(() =>{
+      this.router.navigate(['/employee'],{
+        state:{username: this.username , email: this.email, Move_return6:true ,role:this.userRole ,profile:this.profile}
+      })
+    } ,300)
+  }
+  
+  
+  Animationa_out(){
+
+    
+    setTimeout(() =>{
+      this.router.navigate(['/dashboard'],{
+        state:{username: this.username , email: this.email, Move_return:true ,role:this.userRole ,profile:this.profile }
+      })
+    } ,300)
+  }
 
   hambar() { this.isMenuOpen = !this.isMenuOpen; }
   toggleMenu() { this.outs = false; this.isMenuOpen = !this.isMenuOpen; this.isMenuOpenprofile = !this.isMenuOpenprofile; }
@@ -98,5 +169,20 @@ loadNotifications() {
     const now = new Date();
     const auditData = { date: now.toISOString().split('T')[0], time: now.toTimeString().split(' ')[0], username: this.username, email: this.email, activity: 'Logout', role: this.userRole, picture: this.profile };
     this.todoService.logAudit(auditData).subscribe({ next: () => this.router.navigate(['/login']), error: () => this.router.navigate(['/login']) });
+  }
+    getTimeAgo(dateString: string): string {
+    const now = new Date();
+    const past = new Date(dateString);
+    const diffMs = now.getTime() - past.getTime();
+    
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMins / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diffMins < 1) return 'Just now';
+    if (diffMins < 60) return `${diffMins} min${diffMins > 1 ? 's' : ''} ago`;
+    if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+    
+    return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
   }
 }

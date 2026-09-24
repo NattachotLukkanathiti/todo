@@ -18,7 +18,7 @@
     top: 0;
     left: 0;
     width: 100vw;
-    z-index: 8;
+    z-index: 4;
     background-color: #FFF;
     border: 1px solid #CED4DA;
     animation: slide 1s ease-in-out;
