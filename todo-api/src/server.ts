@@ -293,37 +293,38 @@ app.get('/api/suppliers', async (req, res) => {
 // --- ส่วนที่เพิ่มเข้ามาใหม่: Route สำหรับบันทึกข้อมูล Supplier ---
 app.post('/api/suppliers', async (req, res) => {
   try {
-    const { supplier_name, created_by, email, phone, logo } = req.body;
+    const { supplier_name, email, phone, logo } = req.body;
 
     if (!supplier_name || !email || !phone) {
       return res.status(400).json({ 
         success: false, 
-        message: 'กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน (Supplier Name, Email, Phone)' 
+        message: 'กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน' 
       });
     }
 
+    // ตัด created_by ออก และใส่ค่า logo, supplier_name, email, phone, order_history
     const result = await pool.query(
-      `INSERT INTO suppliers (supplier_name, created_by, email, phone, logo, order_history) 
-       VALUES ($1, $2, $3, $4, $5, $6) 
+      `INSERT INTO suppliers (supplier_name, email, phone, logo, order_history) 
+       VALUES ($1, $2, $3, $4, $5) 
        RETURNING *`,
-      [supplier_name, created_by, email, phone, logo, 0] // กำหนด order_history เริ่มต้นเป็น 0
+      [supplier_name, email, phone, logo, 0]
     );
 
     res.status(201).json({
       success: true,
-      message: 'บันทึกข้อมูล Supplier สำเร็จ',
       data: result.rows[0]
     });
 
   } catch (error) {
+    // สั่งให้ console.error พิมพ์ error ออกมาดูใน Terminal
     console.error('Error inserting into suppliers:', error);
     res.status(500).json({ 
       success: false, 
-      message: 'Server Error' 
+      message: 'Server Error',
+
     });
   }
 });
-// -----------------------------------------------------------
 
 // (โค้ดส่วนล่างของคุณยังคงเดิมทั้งหมด)
 app.post('/api/inventory', async (req, res) => {

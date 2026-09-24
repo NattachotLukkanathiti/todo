@@ -1457,3 +1457,166 @@ input::placeholder{
     transform: translateY(-400%);
   }
 }
+
+
+/* /////หน้าเพิ่ม supplier */
+/* โครงสร้างหลักของฟอร์ม */
+.import_product {
+    background-color: #d9d9d977;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 10;
+}
+
+.con_import_product {
+    width: 40%;
+    height: 650px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    color: #212529;
+    transform: translate(-50%, -50%);
+    z-index: 7;
+    border-radius: 40px;
+    background-color: white;
+    border: 1px solid #E5E7EB;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    animation: moves 0.5s ease-in-out;
+}
+
+.con_import_product::-webkit-scrollbar {
+    display: none;
+}
+
+/* ส่วนหัวของฟอร์ม */
+.serach_product {
+    background-color: #F4F5FC;
+    width: 100%;
+    padding: 20px;
+    top: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    z-index: 10;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+/* ส่วนอัปโหลดรูปภาพ */
+.add_image {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.sku_pro2 {
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* ส่วน Input และ Label */
+.con_sku_pro {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 20px;
+    box-sizing: border-box;
+}
+
+.sku_pro {
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.label_import {
+    font-weight: 300;
+    font-size: 15px;
+}
+
+.important {
+    color: #DC1818;
+}
+
+.sku_input, .sku_input2 {
+    box-sizing: border-box;
+    position: relative;
+    border-radius: 8px;
+    padding: 17px;
+    margin-top: 10px;
+    width: 100%;
+    height: 20px;
+    font-size: 15px;
+    font-weight: 100;
+    color: #48505E;
+    border: 1px solid #E6EAED;
+}
+
+.con_edit {
+    position: relative;
+    display: flex;
+    width: 60%;
+    align-items: center;
+}
+
+/* ปุ่มบันทึกและยกเลิก */
+.button_import {
+    display: flex;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    gap: 8px;
+    justify-content: center;
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.save {
+    background: #4283DD;
+    padding: 20px;
+    color: white;
+    font-weight: 500;
+    height: 15px;
+    border-radius: 30px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.cancel {
+    position: relative;
+    overflow: hidden;
+    background: #B9BDC7;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    cursor: pointer;
+    height: 15px;
+    width: 100px;
+    color: white;
+    border-radius: 30px;
+    transition: 0.3s;
+    isolation: isolate;
+}
+
+/* คลาสควบคุมการแสดงผล (State) */
+.product { display: none; }
+.button_importt { display: block; }
+.out_comimport { animation: movess 0.5s ease-in-out; }

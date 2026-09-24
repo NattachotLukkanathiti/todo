@@ -136,9 +136,22 @@ export class SuppliersComponent {
   }
 
   saveSupplier() {
-    console.log('Saving Supplier:', this.newSupplier);
-    // this.todoService.addSupplier(this.newSupplier).subscribe(...);
-  }
+  this.isLoading = true; // เปิด Loading
+  
+  this.todoService.addSupplier(this.newSupplier).subscribe({
+    next: (res) => {
+      console.log('Supplier saved successfully:', res);
+      this.loadSuppliers(); // โหลดข้อมูลในตารางใหม่
+      this.button_cancels(); // ปิดหน้าต่างฟอร์ม
+      this.isLoading = false; // ปิด Loading
+    },
+    error: (err) => {
+      console.error('Error saving supplier:', err);
+      this.isLoading = false;
+      // สามารถเพิ่ม openpopupnoti('บันทึกไม่สำเร็จ') ตรงนี้ได้
+    }
+  });
+}
 
   // --- ส่วนที่เพิ่มเข้ามาใหม่ (ฟังก์ชันสำหรับฟอร์ม) ---
   button_cancels() {
