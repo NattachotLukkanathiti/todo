@@ -15,7 +15,7 @@ type HeaderPanel = 'account' | null;
 export class DashboardComponent implements OnInit {
   
   readonly suppliers = input<{ name: string; early: number; onTime: number; late: number }[]>([]);
-      products: { name: string; quantity: number; image?: string }[] = []; 
+   private productsList: { name: string; quantity: number; image?: string }[] = [];
   private todoService = inject(TodoService);
     private changeDetector = inject(ChangeDetectorRef); // <-- เพิ่มบรรทัดนี้
   search = '';
@@ -308,13 +308,16 @@ this.loadTopProducts();
       this.changeDetector.markForCheck();
     }, 300);
   }
+
+products() {
+  return this.productsList;
+}
     loadTopProducts() {
   this.todoService.getSaleOrders().subscribe({
     next: (sales) => {
       const productMap: { [key: string]: { name: string; quantity: number; image?: string } } = {};
 
       sales.forEach(order => {
-        // ตรวจสอบชื่อฟิลด์ให้ตรงกับฐานข้อมูลของคุณ (เช่น product_name, quantity)
         const name = order.product_name; 
         const qty = Number(order.quantity) || 0;
 
@@ -325,8 +328,8 @@ this.loadTopProducts();
         }
       });
 
-      // เรียงลำดับจากมากไปน้อย และตัดเอา 5 อันดับแรก
-      this.products = Object.values(productMap)
+      // เปลี่ยนจาก this.products เป็น this.productsList
+      this.productsList = Object.values(productMap)
         .sort((a, b) => b.quantity - a.quantity)
         .slice(0, 5);
     },

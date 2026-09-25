@@ -329,23 +329,23 @@
 
 <div class="con_sale_order">
   <div class="con_t">
-      <h2 class="top-products__title">Top 5 Products</h2>
+    <h2 class="top-products__title">Top 5 Products</h2>
 
-      <ol class="product-list">
-        @for (product of products.slice(0, 5); track $index; let i = $index) {
-          <li class="product-row">
-            <span class="product-row__rank">{{ i + 1 }}.</span>
-            <span class="product-row__thumb">
-              @if (product.image) { <img [src]="product.image" alt="" /> }
-            </span>
-            <span class="product-row__name">{{ product.name }}</span>
-            <!-- เพิ่มการแสดงจำนวนที่ขายได้ -->
-            <span class="product-row__qty">ขายแล้ว {{ product.quantity }} ชิ้น</span>
-          </li>
-        } @empty {
-          <li class="product-list__empty">No products yet.</li>
-        }
-      </ol>
+    <ol class="product-list">
+      <!-- ใช้ *ngFor และเรียก products() เป็นฟังก์ชัน -->
+      <li class="product-row" *ngFor="let product of products().slice(0, 5); let i = index">
+        <span class="product-row__rank">{{ i + 1 }}.</span>
+        <span class="product-row__thumb">
+          <img *ngIf="product.image" [src]="product.image" alt="" />
+        </span>
+        <span class="product-row__name">{{ product.name }}</span>
+      </li>
+
+      <!-- กรณีไม่มีข้อมูล -->
+      <li class="product-list__empty" *ngIf="products().length === 0">
+        No products yet.
+      </li>
+    </ol>
   </div>
 </div>
 
