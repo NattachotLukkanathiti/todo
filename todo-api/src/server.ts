@@ -59,7 +59,7 @@ app.get('/api/months', async (req, res) => {
 app.get('/api/sale_order', async (req, res) => {   
   try {     
     const result = await pool.query(       
-      'SELECT id, order_code, date, amount, create_by, status FROM sale_order'     
+      'SELECT * FROM sale_order'     
     );      
     const formattedRows = result.rows.map(row => {
       if (row.date) {

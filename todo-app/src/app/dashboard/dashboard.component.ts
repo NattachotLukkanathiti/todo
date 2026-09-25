@@ -15,7 +15,8 @@ type HeaderPanel = 'account' | null;
 export class DashboardComponent implements OnInit {
   
   readonly suppliers = input<{ name: string; early: number; onTime: number; late: number }[]>([]);
-   private productsList: { name: string; quantity: number; image?: string }[] = [];
+// เปลี่ยนจาก quantity เป็น count
+private productsList: { name: string; count: number; image?: string }[] = [];
   private todoService = inject(TodoService);
     private changeDetector = inject(ChangeDetectorRef); // <-- เพิ่มบรรทัดนี้
   search = '';
@@ -312,29 +313,31 @@ this.loadTopProducts();
 products() {
   return this.productsList;
 }
-    loadTopProducts() {
-  this.todoService.getSaleOrders().subscribe({
-    next: (sales) => {
-      const productMap: { [key: string]: { name: string; quantity: number; image?: string } } = {};
+loadTopProducts() {
+  this.todoService.getHistory().subscribe({
+    next: (history) => {
+      console.log("History Data:", history); // <-- เพิ่มบรรทัดนี้เพื่อดูข้อมูลใน Console
+      
+      const productCount: { [key: string]: { name: string; count: number; image?: string } } = {};
 
-      sales.forEach(order => {
-        const name = order.product_name; 
-        const qty = Number(order.quantity) || 0;
+      history.forEach(item => {
+        const name = item.product_name; 
 
-        if (productMap[name]) {
-          productMap[name].quantity += qty;
-        } else {
-          productMap[name] = { name: name, quantity: qty, image: order.image };
+        if (name) {
+          if (productCount[name]) {
+            productCount[name].count += 1;
+          } else {
+            // ลองเปลี่ยน item.picture เป็น item.image หรือ item.photo ถ้า picture ไม่แสดง
+            productCount[name] = { name: name, count: 1, image: item.picture };
+          }
         }
       });
 
-      // เปลี่ยนจาก this.products เป็น this.productsList
-      this.productsList = Object.values(productMap)
-        .sort((a, b) => b.quantity - a.quantity)
+      this.productsList = Object.values(productCount)
+        .sort((a, b) => b.count - a.count)
         .slice(0, 5);
     },
-    error: (err) => console.error('Error loading sales data:', err)
+    error: (err) => console.error('Error loading top products:', err)
   });
 }
-
 }
