@@ -167,7 +167,7 @@ app.post('/api/audit', async (req, res) => {
 // 📌 เพิ่ม Route สำหรับบันทึกข้อมูลลงตาราง History
 app.post('/api/history', async (req, res) => {
   try {
-    const { date, sku, product_name, brand, price, quantity, create_by } = req.body;
+    const { date, sku, product_name, brand, price, quantity, create_by, picture } = req.body;
 
     if (!sku || !product_name) {
       return res.status(400).json({ 
@@ -177,10 +177,10 @@ app.post('/api/history', async (req, res) => {
     }
 
     const result = await pool.query(
-      `INSERT INTO history (date, sku, product_name, brand, price, quantity, created_by) 
-       VALUES ($1, $2, $3, $4, $5, $6, $7) 
+      `INSERT INTO history (date, sku, product_name, brand, price, quantity, created_by, picture) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
        RETURNING *`,
-      [date, sku, product_name, brand, price, quantity, create_by]
+      [date, sku, product_name, brand, price, quantity, create_by, picture]
     );
 
     res.status(201).json({

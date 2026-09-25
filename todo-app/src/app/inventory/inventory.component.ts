@@ -415,14 +415,15 @@ loadTodos() {
           this.loadInventory();
           this.resetForm();
           const now = new Date();
-           const historyData = {
+          const historyData = {
             date: now.toISOString().split('T')[0],      // Date
             sku: productData.sku,                      // SKU
             product_name: productData.product_name,    // Product Name
             brand: productData.brand,                  // Brand
             price: productData.price,                  // Price
             quantity: productData.import_quantity,     // Quantity
-            create_by: this.username                   // Create By
+            create_by: this.username,                  // Create By
+            picture: productData.picture               // Picture
           };
 
           this.todoService.addHistory(historyData).subscribe({

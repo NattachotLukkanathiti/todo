@@ -92,7 +92,7 @@ export class SuppliersComponent {
   }
 
   reloads() {
-    this.suppliers;
+    this.loadSuppliers();
     this.isLoading = true; 
   }   
 

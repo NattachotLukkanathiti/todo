@@ -90,7 +90,7 @@ export class AuditComponent {
     });
   }
   reloads() {
-    this.history
+    this.loadAudit();
     this.isLoading = true; 
 }   
   Animationa2_out(){
