@@ -94,21 +94,22 @@ app.get('/api/inventory', async (req, res) => {
 });
 app.get('/api/history', async (req, res) => {
     try {
+        // เพิ่ม picture เข้าไปในคำสั่ง SELECT
         const result = await pool.query(
-            'SELECT id, date, sku, product_name, brand, price, quantity ,created_by FROM history ORDER BY id ASC'
+            'SELECT * FROM history ORDER BY id DESC'
         );
-          const formattedRows = result.rows.map(row => {
-      if (row.date) {
-        const dateObj = new Date(row.date);
-        row.date = dateObj.toLocaleDateString('en-GB', {
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric'
+        
+        const formattedRows = result.rows.map(row => {
+            if (row.date) {
+                const dateObj = new Date(row.date);
+                row.date = dateObj.toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+            }
+            return row;
         });
-      }
-      return row;
-    });
-
 
         if (result.rows.length === 0) {
             return res.status(404).json({ message: 'No history records found' });

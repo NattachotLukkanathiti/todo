@@ -414,22 +414,22 @@ loadTodos() {
           this.openpopup('New product created successfully. View changes in Stock History');
           this.loadInventory();
           this.resetForm();
-          const now = new Date();
+         const now = new Date();
           const historyData = {
-            date: now.toISOString().split('T')[0],      // Date
-            sku: productData.sku,                      // SKU
-            product_name: productData.product_name,    // Product Name
-            brand: productData.brand,                  // Brand
-            price: productData.price,                  // Price
-            quantity: productData.import_quantity,     // Quantity
-            create_by: this.username,                  // Create By
-            picture: productData.picture               // Picture
+            date: now.toISOString().split('T')[0],
+            sku: productData.sku,
+            product_name: productData.product_name,
+            brand: productData.brand,
+            price: productData.price,
+            quantity: productData.import_quantity, 
+            create_by: this.username,
+            picture: productData.picture     
           };
 
-          this.todoService.addHistory(historyData).subscribe({
-            next: () => console.log('History saved successfully'),
-            error: (err) => console.error('Failed to save history', err)
-          });
+        this.todoService.addHistory(historyData).subscribe({
+          next: () => console.log('History saved successfully'),
+          error: (err) => console.error('Failed to save history', err)
+        });
           // 1. บันทึก Audit Log
           const auditData = {
             date: now.toISOString().split('T')[0],
