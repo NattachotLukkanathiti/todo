@@ -325,7 +325,7 @@
     </div>
 </div>
 </div>   
-        
+     
         <div class="con_sku_pro">             
             <div class="sku_pro">             
                 <label class="label_import" for="">SKU <span class="important">*</span></label>             
@@ -398,75 +398,81 @@
             Search Product
         </div>
         <div class="add_image2">
-            <img  [src]="imagePreview || 'image/Add ImageAdd_image.svg'" style="width: 100px; height: 100px; object-fit: cover;">
-                <div class="sku_pro2">
-                    <label class="label_import" for="fileInput">Upload Image</label>
-                    <div class="con_edit">
-                    <input type="text" class="sku_input2" (ngModelChange)="onUrlChange($event)" [(ngModel)]="selectedProduct.picture" placeholder="Change Image" >
+            <img [src]="selectedProduct.picture || imagePreview || 'image/Add ImageAdd_image.svg'" style="width: 100px; height: 100px; object-fit: cover;">
+            <div class="sku_pro2">
+                <label class="label_import" for="fileInput">Upload Image</label>
+                <div class="con_edit">
+                    <input type="text" class="sku_input2" (ngModelChange)="onUrlChange($event)" [(ngModel)]="selectedProduct.picture" placeholder="Change Image" [disabled]="true">
                     <label for="fileInput" style="cursor: pointer;">
-                    <img class="icon_edit" src="image/edit_inventory.svg" alt="">
-                </label>
-            <input type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+                        <img class="icon_edit" src="image/edit_inventory.svg" alt="">
+                    </label>
+                    <input type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*" style="display: none;" [disabled]="true">
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+
+        <!-- ส่วนข้อมูลสินค้า (ดึงอัตโนมัติ) -->
         <div class="con_sku_pro">
             <div class="sku_pro">
-            <label class="label_import" for="">SKU <span class="important">*</span></label>
-            <input type="text" class="sku_input">
-        </div>
-        <div class="sku_pro">
-            <label class="label_import" for="">Product Name</label>
-            <input type="text" class="sku_input">
-        </div>
-        </div>
-        <div class="con_sku_pro">
+                <label class="label_import" for="">SKU <span class="important">*</span></label>
+                <input type="text" class="sku_input" [(ngModel)]="selectedProduct.sku" (blur)="onSkuChange()">
+            </div>
             <div class="sku_pro">
-            <label class="label_import" for="">Catagory</label>
-            <input type="text" class="sku_input">
-        </div>
-        <div class="sku_pro">
-            <label class="label_import" for="">Brand</label>
-            <input type="text" class="sku_input">
-        </div>
+                <label class="label_import" for="">Product Name</label>
+                <input type="text" class="sku_input" [(ngModel)]="selectedProduct.product_name" [disabled]="true">
+            </div>
         </div>
         <div class="con_sku_pro">
             <div class="sku_pro">
-            <label class="label_import" for="">Price</label>
-            <input type="text" class="sku_input">
+                <label class="label_import" for="">Category</label>
+                <input type="text" class="sku_input" [(ngModel)]="selectedProduct.category" [disabled]="true">
+            </div>
+            <div class="sku_pro">
+                <label class="label_import" for="">Brand</label>
+                <input type="text" class="sku_input" [(ngModel)]="selectedProduct.brand" [disabled]="true">
+            </div>
         </div>
-        <div class="sku_pro">
-            <label  class="label_import"for="">Quantity In Stock</label>
-            <input type="text" class="sku_input">
+        <div class="con_sku_pro">
+            <div class="sku_pro">
+                <label class="label_import" for="">Price</label>
+                <input type="text" class="sku_input" [(ngModel)]="selectedProduct.price" [disabled]="true">
+            </div>
+            <div class="sku_pro">
+                <label class="label_import" for="">Quantity In Stock</label>
+                <input type="text" class="sku_input" [(ngModel)]="selectedProduct.quantity" [disabled]="true">
+            </div>
         </div>
-        </div>
-         <div class="serach_product">
+
+        <div class="serach_product">
             Add Product
         </div>
+
+        <!-- ส่วนที่ต้องกรอกเอง -->
         <div class="con_sku_pro">
             <div class="sku_pro">
-            <label class="label_import" for="">Supplier <span class="important">*</span></label>
-            <input type="text" class="sku_input">
-        </div>
-        <div class="sku_pro">
-            <label class="label_import" for="">Supplier Invoice No.<span class="important">*</span></label>
-            <input type="text" class="sku_input">
-        </div>
+                <label class="label_import" for="">Supplier <span class="important">*</span></label>
+                <input type="text" class="sku_input" [(ngModel)]="importData.supplier">
+            </div>
+            <div class="sku_pro">
+                <label class="label_import" for="">Supplier Invoice No.<span class="important">*</span></label>
+                <input type="text" class="sku_input" [(ngModel)]="importData.invoiceNo">
+            </div>
         </div>
         <div class="con_sku_pro">
             <div class="label_import" class="sku_pro">
-            <label for="">Import Quantity <span class="important">*</span></label>
-            <input type="text" class="sku_input">
-        </div>
-        <div class="sku_pro">
-            <label class="label_import"  for="">Upload Invoice <span class="important">*</span></label>
-            <input type="text"  placeholder="Upload Invoice Image / PDF" class="sku_input">
-        </div>
-        </div>
-          <div class="button_import">
-                <div class="save">Save to Stock</div>
-                <div class="cancel" (click)="button_cancels()" >Cancel</div>
+                <label for="">Import Quantity <span class="important">*</span></label>
+                <input type="number" class="sku_input" [(ngModel)]="importData.importQuantity">
             </div>
+            <div class="sku_pro">
+                <label class="label_import" for="">Upload Invoice <span class="important">*</span></label>
+                <input type="text" placeholder="Upload Invoice Image / PDF" class="sku_input" [(ngModel)]="importData.invoiceFile">
+            </div>
+        </div>
+
+        <div class="button_import">
+            <div class="save" (click)="saveImportToStock()">Save to Stock</div>
+            <div class="cancel" (click)="button_cancels()">Cancel</div>
+        </div>
     </div>
 </div>
 

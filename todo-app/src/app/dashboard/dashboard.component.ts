@@ -314,30 +314,44 @@ products() {
   return this.productsList;
 }
 loadTopProducts() {
+  // 1. ดึงข้อมูลทั้ง History และ Inventory พร้อมกัน
   this.todoService.getHistory().subscribe({
     next: (history) => {
-      console.log("History Data:", history); // <-- เพิ่มบรรทัดนี้เพื่อดูข้อมูลใน Console
-      
-      const productCount: { [key: string]: { name: string; count: number; image?: string } } = {};
+      this.todoService.getInventory().subscribe({
+        next: (inventory) => {
+          
+          // 2. สร้าง Map สำหรับค้นหารูปภาพจาก Inventory โดยใช้ชื่อสินค้าเป็น Key
+          const inventoryMap: { [key: string]: string } = {};
+          inventory.forEach(item => {
+            if (item.product_name && item.picture) {
+              inventoryMap[item.product_name] = item.picture;
+            }
+          });
 
-      history.forEach(item => {
-        const name = item.product_name; 
+          const productCount: { [key: string]: { name: string; count: number; image?: string } } = {};
 
-        if (name) {
-          if (productCount[name]) {
-            productCount[name].count += 1;
-          } else {
-            // ลองเปลี่ยน item.picture เป็น item.image หรือ item.photo ถ้า picture ไม่แสดง
-            productCount[name] = { name: name, count: 1, image: item.picture };
-          }
+          history.forEach(item => {
+            const name = item.product_name; 
+
+            if (name) {
+              if (productCount[name]) {
+                productCount[name].count += 1;
+              } else {
+                // 3. ดึงรูปภาพจาก Inventory ถ้าไม่มีให้ใช้รูปจาก History (ถ้ามี)
+                const imageUrl = inventoryMap[name] || item.picture;
+                productCount[name] = { name: name, count: 1, image: imageUrl };
+              }
+            }
+          });
+
+          this.productsList = Object.values(productCount)
+            .sort((a, b) => b.count - a.count)
+            .slice(0, 5);
         }
       });
-
-      this.productsList = Object.values(productCount)
-        .sort((a, b) => b.count - a.count)
-        .slice(0, 5);
     },
     error: (err) => console.error('Error loading top products:', err)
   });
 }
+
 }

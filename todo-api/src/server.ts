@@ -164,7 +164,39 @@ app.post('/api/audit', async (req, res) => {
     res.status(500).json({ success: false, message: 'Server Error' });
   }
 });
+// 📌 เพิ่ม Route สำหรับบันทึกข้อมูลลงตาราง History
+app.post('/api/history', async (req, res) => {
+  try {
+    const { date, sku, product_name, brand, price, quantity, create_by } = req.body;
 
+    if (!sku || !product_name) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'กรุณากรอกข้อมูล SKU และ Product Name' 
+      });
+    }
+
+    const result = await pool.query(
+      `INSERT INTO history (date, sku, product_name, brand, price, quantity, created_by) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7) 
+       RETURNING *`,
+      [date, sku, product_name, brand, price, quantity, create_by]
+    );
+
+    res.status(201).json({
+      success: true,
+      message: 'บันทึกประวัติสำเร็จ',
+      data: result.rows[0]
+    });
+
+  } catch (error) {
+    console.error('Error inserting into history:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Server Error' 
+    });
+  }
+});
 app.get('/api/audit', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM audit ORDER BY id DESC');

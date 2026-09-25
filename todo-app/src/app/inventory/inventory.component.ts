@@ -85,6 +85,12 @@ selectedProduct: any = {
     selectedSupplier: string = 'all';
     filteredInventory: any[] = [];
   openpro = false;
+    importData: any = {
+    supplier: '',
+    invoiceNo: '',
+    importQuantity: null,
+    invoiceFile: ''
+  };
   //  เพิ่มบรรทัดนี้เข้าไปค่ะ
   imagePreview: string | null = null;
  private supabaseUrl = 'https://ehyhllaxvozjdndddfku.supabase.co';
@@ -287,6 +293,8 @@ loadTodos() {
   });
 }
   button_cancels() {
+      this.resetImportForm();
+        this.resetForm() ;
    this.outimport = true;
   const element = document.querySelector('.con_import_product') as HTMLElement;
   const element2 = document.querySelector('.con_import_product2') as HTMLElement;
@@ -407,7 +415,20 @@ loadTodos() {
           this.loadInventory();
           this.resetForm();
           const now = new Date();
-          
+           const historyData = {
+            date: now.toISOString().split('T')[0],      // Date
+            sku: productData.sku,                      // SKU
+            product_name: productData.product_name,    // Product Name
+            brand: productData.brand,                  // Brand
+            price: productData.price,                  // Price
+            quantity: productData.import_quantity,     // Quantity
+            create_by: this.username                   // Create By
+          };
+
+          this.todoService.addHistory(historyData).subscribe({
+            next: () => console.log('History saved successfully'),
+            error: (err) => console.error('Failed to save history', err)
+          });
           // 1. บันทึก Audit Log
           const auditData = {
             date: now.toISOString().split('T')[0],
@@ -703,5 +724,61 @@ logout() {
     if (this.newProduct.category && this.newProduct.category.length >= 3) {
       this.generateSKU(this.newProduct.category);
     }
+  }
+  onSkuChange() {
+    if (this.selectedProduct && this.selectedProduct.sku) {
+      // ค้นหา SKU จากรายการ Inventory ที่มีอยู่
+      const foundProduct = this.filteredInventory.find(item => item.sku === this.selectedProduct.sku);
+      
+      if (foundProduct) {
+        // ถ้าเจอ ให้ดึงข้อมูลมาแสดง
+        this.selectedProduct = { ...foundProduct };
+        this.imagePreview = foundProduct.picture || null;
+      } else {
+        this.openpopupnoti('ไม่พบข้อมูล SKU นี้ในระบบ');
+        // รีเซ็ตข้อมูลถ้าไม่เจอ
+        this.selectedProduct = { sku: this.selectedProduct.sku };
+        this.imagePreview = null;
+      }
+    }
+  }
+
+  // 3. เพิ่มฟังก์ชันบันทึกข้อมูลการนำเข้า
+  saveImportToStock() {
+    if (!this.selectedProduct.sku || !this.importData.supplier || !this.importData.importQuantity) {
+      this.openpopupnoti('กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน (*)');
+      return;
+    }
+
+    this.isLoading = true;
+
+    // รวมข้อมูลสินค้าและข้อมูลการนำเข้า
+    const importPayload = {
+      ...this.selectedProduct,
+      ...this.importData,
+      // คำนวณจำนวน Stock ใหม่ (จำนวนเดิม + จำนวนที่นำเข้า)
+      quantity: (this.selectedProduct.quantity || 0) + (this.importData.importQuantity || 0)
+    };
+
+    // ตัวอย่างการเรียก Service เพื่อบันทึก (ปรับเปลี่ยนตาม API ของคุณ)
+    this.todoService.updateInventory(importPayload.sku, importPayload).subscribe({
+      next: (res) => {
+        this.openpopup('บันทึกการนำเข้าสินค้าเรียบร้อยแล้ว');
+        this.loadInventory();
+        this.resetImportForm();
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.openpopupnoti('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+        this.isLoading = false;
+      }
+    });
+  }
+
+  // 4. ฟังก์ชันล้างค่าฟอร์มนำเข้า
+  resetImportForm() {
+    this.importData = { supplier: '', invoiceNo: '', importQuantity: null, invoiceFile: '' };
+    this.selectedProduct = {};
+    this.imagePreview = null;
   }
 }
