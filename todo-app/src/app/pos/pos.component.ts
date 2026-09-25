@@ -258,6 +258,7 @@ export class PosComponent implements OnInit, OnDestroy {
       })
     } ,300)
   }
+  
   toggleNav(): void { this.isNavOpen = !this.isNavOpen; this.openPanel = null; }
   selectNav(label: string): void { if (label !== 'Pos') return; this.selectedNav = label; this.isNavOpen = false; this.currentView = 'pos'; }
   toggleAccountMenu(): void { this.openPanel = this.openPanel === 'account' ? null : 'account'; this.isNavOpen = false; }
@@ -273,7 +274,7 @@ export class PosComponent implements OnInit, OnDestroy {
   }
   openHelp(){
     this.router.navigate(['helpp'],{
-      state:{ username: this.username, email: this.email, role: this.role, profile: this.profile}
+      state:{ username: this.username, email: this.email, role: this.userRole, profile: this.profile}
     })
   }
   openProfile() {
@@ -330,7 +331,30 @@ export class PosComponent implements OnInit, OnDestroy {
     if (!this.cartItems.length) return;
     this.cartItems = [];
   }
+  logout() {
+    const now = new Date();
+    const auditData = {
+      date: now.toISOString().split('T')[0],
+      time: now.toTimeString().split(' ')[0],
+      username: this.username, 
+      email: this.email,       
+      activity: 'Logout', 
+      role: this.userRole,     
+      picture: this.profile
+    };
 
+
+    this.todoService.logAudit(auditData).subscribe({
+      next: () => {
+        console.log('Logout audit saved');
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error('Failed to save logout audit', err);
+        this.router.navigate(['/login']); 
+      }
+    });
+  }
   formatStock(stock: number): string { return stock < 10 ? `0${stock}` : `${stock}`; }
 
   formatCurrency(amount: number | null | undefined): string {

@@ -261,7 +261,7 @@ input::placeholder{
     cursor: pointer;
 }
 .custom-select {
-  width: 120px; /* ปรับความกว้างตามต้องการ */
+  width: 30%; /* ปรับความกว้างตามต้องการ */
   position: relative;
 }
 

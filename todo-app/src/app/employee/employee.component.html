@@ -86,15 +86,13 @@
                 <div class="header_in">
                     <div class="header_Inventory">Employee</div>
                         <div class="in_bt">
-                            <div class="pdf">
+                           <!--  <div class="pdf">
                                 <img src="image/pdf.svg" alt="">
                             </div>
                             <div class="xs">
                                     <img src="image/XS.svg" alt="">
-                                </div>
-                                <div class="reload" (click)="reloads()">
-                                    <img src="image/Group.svg" alt="">
-                                </div>
+                                </div> -->
+                
                           
                         </div>
                 </div>
@@ -128,7 +126,11 @@
     <option value="Admin">Admin</option>
   </select>
 </div>
+    
 </div>
+<div class="reload" (click)="reloads()">
+                                    <img src="image/Group.svg" alt="">
+                                </div>
                     </div>
                 <div class="detail_con">
                     
@@ -168,7 +170,7 @@
 <div class="sku2">{{ order.phone }}</div>
 <div class="button_small">
             <img class="icon_small_inventory"  *ngIf="userRole === 'admin' || userRole === 'manager'" src="image/edit.svg" (click)="button_edit_account2(order)">
-            <img class="icon_small_inventory"  *ngIf="(userRole === 'admin' || userRole === 'manager') && isGuest(order.role)" src="image/delete.svg" alt="">
+            <img class="icon_small_inventory2"  *ngIf="(userRole === 'admin' || userRole === 'manager') && isGuest(order.role)" src="image/delete.svg" alt="">
         </div>
     </div>
     <div class="line"></div>

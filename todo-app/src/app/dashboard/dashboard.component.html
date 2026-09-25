@@ -229,6 +229,50 @@
             </div>
         </div>
 
+        <div class="static"><div class="weekly__header">
+  <h2 class="weekly__title">Weekly Sales</h2>
+  <div class="weekly__nav">
+    <button type="button" class="weekly__arrow" aria-label="Previous week">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.5 2.5 5 8l5.5 5.5" /></svg>
+    </button>
+    <span class="weekly__range"></span>
+    <button type="button" class="weekly__arrow" aria-label="Next week" >
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 2.5 11 8l-5.5 5.5" /></svg>
+    </button>
+  </div>
+</div>
+
+<div class="heatmap-scroll">
+  <div class="heatmap">
+    <div class="heatmap__times">
+      <span class="heatmap__day" aria-hidden="true"></span>
+      @for (time of ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00']; track time) {
+        <span class="heatmap__time">{{ time }}</span>
+      }
+    </div>
+    <div class="heatmap__grid">
+      @for (day of ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']; track day; let d = $index) {
+        <div class="heatmap__col">
+          <span class="heatmap__day">{{ day }}</span>
+          @for (slot of [0, 1, 2, 3, 4, 5, 6, 7]; track slot) {
+      
+            <span class="heatmap__cell" ></span>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>
+<div class="legend">
+  <span class="legend__item"><span class="legend__dot legend__dot--0"></span>0–10,000</span>
+  <span class="legend__item"><span class="legend__dot legend__dot--1"></span>10,001–30,000</span>
+  <span class="legend__item"><span class="legend__dot legend__dot--2"></span>30,001–50,000</span>
+  <span class="legend__item"><span class="legend__dot legend__dot--3"></span>50,001+</span>
+</div>
+</div>
+
+
+
 
 
     </div>
@@ -250,17 +294,63 @@
             <div class="CH">Invoiced</div>
          </div>
     </div>
-    <div class="con_sale_order">
-        <div class="header_sale">Sale Order
-         <div class="con_header_colum">
-            <div class="div">Channel</div>
-            <div class="">Draft</div>
-            <div class="">Confirmed</div>
-            <div class="">Shipped</div>
-            <div class="">Invoiced</div>
-         </div>
+
+
+<div class="con_sale_order">
+   <div class="con_t">
+     <h2 class="supplier__title">Supplier Performance Report <span>(Top 5 Suppliers)</span></h2>
+    <div class="supplier__chart">
+  @for (row of suppliers().slice(0, 5); track $index) {
+    <div class="supplier__row">
+      <span class="supplier__name">{{ row.name }}</span>
+      <div class="supplier__bar">
+        @if (row.early > 0) {
+          <span class="supplier__segment supplier__segment--early" [style.width.%]="row.early"><span class="supplier__value">{{ row.early }}%</span></span>
+        }
+        @if (row.onTime > 0) {
+          <span class="supplier__segment supplier__segment--on-time" [style.width.%]="row.onTime"><span class="supplier__value">{{ row.onTime }}%</span></span>
+        }
+        @if (row.late > 0) {
+          <span class="supplier__segment supplier__segment--late" [style.width.%]="row.late"><span class="supplier__value">{{ row.late }}%</span></span>
+        }
+      </div>
     </div>
-    </div>
+  } @empty {
+    <p class="supplier__empty">No supplier data yet.</p>
+  }
+</div>
+   </div>
+   <div class="legend">
+  <span class="legend__item"><span class="legend__dot legend__dot--early"></span>Early</span>
+  <span class="legend__item"><span class="legend__dot legend__dot--on-time"></span>On Time</span>
+  <span class="legend__item"><span class="legend__dot legend__dot--late"></span>Late</span>
+</div>
+</div>
+
+<div class="con_sale_order">
+  <div class="con_t">
+      <h2 class="top-products__title">Top 5 Products</h2>
+
+      <ol class="product-list">
+        @for (product of products.slice(0, 5); track $index; let i = $index) {
+          <li class="product-row">
+            <span class="product-row__rank">{{ i + 1 }}.</span>
+            <span class="product-row__thumb">
+              @if (product.image) { <img [src]="product.image" alt="" /> }
+            </span>
+            <span class="product-row__name">{{ product.name }}</span>
+            <!-- เพิ่มการแสดงจำนวนที่ขายได้ -->
+            <span class="product-row__qty">ขายแล้ว {{ product.quantity }} ชิ้น</span>
+          </li>
+        } @empty {
+          <li class="product-list__empty">No products yet.</li>
+        }
+      </ol>
+  </div>
+</div>
+
+
+  
     
 
    </div>

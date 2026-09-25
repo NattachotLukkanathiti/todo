@@ -307,6 +307,7 @@
     width: 15px;
     height: 15px;
     border-radius: 8px;
+    background: #FFFCE8;
     border: 1px solid #AFAFAF;
     cursor: pointer;
 }
@@ -319,6 +320,31 @@
     border: 1px solid #AFAFAF;
 }
 .icon_small_inventory:active {
+    padding: 7px;
+    width: 15px;
+    background-color: #8a8a8a;
+    height: 15px;
+    border-radius: 8px;
+    border: 1px solid #AFAFAF;
+}
+.icon_small_inventory2 {
+    padding: 7px;
+    width: 15px;
+    height: 15px;
+    border-radius: 8px;
+    background: #FCE8E8;
+    border: 1px solid #AFAFAF;
+    cursor: pointer;
+}
+.icon_small_inventory2:hover {
+    padding: 7px;
+    width: 15px;
+    background-color: #d0d0d0;
+    height: 15px;
+    border-radius: 8px;
+    border: 1px solid #AFAFAF;
+}
+.icon_small_inventory2:active {
     padding: 7px;
     width: 15px;
     background-color: #8a8a8a;
@@ -668,8 +694,9 @@
 }
 .con_position{
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     position: relative;
+    gap: 10px;
     width: 100%;
 }
 .con_tainer_page{

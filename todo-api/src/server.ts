@@ -58,9 +58,11 @@ app.get('/api/months', async (req, res) => {
 
 app.get('/api/sale_order', async (req, res) => {   
   try {     
+    // 1. เพิ่ม product_name และ quantity ในคำสั่ง SELECT
     const result = await pool.query(       
-      'SELECT id, order_code, date, amount, create_by, status FROM sale_order'     
+      'SELECT id, order_code, date, amount, create_by, status, product_name, quantity FROM sale_order'     
     );      
+    
     const formattedRows = result.rows.map(row => {
       if (row.date) {
         const dateObj = new Date(row.date);

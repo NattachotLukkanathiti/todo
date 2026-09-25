@@ -86,15 +86,12 @@
                 <div class="header_in">
                     <div class="header_Inventory">Audit Log</div>
                         <div class="in_bt">
-                            <div class="pdf">
+                           <!--  <div class="pdf">
                                 <img src="image/pdf.svg" alt="">
                             </div>
                             <div class="xs">
                                     <img src="image/XS.svg" alt="">
-                                </div>
-                                <div class="reload" (click)="reloads()">
-                                    <img src="image/Group.svg" alt="">
-                                </div>
+                                </div> -->
                           
                         </div>
                 </div>
@@ -104,8 +101,7 @@
                             (input)="filterS()">
                         <img class="iconsearch" src="image/search.svg" alt="">
                     </div>
-                    <div class="con_btn">
-                        <div class="custom-select">
+                           <div class="custom-select">
   <select class="text">
     <option value="all">All <img class="icon_down"src="image/down.svg" alt=""></option>
     <option value="option1">Option 1</option>
@@ -119,8 +115,12 @@
     <option value="option2">Option 2</option>
   </select>
 </div>
+                    <div class="con_btn">
+                 
                     </div>
-
+  <div class="reload" (click)="reloads()">
+                                    <img src="image/Group.svg" alt="">
+                                </div>
 <!-- <div class="pagination">
   <a href="#" class="prev">&lt; Prev</a>
   <a href="#" class="page active">1</a>

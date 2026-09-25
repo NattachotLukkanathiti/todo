@@ -1,6 +1,6 @@
 
 import { FormsModule } from '@angular/forms';
-import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef ,input} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TodoService } from '../services/todo.service';
@@ -13,7 +13,9 @@ type HeaderPanel = 'account' | null;
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent implements OnInit {
-
+  
+  readonly suppliers = input<{ name: string; early: number; onTime: number; late: number }[]>([]);
+      products: { name: string; quantity: number; image?: string }[] = []; 
   private todoService = inject(TodoService);
     private changeDetector = inject(ChangeDetectorRef); // <-- เพิ่มบรรทัดนี้
   search = '';
@@ -62,7 +64,7 @@ export class DashboardComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-
+this.loadTopProducts(); 
     const state = history.state;
     this.username = state.username || '';
     this.email = state.email || '';
@@ -306,5 +308,30 @@ export class DashboardComponent implements OnInit {
       this.changeDetector.markForCheck();
     }, 300);
   }
+    loadTopProducts() {
+  this.todoService.getSaleOrders().subscribe({
+    next: (sales) => {
+      const productMap: { [key: string]: { name: string; quantity: number; image?: string } } = {};
+
+      sales.forEach(order => {
+        // ตรวจสอบชื่อฟิลด์ให้ตรงกับฐานข้อมูลของคุณ (เช่น product_name, quantity)
+        const name = order.product_name; 
+        const qty = Number(order.quantity) || 0;
+
+        if (productMap[name]) {
+          productMap[name].quantity += qty;
+        } else {
+          productMap[name] = { name: name, quantity: qty, image: order.image };
+        }
+      });
+
+      // เรียงลำดับจากมากไปน้อย และตัดเอา 5 อันดับแรก
+      this.products = Object.values(productMap)
+        .sort((a, b) => b.quantity - a.quantity)
+        .slice(0, 5);
+    },
+    error: (err) => console.error('Error loading sales data:', err)
+  });
+}
 
 }

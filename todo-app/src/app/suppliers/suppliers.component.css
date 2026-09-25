@@ -1620,3 +1620,44 @@ input::placeholder{
 .product { display: none; }
 .button_importt { display: block; }
 .out_comimport { animation: movess 0.5s ease-in-out; }
+
+/* 
+หน้านี้ของปุ่มลบ */
+/* จัดตำแหน่งกลุ่มปุ่มให้อยู่ทางขวาสุด */
+.button_small {
+    position: absolute;
+    display: flex;
+    right: 50px;
+    gap: 10px;
+    align-items: center;
+}
+
+/* รูปแบบของปุ่มไอคอน (Edit / Delete) */
+.icon_small_inventory {
+    padding: 7px;
+    width: 15px;
+    height: 15px;
+    border-radius: 8px;
+    border: 1px solid #AFAFAF;
+    cursor: pointer;
+}
+
+/* เอฟเฟกต์เมื่อเอาเมาส์ไปชี้ (Hover) */
+.icon_small_inventory:hover {
+    padding: 7px;
+    width: 15px;
+    background-color: #d0d0d0;
+    height: 15px;
+    border-radius: 8px;
+    border: 1px solid #AFAFAF;
+}
+
+/* เอฟเฟกต์เมื่อกดคลิก (Active) */
+.icon_small_inventory:active {
+    padding: 7px;
+    width: 15px;
+    background-color: #8a8a8a;
+    height: 15px;
+    border-radius: 8px;
+    border: 1px solid #AFAFAF;
+}
