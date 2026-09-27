@@ -709,14 +709,16 @@ app.delete('/api/inventory/:sku', async (req, res) => {
 app.put('/api/todos/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { dob, national_id, address, emergency_contact, profile } = req.body;
+    // เพิ่ม username เข้ามารับค่าจาก body
+    const { username, dob, national_id, address, emergency_contact, profile } = req.body;
 
     const result = await pool.query(
       `UPDATE todos 
-   SET username = $1, dob = $2, national_id = $3, address = $4, emergency_contact = $5, profile = $6
-   WHERE id = $7 
-   RETURNING *`,
-      [dob, national_id, address, emergency_contact, profile, id]
+       SET username = $1, dob = $2, national_id = $3, address = $4, emergency_contact = $5, profile = $6
+       WHERE id = $7 
+       RETURNING *`,
+      // เพิ่ม username เข้าไปเป็นตัวแรกใน Array ให้ตรงกับ $1
+      [username, dob, national_id, address, emergency_contact, profile, id]
     );
 
     if (result.rowCount === 0) {
@@ -725,6 +727,7 @@ app.put('/api/todos/:id', async (req, res) => {
 
     res.json({ success: true, data: result.rows[0] });
   } catch (error) {
+    console.error('Error updating profile:', error); // เพิ่ม log เพื่อดู error
     res.status(500).json({ success: false, message: 'Server Error' });
   }
 });

@@ -169,13 +169,20 @@ export class HistoryComponent {
   this.loader = true;
   this.todoService.getHistory().subscribe({
     next: (res) => {
-      this.history = res;
+      // Map ข้อมูลเพื่อเพิ่ม picture (รูปโปรไฟล์) และแปลง created_by ให้แน่ใจว่ามีค่า
+      this.history = res.map((item: any) => ({
+        ...item,
+        created_by: item.created_by || 'Unknown User',
+        // ใช้รูปโปรไฟล์จาก state ถ้าไม่มีให้ใช้รูป default
+        picture: item.picture || this.profile || 'assets/default-avatar.png' 
+      }));
+      
       this.isLoading = false;
       this.loader = false;
     },
     error: (err) => {
       console.error('Error fetching history:', err);
-      this.loader = false; // เพิ่มการปิด loader เมื่อเกิด error
+      this.loader = false;
     }
   });
 }

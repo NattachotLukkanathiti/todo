@@ -13,7 +13,7 @@
 <div  class="he" *ngIf="userRole === 'admin' || userRole === 'manager'" (click)="Animationa2_out()">Inventory</div>
 <div class="he" (click)="Animationa3_out()">Sales Orders</div>
 <div class="he"  *ngIf="userRole === 'admin' || userRole === 'manager'"  (click)="Animationa4_out()">Stock History</div>
-<div class="he" (click)="Animationa5_out()">Employee</div>
+<div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'" (click)="Animationa5_out()">Employee</div>
 <div class="he"  *ngIf="userRole === 'admin' || userRole === 'manager'" (click)="Animationa6_out()">Audit Log</div>
 <div class="he"  *ngIf="userRole === 'admin' || userRole === 'manager'" >Suppliers</div>
 <!-- <div class="he" (click)="Animation_out5()">Help</div>

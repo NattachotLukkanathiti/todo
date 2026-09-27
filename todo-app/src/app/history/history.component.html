@@ -13,7 +13,7 @@
         <div class="he" (click)="Animationa2_out()" >Inventory</div> <!-- แก้ไขให้แยกฟังก์ชัน -->
         <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'"(click)="Animationa3_out()">Sales Orders</div>
         <div class="he" >Stock History</div>
-        <div class="he" (click)="Animationa4_out()">Employee</div>
+        <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'"(click)="Animationa4_out()">Employee</div>
         <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'"(click)="Animationa6_out()">Audit Log</div>
         <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'"(click)="Animation_out5()">Suppliers</div>
     </div>
@@ -159,7 +159,8 @@
 <div class="sku2">{{ order.quantity }}</div>
 <div class="sku2">
     <div class="connn">
-        <img profile_employee src="image/profile.svg" alt="">{{ order.created_by }}
+        <img class="profile_employee" [src]="order.picture" alt="">
+{{ order.created_by }}
     </div>
 </div>
     </div>

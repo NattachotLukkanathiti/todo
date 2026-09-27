@@ -1408,4 +1408,10 @@ input::placeholder{
     color: #89898b;
 }
 
-
+.profile_employee {
+  width: 32px;           /* กำหนดความกว้าง */
+  height: 32px;          /* กำหนดความสูง */
+  border-radius: 50%;    /* ทำให้เป็นวงกลม */
+  object-fit: cover;     /* ปรับสัดส่วนรูปภาพไม่ให้บิดเบี้ยว */
+  margin-right: 8px;     /* เว้นระยะห่างระหว่างรูปกับชื่อ */
+}
