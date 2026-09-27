@@ -637,16 +637,16 @@ app.put('/api/inventory/:sku', async (req, res) => {
     const { sku } = req.params;
     const { 
       product_name, category, brand, price, 
-      quantity, quantity_alert, supplier, invoice_no, picture 
+      quantity, quantity_alert, supplier, invoice_no, picture, created_by // <-- เพิ่ม created_by
     } = req.body;
 
     const result = await pool.query(
       `UPDATE inventory 
        SET product_name = $1, category = $2, brand = $3, price = $4, 
-           quantity = $5, quantity_alert = $6, supplier = $7, invoice_no = $8, picture = $9
-       WHERE sku = $10 
+           quantity = $5, quantity_alert = $6, supplier = $7, invoice_no = $8, picture = $9, created_by = $10
+       WHERE sku = $11 
        RETURNING *`,
-      [product_name, category, brand, price, quantity, quantity_alert, supplier, invoice_no, picture, sku]
+      [product_name, category, brand, price, quantity, quantity_alert, supplier, invoice_no, picture, created_by, sku]
     );
 
     if (result.rowCount === 0) {
