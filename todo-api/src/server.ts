@@ -168,7 +168,7 @@ app.post('/api/audit', async (req, res) => {
 // 📌 เพิ่ม Route สำหรับบันทึกข้อมูลลงตาราง History
 app.post('/api/history', async (req, res) => {
   try {
-    const { date, sku, product_name, brand, price, quantity, create_by, picture } = req.body;
+    const { date, sku, product_name, brand, price, quantity, created_by, picture } = req.body;
 
     if (!sku || !product_name) {
       return res.status(400).json({ 
@@ -181,7 +181,7 @@ app.post('/api/history', async (req, res) => {
       `INSERT INTO history (date, sku, product_name, brand, price, quantity, created_by, picture) 
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
        RETURNING *`,
-      [date, sku, product_name, brand, price, quantity, create_by, picture]
+      [date, sku, product_name, brand, price, quantity, created_by, picture]
     );
 
     res.status(201).json({
@@ -637,16 +637,16 @@ app.put('/api/inventory/:sku', async (req, res) => {
     const { sku } = req.params;
     const { 
       product_name, category, brand, price, 
-      quantity, quantity_alert, supplier, invoice_no, picture, created_by // <-- เพิ่ม created_by
+      quantity, quantity_alert, supplier, invoice_no, picture 
     } = req.body;
 
     const result = await pool.query(
       `UPDATE inventory 
        SET product_name = $1, category = $2, brand = $3, price = $4, 
-           quantity = $5, quantity_alert = $6, supplier = $7, invoice_no = $8, picture = $9, created_by = $10
-       WHERE sku = $11 
+           quantity = $5, quantity_alert = $6, supplier = $7, invoice_no = $8, picture = $9
+       WHERE sku = $10 
        RETURNING *`,
-      [product_name, category, brand, price, quantity, quantity_alert, supplier, invoice_no, picture, created_by, sku]
+      [product_name, category, brand, price, quantity, quantity_alert, supplier, invoice_no, picture, sku]
     );
 
     if (result.rowCount === 0) {
