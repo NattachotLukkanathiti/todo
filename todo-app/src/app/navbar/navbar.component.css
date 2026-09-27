@@ -7,7 +7,7 @@
   pointer-events: none;
   width: 100vw;
   z-index: 10;
-  border: 1px solid #CED4DA;
+/*   border: 1px solid #CED4DA; */
   animation: slide 1s ease-in-out;
   
   /* เพิ่ม 2 บรรทัดนี้ เพื่อให้เมาส์คลิกทะลุ Navbar ได้ */

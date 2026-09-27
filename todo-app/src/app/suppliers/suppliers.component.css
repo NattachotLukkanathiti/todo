@@ -272,7 +272,7 @@ input::placeholder{
   position: absolute;
   right: 16px;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateX(-50%);
   pointer-events: none;
 }
 .pagination {
@@ -328,19 +328,19 @@ input::placeholder{
 
 @keyframes Move_Return {
     0% {
-        transform: translateY(500px);
+        transform: translateX(500px);
         opacity: 0;
     }
 
     50% {
-        transform: translateY(0);
+        transform: translateX(0);
         opacity: 1;
         transform: scaleY(1.1);
 
     }
 
     100% {
-        transform: translateY(0);
+        transform: translateX(0);
         opacity: 1;
     }
 }
@@ -351,13 +351,13 @@ input::placeholder{
 
 @keyframes Moveemployee {
     0% {
-        transform: translateY(0px);
+        transform: translateX(0px);
         /* เริ่มต้นที่ตำแหน่งปกติ */
         opacity: 1;
     }
 
     100% {
-        transform: translateY(-2000px);
+        transform: translateX(-2000px);
         /* เลื่อนลงไปที่จุดสุดท้าย */
         opacity: 0;
         /* ค่อยๆ จางหายไปเมื่อเลื่อนลง */
@@ -459,7 +459,7 @@ input::placeholder{
 }
 .table_detail2 {     
     opacity: 0; /* ซ่อนไว้ก่อนเริ่มแอนิเมชัน */     
-    transform: translateY(-10px); /* ดันขึ้นไปด้านบนเล็กน้อย */     
+    transform: translateX(-10px); /* ดันขึ้นไปด้านบนเล็กน้อย */     
     animation: showLine 1s ease forwards; /* สั่งให้เล่นแอนิเมชัน */ 
 }  
 .out{
@@ -491,7 +491,7 @@ input::placeholder{
            box-shadow: 0 0 100px rgba(253, 255, 253, 0), 0 8px 20px rgba(0, 0, 0, 0.15);
     }
     100% {
-        transform: translateY(0);
+        transform: translateX(0);
                 opacity: 1;
 
     }
@@ -891,7 +891,7 @@ input::placeholder{
 @keyframes Boom {
     0%{
         box-shadow: 0px 42px 234px 0px #e3ffdc;
-        transform: translateY(-500px); 
+        transform: translateX(-500px); 
         opacity: 0;
 
     }
@@ -901,7 +901,7 @@ input::placeholder{
          
     }
     40%{
-        transform: translateY(100px); 
+        transform: translateX(100px); 
     }
     80%{
         box-shadow: none;
@@ -930,11 +930,11 @@ input::placeholder{
 }
 @keyframes Move_dashboard{
     0% {
-        transform: translateY(0px); /* เริ่มต้นที่ตำแหน่งปกติ */
+        transform: translateX(0px); /* เริ่มต้นที่ตำแหน่งปกติ */
         opacity: 1;
     }
     100% {
-        transform: translateY(500px); /* เลื่อนลงไปที่จุดสุดท้าย */
+        transform: translateX(500px); /* เลื่อนลงไปที่จุดสุดท้าย */
         opacity: 0; /* ค่อยๆ จางหายไปเมื่อเลื่อนลง */
     }
 }
@@ -1418,43 +1418,43 @@ input::placeholder{
 
 @keyframes spin_4991 {
   10% {
-    -webkit-transform: translateY(-102%);
-    transform: translateY(-102%);
+    -webkit-transform: translateX(-102%);
+    transform: translateX(-102%);
   }
 
   25% {
-    -webkit-transform: translateY(-100%);
-    transform: translateY(-100%);
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
   }
 
   35% {
-    -webkit-transform: translateY(-202%);
-    transform: translateY(-202%);
+    -webkit-transform: translateX(-202%);
+    transform: translateX(-202%);
   }
 
   50% {
-    -webkit-transform: translateY(-200%);
-    transform: translateY(-200%);
+    -webkit-transform: translateX(-200%);
+    transform: translateX(-200%);
   }
 
   60% {
-    -webkit-transform: translateY(-302%);
-    transform: translateY(-302%);
+    -webkit-transform: translateX(-302%);
+    transform: translateX(-302%);
   }
 
   75% {
-    -webkit-transform: translateY(-300%);
-    transform: translateY(-300%);
+    -webkit-transform: translateX(-300%);
+    transform: translateX(-300%);
   }
 
   85% {
-    -webkit-transform: translateY(-402%);
-    transform: translateY(-402%);
+    -webkit-transform: translateX(-402%);
+    transform: translateX(-402%);
   }
 
   100% {
-    -webkit-transform: translateY(-400%);
-    transform: translateY(-400%);
+    -webkit-transform: translateX(-400%);
+    transform: translateX(-400%);
   }
 }
 

@@ -125,29 +125,32 @@ export class EditComponent implements OnInit, OnDestroy {
   back() { this.location.back(); }
   edit(){ this.router.navigate(['/edit']); }
 
-  saveProfile() {
+ saveProfile() {
     if (this.userId === 0) {
-      this.openpopup('Error: ไม่พบ ID ของผู้ใช้ กรุณาลองใหม่อีกครั้ง'); // แทนที่ alert
+      this.openpopup('Error: ไม่พบ ID ของผู้ใช้ กรุณาลองใหม่อีกครั้ง');
       return;
     }
-        this.isLoading = true;
+    
+    this.isLoading = true;
+    
     const updatedData = {
-      username: this.username,
+      username: this.username, // ส่ง username ไปด้วย
       dob: this.dob,
       national_id: this.nationalId,         
       address: this.address,
       emergency_contact: this.emergencyContact, 
       profile: this.profile
     };
+
     this.todoService.updateProfile(this.userId, updatedData).subscribe({
       next: (response) => {
-           this.isLoading = false;
-        this.openpopup('Profile saved successfully!'); // แทนที่ alert
-        // หน่วงเวลาเล็กน้อยเพื่อให้ผู้ใช้เห็น Popup ก่อนเปลี่ยนหน้า (ถ้าต้องการ)
+        this.isLoading = false;
+        this.openpopup('Profile saved successfully!');
       },
       error: (error) => {
+        this.isLoading = false;
         console.error('Error updating profile:', error);
-        this.openpopup('Failed to save profile. Please try again.'); // แทนที่ alert
+        this.openpopup('Failed to save profile. Please try again.');
       }
     });
   }

@@ -1,12 +1,22 @@
-<div class="container">
-  <div class="navbar">
 
+
+<div class="back"></div>
+<!-- <div class="con_headerr">
+</div> -->
+<div class="eiei">
+  
+</div>
+  <div class="container">
+    <div class="header_Sign">
+  Sign in for faster checkout.
+</div>
+  <div class="navbar">
   <div class="header">
-    Sign In
+    Sign in to Tamraidee
   </div>
-  <div class="subheader">
+  <!-- <div class="subheader">
     Access the Dreamspos panel using your email and passcode.
-  </div>
+  </div> -->
   
 
 </div>
@@ -14,44 +24,61 @@
 
 <div class="hero">
 
-  <div class="Email">Email <span class="red">*</span></div>
-
-  <div class="input-group">
-      <input type="text" [(ngModel)]="title">
-            <img class="iconpass" src="image/Email.svg">
+  <div class="container_inputt">
+    <div class="input-group">
+      <input class="n" type="text" id="email" placeholder="" [(ngModel)]="title">
+    <label class="email">Email</label>
+</div>
+<div class="input-group">
+    <input class="n2" [type]="showPassword ? 'text' : 'password'" id="password" placeholder="" [(ngModel)]="password">
+   <label class="pass" for="">Password</label>
+    <img class="iconpass" (click)="showPassword = !showPassword" [src]="showPassword ? 'image/eye-open.svg' : 'image/eye-off.svg'">
+</div>
+<div class="sihg">
+       <button class="button" (click)="login()">Sign In</button>
   </div>
-   <div class="Email">Password <span class="red">*</span></div>
-  <div class="input-group">
-      <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password">
-            <img class="iconpass" (click)="showPassword = !showPassword" [src]="showPassword ? 'image/eye-open.svg' : 'image/eye-off.svg'">
   </div>
+   
   <div class="checkbox-group">
       <mat-checkbox class="re" id="rememberMe" >Remember Me</mat-checkbox>
         <div class="For">
           <a routerLink="/forgot" class="For">Forgot Password?</a>
         </div>
+        <div class="new">Don’t have an Account?  <a routerLink="/register" class="Create-account">Create an account</a></div>
 </div>
 
-  <div class="sihg">
-       <button class="button" (click)="login()">Sign In</button>
-  </div>
-  <div class="new">New on our platform? <a routerLink="/register" class="Create-account">Create an account</a></div>
-  <div class="or">OR</div>
 
-  <div class="internet">
+  
+<!--   <div class="or">OR</div> -->
+
+  
+
+
+</div>
+
+</div>
+
+
+<div class="line">
+  <div class="con_help">
+    <div class="eieii">Or you can choose to register through another platform.</div>
+    <div class="internet">
     <button class="Facebook"><img class="icon" src="image/facebook.svg" alt="Facebook"></button>
     <button class="Google"><img class="icon" src="image/google.svg" alt="Google"></button>
     <button class="Apple"><img class="icon" src="image/apple.svg" alt="Apple"></button>
   </div>
-
-
+  </div>
+  <div class="grayy"></div>
+  
 </div>
-</div>
+  
+  
 
 <div class="ferni"></div>
 <div class="ferni2"></div>
 <div class="ferni3"></div>
 <div class="ferniback"></div>
+
 
 
 <div *ngIf="showpopup" class="backpop">

@@ -13,7 +13,12 @@ import { interval, Subscription } from 'rxjs';
   styleUrl: './sale.component.css'
 })
 export class SaleComponent {
-
+ itemsPerPage: number = 10; 
+  currentPage: number = 1;
+  totalPages: number = 1;
+  pagesArray: number[] = [];
+  saleOrders: any[] = []; 
+  filteredSaleOrders: any[] = []; // <-- เพิ่มบรรทัดนี้
   private todoService = inject(TodoService);
 
   search = '';
@@ -35,7 +40,7 @@ export class SaleComponent {
   isTimeOpen = false;
   Animation_out = false;
   out = false;
-  saleOrders: any[] = []; 
+
   reload = false;
   isLoading = false; 
   loader = false;
@@ -81,6 +86,28 @@ export class SaleComponent {
     this.timeSubscription = interval(1000).subscribe(() => {
       this.currentTime = new Date();
     });
+  }
+  // ฟังก์ชันเปลี่ยนหน้า
+  changePage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+
+  // ฟังก์ชันดึงข้อมูลเฉพาะหน้าปัจจุบัน
+  get paginatedSaleOrders() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    return this.filteredSaleOrders.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
+  // ฟังก์ชันอัปเดตตัวเลขหน้า
+  updatePagination() {
+    this.totalPages = Math.ceil(this.filteredSaleOrders.length / this.itemsPerPage);
+    this.pagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    
+    if (this.currentPage > this.totalPages && this.totalPages > 0) {
+      this.currentPage = this.totalPages;
+    }
   }
   reloads() {
   this.loadSaleOrders();
@@ -173,17 +200,21 @@ export class SaleComponent {
 
   loadSaleOrders() {
     this.loader = true;
-  this.todoService.getSaleOrders().subscribe({
-    next: (res) => {
-      this.saleOrders = res;
+    this.todoService.getSaleOrders().subscribe({
+      next: (res) => {
+        this.saleOrders = res;
+        this.filteredSaleOrders = [...res]; // <-- เพิ่มบรรทัดนี้
+        
+        this.updatePagination(); // <-- เพิ่มบรรทัดนี้
+        
         this.isLoading = false; 
-        this.loader = false
-    },
-    error: (err) => {
-      console.error('Error fetching sale order:', err);
-    }
-  });
-}
+        this.loader = false;
+      },
+      error: (err) => {
+        console.error('Error fetching sale order:', err);
+      }
+    });
+  }
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;

@@ -1,6 +1,4 @@
-:host {
-    background-color: #F4F5FC !important;
-}
+
 
 .navbaar {
     display: flex;
@@ -14,7 +12,7 @@
     z-index: 3;
     /* ปรับให้มากกว่า sidebar เพื่อให้อยู่ด้านบนสุด */
     background-color: #FFF;
-    border: 1px solid #CED4DA;
+/*     border: 1px solid #CED4DA; */
     animation: slide 1s ease-in-out;
 
 }
@@ -25,12 +23,12 @@
 
 @keyframes Move_Return {
     0% {
-        transform: translateY(500px);
+        transform: translateX(500px);
         opacity: 0;
     }
 
     100% {
-        transform: translateY(0);
+        transform: translateX(0);
         opacity: 1;
     }
 }
@@ -41,12 +39,12 @@
 
 @keyframes Move_sale {
     0% {
-        transform: translateY(0px);
+        transform: translateX(0px);
         opacity: 1;
     }
 
     100% {
-        transform: translateY(500px);
+        transform: translateX(500px);
         opacity: 0;
     }
 }
@@ -273,13 +271,62 @@
 }
 
 .header_Inventory {
-    margin-left: 20px;
-    font-size: 30px;
-    color: #2B2F38;
-    transform: scaleX(1.1header_Inventory);
-    font-weight: bolder;
+    font-size: 80px;
+    margin-bottom: 60px;
+    display: flex;
+    font-weight: 600;
+    justify-content: flex-start;
+    color: #1D1D1F;
+    transform: translateY(-200px);
+    animation-name: slidee;
+    animation-delay: 1s;
+    animation-duration: 1s; 
+    animation-fill-mode: forwards; 
 }
 
+@keyframes slidee {
+    0% {
+        transform: translateY(-200px);
+    }
+    100% {
+
+        transform: translateY(0);
+    }
+}
+
+.tab{
+    background-color: #F5F5F7;
+    padding: 20px;
+    font-weight: 300;
+    margin-top: 50px;
+    text-align: center;
+    font-size: 13px;
+    z-index: 4 !important;
+    animation: tab 4s ease;
+}
+.tab_con{
+    background-color: white;
+    width: 100vw;
+}
+@keyframes tab{
+    0%{
+        transform: translateY(-60px);
+        color: white;
+    }
+    30%{
+        transform: translateY(0);
+        background-color: #84D46E;
+        color: white;
+    }
+    50%{
+        background-color: #84D46E;
+        color: white;
+        opacity: 1;
+    }
+    100%{
+        
+    }
+}
 .iconsearch {
     position: absolute;
     display: flex;
@@ -460,29 +507,22 @@
     position: absolute;
     right: 16px;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateX(-50%);
     pointer-events: none;
     /* ทำให้คลิกทะลุไปโดน select ได้ */
 }
-
 .pagination {
   display: flex;
   align-items: center;
   gap: 4px;
 }
-.con_tainer_page{
+
+.con_tainer_page {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 20px;
     width: 100%;
-}
-.prev {
-    color: #1364D5 !important;
-}
-
-.next {
-    color: #1364D5 !important;
 }
 
 .pagination a,
@@ -494,6 +534,32 @@
     padding: 10px 16px;
     border-radius: 8px;
     transition: all 0.2s;
+    cursor: pointer; /* เพิ่มคำสั่งนี้เพื่อให้เมาส์เปลี่ยนเป็นรูปนิ้ว */
+    user-select: none; /* ป้องกันการคลุมดำข้อความเวลาคลิก */
+}
+
+.pagination a.prev,
+.pagination a.next {
+    color: #1364D5 !important;
+}
+
+.pagination a.disabled {
+    opacity: 0.5;
+    pointer-events: none; /* ปิดการคลิกเมื่อปุ่มถูก disable */
+}
+
+.pagination .page.active {
+    background-color: #1364D5;
+    color: white;
+}
+
+.pagination .page:hover:not(.active):not(.disabled) {
+    background-color: #f3f4f6;
+}
+
+.pagination .dots {
+    color: #6b7280;
+    cursor: default; /* จุดไข่ปลาไม่ต้องให้เป็นรูปนิ้ว */
 }
 
 .table {
@@ -514,10 +580,12 @@
     display: flex;
     align-items: center;
     box-sizing: border-box;
+    transition: 0.3s ease-in-out;
     /* เพิ่มบรรทัดนี้ */
 }
-.table_detail:hover{background-color: #F3FBF1;
-
+.table_detail:hover{
+    background-color: #F3FBF1;
+    transform: scale(1.1);
     cursor: pointer;
 }
 .table_detail:active{
@@ -526,7 +594,7 @@
 .table_detail2 {
     opacity: 0;
     /* ซ่อนไว้ก่อนเริ่มแอนิเมชัน */
-    transform: translateY(-10px);
+    transform: translateX(-10px);
     /* ดันขึ้นไปด้านบนเล็กน้อย */
     animation: showLine 1s ease-in-out forwards;
     /* สั่งให้เล่นแอนิเมชัน */
@@ -538,25 +606,8 @@
 @keyframes showLine {
     0% {
         opacity: 0;
-        transform: translateY(-10px);
-        transform: scaleY(1.2);
-        transform: scaleX(0.5);
-        background-color: #ffffff;
-        box-shadow: 0 0 0px rgba(26, 255, 0, 0);
     }
-
-    50% {
-        /* เรืองแสงสีเขียวเข้มข้นขึ้นในช่วงกลาง */
-        box-shadow: 0 0 100px rgba(252, 255, 252, 0.8), 0 8px 20px rgba(0, 0, 0, 0.15);
-        opacity: 1;
-    }
-
-    70% {
-        box-shadow: 0 0 100px rgba(253, 255, 253, 0), 0 8px 20px rgba(0, 0, 0, 0.15);
-    }
-
     100% {
-        transform: translateY(0);
         opacity: 1;
 
     }
@@ -931,7 +982,7 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
     position: absolute;
     right: 16px;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateX(-50%);
     pointer-events: none;
 }
 
@@ -1191,7 +1242,7 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
 .static {
     width: 100%;
     padding: 20px;
-    border: 1px solid #E6EAED;
+  /*   border: 1px solid #E6EAED; */
     height: 100%;
     padding: 20px;
     background: #fff;
@@ -1202,11 +1253,12 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
 .container {
     flex: 1;
     width: 100%;
+    padding:60px;
     /* เปลี่ยนจาก max-width เป็น width */
     box-sizing: border-box;
     /* ป้องกันไม่ให้ padding ทำให้เกิด Scrollbar หรือพื้นที่เกิน */
     min-width: 0;
-    background: #F4F5FC;
+    background: white;
     margin-right: 0;
     z-index: 2;
     margin-top: 0;
@@ -1218,9 +1270,22 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
     border: 1px solid #E6EAED;
     width: 100%;
     margin-top: 0;
+    opacity: 0;
+    transform:  translateY(100px);
     height: 100%;
+    animation: come 1.2s ease forwards;
+    animation-delay: 1s;
 }
-
+@keyframes come{
+    0%{
+        opacity: 0;
+        transform: translateY(100px);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 .bars {
     margin-top: 20px;
     margin-left: -10px;
@@ -1250,7 +1315,6 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
 
 .over {
     display: flex;
-    margin-top: 50px;
     min-height: calc(100vh - 50px);
     overflow: hidden;
     max-width: 100%;
@@ -1520,7 +1584,7 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
 @keyframes Boom {
     0% {
         box-shadow: 0px 42px 234px 0px #e3ffdc;
-        transform: translateY(-500px);
+        transform: translateX(-500px);
         opacity: 0;
 
     }
@@ -1540,7 +1604,6 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
     /* ป้องกันไม่ให้ padding ทำให้เกิด Scrollbar หรือพื้นที่เกิน */
     min-width: 0;
     padding: 20px;
-    background: #F4F5FC;
     margin-right: 0;
     z-index: 2;
     width: 100%;
@@ -1557,13 +1620,13 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
 
 @keyframes Move_dashboard {
     0% {
-        transform: translateY(0px);
+        transform: translateX(0px);
         /* เริ่มต้นที่ตำแหน่งปกติ */
         opacity: 1;
     }
 
     100% {
-        transform: translateY(-2000px);
+        transform: translateX(-2000px);
         /* เลื่อนลงไปที่จุดสุดท้าย */
         opacity: 0;
         /* ค่อยๆ จางหายไปเมื่อเลื่อนลง */
@@ -1576,12 +1639,12 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
 
 @keyframes Move_inventory {
     0% {
-        transform: translateY(0px);
+        transform: translateX(0px);
         opacity: 1;
     }
 
     100% {
-        transform: translateY(1000px);
+        transform: translateX(1000px);
         opacity: 0;
     }
 }
@@ -2124,43 +2187,43 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
 
 @keyframes spin_4991 {
   10% {
-    -webkit-transform: translateY(-102%);
-    transform: translateY(-102%);
+    -webkit-transform: translateX(-102%);
+    transform: translateX(-102%);
   }
 
   25% {
-    -webkit-transform: translateY(-100%);
-    transform: translateY(-100%);
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
   }
 
   35% {
-    -webkit-transform: translateY(-202%);
-    transform: translateY(-202%);
+    -webkit-transform: translateX(-202%);
+    transform: translateX(-202%);
   }
 
   50% {
-    -webkit-transform: translateY(-200%);
-    transform: translateY(-200%);
+    -webkit-transform: translateX(-200%);
+    transform: translateX(-200%);
   }
 
   60% {
-    -webkit-transform: translateY(-302%);
-    transform: translateY(-302%);
+    -webkit-transform: translateX(-302%);
+    transform: translateX(-302%);
   }
 
   75% {
-    -webkit-transform: translateY(-300%);
-    transform: translateY(-300%);
+    -webkit-transform: translateX(-300%);
+    transform: translateX(-300%);
   }
 
   85% {
-    -webkit-transform: translateY(-402%);
-    transform: translateY(-402%);
+    -webkit-transform: translateX(-402%);
+    transform: translateX(-402%);
   }
 
   100% {
-    -webkit-transform: translateY(-400%);
-    transform: translateY(-400%);
+    -webkit-transform: translateX(-400%);
+    transform: translateX(-400%);
   }
 }
 .con_nav {

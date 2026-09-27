@@ -1,3 +1,183 @@
+
+.navbaar {
+  display: flex;
+  align-items: center; 
+   box-shadow: inset 0 0 2px 1px rgba(255, 255, 255, 0.4),
+                inset 0 0 10px rgba(255, 255, 255, 0.2),
+                0px 4px 10px rgba(17, 17, 17, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  position: fixed;
+  top: 0;
+   -webkit-backdrop-filter: blur(5px) saturate(1.2);
+    backdrop-filter: blur(5px) saturate(1.2);
+  left: 0;
+  width: 100vw;
+  z-index: 9;
+  padding: 15px;
+  background-color: #ffffff1f;
+  animation: slide 1s ease-in-out;
+  box-shadow: 0px 4px 4px 0px #11111105;
+
+}
+.apple{
+    width: 15px;
+    height: 15px;
+    transform: scaleY(1.2);
+}
+.con_nav {
+    width: 100%;
+    gap: 39px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.iconweb{
+    width: 100px;
+}
+.he{
+    cursor: pointer;
+    color: #1D1D1F;
+    font-size: 12px;
+    font-weight: 200;
+}
+.he:hover{
+    color: #89898b;
+}
+.headercompany {
+    display: flex;
+    margin-left: 20px;
+    flex-direction: column;
+    color: #6FAB23;
+    font-weight: 800;
+    align-items: flex-start;
+    font-family: 'Nicomoji', sans-serif; 
+}
+.back {
+    background-color: #FFFFFF;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+.header_Sign {
+    margin-top: 20px;
+    font-size: 40px;
+    font-weight: 600;
+    margin-right: 0; 
+    width: 100%;
+}
+.con_help {
+    margin-top: 10px;
+    padding: 30px;
+    z-index: 8;
+    width: 100%;
+    display: flex;
+    align-items: center; /* จัดให้อยู่กึ่งกลางแนวตั้ง */
+    gap: 20px; /* เพิ่มระยะห่างระหว่างข้อความกับปุ่ม */
+    margin-left: 160px;
+}
+.eieii {
+    font-size: 16px;
+    z-index: 8;
+    font-weight: 200;
+    /* ลบ position: absolute ออก */
+}
+.grayy {
+    background: #F5F5F7;
+    width: 100%;
+    margin-top: 80px;
+    height: 120px; /* ปรับเป็น 100vh หากต้องการให้เต็มความสูงของหน้าจอ */
+    position: absolute;
+    top: 0; /* เพิ่มคำสั่งนี้เพื่อตรึงให้อยู่ด้านบนสุด */
+    left: 0;
+    z-index: 3;
+}
+.eiei {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    display: flex;
+    flex-direction: column; /* เพิ่มคำสั่งนี้ */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    min-width: 600px;
+    z-index: 0;
+}
+.container_inputt{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+}
+.n{
+    width: 100%;
+    min-width: 473px;
+    margin-top: 20px;
+    padding: 20px;
+    font-size: 15px;
+    margin-bottom: -0.5px;
+    border: 1px solid #86868B;
+    border-radius: 10px 10px 0 0;
+}
+.n2{
+    width: 100%;
+    min-width: 473px;
+    padding: 20px;
+    font-size: 15px;
+    border-radius:  0 0 10px 10px;
+
+    border: 1px solid #86868B;
+    margin-bottom: 20px;
+}
+.line {
+  display: flex;
+  width: 100vw;
+  height: 1px;
+  background-color: #86868B;
+  position: absolute;
+  top: 700px; /* เปลี่ยนจาก bottom เป็น top และใส่ค่าที่ต้องการ */
+  left: 0;
+  z-index: 10;
+}
+.input-group label {
+    top: 65%; 
+    position: absolute;
+    left: 20px;
+    transform: translateY(-50%); /* ดึงกลับขึ้นไปครึ่งหนึ่งของความสูง label เพื่อให้อยู่ตรงกลางเป๊ะ */
+    transition: 0.2s ease all;
+    color: #6E6E73;
+    pointer-events: none;
+}
+.pass{
+    margin-top: -20px;
+}
+.input-group input:focus ~ label,
+.input-group input:not(:placeholder-shown) ~ label {
+    top: 50%;
+    left: 20px;
+    font-size: 10px;
+    color: #6E6E73;
+    padding: 0 2px;
+}
+input{
+    height:55px;
+    border-radius:10px;
+    border:1px solid#A0A0A4 ;
+    box-shadow: 0px 2px 23px rgba(16, 24, 40, 0.05);
+    width:100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    padding-left: 20px;
+    padding-top: 30px !important;
+    
+    box-sizing: border-box;
+}
 body {
     min-height: 10vh;
     display: flex;
@@ -14,10 +194,11 @@ body {
 }
 
 .header {
+    transform: scaleY(0.95);
     font-size: 23px;
     color: #212B36;
     margin-bottom: 15px;
-    font-weight: 500;
+    font-weight: 501;
 }
 
 .subheader {
@@ -28,84 +209,35 @@ body {
 }
 
 .container {
-    max-width: 500px;
-    background: #FFFFFF;
-    margin: 20px;
-    border: 1px solid #c5c5c59a;
+    min-width: 1000px;
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    border:none  !important;
     border-radius: 10px;
     padding: 44px;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     z-index: 1;
+    max-width: 500px;
     animation: slideDown 0.7s ease-out forwards;
 
 }
 
-@keyframes slideDown {
-    0% {
-        transform: translateY(-1000px);
-        width: 50px;
-        height: 50px;
-        border-radius: 100px;
+@keyframes slideDown { 
+    0% { 
+        opacity: 0;
     }
-
-    30% {
-        transform: translateY(0);
-        width: 50px;
-        height: 50px;
-        border-radius: 100px;
-    }
-
-    60% {
-        transform: translateY(0);
-        width: 300px;
-        height: 300px;
-        border-radius: 1000px;
-        box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5), 0 0 8px 10px #d4e4d0;
-    }
-
-    90% {
-        transform: translateY(0);
-        max-width: 500px;
-        background: #FFFFFF;
-        margin: 20px;
-        border: 1px solid #c5c5c59a;
-        border-radius: 10px;
-        padding: 44px;
-        align-items: center;
-        justify-content: center;
-        z-index: 1;
-        box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5), 0 0 100px 10px #a6d59b;
-    }
-
-    95% {
-        transform: translateY(0);
-        max-width: 500px;
-        background: #FFFFFF;
-        margin: 20px;
-        border: 1px solid #c5c5c59a;
-        border-radius: 10px;
-        padding: 44px;
-        align-items: center;
-        justify-content: center;
-        z-index: 1;
-        box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5), 0 0 19px 10px #d4e4d0;
-    }
-
-    100% {
-        transform: translateY(0);
-        max-width: 500px;
-        background: #FFFFFF;
-        margin: 20px;
-        border: 1px solid #c5c5c59a;
-        border-radius: 10px;
-        padding: 44px;
-        align-items: center;
-        justify-content: center;
-        z-index: 1;
-    }
+    100% { 
+        opacity: 1;
+    } 
 }
-
+.sihg{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
 /* 2. ตั้งค่าเริ่มต้นให้เนื้อหาข้างในถูกซ่อนไว้ */
 .navbar,
 .hero,
@@ -119,6 +251,9 @@ body {
 
 /* 3. หน่วงเวลา (Delay) ให้แต่ละส่วนค่อยๆ แสดงขึ้นมา */
 .navbar {
+    margin-top: 93px;
+    display: flex;
+    justify-content: center;
     animation-delay: 0.6s;
     /* แสดงส่วนหัว */
 }
@@ -213,15 +348,6 @@ body {
     }
 }
 
-input {
-    height: 25px;
-    border-radius: 8px;
-    border: 2px solid #E6EAED;
-    box-shadow: 0px 2px 23px rgba(16, 24, 40, 0.05);
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-}
 
 .Email {
     margin-bottom: 20px;
@@ -232,28 +358,32 @@ input {
 }
 
 .re {
+    margin-top: 30px ;
+    margin-bottom: 30px;
     font-size: 15px;
     color: #646B72;
     font-weight: 300;
 }
 
 .For {
-    margin-left: auto;
     color: #E04F16;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 350;
     text-decoration: none;
+    margin-bottom: 15px;
 }
 
 .button {
     width: 100%;
+    max-width: 473px;
     height: 20px;
     padding: 23px;
     font-size: 16px;
     color: #FFFFFF;
-    border: 2px solid #E6EAED;
-    border-radius: 8px;
+    border: none;
+    border-radius: 10px;
     background: #84D46E;
+    box-sizing: border-box;
     justify-content: center;
     display: flex;
     margin-bottom: 20px;
@@ -280,6 +410,7 @@ input {
 .checkbox-group {
     width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     accent-color: #FE9F43;
     margin-bottom: 20px;
@@ -306,6 +437,7 @@ input {
 .new {
     color: #646B72;
     font-weight: 300;
+    font-size: 13px;
     margin-bottom: 30px;
 }
 
@@ -323,32 +455,33 @@ input {
 }
 
 .internet {
-    width: 100%;
     display: flex;
     gap: 15px;
+    z-index: 12;
+    /* ลบ width: 100% และ margin-top: 50px ออก */
 }
 
 .Facebook {
-    width: 420px;
+    width: 65px;
     height: 65px;
-    border-radius: 10px;
+    border-radius: 20px;
     border: 0px;
     background: #155EEF;
 }
 
 .Google {
-    width: 420px;
+    width: 65px;
     height: 65px;
-    border-radius: 10px;
+    border-radius: 20px;
     border: 1px solid #E6EAED;
     background: #FFFFFF;
 
 }
 
 .Apple {
-    width: 420px;
+    width: 65px;
     height: 65px;
-    border-radius: 10px;
+    border-radius: 20px;
     border: 0px;
     background: #1B2850;
 }
@@ -362,7 +495,7 @@ h1 {
 
 .input-group {
     display: flex;
-    gap: 10px;
+
 }
 
 
@@ -391,16 +524,7 @@ mat-form-field {
     opacity: .5;
 }
 
-:host {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: #f2f2f2f9;
-    font-family: "Roboto", "Noto Serif Thai", sans-serif;
-    padding: 0;
-    box-sizing: border-box;
-}
+
 
 .ferni {
     width: 400px;

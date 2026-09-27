@@ -1,10 +1,10 @@
 .container2 {
     display: flex;
     width: 100%;
-    padding: 20px;
-    height: 100%;
+    padding: 70px 20px 20px 20px; /* ลด Padding ซ้าย-ขวาลง */
     box-sizing: border-box;
     background-color: #fff;
+    gap: 20px; /* เพิ่มระยะห่างระหว่างกล่องซ้ายและขวา */
 }
 
 .navbaar {
@@ -16,12 +16,44 @@
     width: 100vw;
     z-index: 8;
     background-color: #FFF;
-    border: 1px solid #CED4DA;
     animation: slide 1s ease-in-out;
 
 }
-
+.tab{
+    background-color: #F5F5F7;
+    padding: 20px;
+    font-weight: 300;
+    margin-top: 50px;
+    text-align: center;
+    font-size: 13px;
+    z-index: 4 !important;
+    animation: tab 4s ease;
+}
+.tab_con{
+    background-color: white;
+    width: 100vw;
+}
+@keyframes tab{
+    0%{
+        transform: translateY(-60px);
+        color: white;
+    }
+    30%{
+        transform: translateY(0);
+        background-color: #84D46E;
+        color: white;
+    }
+    50%{
+        background-color: #84D46E;
+        color: white;
+        opacity: 1;
+    }
+    100%{
+        
+    }
+}
 .consale {
+    width: 40vw;
     position: relative;
     z-index: 4;
 }
@@ -427,8 +459,8 @@ input::placeholder {
 }
 
 .container {
-    flex: 1;
-    width: 100%;
+        flex: 1; /* ให้ฝั่งซ้ายยืดขยายตามพื้นที่ที่เหลือ */
+    min-width: 0; /* ป้องกันไม่ให้เนื้อหาข้างในดันจนล้น */
     box-sizing: border-box;
     min-width: 0;
     padding: 20px;
@@ -459,8 +491,8 @@ input::placeholder {
 }
 
 .over {
+
     display: flex;
-    margin-top: 50px;
     min-height: calc(100vh - 50px);
     overflow: hidden;
     max-width: 100%;
@@ -726,31 +758,11 @@ input::placeholder {
 
 @keyframes Boom {
     0% {
-        box-shadow: 0px 42px 234px 0px #e3ffdc;
-        transform: translateY(-500px);
+        transform: translateX(-1000px);
         opacity: 0;
-
-    }
-
-    30% {
-        opacity: 1;
-
-
-    }
-
-    40% {
-        transform: translateY(100px);
-    }
-
-    80% {
-        box-shadow: none;
-        transform: scaleY(1.1);
-
     }
 
     100% {
-        box-shadow: none;
-
 
     }
 }
@@ -768,33 +780,33 @@ input::placeholder {
 }
 
 .fade-out {
-    animation: Move_inventory 0.5s ease-in-out;
+    animation: Move_inventory 0.7s ease forwards;
 }
 
 @keyframes Move_inventory {
     0% {
-        transform: translateY(0px);
+        transform: translateX(0px);
         opacity: 1;
     }
 
     100% {
-        transform: translateY(1000px);
+        transform: translateX(1000px);
         opacity: 0;
     }
 }
 
 .fade-out2 {
-    animation: Move_sale 0.5s ease-in-out !important;
+    animation: Move_sale 1.5s ease forwards !important;
 }
 
 @keyframes Move_sale {
     0% {
-        transform: translateY(0px);
+        transform: translateX(0px);
         opacity: 1;
     }
 
     100% {
-        transform: translateY(1000px);
+        transform: translateX(1000px);
         opacity: 0;
     }
 }
@@ -804,17 +816,17 @@ input::placeholder {
 }
 
 .Return {
-    animation: Move_Return 0.5s ease-in-out forwards !important;
+    animation: Move_Return 1.5s ease forwards  !important;
 }
 
 @keyframes Move_Return {
     0% {
-        transform: translateY(500px);
+        transform: translateX(500px);
         opacity: 0;
     }
 
     100% {
-        transform: translateY(0);
+        transform: translateX(0);
         opacity: 1;
     }
 }
@@ -1185,11 +1197,26 @@ input::placeholder {
 }
 
 .header_Inventory {
-    font-size: 30px;
-    color: #2B2F38;
-    /* ลบ transform: scaleX(1.1); ออก */
-    font-weight: bolder;
-    /* ปรับความหนาเป็น 500 หรือ 600 แทนหากต้องการให้ดูเด่นขึ้น */
+    font-size: 80px;
+    display: flex;
+    font-weight: 600;
+    justify-content: flex-start;
+    color: #1D1D1F;
+    transform: translateY(-200px);
+    animation-name: slidee;
+    animation-delay: 1s;
+    animation-duration: 1s; 
+    animation-fill-mode: forwards; 
+}
+
+@keyframes slidee {
+    0% {
+        transform: translateY(-200px);
+    }
+    100% {
+
+        transform: translateY(0);
+    }
 }
 
 .headerpop {
@@ -1284,43 +1311,43 @@ input::placeholder {
 
 @keyframes spin_4991 {
     10% {
-        -webkit-transform: translateY(-102%);
-        transform: translateY(-102%);
+        -webkit-transform: translateX(-102%);
+        transform: translateX(-102%);
     }
 
     25% {
-        -webkit-transform: translateY(-100%);
-        transform: translateY(-100%);
+        -webkit-transform: translateX(-100%);
+        transform: translateX(-100%);
     }
 
     35% {
-        -webkit-transform: translateY(-202%);
-        transform: translateY(-202%);
+        -webkit-transform: translateX(-202%);
+        transform: translateX(-202%);
     }
 
     50% {
-        -webkit-transform: translateY(-200%);
-        transform: translateY(-200%);
+        -webkit-transform: translateX(-200%);
+        transform: translateX(-200%);
     }
 
     60% {
-        -webkit-transform: translateY(-302%);
-        transform: translateY(-302%);
+        -webkit-transform: translateX(-302%);
+        transform: translateX(-302%);
     }
 
     75% {
-        -webkit-transform: translateY(-300%);
-        transform: translateY(-300%);
+        -webkit-transform: translateX(-300%);
+        transform: translateX(-300%);
     }
 
     85% {
-        -webkit-transform: translateY(-402%);
-        transform: translateY(-402%);
+        -webkit-transform: translateX(-402%);
+        transform: translateX(-402%);
     }
 
     100% {
-        -webkit-transform: translateY(-400%);
-        transform: translateY(-400%);
+        -webkit-transform: translateX(-400%);
+        transform: translateX(-400%);
     }
 }
 
@@ -1376,10 +1403,8 @@ input::placeholder {
 }
 
 .con_sale_order {
-    
     margin-top: 20px;
     height: 400px;
-    width: 50vw;
     border-radius: 10px;
     background-color: #fff;
     z-index: 5;

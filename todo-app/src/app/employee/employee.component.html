@@ -39,7 +39,7 @@
     </div>
 
 </div>
-
+ <div class="tab">Introducing Tamraidee Upgrade. Lease a new product with low monthly payments for 12 or 24 months and upgrade at the end of your term. <span class="lern">Lern more</span></div>
 <div class="over">
     <div class="fix" [class.open]="isMenuOpen">
         <div class="sidebar" [class.open]="isMenuOpen">
@@ -138,7 +138,7 @@
                     
     <!-- Header -->
     <div class="table">
-    <div class="sku">Code</div>
+    <div class="sku">Position</div>
     <div class="sku">Employee</div>
     <div class="sku">Email</div>
     <div class="sku">Phone</div>
@@ -164,7 +164,7 @@
    <ng-template #realData>
      <div  class="table_detail2" *ngFor="let order of filteredEmployeeList; let i = index" [style.animation-delay]="i * 0.15 + 's'">
     <div class="table_detail">
-        <div class="sku2">{{ order.code }}</div>
+        <div class="sku2">{{ order.role === 'pos' ? 'Frontend' : order.role }}</div>
 <div class="sku2"><div class="connn"><img class="iconsetting4" [src]="order.profile || 'image/profileee.svg' " alt="">{{ order.username }}</div></div>
 <div class="sku2">{{ order.title }}</div>
 <div class="sku2">{{ order.phone }}</div>

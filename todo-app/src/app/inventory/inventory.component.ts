@@ -1,10 +1,11 @@
-import { Component, OnInit, inject , ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, inject , ViewChild, ElementRef, HostListener  } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TodoService } from '../services/todo.service';
 import { interval, Subscription } from 'rxjs';
 import { createClient } from '@supabase/supabase-js';
+import { create } from 'domain';
 
 @Component({
   selector: 'app-inventory',
@@ -15,7 +16,26 @@ import { createClient } from '@supabase/supabase-js';
 
 
 export class InventoryComponent {
-  
+  itemsPerPage: number = 10; 
+  currentPage: number = 1;
+  totalPages: number = 1;
+  pagesArray: number[] = [];
+
+    rowHeight: number = 50; // ความสูงของแต่ละแถว (px)
+  headerHeight: number = 250;
+  // --- เพิ่มฟังก์ชันดักจับการ Resize ---
+ @HostListener('window:resize', ['$event'])
+  onResize(event: any) { // <-- เพิ่ม (event: any) ตรงนี้
+    this.calculateRows();
+  }
+
+  calculateRows() {
+    const availableHeight = window.innerHeight - this.headerHeight;
+    // กำหนดให้แสดงอย่างน้อย 1 แถวเสมอ
+    this.itemsPerPage = Math.max(1, Math.floor(availableHeight / this.rowHeight));
+    this.updatePagination();
+  }
+  // ----------------------------------
   @ViewChild('fileInput') fileInput!: ElementRef; 
   private todoService = inject(TodoService);
 
@@ -100,7 +120,10 @@ selectedProduct: any = {
   constructor(private router: Router) {}
 
   ngOnInit(): void {
+    
+    this.calculateRows();
     const state = history.state;
+    
     this.username = state.username || '';
     this.email = state.email || '';
     this.userRole = state.role || 'user'; // เพิ่มเติม: รับค่า role (ค่าเริ่มต้นเป็น user)
@@ -131,6 +154,7 @@ selectedProduct: any = {
         item.brand === this.selectedSupplier // ตรวจสอบว่าชื่อ supplier ตรงกันไหม
       );
     }
+      this.updatePagination();
   }
   loadSuppliers() {
     // สมมติว่าใน todoService มีฟังก์ชัน getSuppliers()
@@ -144,6 +168,28 @@ selectedProduct: any = {
         console.error('Error fetching suppliers:', err);
       }
     });
+  }
+  // ฟังก์ชันเปลี่ยนหน้า
+  changePage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+
+  // ฟังก์ชันดึงข้อมูลเฉพาะหน้าปัจจุบัน
+  get paginatedInventory() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    return this.filteredInventory.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
+  // ฟังก์ชันอัปเดตตัวเลขหน้า
+  updatePagination() {
+    this.totalPages = Math.ceil(this.filteredInventory.length / this.itemsPerPage);
+    this.pagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    
+    if (this.currentPage > this.totalPages && this.totalPages > 0) {
+      this.currentPage = this.totalPages;
+    }
   }
   reloads() {
     this.loadInventory();
@@ -241,21 +287,7 @@ selectedProduct: any = {
     
     return Math.min(valueInBaht * scale, maxHeight);
   }
-loadTodos() {
-      this.resetForm();
-  this.todoService.getTodoss().subscribe({
-    next: (res) => {
-      console.log("Todos Data:", res);
-      const currentEmail = this.navigationState?.state?.email;
-      if (currentEmail) {
-        this.todos = res.filter(todo => todo.email === currentEmail);
-      } else {
-        this.todos = res;
-      }
-    },
-    error: (err) => console.error(err)
-  });
-}
+
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
     this.isMenuOpenprofile = !this.isMenuOpenprofile;
@@ -277,12 +309,13 @@ loadTodos() {
   this.todoService.getInventory().subscribe({
     next: (res) => {
       this.Inventory = res;
-      // สมมติว่ามีฟิลด์ updated_at หรือ id ที่สามารถใช้เรียงลำดับได้
+           this.updatePagination();
       this.Inventory = res.sort((a, b) => {
         // เรียงจากมากไปน้อย (ล่าสุดขึ้นก่อน)
         return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
       });
       this.filteredInventory = [...this.Inventory]; 
+         this.updatePagination();
 
       this.isLoading = false;
       this.loader = false;              
@@ -743,7 +776,79 @@ logout() {
       }
     }
   }
+// เปลี่ยนชื่อฟังก์ชันเป็น saveAddToStock
+ saveAddToStock() {
+    if (!this.selectedProduct.sku || !this.importData.supplier || !this.importData.importQuantity) {
+      this.openpopupnoti('กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน (*)');
+      return;
+    }
 
+    this.isLoading = true;
+
+    const importPayload = {
+      ...this.selectedProduct,
+      ...this.importData,
+      quantity: (this.selectedProduct.quantity || 0) + (this.importData.importQuantity || 0),
+      created_by: this.username 
+    };
+
+    // --- เพิ่ม Console.log เพื่อเช็คข้อมูลก่อนส่ง ---
+    console.log('====================================');
+    console.log('1. ข้อมูลที่จะส่งไปอัปเดต Inventory (importPayload):', importPayload);
+    console.log('-> เช็คค่า created_by:', importPayload.created_by);
+    console.log('====================================');
+
+    this.todoService.updateInventory(importPayload.sku, importPayload).subscribe({
+      next: (res) => {
+        this.openpopup('บันทึกการเพิ่มจำนวนสินค้าเรียบร้อยแล้ว');
+        this.loadInventory();
+        
+        const now = new Date();
+        
+        const historyData = {
+          date: now.toISOString().split('T')[0],
+          sku: importPayload.sku,
+          product_name: importPayload.product_name,
+          brand: importPayload.brand,
+          price: importPayload.price,
+          quantity: this.importData.importQuantity,
+          created_by: this.username, 
+          picture: this.selectedProduct.picture || '' 
+        };
+
+        // --- เพิ่ม Console.log เพื่อเช็คข้อมูล History ---
+        console.log('2. ข้อมูลที่จะบันทึกลง History (historyData):', historyData);
+        console.log('====================================');
+
+        this.todoService.addHistory(historyData).subscribe({
+          next: () => console.log('History saved successfully'),
+          error: (err) => console.error('Failed to save history', err)
+        });
+
+        const auditData = {
+          date: now.toISOString().split('T')[0], 
+          time: now.toTimeString().split(' ')[0],
+          username: this.username,
+          email: this.email,
+          activity: `Add Quantity: ${importPayload.sku} (+${this.importData.importQuantity})`,
+          role: this.userRole,
+          picture: this.profile
+        };
+        
+        this.todoService.logAudit(auditData).subscribe({
+          next: () => console.log('Audit saved'),
+          error: (err) => console.error('Failed to save audit', err)
+        });
+
+        this.resetImportForm();
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.openpopupnoti('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+        this.isLoading = false;
+      }
+    });
+  }
   // 3. เพิ่มฟังก์ชันบันทึกข้อมูลการนำเข้า
   saveImportToStock() {
     if (!this.selectedProduct.sku || !this.importData.supplier || !this.importData.importQuantity) {

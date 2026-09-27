@@ -195,22 +195,29 @@ selectedaccount: any = { role: '' };
     
     return Math.min(valueInBaht * scale, maxHeight);
   }
-
-  loadTodos() {
+loadTodos() {
     this.loader = true;
-  this.todoService.getTodoss().subscribe({
-    next: (res) => {
-      this.todos = res;
+    this.todoService.getTodoss().subscribe({
+      next: (res) => {
         this.isLoading = false; 
-        this.loader = false
-        this.employeeList = res;
+        this.loader = false;
+
+        // ตรวจสอบสิทธิ์: ถ้าเป็น pos ให้แสดงเฉพาะพนักงานที่เป็น pos (Frontend)
+        if (this.userRole === 'pos') {
+          this.employeeList = res.filter((emp: any) => emp.role === 'pos');
+        } else {
+          // ถ้าเป็น admin หรือ manager ให้แสดงทั้งหมด
+          this.employeeList = res;
+        }
+
+        this.todos = this.employeeList;
         this.filteredEmployeeList = [...this.employeeList]; // คัดลอกข้อมูลมาแสดงผลเริ่มต้น
-    },
-    error: (err) => {
-      console.error('Error fetching sale order:', err);
-    }
-  });
-}
+      },
+      error: (err) => {
+        console.error('Error fetching employee data:', err);
+      }
+    });
+  }
 
 
   toggleMenu() {

@@ -39,6 +39,10 @@
 
 </div>
 
+<div class="tab_con">
+    <div class="tab">Introducing Tamraidee Upgrade. Lease a new product with low monthly payments for 12 or 24 months and upgrade at the end of your term. <span class="lern">Lern more</span></div>
+</div>
+
 <div class="over">
     <div class="fix" [class.open]="isMenuOpen">
         <div class="sidebar" [class.open]="isMenuOpen">
@@ -140,7 +144,7 @@
                                 </div> 
      <div class="button_addt" (click)="button_adds()">
                         <img src="image/In_add.svg" alt="">
-                        <div class="H">Add Product</div>
+                        <div class="H">Add  Quantity</div>
                     </div>
                      <div class="import" (click)="button_imports()" >
                         <img src="image/import.svg" alt="">
@@ -182,7 +186,7 @@
                     </ng-container>
     <!-- Data Rows -->
     <ng-template #realData>
-        <div class="table_detail2" *ngFor="let item of filteredInventory; let i = index" 
+        <div class="table_detail2" *ngFor="let item of  paginatedInventory; let i = index" 
      [style.animation-delay]="i * 0.15 + 's'">
     <div class="table_detail">
         <div class="sku2">{{ item.sku }}</div>
@@ -205,15 +209,15 @@
 </div>
                 </div>
                 <div class="con_tainer_page">
-     <div class="pagination">
-  <a href="#" class="prev">&lt; Prev</a>
-  <a href="#" class="page active">1</a>
-  <a href="#" class="page">2</a>
-  <span class="dots">...</span>
-  <a href="#" class="page">11</a>
-  <a href="#" class="next">Next &gt;</a>
+  <div class="pagination">
+    <a class="prev" [class.disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">&lt; Prev</a>
+    <a class="page" [class.active]="currentPage === 1" (click)="changePage(1)">1</a>
+    <a *ngIf="totalPages >= 2" class="page" [class.active]="currentPage === 2" (click)="changePage(2)">2</a>
+    <span *ngIf="totalPages > 3" class="dots">...</span>
+    <a *ngIf="totalPages > 2" class="page" [class.active]="currentPage === totalPages" (click)="changePage(totalPages)">{{ totalPages }}</a>
+    <a class="next" [class.disabled]="currentPage === totalPages || totalPages === 0" (click)="changePage(currentPage + 1)">Next &gt;</a>
+  </div>
 </div>
- </div>
             </div>
 
 
@@ -470,7 +474,7 @@
         </div>
 
         <div class="button_import">
-            <div class="save" (click)="saveImportToStock()">Save to Stock</div>
+            <div class="save" (click)="saveAddToStock()">Save to Stock</div>
             <div class="cancel" (click)="button_cancels()">Cancel</div>
         </div>
     </div>

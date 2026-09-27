@@ -12,7 +12,7 @@
         <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'" >Dashboard</div>
         <div class="he" *ngIf="userRole === 'admin' || userRole === 'backend'" >Inventory</div> <!-- แก้ไขให้แยกฟังก์ชัน -->
         <div class="he"*ngIf="userRole === 'admin' || userRole === 'backend'" >Sales Orders</div>
-        <div class="he" >Stock History</div>
+        <div class="he" *ngIf="userRole === 'admin' || userRole === 'admin'">Stock History</div>
         <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'" >Employee</div>
         <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'" >Audit Log</div>
         <div class="he" *ngIf="userRole === 'admin' || userRole === 'manager'">Suppliers</div>
