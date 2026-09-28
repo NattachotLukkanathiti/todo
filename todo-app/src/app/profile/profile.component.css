@@ -376,3 +376,20 @@ button:disabled {
     width: 18px;
     height: 18px;
 }
+.phone {
+    display: flex;
+      min-width: 0;
+    display: grid;
+    gap: 8px;
+    width: 200px;
+    font-weight: 600;
+    color: #2b2f38;
+    font: 500 16px/22px;
+    margin-right: auto;
+}
+.pr{
+    display: grid;
+    width: 100px;
+    font: 500 16px/22px;
+
+}

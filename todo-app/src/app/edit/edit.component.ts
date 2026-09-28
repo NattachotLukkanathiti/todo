@@ -42,6 +42,7 @@ export class EditComponent implements OnInit, OnDestroy {
   nationalId = '';
   address = '';
   emergencyContact = '';
+    phone = ''; // <-- เพิ่มตัวแปรนี้
 
   isMenuOpen = false; 
   isTimeOpen = false;
@@ -77,7 +78,7 @@ export class EditComponent implements OnInit, OnDestroy {
     this.nationalId = state.national_id || state.nationalId || ''; 
     this.address = state.address || '';
     this.emergencyContact = state.emergency_contact || state.emergencyContact || ''; 
-
+     this.phone = state.phone || '';
     this.todoService.getTodos().subscribe({
       next: (todos: any[]) => {
         const currentUser = todos.find(u => u.username === this.username);
@@ -139,7 +140,8 @@ export class EditComponent implements OnInit, OnDestroy {
       national_id: this.nationalId,         
       address: this.address,
       emergency_contact: this.emergencyContact, 
-      profile: this.profile
+      profile: this.profile,
+      phone: this.phone
     };
 
     this.todoService.updateProfile(this.userId, updatedData).subscribe({

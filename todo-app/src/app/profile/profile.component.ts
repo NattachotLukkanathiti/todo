@@ -40,6 +40,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   nationnal = ''; 
   address = '';
   emergency = ''; 
+  phone = ''; 
 
   // --- Navbar UI & Time State ---
   isMenuOpen = false; 
@@ -74,7 +75,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.nationnal = state.national_id || state.nationalId || '';
     this.address = state.address || '';
     this.emergency = state.emergency_contact || state.emergencyContact || '';
-
+    this.phone = state.phone || '';
     this.cdr.markForCheck(); // สั่งอัปเดตหน้าจอ
   }
 
@@ -109,7 +110,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
           dob: this.dob,
           nationalId: this.nationnal, // ส่งไปเป็น nationalId
           address: this.address,
-          emergencyContact: this.emergency, // ส่งไปเป็น emergencyContact
+          emergencyContact: this.emergency, 
+           phone: this.phone,
           Move_return: true 
         }
       })

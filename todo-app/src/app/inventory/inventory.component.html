@@ -132,10 +132,11 @@
 </div>
 
 <div class="custom-select">
-  <select>
-    <option value="all">Category </option>
-    <option value="option1">Option 1</option>
-    <option value="option2">Option 2</option>
+  <select [(ngModel)]="selectedCategory" (change)="filterByCategory()">
+    <option value="all">All Categories</option>
+    <option *ngFor="let cat of categories" [value]="cat">
+      {{ cat }}
+    </option>
   </select>
 </div>
 <div class="con_am">
@@ -347,9 +348,13 @@
                 <input type="text" class="sku_input" [(ngModel)]="newProduct.category" name="category">         
             </div>         
             <div class="sku_pro">             
-                <label class="label_import" for="">Brand <span class="important">*</span></label>             
-                <input type="text" class="sku_input" [(ngModel)]="newProduct.brand" name="brand">         
-            </div>         
+    <label class="label_import" for="">Brand <span class="important">*</span></label>             
+    <input type="text" class="sku_input" [(ngModel)]="newProduct.brand" name="brand" list="supplier-list" autocomplete="off">
+    
+    <datalist id="supplier-list">
+        <option *ngFor="let sup of suppliers" [value]="sup.supplier_name"></option>
+    </datalist>
+</div>    
         </div>         
         
         <div class="con_sku_pro">             
@@ -369,9 +374,9 @@
         
         <div class="con_sku_pro">             
             <div class="sku_pro">             
-                <label class="label_import" for="">Supplier <span class="important">*</span></label>             
-                <input type="text" class="sku_input" [(ngModel)]="newProduct.supplier" name="supplier">         
-            </div>         
+    <label class="label_import" for="">Supplier <span class="important">*</span></label>             
+    <input type="text" class="sku_input" [(ngModel)]="newProduct.supplier" name="supplier" list="supplier-list" autocomplete="off">
+</div>     
             <div class="sku_pro">             
                 <label class="label_import" for="">Supplier Invoice No.<span class="important">*</span></label>             
                 <input type="text" class="sku_input" [(ngModel)]="newProduct.invoice_no" name="invoice_no">         
@@ -432,9 +437,19 @@
                 <input type="text" class="sku_input" [(ngModel)]="selectedProduct.category" [disabled]="true">
             </div>
             <div class="sku_pro">
-                <label class="label_import" for="">Brand</label>
-                <input type="text" class="sku_input" [(ngModel)]="selectedProduct.brand" [disabled]="true">
-            </div>
+    <label class="label_import" for="">Brand</label>
+    <input type="text" 
+           class="sku_input" 
+           [(ngModel)]="selectedProduct.brand" 
+           name="search_brand" 
+           list="supplier-brand-list" 
+           autocomplete="off"
+           placeholder="Select or type a brand">
+           
+    <datalist id="supplier-brand-list">
+        <option *ngFor="let sup of suppliers" [value]="sup.supplier_name"></option>
+    </datalist>
+</div>
         </div>
         <div class="con_sku_pro">
             <div class="sku_pro">
@@ -454,9 +469,19 @@
         <!-- ส่วนที่ต้องกรอกเอง -->
         <div class="con_sku_pro">
             <div class="sku_pro">
-                <label class="label_import" for="">Supplier <span class="important">*</span></label>
-                <input type="text" class="sku_input" [(ngModel)]="importData.supplier">
-            </div>
+    <label class="label_import" for="">Supplier <span class="important">*</span></label>
+    <input type="text" 
+           class="sku_input" 
+           [(ngModel)]="importData.supplier" 
+           name="import_supplier" 
+           list="import-supplier-list" 
+           autocomplete="off"
+           placeholder="Select or type a supplier">
+           
+    <datalist id="import-supplier-list">
+        <option *ngFor="let sup of suppliers" [value]="sup.supplier_name"></option>
+    </datalist>
+</div>
             <div class="sku_pro">
                 <label class="label_import" for="">Supplier Invoice No.<span class="important">*</span></label>
                 <input type="text" class="sku_input" [(ngModel)]="importData.invoiceNo">
@@ -487,15 +512,23 @@
             Edit Product
         </div>
        <div class="add_image2">
-            <img  [src]="imagePreview || 'image/Add ImageAdd_image.svg'" style="width: 100px; height: 100px; object-fit: cover;">
-                <div class="sku_pro2">
-                    <label class="label_import" for="fileInput">Upload Image</label>
-                    <div class="con_edit">
-                    <input type="text" class="sku_input2" (ngModelChange)="onUrlChange($event)" [(ngModel)]="selectedProduct.picture" placeholder="Change Image" >
-                    <label for="fileInput" style="cursor: pointer;">
-                    <img class="icon_edit" src="image/edit_inventory.svg" alt="">
-                </label>
-            <input type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+    <!-- ครอบรูปภาพด้วย label เพื่อให้คลิกได้ และเปลี่ยน for เป็น editFileInput -->
+    <label for="editFileInput" style="cursor: pointer;">
+        <img [src]="imagePreview || 'image/Add ImageAdd_image.svg'" style="width: 100px; height: 100px; object-fit: cover;">
+    </label>
+
+    <div class="sku_pro2">
+        <label class="label_import" for="editFileInput">Upload Image</label>
+        <div class="con_edit">
+            <input type="text" class="sku_input2" (ngModelChange)="onUrlChange($event)" [(ngModel)]="selectedProduct.picture" placeholder="Change Image" >
+            
+            <!-- เปลี่ยน for เป็น editFileInput -->
+            <label for="editFileInput" style="cursor: pointer;">
+                <img class="icon_edit" src="image/edit_inventory.svg" alt="">
+            </label>
+
+            <!-- เปลี่ยน id เป็น editFileInput -->
+            <input type="file" id="editFileInput" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
         </div>
     </div>
 </div>

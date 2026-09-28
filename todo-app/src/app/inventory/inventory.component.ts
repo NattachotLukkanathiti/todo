@@ -111,6 +111,8 @@ selectedProduct: any = {
     importQuantity: null,
     invoiceFile: ''
   };
+  selectedCategory: string = 'all';
+categories: string[] = [];
   //  เพิ่มบรรทัดนี้เข้าไปค่ะ
   imagePreview: string | null = null;
  private supabaseUrl = 'https://ehyhllaxvozjdndddfku.supabase.co';
@@ -146,6 +148,18 @@ selectedProduct: any = {
     this.loadSuppliers(); 
     
   }
+
+filterByCategory() {
+  if (this.selectedCategory === 'all') {
+    this.filteredInventory = [...this.Inventory];
+  } else {
+    this.filteredInventory = this.Inventory.filter(item => 
+      item.category === this.selectedCategory
+    );
+  }
+  this.currentPage = 1;
+  this.updatePagination();
+}
   filterBySupplier() {
     if (this.selectedSupplier === 'all') {
       this.filteredInventory = [...this.Inventory]; // ถ้าเลือก all ให้แสดงทั้งหมด
@@ -266,6 +280,7 @@ selectedProduct: any = {
     this.popup = message;
   }
   closepopup(){
+    this.button_addd = false;
         this.resetForm();
         this.loadInventory();
        this.showpopup = false;
@@ -301,10 +316,22 @@ selectedProduct: any = {
   }
 
   filterS() {
-    this.filteredItems = this.items.filter(item =>
-      item.toLowerCase().includes(this.search.toLowerCase())
+  if (!this.search || this.search.trim() === '') {
+    this.filteredInventory = [...this.Inventory];
+  } else {
+    const searchTerm = this.search.toLowerCase().trim();
+    
+    this.filteredInventory = this.Inventory.filter(item => 
+      (item.product_name && item.product_name.toLowerCase().includes(searchTerm)) ||
+      (item.sku && item.sku.toLowerCase().includes(searchTerm)) ||
+      (item.category && item.category.toLowerCase().includes(searchTerm)) ||
+      (item.brand && item.brand.toLowerCase().includes(searchTerm))
     );
   }
+  
+  this.currentPage = 1;
+  this.updatePagination();
+}
   loadInventory() {
   this.todoService.getInventory().subscribe({
     next: (res) => {
@@ -316,7 +343,7 @@ selectedProduct: any = {
       });
       this.filteredInventory = [...this.Inventory]; 
          this.updatePagination();
-
+            this.categories = [...new Set(res.map(item => item.category).filter(cat => cat))];
       this.isLoading = false;
       this.loader = false;              
     },
@@ -371,18 +398,22 @@ selectedProduct: any = {
 
 
   onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
-      
+  const file = event.target.files[0];
+  if (file) {
+    this.selectedFile = file;
     
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imagePreview = reader.result as string;
-      };
-      reader.readAsDataURL(file);
+    // เคลียร์ค่า URL เดิมออก เพื่อให้ระบบรู้ว่ากำลังใช้ไฟล์ใหม่
+    if (this.selectedProduct) {
+      this.selectedProduct.picture = ''; 
     }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result as string;
+    };
+    reader.readAsDataURL(file);
   }
+}
 
 
   async saveToStock() {
@@ -434,9 +465,29 @@ selectedProduct: any = {
     }
 
     // ใช้ค่า URL ที่ผู้ใช้กรอกเข้ามาโดยตรง
-    let pictureUrl = this.selectedProduct.picture || '';
+  let pictureUrl = this.newProduct.picture || '';
 
-    try {
+  try {
+    // 2. เพิ่มโค้ดส่วนนี้: ถ้าผู้ใช้เลือกไฟล์จากเครื่อง ให้อัปโหลดขึ้น Supabase ก่อน
+    if (this.selectedFile) {
+      const fileExt = this.selectedFile.name.split('.').pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `inventory/${fileName}`;
+
+      const { data, error } = await this.supabase.storage
+        .from('Photo')
+        .upload(filePath, this.selectedFile);
+
+      if (error) throw error;
+
+      const { data: publicUrlData } = this.supabase.storage
+        .from('Photo')
+        .getPublicUrl(filePath);
+              
+      pictureUrl = publicUrlData.publicUrl; // นำ URL ที่ได้ไปใช้บันทึก
+    }
+
+    
       // เพิ่ม pictureUrl เข้าไปใน object ข้อมูล
       const productData = {
         ...this.newProduct,
@@ -788,8 +839,7 @@ logout() {
     const importPayload = {
       ...this.selectedProduct,
       ...this.importData,
-      quantity: (this.selectedProduct.quantity || 0) + (this.importData.importQuantity || 0),
-      created_by: this.username 
+      quantity: Number(this.selectedProduct.quantity || 0) + Number(this.importData.importQuantity || 0)
     };
 
     // --- เพิ่ม Console.log เพื่อเช็คข้อมูลก่อนส่ง ---
@@ -863,7 +913,7 @@ logout() {
       ...this.selectedProduct,
       ...this.importData,
       // คำนวณจำนวน Stock ใหม่ (จำนวนเดิม + จำนวนที่นำเข้า)
-      quantity: (this.selectedProduct.quantity || 0) + (this.importData.importQuantity || 0)
+       quantity: Number(this.selectedProduct.quantity || 0) + Number(this.importData.importQuantity || 0)
     };
 
     // ตัวอย่างการเรียก Service เพื่อบันทึก (ปรับเปลี่ยนตาม API ของคุณ)

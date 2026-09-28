@@ -10,11 +10,42 @@
   width: 100vw;
   z-index: 3;/* ปรับให้มากกว่า sidebar เพื่อให้อยู่ด้านบนสุด */
   background-color: #FFF;
-  border: 1px solid #CED4DA ;
   animation: slide 1s ease-in-out;
   
 }
-
+.tab{
+    background-color: #F5F5F7;
+    padding: 20px;
+    font-weight: 300;
+    margin-top: 50px;
+    text-align: center;
+    font-size: 13px;
+    z-index: 4 !important;
+    animation: tab 4s ease;
+}
+.tab_con{
+    background-color: white;
+    width: 100vw;
+}
+@keyframes tab{
+    0%{
+        transform: translateY(-60px);
+        color: white;
+    }
+    30%{
+        transform: translateY(0);
+        background-color: #84D46E;
+        color: white;
+    }
+    50%{
+        background-color: #84D46E;
+        color: white;
+        opacity: 1;
+    }
+    100%{
+        
+    }
+}
 .con_nav {
     width: 100%;
     gap: 39px;
@@ -127,12 +158,28 @@
     align-items: center;
     border: 0.5px solid #212b3623;
 }
-.header_Inventory{
-    margin-left: 20px;
-    font-size: 30px;
-    color: #2B2F38;
-    transform: scaleX(1.1);
-    font-weight: bolder;
+.header_Inventory {
+    font-size: 80px;
+    display: flex;
+    margin-bottom: 60px;
+    font-weight: 600;
+    justify-content: flex-start;
+    color: #1D1D1F;
+    transform: translateY(-200px);
+    animation-name: slidee;
+    animation-delay: 1s;
+    animation-duration: 1s; 
+    animation-fill-mode: forwards; 
+}
+
+@keyframes slidee {
+    0% {
+        transform: translateY(-200px);
+    }
+    100% {
+
+        transform: translateY(0);
+    }
 }
 .iconsearch{
     position: absolute;
@@ -294,7 +341,7 @@ input::placeholder{
     box-sizing: border-box; /* เพิ่มบรรทัดนี้ */
 }
 .Return {
-    animation: Move_Return 0.5s ease-in-out forwards !important;
+    animation: Move_Return 1s ease-in-out forwards !important;
 }
 
 @keyframes Move_Return {
@@ -302,14 +349,6 @@ input::placeholder{
         transform: translateX(500px);
         opacity: 0;
     }
-
-    50% {
-        transform: translateX(0);
-        opacity: 1;
-        transform: scaleY(1.1);
-
-    }
-
     100% {
         transform: translateX(0);
         opacity: 1;
@@ -443,20 +482,8 @@ input::placeholder{
 @keyframes showLine {
     0% {
         opacity: 0;
-        transform: translateX(1000px);
-        background-color: #ffffff;
-        box-shadow: 0 0 0px rgba(26, 255, 0, 0);
-    }
-    50% {
-        /* เรืองแสงสีเขียวเข้มข้นขึ้นในช่วงกลาง */
-        box-shadow: 0 0 100px rgba(252, 255, 252, 0.8), 0 8px 20px rgba(0, 0, 0, 0.15);
-                opacity: 1;
-    }
-    70%{
-           box-shadow: 0 0 100px rgba(253, 255, 253, 0), 0 8px 20px rgba(0, 0, 0, 0.15);
     }
     100% {
-        transform: translateX(0);
                 opacity: 1;
 
     }
@@ -568,7 +595,6 @@ input::placeholder{
 .static {
     width: 100%;
     padding: 20px;
-    border: 1px solid #E6EAED;
     height: 100%;
     padding: 20px;
     background: #fff;
@@ -602,9 +628,10 @@ input::placeholder{
     width: 100%; /* เปลี่ยนจาก max-width เป็น width */
     box-sizing: border-box; /* ป้องกันไม่ให้ padding ทำให้เกิด Scrollbar หรือพื้นที่เกิน */
     min-width: 0; 
-    background: #F4F5FC; 
+    background: white; 
     margin-right: 0;
     z-index: 2;
+    padding: 60px;
     height: 100%;
     margin-top: 0;
     animation: Boom 0.7s ease-in-out;
@@ -644,7 +671,6 @@ input::placeholder{
 }
 .over {
     display: flex;
-    margin-top: 50px;
     min-height: calc(100vh - 50px);
     overflow: hidden;
     max-width: 100%;
@@ -845,26 +871,11 @@ input::placeholder{
 }
 @keyframes Boom {
     0%{
-        box-shadow: 0px 42px 234px 0px #e3ffdc;
         transform: translateX(-500px); 
         opacity: 0;
 
     }
-    30%{
-         opacity: 1;
-         
-         
-    }
-    40%{
-        transform: translateX(100px); 
-    }
-    80%{
-        box-shadow: none;
-        transform: scaleY(1.1);
-
-    }
     100%{
-        box-shadow: none;
 
         
     }

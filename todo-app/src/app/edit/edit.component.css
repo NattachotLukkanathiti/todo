@@ -136,8 +136,15 @@ button:disabled {
 }
 .phone {
     display: flex;
-    justify-content: flex-start; /* จัดชิดซ้ายแนวนอน */
+      min-width: 0;
+    display: grid;
+    gap: 8px;
+    font-weight: 600;
+    color: #2b2f38;
+    font: 500 16px/22px;
+    margin-right: auto;
 }
+
 /* ---- row actions (PDF / edit / delete) */
 .page-heading {
     margin-top: 60px;
@@ -291,7 +298,7 @@ button:disabled {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-end;
-    gap: 20px;
+    gap: 30px;
 }
 
 .profile-avatar {
@@ -312,11 +319,16 @@ button:disabled {
     min-width: 0;
     display: grid;
     gap: 8px;
-
+    
     color: #2b2f38;
     font: 500 16px/22px 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
+.pr{
+    display: grid;
+    width: 100px;
+    font: 500 16px/22px;
 
+}
 .profile-card__top .profile-field {
     flex: 1 1 200px;
 }
