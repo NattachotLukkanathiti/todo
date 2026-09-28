@@ -14,6 +14,11 @@ import { interval, Subscription } from 'rxjs';
 })
 export class EmployeeComponent {
 
+
+  currentPage: number = 1;
+itemsPerPage: number = 10; // จำนวนรายการต่อหน้า
+totalPages: number = 1;
+paginatedEmployeeList: any[] = [];
   private todoService = inject(TodoService);
 
   search = '';
@@ -185,6 +190,20 @@ selectedaccount: any = { role: '' };
     
     
   }
+  calculateTotalPages() {
+  this.totalPages = Math.ceil(this.filteredEmployeeList.length / this.itemsPerPage);
+  if (this.totalPages === 0) this.totalPages = 1;
+  this.changePage(1); // รีเซ็ตไปหน้าแรกเสมอเมื่อข้อมูลเปลี่ยน
+}
+
+changePage(page: number) {
+  if (page < 1 || page > this.totalPages) return;
+  this.currentPage = page;
+  
+  const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+  const endIndex = startIndex + this.itemsPerPage;
+  this.paginatedEmployeeList = this.filteredEmployeeList.slice(startIndex, endIndex);
+}
   ngOnDestroy() {
     this.timeSubscription?.unsubscribe();
   }
@@ -235,19 +254,19 @@ loadTodos() {
 isGuest(role: string): boolean {
   return role === '' || role === null || role === undefined;
 }
-  filterS() {
-    if (!this.search) {
-      this.filteredEmployeeList = [...this.employeeList];
-    } else {
-      const searchTerm = this.search.toLowerCase();
-      this.filteredEmployeeList = this.employeeList.filter(emp => 
-        (emp.username && emp.username.toLowerCase().includes(searchTerm)) ||
-        (emp.code && emp.code.toLowerCase().includes(searchTerm)) ||
-        (emp.title && emp.title.toLowerCase().includes(searchTerm))
-      );
-    }
+ filterS() {
+  if (!this.search) {
+    this.filteredEmployeeList = [...this.employeeList];
+  } else {
+    const searchTerm = this.search.toLowerCase();
+    this.filteredEmployeeList = this.employeeList.filter(emp => 
+      (emp.username && emp.username.toLowerCase().includes(searchTerm)) ||
+      (emp.code && emp.code.toLowerCase().includes(searchTerm)) ||
+      (emp.title && emp.title.toLowerCase().includes(searchTerm))
+    );
   }
-
+  this.calculateTotalPages(); // <--- เพิ่มบรรทัดนี้
+}
 
 // ตัวแปรเก็บข้อมูล
 filterEmployee(selected: string) {

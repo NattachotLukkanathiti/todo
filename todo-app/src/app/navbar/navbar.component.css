@@ -190,14 +190,17 @@
 }
 .account-sidebar__menu button:hover {
   color: #6fab23;
+    cursor: pointer;
 }
 .account-sidebar__menu button svg, .account-sidebar__logout svg {
   width: 24px;
   height: 24px;
+  cursor: pointer;
   flex: 0 0 auto;
 }
 .account-sidebar__logout {
   margin: 180px 24px 24px;
+  cursor: pointer;
   color: #dc1818;
 }
 .account-sidebar__logout:hover {

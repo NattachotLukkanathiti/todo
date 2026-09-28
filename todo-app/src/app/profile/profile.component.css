@@ -337,6 +337,16 @@ button:disabled {
     display: flex;
     padding: 20px;
     background-color: white;
+    animation: Boom 1s ease forwards;
+}
+@keyframes Boom{
+    0%{
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100%{
+        
+    }
 }
 .con{
     width: 100vw;

@@ -582,6 +582,35 @@ app.put('/api/employee/:username', async (req, res) => {
     res.status(500).json({ success: false, message: 'Server Error' });
   }
 });
+// --- เพิ่ม Route สำหรับอัปเดตข้อมูล Supplier ---
+app.put('/api/suppliers/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { supplier_name, email, phone, logo, created_by } = req.body;
+
+    const result = await pool.query(
+      `UPDATE suppliers 
+       SET supplier_name = $1, email = $2, phone = $3, logo = $4, created_by = $5
+       WHERE id = $6 
+       RETURNING *`,
+      [supplier_name, email, phone, logo, created_by, id]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ success: false, message: 'ไม่พบข้อมูลผู้จัดจำหน่ายนี้' });
+    }
+
+    res.json({
+      success: true,
+      message: 'อัปเดตข้อมูลผู้จัดจำหน่ายเรียบร้อยแล้ว',
+      data: result.rows[0]
+    });
+
+  } catch (error) {
+    console.error('Error updating supplier:', error);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+});
 app.put('/api/reset-password', async (req, res) => {
   try {
     const { title, password } = req.body;

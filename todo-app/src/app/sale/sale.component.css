@@ -297,13 +297,13 @@ input::placeholder{
 }
 
 .custom-select::after {
-  content: url("/image/down.svg"); /* Fixed: Added url() wrapper */
+  content: url("/image/down.svg"); 
   font-size: 12px;
   color: #6B7280;
   position: absolute;
   right: 16px;
   top: 50%;
-  transform: translateX(-50%);
+  transform: translateY(-50%); /* แก้ไขจาก translateX เป็น translateY */
   pointer-events: none;
 }
 .pagination {

@@ -35,7 +35,9 @@
     </div>
 
 </div>
-
+<div class="tab_con">
+    <div class="tab">Introducing Tamraidee Upgrade. Lease a new product with low monthly payments for 12 or 24 months and upgrade at the end of your term. <span class="lern">Lern more</span></div>
+</div>
 <div class="over">
     <div class="fix" [class.open]="isMenuOpen">
         <div class="sidebar" [class.open]="isMenuOpen">
@@ -174,8 +176,8 @@
 <div class="sku2">{{ order.phone }}</div>
 <div class="sku2">{{ order.order_history }}
     <div class="button_small">
-            <img class="icon_small_inventory"  *ngIf="userRole === 'admin' || userRole === 'manager'" src="image/edit.svg" >
-            <img class="icon_small_inventory"  *ngIf="(userRole === 'admin' || userRole === 'manager') " src="image/delete.svg" alt="">
+            <img class="icon_small_inventory"  *ngIf="userRole === 'admin' || userRole === 'manager'" (click)="button_edits(order)" src="image/edit.svg" >
+            <img class="icon_small_inventory2"  *ngIf="(userRole === 'admin' || userRole === 'manager') " src="image/delete.svg" alt="">
         </div>
 </div>
     </div>
@@ -294,6 +296,58 @@
         <!-- ปุ่มบันทึก -->
         <div class="button_import">                 
             <div class="save" (click)="saveSupplier()" style="cursor: pointer;">Save Supplier</div>                 
+            <div class="cancel" (click)="button_cancels()" style="cursor: pointer;">Cancel</div>             
+        </div>     
+    </div> 
+</div>
+
+
+
+
+
+<!-- ฟอร์ม Edit Supplier -->
+<div class="import_product" [class.product]="product" [class.button_cancel]="button_cancel" [class.button_importt]="button_edit">     
+    <div class="con_import_product" [class.out_comimport]="outimport">         
+        <div class="serach_product">             
+            Edit Supplier         
+        </div>         
+        
+        <div class="add_image" style="cursor: pointer;">
+            <img *ngIf="!imagePreview" (click)="fileInput.click()" src="image/Add ImageAdd_image.svg" alt="Add Logo">
+            <img *ngIf="imagePreview" [src]="imagePreview" alt="Logo Preview" style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;">
+            
+            <div class="sku_pro2">
+                <label class="label_import">Logo URL</label>
+                <div class="con_edit">
+                    <input type="text" class="sku_input2" (ngModelChange)="onUrlChange($event)" [(ngModel)]="selectedSupplier.logo" placeholder="Enter Logo URL">
+                </div>
+            </div>
+        </div>   
+        
+        <div class="con_sku_pro">             
+            <div class="sku_pro">             
+                <label class="label_import">Supplier Name</label>             
+                <input type="text" class="sku_input" [(ngModel)]="selectedSupplier.supplier_name">         
+            </div>         
+            <div class="sku_pro">             
+                <label class="label_import">Contact Person</label>             
+                <input type="text" class="sku_input" [(ngModel)]="selectedSupplier.created_by">         
+            </div>         
+        </div>         
+        
+        <div class="con_sku_pro">             
+            <div class="sku_pro">             
+                <label class="label_import">Email</label>             
+                <input type="email" class="sku_input" [(ngModel)]="selectedSupplier.email">         
+            </div>         
+            <div class="sku_pro">             
+                <label class="label_import">Phone</label>             
+                <input type="text" class="sku_input" [(ngModel)]="selectedSupplier.phone">         
+            </div>         
+        </div>         
+
+        <div class="button_import">                 
+            <div class="save" (click)="updateSupplier()" style="cursor: pointer;">Save Changes</div>                 
             <div class="cancel" (click)="button_cancels()" style="cursor: pointer;">Cancel</div>             
         </div>     
     </div> 

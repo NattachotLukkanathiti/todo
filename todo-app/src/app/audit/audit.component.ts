@@ -1,10 +1,11 @@
 
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject ,HostListener} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TodoService } from '../services/todo.service';
 import { interval, Subscription } from 'rxjs';
+
 @Component({
   selector: 'app-audit',
   imports: [CommonModule, DatePipe, RouterLink,FormsModule],
@@ -12,7 +13,19 @@ import { interval, Subscription } from 'rxjs';
   styleUrl: './audit.component.css'
 })
 export class AuditComponent {
+    itemsPerPage: number = 10; 
+  currentPage: number = 1;
+  totalPages: number = 1;
+  pagesArray: number[] = [];
 
+    rowHeight: number = 50; // ความสูงของแต่ละแถว (px)
+  headerHeight: number = 250;
+  // --- เพิ่มฟังก์ชันดักจับการ Resize ---
+    paginatedAuditLogs: any[] = [];
+  filteredAuditLogs: any[] = [];
+
+
+ 
   private todoService = inject(TodoService);
 
   search = '';
@@ -88,6 +101,52 @@ export class AuditComponent {
     this.timeSubscription = interval(1000).subscribe(() => {
       this.currentTime = new Date();
     });
+  }
+   @HostListener('window:resize', ['$event'])
+  onResize(event: any) { 
+    this.calculateRows();
+  }
+
+  calculateRows() {
+    const availableHeight = window.innerHeight - this.headerHeight;
+    this.itemsPerPage = Math.max(5, Math.floor(availableHeight / this.rowHeight));
+    
+    if (this.filteredAuditLogs && this.filteredAuditLogs.length > 0) {
+      this.calculateTotalPages();
+    }
+  }
+
+   calculateTotalPages() {
+    this.totalPages = Math.ceil(this.filteredAuditLogs.length / this.itemsPerPage);
+    if (this.totalPages === 0) this.totalPages = 1;
+    this.changePage(1);
+  }
+
+  changePage(page: number) {
+    if (page < 1 || page > this.totalPages) return;
+    this.currentPage = page;
+    
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedAuditLogs = this.filteredAuditLogs.slice(startIndex, endIndex);
+  }
+
+  getPagesArray(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+ filterS() {
+    if (!this.search) {
+      this.filteredAuditLogs = [...this.auditLogs];
+    } else {
+      const searchTerm = this.search.toLowerCase();
+      this.filteredAuditLogs = this.auditLogs.filter(log => 
+        (log.username && log.username.toLowerCase().includes(searchTerm)) ||
+        (log.activity && log.activity.toLowerCase().includes(searchTerm)) ||
+        (log.role && log.role.toLowerCase().includes(searchTerm))
+      );
+    }
+    this.calculateTotalPages();
   }
   reloads() {
     this.loadAudit();
@@ -168,10 +227,11 @@ export class AuditComponent {
 
   loadAudit() {
     this.loader = true;
-    // ต้องไปเพิ่ม getAudit() ใน todo.service.ts ด้วย
     this.todoService.getAudit().subscribe({
       next: (res) => {
         this.auditLogs = res;
+        this.filteredAuditLogs = [...this.auditLogs]; // <--- เพิ่มบรรทัดนี้
+        this.calculateTotalPages(); // <--- เพิ่มบรรทัดนี้
         this.isLoading = false;
         this.loader = false;
       },
@@ -195,11 +255,7 @@ export class AuditComponent {
     this.currentView = view;
   }
 
-  filterS() {
-    this.filteredItems = this.items.filter(item =>
-      item.toLowerCase().includes(this.search.toLowerCase())
-    );
-  }
+ 
 
   logout() {
     const now = new Date();

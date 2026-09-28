@@ -325,13 +325,22 @@ export class NavbarComponent implements OnInit {
         dob: currentUser?.dob || '',
         national_id: currentUser?.national_id || '',
         address: currentUser?.address || '',
-        emergency_contact: currentUser?.emergency_contact || ''
+        emergency_contact: currentUser?.emergency_contact || '',
+        phone: currentUser?.phone || ''
       }
     });
+        this.closePanel();
   }
 
   openHelp() {
        this.router.navigate(['/helpp'], {
+      state: { username: this.username, email: this.email, role: this.userRole, profile: this.profile }
+    });
+    // ปิด Sidebar หากอยู่ที่หน้า Help อยู่แล้ว หรือจะสั่ง reload ก็ได้
+    this.closePanel();
+  }
+    openSetting() {
+       this.router.navigate(['/setting'], {
       state: { username: this.username, email: this.email, role: this.userRole, profile: this.profile }
     });
     // ปิด Sidebar หากอยู่ที่หน้า Help อยู่แล้ว หรือจะสั่ง reload ก็ได้

@@ -615,7 +615,7 @@
 
 .import_product {
     background-color: #d9d9d977;
-    
+    top: 0;
     width: 100vw;
     height: 100vh;
     position: fixed;
@@ -1425,7 +1425,7 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
 .icon_small_inventory:hover {
     padding: 7px;
     width: 15px;
-    background-color: #d0d0d0;
+    background-color: #FEF097;
     height: 15px;
     border-radius: 8px;
     border: 1px solid #AFAFAF;
@@ -1433,7 +1433,7 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
 .icon_small_inventory:active {
     padding: 7px;
     width: 15px;
-    background-color: #8a8a8a;
+    background-color: #FDE968;
     height: 15px;
     border-radius: 8px;
     border: 1px solid #AFAFAF;
@@ -1449,7 +1449,7 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
 .icon_small_inventory2:hover {
     padding: 7px;
     width: 15px;
-    background-color: #d0d0d0;
+    background-color: #EF9595;
     height: 15px;
     border-radius: 8px;
     border: 1px solid #AFAFAF;
@@ -1457,7 +1457,7 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
 .icon_small_inventory2:active {
     padding: 7px;
     width: 15px;
-    background-color: #8a8a8a;
+    background-color: #E86464;
     height: 15px;
     border-radius: 8px;
     border: 1px solid #AFAFAF;

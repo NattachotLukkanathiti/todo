@@ -10,7 +10,6 @@
   width: 100vw;
   z-index: 3;/* ปรับให้มากกว่า sidebar เพื่อให้อยู่ด้านบนสุด */
   background-color: #FFF;
-  border: 1px solid #CED4DA ;
   animation: slide 1s ease-in-out;
   
 }
@@ -266,13 +265,13 @@ input::placeholder{
 }
 
 .custom-select::after {
-  content: url("/image/down.svg"); /* Fixed: Added url() wrapper */
+  content: url("/image/down.svg"); 
   font-size: 12px;
   color: #6B7280;
   position: absolute;
   right: 16px;
   top: 50%;
-  transform: translateX(-50%);
+  transform: translateY(-50%); /* แก้ไขจาก translateX เป็น translateY */
   pointer-events: none;
 }
 .pagination {
@@ -331,14 +330,6 @@ input::placeholder{
         transform: translateX(500px);
         opacity: 0;
     }
-
-    50% {
-        transform: translateX(0);
-        opacity: 1;
-        transform: scaleY(1.1);
-
-    }
-
     100% {
         transform: translateX(0);
         opacity: 1;
@@ -478,18 +469,9 @@ input::placeholder{
 @keyframes showLine {
     0% {
         opacity: 0;
-        transform: translateX(1000px);
-        background-color: #ffffff;
-        box-shadow: 0 0 0px rgba(26, 255, 0, 0);
+     
     }
-    50% {
-        /* เรืองแสงสีเขียวเข้มข้นขึ้นในช่วงกลาง */
-        box-shadow: 0 0 100px rgba(252, 255, 252, 0.8), 0 8px 20px rgba(0, 0, 0, 0.15);
-                opacity: 1;
-    }
-    70%{
-           box-shadow: 0 0 100px rgba(253, 255, 253, 0), 0 8px 20px rgba(0, 0, 0, 0.15);
-    }
+
     100% {
         transform: translateX(0);
                 opacity: 1;
@@ -614,7 +596,7 @@ input::placeholder{
 .static {
     width: 100%;
     padding: 20px;
-    border: 1px solid #E6EAED;
+   /*  border: 1px solid #E6EAED; */
     height: 100%;
     padding: 20px;
     background: #fff;
@@ -636,19 +618,34 @@ input::placeholder{
     width: 100%; /* เปลี่ยนจาก max-width เป็น width */
     box-sizing: border-box; /* ป้องกันไม่ให้ padding ทำให้เกิด Scrollbar หรือพื้นที่เกิน */
     min-width: 0; 
-    background: #F4F5FC; 
+    padding: 60px;
+    background: white; 
     margin-right: 0;
     z-index: 2;
     height: 100%;
     margin-top: 0;
     animation: Boom 0.7s ease-in-out;
 }
-.detail_con{
+.detail_con {
     position: relative;
     border: 1px solid #E6EAED;
     width: 100%;
     margin-top: 0;
+    opacity: 0;
+    transform:  translateY(100px);
     height: 100%;
+    animation: come 1.2s ease forwards;
+    animation-delay: 1s;
+}
+@keyframes come{
+    0%{
+        opacity: 0;
+        transform: translateY(100px);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 .bars{
     margin-top: 20px;
@@ -677,7 +674,6 @@ input::placeholder{
 }
 .over {
     display: flex;
-    margin-top: 50px;
     min-height: calc(100vh - 50px);
     overflow: hidden;
     max-width: 100%;
@@ -890,22 +886,8 @@ input::placeholder{
 }
 @keyframes Boom {
     0%{
-        box-shadow: 0px 42px 234px 0px #e3ffdc;
         transform: translateX(-500px); 
         opacity: 0;
-
-    }
-    30%{
-         opacity: 1;
-         
-         
-    }
-    40%{
-        transform: translateX(100px); 
-    }
-    80%{
-        box-shadow: none;
-        transform: scaleY(1.1);
 
     }
     100%{
@@ -1458,7 +1440,63 @@ input::placeholder{
   }
 }
 
+.header_Inventory {
+    font-size: 80px;
+    margin-bottom: 60px;
+    display: flex;
+    font-weight: 600;
+    justify-content: flex-start;
+    color: #1D1D1F;
+    transform: translateY(-200px);
+    animation-name: slidee;
+    animation-delay: 1s;
+    animation-duration: 1s; 
+    animation-fill-mode: forwards; 
+}
 
+@keyframes slidee {
+    0% {
+        transform: translateY(-200px);
+    }
+    100% {
+
+        transform: translateY(0);
+    }
+}
+
+.tab{
+    background-color: #F5F5F7;
+    padding: 20px;
+    font-weight: 300;
+    margin-top: 50px;
+    text-align: center;
+    font-size: 13px;
+    z-index: 4 !important;
+    animation: tab 4s ease;
+}
+.tab_con{
+    background-color: white;
+    width: 100vw;
+}
+@keyframes tab{
+    0%{
+        transform: translateY(-60px);
+        color: white;
+    }
+    30%{
+        transform: translateY(0);
+        background-color: #84D46E;
+        color: white;
+    }
+    50%{
+        background-color: #84D46E;
+        color: white;
+        opacity: 1;
+    }
+    100%{
+        
+    }
+}
 /* /////หน้าเพิ่ม supplier */
 /* โครงสร้างหลักของฟอร์ม */
 .import_product {
@@ -1632,31 +1670,50 @@ input::placeholder{
     align-items: center;
 }
 
-/* รูปแบบของปุ่มไอคอน (Edit / Delete) */
 .icon_small_inventory {
     padding: 7px;
     width: 15px;
     height: 15px;
     border-radius: 8px;
-    border: 1px solid #AFAFAF;
+    background-color: #FFFCE8;
     cursor: pointer;
 }
-
-/* เอฟเฟกต์เมื่อเอาเมาส์ไปชี้ (Hover) */
 .icon_small_inventory:hover {
     padding: 7px;
     width: 15px;
-    background-color: #d0d0d0;
+    background-color: #FEF097;
     height: 15px;
     border-radius: 8px;
     border: 1px solid #AFAFAF;
 }
-
-/* เอฟเฟกต์เมื่อกดคลิก (Active) */
 .icon_small_inventory:active {
     padding: 7px;
     width: 15px;
-    background-color: #8a8a8a;
+    background-color: #FDE968;
+    height: 15px;
+    border-radius: 8px;
+    border: 1px solid #AFAFAF;
+}
+.icon_small_inventory2 {
+    padding: 7px;
+    width: 15px;
+    height: 15px;
+    background-color: #FCE8E8;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.icon_small_inventory2:hover {
+    padding: 7px;
+    width: 15px;
+    background-color: #EF9595;
+    height: 15px;
+    border-radius: 8px;
+    border: 1px solid #AFAFAF;
+}
+.icon_small_inventory2:active {
+    padding: 7px;
+    width: 15px;
+    background-color: #E86464;
     height: 15px;
     border-radius: 8px;
     border: 1px solid #AFAFAF;

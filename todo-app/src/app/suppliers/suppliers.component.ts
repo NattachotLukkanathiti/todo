@@ -14,7 +14,8 @@ import { interval, Subscription } from 'rxjs';
 export class SuppliersComponent {
   @ViewChild('fileInput') fileInput!: ElementRef; // เพิ่มบรรทัดนี้
   private todoService = inject(TodoService);
-
+  button_edit = false;
+  selectedSupplier: any = {}
   search = '';
   items: string[] = ['รายการที่ 1', 'รายการที่ 2', 'รายการที่ 3'];
   filteredItems: string[] = [...this.items];
@@ -152,13 +153,36 @@ export class SuppliersComponent {
     }
   });
 }
+    button_edits(supplier: any) {
+    this.selectedSupplier = { ...supplier }; // คัดลอกข้อมูลมาเพื่อไม่ให้กระทบกับตารางหลัก
+    this.imagePreview = supplier.logo || null;
+    this.outimport = false;
+    this.button_edit = true;
+  }
 
+  // --- ฟังก์ชันบันทึกการแก้ไข ---
+  updateSupplier() {
+    this.isLoading = true;
+    this.todoService.updateSupplier(this.selectedSupplier.id, this.selectedSupplier).subscribe({
+      next: (res) => {
+        console.log('Supplier updated successfully:', res);
+        this.loadSuppliers();
+        this.button_cancels();
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error updating supplier:', err);
+        this.isLoading = false;
+      }
+    });
+  }
   // --- ส่วนที่เพิ่มเข้ามาใหม่ (ฟังก์ชันสำหรับฟอร์ม) ---
   button_cancels() {
     this.outimport = true;
     setTimeout(() => {
       this.button_importt = false;
       this.outimport = false;
+       this.button_edit = false;
       this.imagePreview = null;
     }, 400);
   }

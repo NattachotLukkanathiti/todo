@@ -30,33 +30,33 @@
     </div>
 </div>
 <main class="p">
-  <button type="button" class="back-button"  (click)="back()" ><img src="image/back.svg" alt=""></button>
-  <div class="con">
-    <div class="page">
+        <button type="button" class="back-button" aria-label="Back" (click)="back()"><img src="image/back.svg" alt=""></button>
+  <div class="page">
     <div class="page-heading">
-    
-    <h1>Profile</h1>
-    <button  type="button" class="action-btn action-btn--edit edit-profile-button" (click)="edit()"><img src="image/edit.svg"  alt=""></button>
+    <h1>Settings</h1>
   </div>
 
-  <div class="profile-card">
-    <div class="profile-card__top">
-      <img class="profile-avatar" [src]="profile" />
-      <div class="pr">Role<span class="role">{{ userRole }}</span></div>
-       <div class="phone">Phone
-        <span class="profile-field__value">{{ phone }}</span>
+  <div class="settings-card">
+    <section class="settings-section">
+      <h2>Store profile</h2>
+      <p>This information will appear on sales documents, reports, and the store's contact details.</p>
+
+      <div class="settings-grid">
+        <label class="settings-field">Email<span class="field"><input type="email" [(ngModel)]="form.email" /></span></label>
+        <label class="settings-field">Phone number<span class="field"><input type="tel" [(ngModel)]="form.phone" /></span></label>
       </div>
-    </div>
 
-    <div class="profile-grid">
-      <div class="profile-field">Full Name<span class="profile-field__value">{{ username }}</span></div>
-      <div class="profile-field">Date of Birth<span class="profile-field__value">{{dob}}</span></div>
-      <div class="profile-field">National ID Number<span class="profile-field__value">{{nationnal}}</span></div>
-    </div>
+      <label class="settings-field">Store address<span class="field field--area"><textarea rows="3" [(ngModel)]="form.address"></textarea></span></label>
+    </section>
 
-    <div class="profile-field">Current Address<span class="profile-field__value profile-field__value--area">{{address}}</span></div>
-    <div class="profile-field">Emergency Contact<span class="profile-field__value profile-field__value--area">{{emergency}}</span></div>
-  </div>
+    <div class="settings-divider"></div>
+
+
+
+    <div class="settings-actions">
+      <button type="button" class="btn btn--secondary" (click)="back()">Cancel</button>
+      <button type="button" class="btn btn--primary" (click)="save()">Save</button>
+    </div>
   </div>
   </div>
 </main>

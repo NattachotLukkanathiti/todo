@@ -218,11 +218,19 @@ updateEmployee(username: string, employeeData: any): Observable<any> {
       { headers: this.headers }
     );
   }
-  // 📌 เพิ่มฟังก์ชันสำหรับบันทึกข้อมูลลงตาราง History
+
   addHistory(historyData: any): Observable<any> {
     return this.http.post<any>(
       `${this.apiUrl}/history`, 
       historyData,
+      { headers: this.headers }
+    );
+  }
+
+  updateSupplier(id: number, supplierData: any): Observable<any> {
+    return this.http.put<any>(
+      `${this.apiUrl}/suppliers/${id}`, 
+      supplierData,
       { headers: this.headers }
     );
   }

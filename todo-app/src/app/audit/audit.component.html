@@ -166,7 +166,7 @@
                     </ng-container>
     <!-- Data Rows -->
    <ng-template #realData>
-     <div  class="table_detail2" *ngFor="let order of auditLogs; let i = index" [style.animation-delay]="i * 0.15 + 's'">
+     <div class="table_detail2" *ngFor="let order of paginatedAuditLogs; let i = index" [style.animation-delay]="i * 0.15 + 's'">
     <div class="table_detail">
         <div class="sku2">{{ order.date }},{{ order.time }}</div>
         <div class="sku2">
@@ -187,13 +187,15 @@
 </div>
    </ng-template>
 </div>
+    <div class="con_tainer_page">
   <div class="pagination">
-  <a href="#" class="prev">&lt; Prev</a>
-  <a href="#" class="page active">1</a>
-  <a href="#" class="page">2</a>
-  <span class="dots">...</span>
-  <a href="#" class="page">11</a>
-  <a href="#" class="next">Next &gt;</a>
+    <a class="prev" [class.disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">&lt; Prev</a>
+    <a class="page" [class.active]="currentPage === 1" (click)="changePage(1)">1</a>
+    <a *ngIf="totalPages >= 2" class="page" [class.active]="currentPage === 2" (click)="changePage(2)">2</a>
+    <span *ngIf="totalPages > 3" class="dots">...</span>
+    <a *ngIf="totalPages > 2" class="page" [class.active]="currentPage === totalPages" (click)="changePage(totalPages)">{{ totalPages }}</a>
+    <a class="next" [class.disabled]="currentPage === totalPages || totalPages === 0" (click)="changePage(currentPage + 1)">Next &gt;</a>
+  </div>
 </div>
                 </div>
                 
