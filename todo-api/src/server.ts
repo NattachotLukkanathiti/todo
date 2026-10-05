@@ -400,15 +400,13 @@ app.post('/api/inventory', async (req, res) => {
 });
 app.post('/api/sale_order', async (req, res) => {
   try {
-    // เปลี่ยนมารับค่าเป็น quantity
-    const { order_code, product_name, quantity, picture, create_by, status, created_at } = req.body;
+    const { order_code, product_name, picture, create_by, status, created_at } = req.body;
 
-    // เปลี่ยนคำสั่ง SQL ให้บันทึกลงคอลัมน์ quantity
     const result = await pool.query(
-      `INSERT INTO sale_order (order_code, product_name, quantity, picture, create_by, status, created_at) 
-       VALUES ($1, $2, $3, $4, $5, $6, $7) 
+      `INSERT INTO sale_order (order_code, product_name, picture, create_by, status, created_at) 
+       VALUES ($1, $2, $3, $4, $5, $6) 
        RETURNING *`,
-      [order_code, product_name, quantity, picture, create_by, status, created_at]
+      [order_code, product_name, picture, create_by, status, created_at]
     );
 
     res.status(201).json({ success: true, data: result.rows[0] });

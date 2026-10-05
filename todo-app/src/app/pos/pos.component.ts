@@ -401,17 +401,14 @@ completePayment(): void {
   this.cartItems.forEach(item => {
     // ข้อมูลที่ตรงกับคอลัมน์ในตาราง sale_order
     const salesData = {
-      order_code: orderCode,
-      product_name: item.name,
-      
-      // 📌 เพิ่มการบันทึกจำนวนสินค้าที่ขาย
-      amount: item.quantity, 
-      
-      picture: this.profile || 'image/profile.svg', 
-      create_by: this.username,
-      status: 'Completed',
-      created_at: now
-    };
+  order_code: orderCode,
+  product_name: item.name,
+  quantity: item.quantity, // <--- เปลี่ยนเป็น quantity
+  picture: this.profile, 
+  create_by: this.username,
+  status: 'Completed',
+  created_at: now
+};
 
     // 1. บันทึกข้อมูลลงตาราง sale_order
     this.todoService.saveSalesOrder(salesData).subscribe({
