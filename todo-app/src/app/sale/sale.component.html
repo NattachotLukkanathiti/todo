@@ -183,6 +183,7 @@
         </div>
         <div class="status" [ngClass]="{'text-green': order.status === 'Completed', 'text-gray': order.status === 'Pending'}">
             {{ order.status }}
+              <img class="icon" *ngIf="userRole === 'backend' || userRole === 'admin'" (click)="opencancel(order)" src="image/file.svg">
         </div>
     </div>
     <div class="line"></div>
@@ -206,7 +207,7 @@
 
         </div>
     </div>
-    <div class="fix2" [class.open]="isMenuOpenprofile" [class.fix2]="out">
+   <!--  <div class="fix2" [class.open]="isMenuOpenprofile" [class.fix2]="out">
         <div [class.open]="isMenuOpenprofile" class="profile">
             <div class="header_Manager">
                 <div class="header_inside">
@@ -232,7 +233,7 @@
             </div>
         </div>
     </div>
-
+ -->
 
     <div *ngIf="showpopupnoti" class="backpop">
         <div *ngIf="showpopupnoti" class="popupcontainer">
@@ -258,4 +259,59 @@
     <div class="loader3"></div>
     <div class="loader4"></div>
   </div>
+</div>
+
+
+<div class="import_product" [class.product2]="product2" [class.button_cancel]="button_cancel" [class.button_edit]="button_edit">
+    <div class="con_import_product2" [class.out_comimport]="outimport" >
+        
+        <!-- Header -->
+        <div class="serach_product" >
+            <img src="image/cancel_sale_order.svg" >
+            <span>Cancel Sales Orders</span>
+        </div>
+
+        <!-- Row 1: Adjustment No. & Quantity -->
+        <div class="con_sku_pro">
+         <div class="sku_pro full-width">
+    <label class="label_import" for="">Cancellation Reason</label>
+    <div class="custom-select-wrapper">
+        <select class="sku_input custom-dropdown" [(ngModel)]="selectedProduct.cancel_reason">
+            <option value="" disabled selected>Select a reason</option>
+            <option value="Customer Request">Canceled</option>
+            <option value="Incorrect Information">Incorrect Information (ข้อมูลไม่ถูกต้อง)</option>
+        </select>
+    </div>
+</div>
+        </div>
+
+ 
+
+        <!-- Row 4: Request By & Date/Time -->
+          <label class="label_import">Created By</label>
+        <div class="con_sku_pro" style="align-items: center; margin-top: 20px;">
+            <div class="sku_pro" style="display: flex; align-items: center;">
+                <!-- แก้ไขการแสดงผลรูปภาพและชื่อผู้สร้าง -->
+                <img class="profile_employee" [src]="selectedProduct.picture || 'image/user_avatar.svg'" alt="" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
+               <span>{{ selectedProduct.create_by || username }}</span>
+            </div>
+            <div class="sku_pro" style="display: flex; gap: 10px;">
+                <div class="sku_input" style="display: flex; align-items: center; justify-content: space-between;">
+                    <span>{{ currentTime | date:'dd/MM/yyyy' }}</span>
+                    <img src="image/calendar_icon.svg" alt="">
+                </div>
+                <div class="sku_input" style="display: flex; align-items: center; justify-content: space-between;">
+                    <span>{{ currentTime | date:'HH:mm:ss' }}</span>
+                    <img src="image/clock_icon.svg" alt="">
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <!-- Buttons -->
+<div class="button_import">
+    <div class="save" (click)="confirmCancel()">Confirm</div>
+    <div (click)="button_cancels()" class="cancel">Cancel</div>
+</div>
+    </div>
 </div>

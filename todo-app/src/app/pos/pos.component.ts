@@ -395,25 +395,47 @@ loadNotifications(): void {
  completePayment(): void {
   if (!this.cartItems.length) return;
 
-  // 📌 สร้าง order_code แค่ครั้งเดียวตรงนี้ (เช่น #123456)
-  const orderCode = `#${Date.now().toString().slice(-6)}`; 
+  const orderCode = `#${Date.now().toString().slice(-6)}`;
   const now = new Date().toISOString();
 
-  // วนลูปบันทึกสินค้าทีละชิ้น
   this.cartItems.forEach(item => {
+    // ข้อมูลที่ตรงกับคอลัมน์ในตาราง sale_order
     const salesData = {
-      order_code: orderCode, // 📌 ทุกชิ้นจะได้ orderCode เดียวกัน
+      order_code: orderCode,
       product_name: item.name,
-      picture: item.image,
+      
+      // 📌 เปลี่ยนจาก item.image เป็น this.profile (รูปโปรไฟล์ของผู้ขาย)
+      picture: this.profile || 'image/profile.svg', 
+      
       create_by: this.username,
       status: 'Completed',
       created_at: now
     };
 
-    // ส่งไปบันทึกที่ Backend
-    this.todoService.saveSalesOrder(salesData).subscribe();
+    // 1. บันทึกข้อมูลลงตาราง sale_order
+    this.todoService.saveSalesOrder(salesData).subscribe({
+      next: () => console.log(`Saved to sale_order: ${item.name}`),
+      error: (err) => console.error(`Failed to save: ${item.name}`, err)
+    });
+
+    // 2. ตัดสต็อกสินค้า
+    const newStock = item.stock - item.quantity;
     
-    // (ส่วนของการตัดสต็อก)
+    const updateData = {
+      product_name: item.name,
+      picture: item.image, // ส่วนนี้ยังคงเป็นรูปสินค้าตามเดิม
+      quantity: newStock,
+      price: item.price,
+      category: item.category,
+      brand: item.brand || 'N/A',
+      quantity_alert: item.quantity_alert || 10
+    };
+
+    this.todoService.updateInventoryStock(item.id, updateData).subscribe();
   });
+
+  alert('บันทึกข้อมูลการขายและตัดสต็อกเรียบร้อยแล้วค่ะ');
+  this.cartItems = [];
+  this.loadInventory();
 }
 }
