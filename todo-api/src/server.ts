@@ -549,33 +549,20 @@ app.post('/api/check-email', async (req, res) => {
     });
   }
 });
-// เพิ่ม Route สำหรับอัปเดตสถานะ Sale Order
-app.put('/api/sale_order/:order_code', async (req, res) => {
+app.put('/api/sale_order/:id', async (req, res) => {
   try {
-    const { order_code } = req.params;
-    const { status, cancel_reason } = req.body;
+    const { id } = req.params;
+    const { status } = req.body;
 
     const result = await pool.query(
-      `UPDATE sale_order 
-       SET status = $1, cancel_reason = $2 
-       WHERE order_code = $3 
-       RETURNING *`,
-      [status, cancel_reason, order_code]
+      `UPDATE sale_order SET status = $1 WHERE id = $2 RETURNING *`,
+      [status, id]
     );
 
-    if (result.rowCount === 0) {
-      return res.status(404).json({ success: false, message: 'ไม่พบ Order นี้ในระบบ' });
-    }
-
-    res.json({
-      success: true,
-      message: 'อัปเดตสถานะเรียบร้อยแล้ว',
-      data: result.rows[0]
-    });
-
+    if (result.rowCount === 0) return res.status(404).send('Not Found');
+    res.json(result.rows[0]);
   } catch (error) {
-    console.error('Error updating sale_order:', error);
-    res.status(500).json({ success: false, message: 'Server Error' });
+    res.status(500).send('Server Error');
   }
 });
 app.put('/todos/:id', async (req, res) => {

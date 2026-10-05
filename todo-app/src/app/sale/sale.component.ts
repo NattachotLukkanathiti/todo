@@ -297,51 +297,30 @@ button_cancels() {
   }, 400);
 }
 confirmCancel() {
-  const orderCode = this.selectedProduct.order_code;
-  const newStatus = 'Canceled';
-  const reason = this.selectedProduct.cancel_reason || '';
+  const orderId = this.selectedProduct.id; // ใช้ ID แทน Order Code
+  
+  // 1. อัปเดตสถานะ
+  this.todoService.updateSaleOrderStatus(orderId, 'Canceled').subscribe({
+    next: (res) => {
+      // 2. คืนจำนวนสินค้า (สมมติว่ามี product_name และ amount)
+      const productName = this.selectedProduct.product_name;
+      const qtyToReturn = this.selectedProduct.amount || 1; // จำนวนที่ต้องคืน
 
-  // 1. อัปเดตสถานะ Sale Order
-  this.todoService.updateSaleOrderStatus(orderCode, newStatus, reason).subscribe({
-    next: (response) => {
-      
-      // 2. คืนจำนวนสินค้ากลับเข้าสต็อก (สมมติว่าใน order มี items)
-      if (this.selectedProduct.items && this.selectedProduct.items.length > 0) {
-        this.selectedProduct.items.forEach((item: any) => {
-          
-          // ดึงข้อมูลสินค้าปัจจุบันจาก Inventory ก่อน
-          this.todoService.getInventory().subscribe(inventory => {
-            const product = inventory.find(p => p.sku === item.sku);
-            if (product) {
-              const newStock = product.stock + item.quantity; // บวกจำนวนกลับ
-              
-              // อัปเดตสต็อกใหม่
-              this.todoService.updateInventoryStock(item.sku, { stock: newStock }).subscribe();
-            }
-          });
-          
-        });
-      }
+      this.todoService.getInventory().subscribe(inventory => {
+        const product = inventory.find(p => p.product_name === productName);
+        if (product) {
+          const newQty = (product.quantity || 0) + qtyToReturn;
+          // อัปเดตจำนวนสินค้า
+          this.todoService.updateInventoryStock(product.sku, { quantity: newQty }).subscribe();
+        }
+      });
 
-      // 3. อัปเดตหน้าจอ (Frontend)
-      this.selectedProduct.status = newStatus;
-      const index = this.saleOrders.findIndex(o => o.order_code === orderCode);
-      if (index !== -1) this.saleOrders[index] = { ...this.selectedProduct };
-
-      const filteredIndex = this.filteredSaleOrders.findIndex(o => o.order_code === orderCode);
-      if (filteredIndex !== -1) this.filteredSaleOrders[filteredIndex] = { ...this.selectedProduct };
-
-      // 4. ปิดหน้าต่าง Popup
+      // 3. อัปเดตหน้าจอ
+      this.selectedProduct.status = 'Canceled';
       this.outimport = true;
-      setTimeout(() => {
-        this.product2 = true;
-        this.button_edit = false;
-      }, 400);
+      setTimeout(() => { this.product2 = true; }, 400);
     },
-    error: (err) => {
-      console.error('Error updating order status:', err);
-      this.openpopupnoti('ไม่สามารถยกเลิกรายการได้ กรุณาลองใหม่อีกครั้ง');
-    }
+    error: (err) => console.error('Error:', err)
   });
 }
 }

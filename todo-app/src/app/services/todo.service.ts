@@ -245,11 +245,11 @@ updateInventoryStock(sku: string, productData: any): Observable<any> {
     { headers: this.headers }
   );
 }
-// อัปเดตสถานะของ Sale Order
-updateSaleOrderStatus(orderCode: string, status: string, reason: string): Observable<any> {
+// todo.service.ts
+updateSaleOrderStatus(id: number, status: string): Observable<any> {
   return this.http.put<any>(
-    `${this.apiUrl}/sale_order/${orderCode}`, 
-    { status: status, cancel_reason: reason },
+    `${this.apiUrl}/sale_order/${id}`, 
+    { status: status },
     { headers: this.headers }
   );
 }
