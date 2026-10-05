@@ -554,6 +554,7 @@ app.put('/api/sale_order/:id', async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
 
+    // ใช้คำสั่ง UPDATE ที่ระบุเฉพาะคอลัมน์ status
     const result = await pool.query(
       `UPDATE sale_order SET status = $1 WHERE id = $2 RETURNING *`,
       [status, id]
