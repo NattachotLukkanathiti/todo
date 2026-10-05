@@ -168,20 +168,26 @@
 
                     </ng-container>
     <!-- Data Rows -->
-   <ng-template #realData>
-     <div  class="table_detail2" *ngFor="let order of saleOrders; let i = index" [style.animation-delay]="i * 0.15 + 's'">
+<ng-template #realData>
+  <div class="table_detail2" *ngFor="let order of saleOrders; let i = index" [style.animation-delay]="i * 0.15 + 's'">
     <div class="table_detail">
         <div class="sku2">{{ order.order_code }}</div>
-        <div class="sku2">{{ order.date }}</div>
-        <div class="sku2">{{ order.amount }}</div>
-        <div class="sku2"><div class="connn">
-        <img profile_employee src="image/profile.svg" alt="">{{ order.create_by }}
-    </div></div>
-        <div class="status">{{ order.status }}</div>
+        <div class="sku2">{{ order.created_at | date:'dd/MM/yyyy HH:mm' }}</div>
+        <div class="sku2">{{ order.amount || '-' }}</div>
+        <div class="sku2">
+            <div class="connn">
+                <!-- แก้ไขให้ดึงรูปภาพจาก order.picture ถ้าไม่มีให้ใช้รูป default -->
+                <img class="iconsetting4" [src]="order.picture || 'image/profile.svg'" alt="">
+                {{ order.create_by }}
+            </div>
+        </div>
+        <div class="status" [ngClass]="{'text-green': order.status === 'Completed', 'text-gray': order.status === 'Pending'}">
+            {{ order.status }}
+        </div>
     </div>
     <div class="line"></div>
-</div>
-   </ng-template>
+  </div>
+</ng-template>
 </div>
        <div class="con_tainer_page">
   <div class="pagination">

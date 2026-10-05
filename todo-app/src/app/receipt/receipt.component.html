@@ -1,0 +1,44 @@
+<main class="receipt-page">
+  <article class="receipt" aria-label="Receipt">
+    <header class="receipt__header">
+      <section class="company-details" aria-label="Company details">
+        <p class="company-details__name">{{ receipt().companyName }}</p>
+        @for (line of receipt().companyAddress; track line) { <p>{{ line }}</p> }
+        <p>Tax ID: {{ receipt().taxId }}</p>
+      </section>
+
+      <div class="receipt__reference">
+        <img src="image/logo.svg" alt="">
+        <div class="receipt__reference-text">
+          <p>Receipt No: <strong>{{ receipt().receiptNumber }}</strong></p>
+          <p>Date: <strong>{{ formatOpenedAt(openedAt) }}</strong></p>
+        </div>
+      </div>
+    </header>
+
+    <section class="receipt__received-from" aria-label="Order information">
+      <p>RECEIVED FROM:</p>
+      <p>Order code: <strong>{{ receipt().orderCode }}</strong></p>
+      <p>Cashier: <strong>{{ receipt().cashier }}</strong></p>
+    </section>
+
+    <div class="receipt__table-wrap">
+      <table class="receipt-table">
+        <colgroup><col class="receipt-table__product" /><col class="receipt-table__quantity" /><col class="receipt-table__price" /><col class="receipt-table__amount" /></colgroup>
+        <thead><tr><th scope="col">Sku/Product Name</th><th scope="col">Qty</th><th scope="col">Unit Price</th><th scope="col">Amount</th></tr></thead>
+        <tbody>
+          @for (item of receipt().items; track $index) {
+            <tr><td>{{ item.skuOrName }}</td><td>{{ item.quantity }}</td><td>{{ item.unitPrice }}</td><td>{{ item.amount }}</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <dl class="receipt__totals">
+      <div><dt>Subtotal:</dt><dd>{{ receipt().subtotal }}</dd></div>
+      <div><dt>Product insurance:<br />Premium</dt><dd>{{ receipt().productInsurancePremium }}</dd></div>
+      <div><dt>Discount:</dt><dd>{{ receipt().discount }}</dd></div>
+      <div class="receipt__total--grand"><dt>Grand Total:</dt><dd>{{ receipt().grandTotal }}</dd></div>
+    </dl>
+  </article>
+</main>

@@ -17,6 +17,8 @@ interface Product {
   stock: number;
   price: number;
   image: string;
+   brand?: string;          // <-- เพิ่มตรงนี้
+  quantity_alert?: number; 
 }
 
 interface CartItem extends Product {
@@ -112,7 +114,9 @@ export class PosComponent implements OnInit, OnDestroy {
           name: item.product_name,
           stock: item.quantity,
           price: item.price,
-          image: item.picture
+          image: item.picture,
+          brand: item.brand,                   // <-- เพิ่มการดึง Brand
+          quantity_alert: item.quantity_alert 
         })) || [];
 
         this.generateCategories(this.products);
@@ -327,10 +331,7 @@ export class PosComponent implements OnInit, OnDestroy {
 
   startTransaction(): void { this.resetOrder(); this.orderCode = String(Date.now()).slice(-6); }
 
-  completePayment(): void {
-    if (!this.cartItems.length) return;
-    this.cartItems = [];
-  }
+
   logout() {
     const now = new Date();
     const auditData = {
@@ -391,4 +392,28 @@ loadNotifications(): void {
   scrollRight(element: HTMLElement) {
     element.scrollBy({ left: 200, behavior: 'smooth' });
   }
+ completePayment(): void {
+  if (!this.cartItems.length) return;
+
+  // 📌 สร้าง order_code แค่ครั้งเดียวตรงนี้ (เช่น #123456)
+  const orderCode = `#${Date.now().toString().slice(-6)}`; 
+  const now = new Date().toISOString();
+
+  // วนลูปบันทึกสินค้าทีละชิ้น
+  this.cartItems.forEach(item => {
+    const salesData = {
+      order_code: orderCode, // 📌 ทุกชิ้นจะได้ orderCode เดียวกัน
+      product_name: item.name,
+      picture: item.image,
+      create_by: this.username,
+      status: 'Completed',
+      created_at: now
+    };
+
+    // ส่งไปบันทึกที่ Backend
+    this.todoService.saveSalesOrder(salesData).subscribe();
+    
+    // (ส่วนของการตัดสต็อก)
+  });
+}
 }

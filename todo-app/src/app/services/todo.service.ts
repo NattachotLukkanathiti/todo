@@ -234,5 +234,15 @@ updateEmployee(username: string, employeeData: any): Observable<any> {
       { headers: this.headers }
     );
   }
- 
+ saveSalesOrder(orderData: any) {
+  // เปลี่ยน URL หรือชื่อตารางให้ตรงกับ Supabase/Backend ของคุณ
+  return this.http.post(`${this.apiUrl}/sale_order`, orderData); 
+}
+updateInventoryStock(sku: string, productData: any): Observable<any> {
+  return this.http.put<any>(
+    `${this.apiUrl}/inventory/${sku}`, 
+    productData, // ส่งข้อมูลทั้งหมดกลับไป
+    { headers: this.headers }
+  );
+}
 }

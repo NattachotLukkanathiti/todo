@@ -407,12 +407,35 @@ input::placeholder{
 }
 .sku2 {
     font-size: 15px;
+    display: flex;
      flex: 1 1 0%; /* บังคับให้ทุกคอลัมน์มีความกว้างเท่ากันเสมอ ไม่ว่าจะข้อความสั้นหรือยาว */
     word-break: break-word; /* ตัดคำขึ้นบรรทัดใหม่เมื่อข้อความยาวเกินขนาดคอลัมน์ */
     padding: 0 10px; 
     color: #48505E;
     font-weight: 300;
 
+}
+.sku3{
+      font-size: 15px;
+    display: flex;
+     flex: 1 1 0%; /* บังคับให้ทุกคอลัมน์มีความกว้างเท่ากันเสมอ ไม่ว่าจะข้อความสั้นหรือยาว */
+    word-break: break-word; /* ตัดคำขึ้นบรรทัดใหม่เมื่อข้อความยาวเกินขนาดคอลัมน์ */
+    padding: 0 10px; 
+    color: #48505E;
+    font-weight: 300;
+}
+.icon{
+    display: flex;
+    margin-left: auto;
+    padding: 10px;
+    background-color: #F3E6FE;
+    border-radius: 10px;
+}
+.icon:hover{
+    background-color: #C68AF8;
+}
+.icon:active{
+    background-color: #AD54F5;
 }
 .status{
    font-size: 15px;
@@ -1468,4 +1491,193 @@ input::placeholder{
   border-radius: 50%;    /* ทำให้เป็นวงกลม */
   object-fit: cover;     /* ปรับสัดส่วนรูปภาพไม่ให้บิดเบี้ยว */
   margin-right: 8px;     /* เว้นระยะห่างระหว่างรูปกับชื่อ */
+}
+
+
+
+
+/* --- ส่วนควบคุมการแสดงผลและแอนิเมชันของฟอร์ม --- */
+.import_product {
+    background-color: #d9d9d977;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 10;
+}
+
+.product2 {
+    display: none;
+}
+
+.button_edit {
+    display: block !important;
+}
+.button_request {
+    display: block !important;
+}
+
+.con_import_product2 {
+    width: 40%;
+    height: 650px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    color: #212529;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    border-radius: 40px;
+    background-color: white;
+    border: 1px solid #E5E7EB;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    animation: moves 0.5s ease-in-out;
+}
+
+.con_import_product2::-webkit-scrollbar {
+    display: none;
+}
+
+.out_comimport {
+    animation: movess 0.5s ease-in-out;
+}
+
+/* --- ส่วนโครงสร้างภายในฟอร์ม --- */
+.serach_product {
+    background-color: #F4F5FC;
+    width: 100%;
+    padding: 20px;
+    top: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    z-index: 10;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+.con_sku_pro {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 20px;
+    box-sizing: border-box;
+}
+
+.sku_pro {
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.sku_input {
+    box-sizing: border-box;
+    position: relative;
+    border-radius: 8px;
+    padding: 17px;
+    margin-top: 10px;
+    width: 100%;
+    height: 20px;
+    font-size: 15px;
+    font-weight: 100;
+    color: #48505E;
+    border: 1px solid #E6EAED;
+}
+
+.label_import {
+    font-weight: 300;
+    font-size: 15px;
+}
+
+/* --- ปุ่ม Save และ Cancel --- */
+.button_import {
+    display: flex;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    gap: 8px;
+    justify-content: center;
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.save {
+    background: #4283DD;
+    padding: 20px;
+    color: white;
+    font-weight: 500;
+    height: 15px;
+    border-radius: 30px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.cancel {
+    position: relative;
+    overflow: hidden;
+    background: #B9BDC7;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    cursor: pointer;
+    height: 15px;
+    width: 100px;
+    color: white;
+    border-radius: 30px;
+    transition: 0.3s;
+}
+
+.out_comimport{
+
+    animation: movess 0.5s ease-in-out;
+}
+
+@keyframes movess {
+    0% {
+         opacity: 1;
+
+        clip-path: polygon(0 0,
+                100% 0,
+                100% 100%,
+                0 100%);
+                filter: blur(0);
+    }
+    50%{
+
+        clip-path: polygon(0 0,
+                100% 0,
+                80% 100%,
+                
+                20% 100%);
+                filter: 2px;
+    }
+    100% {
+         width: 10px;
+        height: 10px;
+        margin-top: 300px;
+        clip-path: polygon(0 0,
+                100% 0,
+                80% 100%,
+                20% 100%);
+                filter: blur(5px);
+
+    }
+}
+
+.text-green {
+  color: #84D46E;
+}
+
+.text-gray {
+  color: gray;
 }

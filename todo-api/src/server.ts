@@ -398,7 +398,23 @@ app.post('/api/inventory', async (req, res) => {
     });
   }
 });
-// เพิ่ม Route สำหรับ Login
+app.post('/api/sale_order', async (req, res) => {
+  try {
+    const { order_code, product_name, picture, create_by, status, created_at } = req.body;
+
+    const result = await pool.query(
+      `INSERT INTO sale_order (order_code, product_name, picture, create_by, status, created_at) 
+       VALUES ($1, $2, $3, $4, $5, $6) 
+       RETURNING *`,
+      [order_code, product_name, picture, create_by, status, created_at]
+    );
+
+    res.status(201).json({ success: true, data: result.rows[0] });
+  } catch (error) {
+    console.error('Error inserting into sale_order:', error);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+});
 app.post('/api/login', async (req, res) => {
   try {
     const { title, password } = req.body;

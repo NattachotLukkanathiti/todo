@@ -12,7 +12,13 @@ import { interval, Subscription } from 'rxjs';
   styleUrl: './history.component.css'
 })
 export class HistoryComponent {
-
+    button_cancel = false;
+  button_importt = false;
+    button_edit = false;
+    button_request = false;
+        outimport = false;
+        product2 = true;
+           selectedProduct: any = {}; 
   private todoService = inject(TodoService);
 
   search = '';
@@ -243,5 +249,23 @@ export class HistoryComponent {
         this.router.navigate(['/login']); 
       }
     });
+  }
+  // เพิ่ม (order: any) เข้าไปในวงเล็บ
+  request(order: any) {
+    this.selectedProduct = { ...order }; // นำข้อมูลที่รับมาใส่ใน selectedProduct
+    this.button_edit = true;
+    this.outimport = false;
+  }
+  request2(order: any) {
+    this.selectedProduct = { ...order }; // นำข้อมูลที่รับมาใส่ใน selectedProduct
+    this.outimport = false;
+    this.product2 = false;
+  }
+  button_cancels(){
+    this.outimport = true;
+    setTimeout(() =>{
+    this.product2 = true;
+        this.button_edit = false;
+    },400)
   }
 }

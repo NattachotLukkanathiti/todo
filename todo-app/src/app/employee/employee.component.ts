@@ -16,7 +16,7 @@ export class EmployeeComponent {
 
 
   currentPage: number = 1;
-itemsPerPage: number = 10; // จำนวนรายการต่อหน้า
+itemsPerPage: number = 10; 
 totalPages: number = 1;
 paginatedEmployeeList: any[] = [];
   private todoService = inject(TodoService);
@@ -221,16 +221,15 @@ loadTodos() {
         this.isLoading = false; 
         this.loader = false;
 
-        // ตรวจสอบสิทธิ์: ถ้าเป็น pos ให้แสดงเฉพาะพนักงานที่เป็น pos (Frontend)
         if (this.userRole === 'pos') {
           this.employeeList = res.filter((emp: any) => emp.role === 'pos');
         } else {
-          // ถ้าเป็น admin หรือ manager ให้แสดงทั้งหมด
+
           this.employeeList = res;
         }
 
         this.todos = this.employeeList;
-        this.filteredEmployeeList = [...this.employeeList]; // คัดลอกข้อมูลมาแสดงผลเริ่มต้น
+        this.filteredEmployeeList = [...this.employeeList]; 
       },
       error: (err) => {
         console.error('Error fetching employee data:', err);
@@ -265,10 +264,10 @@ isGuest(role: string): boolean {
       (emp.title && emp.title.toLowerCase().includes(searchTerm))
     );
   }
-  this.calculateTotalPages(); // <--- เพิ่มบรรทัดนี้
+  this.calculateTotalPages();
 }
 
-// ตัวแปรเก็บข้อมูล
+
 filterEmployee(selected: string) {
   if (selected === 'all') {
     this.filteredEmployeeList = [...this.employeeList];
@@ -281,7 +280,7 @@ filterEmployee(selected: string) {
 
     this.filteredEmployeeList = this.employeeList.filter(emp => {
       if (mappedRole === '') {
-        // เช็คว่าเป็น null, undefined, หรือค่าว่าง
+
         return emp.role === null || emp.role === undefined || emp.role === '';
       }
       return emp.role === mappedRole;
@@ -312,8 +311,7 @@ button_edit_account2(item?: any) {
   this.button_edit_account = true;
   if (item) {
     this.selectedaccount = { ...item }; 
-    
-    // แปลงค่าจากฐานข้อมูลให้ตรงกับ value ใน HTML
+
     if (this.selectedaccount.role === 'pos') this.selectedaccount.role = 'Frontend';
     if (this.selectedaccount.role === 'backend') this.selectedaccount.role = 'Backend';
     if (this.selectedaccount.role === 'admin') this.selectedaccount.role = 'Admin';
@@ -343,10 +341,9 @@ logout() {
       }
     });
   }
-  // เพิ่มฟังก์ชันนี้เข้าไปใน class EmployeeComponent
-  // ฟังก์ชันสำหรับบันทึกข้อมูลและส่งไปยัง Backend
+
   saveAccountChanges() {
-    // 1. แปลงค่า Role กลับให้ตรงกับที่ฐานข้อมูลต้องการ
+
     let mappedRole = this.selectedaccount.role;
     if (mappedRole === 'Frontend') mappedRole = 'pos';
     if (mappedRole === 'Backend') mappedRole = 'backend';
@@ -357,12 +354,12 @@ logout() {
       role: mappedRole
     };
 
-    // 2. ส่งข้อมูลไปอัปเดตที่ Backend
+
     this.todoService.updateEmployee(updatedAccount.username, updatedAccount).subscribe({
       next: (res) => {
         this.openpopup("Account updated successfully");
-        this.loadTodos(); // โหลดข้อมูลใหม่
-        this.button_cancels(); // ปิดหน้าต่าง
+        this.loadTodos(); 
+        this.button_cancels(); 
       },
       error: (err) => {
         console.error('Error updating account:', err);
