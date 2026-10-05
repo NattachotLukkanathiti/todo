@@ -392,7 +392,7 @@ loadNotifications(): void {
   scrollRight(element: HTMLElement) {
     element.scrollBy({ left: 200, behavior: 'smooth' });
   }
- completePayment(): void {
+completePayment(): void {
   if (!this.cartItems.length) return;
 
   const orderCode = `#${Date.now().toString().slice(-6)}`;
@@ -404,9 +404,10 @@ loadNotifications(): void {
       order_code: orderCode,
       product_name: item.name,
       
-      // 📌 เปลี่ยนจาก item.image เป็น this.profile (รูปโปรไฟล์ของผู้ขาย)
-      picture: this.profile || 'image/profile.svg', 
+      // 📌 เพิ่มการบันทึกจำนวนสินค้าที่ขาย
+      amount: item.quantity, 
       
+      picture: this.profile || 'image/profile.svg', 
       create_by: this.username,
       status: 'Completed',
       created_at: now
@@ -414,7 +415,7 @@ loadNotifications(): void {
 
     // 1. บันทึกข้อมูลลงตาราง sale_order
     this.todoService.saveSalesOrder(salesData).subscribe({
-      next: () => console.log(`Saved to sale_order: ${item.name}`),
+      next: () => console.log(`Saved to sale_order: ${item.name} (Qty: ${item.quantity})`),
       error: (err) => console.error(`Failed to save: ${item.name}`, err)
     });
 
@@ -423,7 +424,7 @@ loadNotifications(): void {
     
     const updateData = {
       product_name: item.name,
-      picture: item.image, // ส่วนนี้ยังคงเป็นรูปสินค้าตามเดิม
+      picture: item.image, 
       quantity: newStock,
       price: item.price,
       category: item.category,

@@ -297,25 +297,36 @@ button_cancels() {
   }, 400);
 }
 confirmCancel() {
-  const orderId = this.selectedProduct.id; // ใช้ ID แทน Order Code
+  const orderId = this.selectedProduct.id;
   
-  // 1. อัปเดตสถานะ
   this.todoService.updateSaleOrderStatus(orderId, 'Canceled').subscribe({
     next: (res) => {
-      // 2. คืนจำนวนสินค้า (สมมติว่ามี product_name และ amount)
       const productName = this.selectedProduct.product_name;
-      const qtyToReturn = this.selectedProduct.amount || 1; // จำนวนที่ต้องคืน
+      const qtyToReturn = Number(this.selectedProduct.amount) || 1; 
 
       this.todoService.getInventory().subscribe(inventory => {
         const product = inventory.find(p => p.product_name === productName);
         if (product) {
-          const newQty = (product.quantity || 0) + qtyToReturn;
-          // อัปเดตจำนวนสินค้า
-          this.todoService.updateInventoryStock(product.sku, { quantity: newQty }).subscribe();
+          const currentQty = Number(product.quantity) || 0;
+          const newQty = currentQty + qtyToReturn;
+          
+          // สร้าง Object ข้อมูลสินค้าเดิม และอัปเดตเฉพาะ quantity
+          const updateData = {
+            product_name: product.product_name,
+            picture: product.picture,
+            quantity: newQty, // ค่าใหม่ที่บวกแล้ว
+            price: product.price,
+            category: product.category,
+            brand: product.brand || 'N/A',
+            quantity_alert: product.quantity_alert || 10
+          };
+          
+          // ส่งข้อมูลทั้งหมดกลับไป เพื่อไม่ให้ช่องอื่นหาย
+          this.todoService.updateInventoryStock(product.sku, updateData).subscribe();
         }
       });
 
-      // 3. อัปเดตหน้าจอ
+      // อัปเดตหน้าจอ
       this.selectedProduct.status = 'Canceled';
       this.outimport = true;
       setTimeout(() => { this.product2 = true; }, 400);
