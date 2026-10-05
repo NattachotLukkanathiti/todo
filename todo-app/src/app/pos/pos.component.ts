@@ -399,20 +399,24 @@ completePayment(): void {
   const now = new Date().toISOString();
 
   this.cartItems.forEach(item => {
+    // คำนวณยอดรวมของสินค้ารายการนี้ (ราคา * จำนวน)
+    const itemAmount = item.price * item.quantity;
+
     // ข้อมูลที่ตรงกับคอลัมน์ในตาราง sale_order
     const salesData = {
-  order_code: orderCode,
-  product_name: item.name,
-  quantity: item.quantity, // <--- เปลี่ยนเป็น quantity
-  picture: this.profile, 
-  create_by: this.username,
-  status: 'Completed',
-  created_at: now
-};
+      order_code: orderCode,
+      product_name: item.name,
+      quantity: item.quantity,
+      amount: itemAmount, // <--- เพิ่มการส่งยอดรวมราคา
+      picture: this.profile, 
+      create_by: this.username,
+      status: 'Completed',
+      created_at: now
+    };
 
     // 1. บันทึกข้อมูลลงตาราง sale_order
     this.todoService.saveSalesOrder(salesData).subscribe({
-      next: () => console.log(`Saved to sale_order: ${item.name} (Qty: ${item.quantity})`),
+      next: () => console.log(`Saved to sale_order: ${item.name} (Qty: ${item.quantity}, Amount: ${itemAmount})`),
       error: (err) => console.error(`Failed to save: ${item.name}`, err)
     });
 

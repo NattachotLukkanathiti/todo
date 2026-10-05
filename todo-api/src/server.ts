@@ -400,21 +400,21 @@ app.post('/api/inventory', async (req, res) => {
 });
 app.post('/api/sale_order', async (req, res) => {
   try {
-    // 1. เพิ่ม quantity ตรงนี้
-    const { order_code, product_name, quantity, picture, create_by, status, created_at } = req.body;
+    // 1. เพิ่ม amount เข้ามาใน req.body
+    const { order_code, product_name, quantity, amount, picture, create_by, status, created_at } = req.body;
 
-    // 2. เพิ่ม quantity และ $7 ในคำสั่ง SQL
+    // 2. เพิ่ม amount และ $8 ในคำสั่ง SQL
     const result = await pool.query(
-      `INSERT INTO sale_order (order_code, product_name, quantity, picture, create_by, status, created_at) 
-       VALUES ($1, $2, $3, $4, $5, $6, $7) 
+      `INSERT INTO sale_order (order_code, product_name, quantity, amount, picture, create_by, status, created_at) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
        RETURNING *`,
-      [order_code, product_name, quantity, picture, create_by, status, created_at]
+      [order_code, product_name, quantity, amount, picture, create_by, status, created_at]
     );
 
     res.status(201).json({ success: true, data: result.rows[0] });
   } catch (error) {
     console.error('Error inserting into sale_order:', error);
-    res.status(500).json({ success: false, message: 'Server Error' });
+    res.status(500).json({ success: false, message: 'Server all Error' });
   }
 });
 app.post('/api/login', async (req, res) => {
