@@ -284,8 +284,7 @@ export class HistoryComponent {
     this.product2 = true;
         this.button_edit = false;
     },400)
-  }
-  confirmAdjustment() {
+  }confirmAdjustment() {
     if (!this.selectedProduct.requested_quantity) {
       this.openpopupnoti("กรุณาระบุ Requested Quantity");
       return;
@@ -293,24 +292,26 @@ export class HistoryComponent {
 
     this.loader = true;
 
-    // กรณีที่ 1: มี ID อยู่แล้ว (Admin กำลังกดอนุมัติรายการจาก request_history)
+    // กรณีที่ 1: มี ID อยู่แล้ว (Admin อนุมัติคำขอ)
     if (this.selectedProduct.id) {
       this.todoService.updateRequestStatus(this.selectedProduct.id, 'Approved').subscribe({
         next: () => {
-          this.loader = false;
-          this.openpopupnoti("อนุมัติคำขอเรียบร้อย: Approved");
-          this.button_cancels();
-          this.loadRequestHistory(); // โหลดข้อมูลคำขอใหม่
+          // อัปเดตสถานะในตาราง history บน Backend ให้เป็น Approved
+          this.todoService.updateHistoryStatusBySku(this.selectedProduct.sku, 'Approved').subscribe(() => {
+            this.loader = false;
+            this.openpopupnoti("อนุมัติคำขอเรียบร้อย: Approved");
+            this.button_cancels();
+            this.loadHistory(); 
+          });
         },
         error: (error) => {
           this.loader = false;
           console.error("Error approving request:", error);
           this.openpopupnoti("เกิดข้อผิดพลาด: Canceled");
-          this.todoService.updateRequestStatus(this.selectedProduct.id, 'Canceled').subscribe();
         }
       });
     } 
-    // กรณีที่ 2: ไม่มี ID (Backend กำลังสร้างคำขอใหม่)
+    // กรณีที่ 2: ไม่มี ID (Backend สร้างคำขอใหม่)
     else {
       const now = new Date();
       const requestData = {
@@ -324,24 +325,19 @@ export class HistoryComponent {
       };
 
       this.todoService.addRequestHistory(requestData).subscribe({
-        next: (response) => {
-          this.loader = false;
-          this.openpopupnoti("บันทึกข้อมูลสำเร็จ: Pending");
-          
-          // อัปเดตสถานะในตารางหลัก (History) ให้เป็น Pending ทันที
-          const targetItem = this.history.find(item => item.sku === this.selectedProduct.sku);
-          if (targetItem) {
-            targetItem.status = 'Pending';
-          }
-          
-          this.button_cancels();
-          this.loadHistory();
+        next: () => {
+          // อัปเดตสถานะในตาราง history บน Backend ให้เป็น Pending
+          this.todoService.updateHistoryStatusBySku(this.selectedProduct.sku, 'Pending').subscribe(() => {
+            this.loader = false;
+            this.openpopupnoti("บันทึกข้อมูลสำเร็จ: Pending");
+            this.button_cancels(); 
+            this.loadHistory(); 
+          });
         },
         error: (error) => {
           this.loader = false;
           console.error("Error saving request:", error);
           this.openpopupnoti("การบันทึกล้มเหลว: Canceled");
-          this.button_cancels();
         }
       });
     }

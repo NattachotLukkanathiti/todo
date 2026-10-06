@@ -267,4 +267,7 @@ updateSaleOrderStatus(id: number, status: string): Observable<any> {
    updateRequestStatus(id: number, status: string): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/request_history/${id}`, { status }, { headers: this.headers });
   }
+  updateHistoryStatusBySku(sku: string, status: string): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/history/status/${sku}`, { status }, { headers: this.headers });
+  }
 }

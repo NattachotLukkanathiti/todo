@@ -663,23 +663,23 @@ app.put('/todos/:id', async (req, res) => {
   }
 });
 
-app.put('/api/request_history/:id', async (req, res) => {
+app.put('/api/history/status/:sku', async (req, res) => {
   try {
-    const { id } = req.params;
+    const { sku } = req.params;
     const { status } = req.body;
 
     const result = await pool.query(
-      `UPDATE request_history SET status = $1 WHERE id = $2 RETURNING *`,
-      [status, id]
+      `UPDATE history SET status = $1 WHERE sku = $2 RETURNING *`,
+      [status, sku]
     );
 
     if (result.rowCount === 0) {
-      return res.status(404).json({ success: false, message: 'ไม่พบรายการนี้ในระบบ' });
+      return res.status(404).json({ success: false, message: 'ไม่พบ SKU นี้ในตาราง History' });
     }
 
     res.json({ success: true, data: result.rows[0] });
   } catch (error) {
-    console.error('Error updating request status:', error);
+    console.error('Error updating history status:', error);
     res.status(500).json({ success: false, message: 'Server Error' });
   }
 });
