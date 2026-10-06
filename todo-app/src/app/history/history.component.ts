@@ -254,25 +254,33 @@ export class HistoryComponent {
       }
     });
   }
-  // ฟังก์ชันเมื่อกดปุ่มที่แถวรายการ
-  requestFromHistory(historyId: number) {
-    this.loader = true;
-    
-    // เรียก API เพื่อดึงข้อมูลตาม ID
-    this.todoService.getRequestHistoryById(historyId).subscribe({
-      next: (data) => {
-        this.selectedProduct = data; // นำข้อมูลที่ได้มาใส่ในฟอร์ม
-        this.button_edit = true;     // เปิดฟอร์ม
-        this.outimport = false;      // เล่น Animation เปิด
-        this.loader = false;
-      },
-      error: (err) => {
-        console.error('Error fetching request detail:', err);
-        this.openpopupnoti("ไม่สามารถดึงข้อมูลได้");
-        this.loader = false;
+  requestFromHistory(order: any) {
+  this.loader = true;
+  
+  // ดึงข้อมูล request_history ทั้งหมดมา
+  this.todoService.getRequestHistory().subscribe({
+    next: (list) => {
+      // ค้นหาคำขอที่ตรงกับ SKU นี้ และมีสถานะเป็น Pending
+      const found = list.find((item: any) => item.sku === order.sku && item.status === 'Pending');
+      
+      if (found) {
+        this.selectedProduct = found; // นำข้อมูลที่เจอมาแสดง
+      } else {
+        // ถ้าไม่เจอ ให้เอาข้อมูลจากตาราง history มาแสดงแทน
+        this.selectedProduct = { ...order, id: null }; 
       }
-    });
-  }
+      
+      this.button_edit = true;
+      this.outimport = false;
+      this.loader = false;
+    },
+    error: (err) => {
+      console.error('Error fetching request detail:', err);
+      this.openpopupnoti("ไม่สามารถดึงข้อมูลได้");
+      this.loader = false;
+    }
+  });
+}
   request2(order: any) {
     this.selectedProduct = { ...order }; // นำข้อมูลที่รับมาใส่ใน selectedProduct
     this.outimport = false;
@@ -284,64 +292,53 @@ export class HistoryComponent {
     this.product2 = true;
         this.button_edit = false;
     },400)
-  }confirmAdjustment() {
-    if (!this.selectedProduct.requested_quantity) {
-      this.openpopupnoti("กรุณาระบุ Requested Quantity");
-      return;
-    }
-
-    this.loader = true;
-
-    // กรณีที่ 1: มี ID อยู่แล้ว (Admin อนุมัติคำขอ)
-    if (this.selectedProduct.id) {
-      this.todoService.updateRequestStatus(this.selectedProduct.id, 'Approved').subscribe({
-        next: () => {
-          // อัปเดตสถานะในตาราง history บน Backend ให้เป็น Approved
-          this.todoService.updateHistoryStatusBySku(this.selectedProduct.sku, 'Approved').subscribe(() => {
-            this.loader = false;
-            this.openpopupnoti("อนุมัติคำขอเรียบร้อย: Approved");
-            this.button_cancels();
-            this.loadHistory(); 
-          });
-        },
-        error: (error) => {
-          this.loader = false;
-          console.error("Error approving request:", error);
-          this.openpopupnoti("เกิดข้อผิดพลาด: Canceled");
-        }
-      });
-    } 
-    // กรณีที่ 2: ไม่มี ID (Backend สร้างคำขอใหม่)
-    else {
-      const now = new Date();
-      const requestData = {
-        sku: this.selectedProduct.sku,
-        requested_quantity: this.selectedProduct.requested_quantity,
-        staff_reason: this.selectedProduct.staff_reason || '',
-        status: 'Pending',
-        created_by: this.username,
-        created_at: now.toISOString().split('T')[0],
-        time: now.toTimeString().split(' ')[0]
-      };
-
-      this.todoService.addRequestHistory(requestData).subscribe({
-        next: () => {
-          // อัปเดตสถานะในตาราง history บน Backend ให้เป็น Pending
-          this.todoService.updateHistoryStatusBySku(this.selectedProduct.sku, 'Pending').subscribe(() => {
-            this.loader = false;
-            this.openpopupnoti("บันทึกข้อมูลสำเร็จ: Pending");
-            this.button_cancels(); 
-            this.loadHistory(); 
-          });
-        },
-        error: (error) => {
-          this.loader = false;
-          console.error("Error saving request:", error);
-          this.openpopupnoti("การบันทึกล้มเหลว: Canceled");
-        }
-      });
-    }
   }
+  confirmAdjustment() {
+  if (!this.selectedProduct.requested_quantity) {
+    this.openpopupnoti("กรุณาระบุ Requested Quantity");
+    return;
+  }
+
+  this.loader = true;
+  const now = new Date();
+
+  const requestData = {
+    sku: this.selectedProduct.sku,
+    requested_quantity: this.selectedProduct.requested_quantity,
+    staff_reason: this.selectedProduct.staff_reason || '',
+    status: 'Pending',
+    created_by: this.username,
+    created_at: now.toISOString().split('T')[0],
+    time: now.toTimeString().split(' ')[0]
+  };
+
+  // 1. บันทึกข้อมูลลง request_history
+  this.todoService.addRequestHistory(requestData).subscribe({
+    next: (response) => {
+      
+      // 2. อัปเดตสถานะในตาราง history ให้เป็น Pending
+      this.todoService.updateHistoryStatusBySku(this.selectedProduct.sku, 'Pending').subscribe({
+        next: () => {
+          this.loader = false;
+          this.openpopup("บันทึกข้อมูลสำเร็จ: Pending");
+          this.button_cancels(); 
+          this.loadHistory(); // โหลดข้อมูลใหม่เพื่อให้ UI อัปเดตสี
+        },
+        error: (err) => {
+          this.loader = false;
+          console.error("Error updating history status:", err);
+        }
+      });
+
+    },
+    error: (error) => {
+      this.loader = false;
+      console.error("Error saving request:", error);
+      this.openpopupnoti("การบันทึกล้มเหลว: Canceled");
+      this.button_cancels();
+    }
+  });
+}
   requestHistoryList: any[] = [];
 
   // ดึงข้อมูล Request History
@@ -365,4 +362,61 @@ export class HistoryComponent {
     this.button_edit = true;
     this.outimport = false;
   }
+  confirmAdjustment2() {
+  // 1. สร้างตัวแปรแยก (Local Variables) เพื่อดึงค่ามาจาก UI ป้องกันการกระทบกับตัวแปรหลัก
+  const currentId = this.selectedProduct.id;
+  const currentSku = this.selectedProduct.sku;
+  const selectedStatus = this.selectedProduct.status;
+  const inputPassword = this.selectedProduct.confirm_password;
+  const adminNote = this.selectedProduct.admin_note;
+
+  if (!selectedStatus) {
+    this.openpopupnoti("กรุณาเลือก Adjustment Status");
+    return;
+  }
+  if (!inputPassword) {
+    this.openpopupnoti("กรุณากรอก Confirm Password");
+    return;
+  }
+
+  this.loader = true;
+
+  // 2. ดึงข้อมูลผู้ใช้เพื่อตรวจสอบรหัสผ่าน
+  this.todoService.getTodoss().subscribe({
+    next: (users) => {
+      const currentUser = users.find((u: any) => u.username === this.username);
+
+      if (!currentUser || currentUser.password !== inputPassword) {
+        this.loader = false;
+        this.openpopupnoti("รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่");
+        return;
+      }
+
+      // 3. อัปเดตสถานะโดยใช้ตัวแปรที่แยกออกมา
+      this.todoService.updateRequestStatus(currentId, selectedStatus).subscribe({
+        next: () => {
+          this.todoService.updateHistoryStatusBySku(currentSku, selectedStatus).subscribe(() => {
+            
+            // TODO: เพิ่มการบันทึก adminNote ลงในฐานข้อมูลที่นี่
+            
+            this.loader = false;
+            this.openpopupnoti(`ทำรายการสำเร็จ: ${selectedStatus}`);
+            this.button_cancels();
+            this.loadHistory();
+          });
+        },
+        error: (err) => {
+          this.loader = false;
+          console.error("Error updating status:", err);
+          this.openpopupnoti("เกิดข้อผิดพลาดในการอัปเดตสถานะ");
+        }
+      });
+    },
+    error: (err) => {
+      this.loader = false;
+      console.error("Error fetching users:", err);
+      this.openpopupnoti("ไม่สามารถตรวจสอบข้อมูลผู้ใช้ได้");
+    }
+  });
+}
 }

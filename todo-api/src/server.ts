@@ -42,19 +42,26 @@ app.get('/api/todos', async (req, res) => {
     res.status(500).json(error);
   }
 });
-app.get('/api/request_history/:id', async (req, res) => {
+// 📌 Route สำหรับอัปเดตสถานะและ Admin Note ของ Request History
+app.put('/api/request_history/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await pool.query('SELECT * FROM request_history WHERE id = $1', [id]);
-    
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: 'Not Found' });
+    const { status, admin_note } = req.body; // เพิ่ม admin_note
+
+    // อัปเดตทั้ง status และ admin_note
+    const result = await pool.query(
+      `UPDATE request_history SET status = $1, admin_note = $2 WHERE id = $3 RETURNING *`,
+      [status, admin_note, id]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ success: false, message: 'ไม่พบรายการนี้ในระบบ' });
     }
-    
-    res.json(result.rows[0]);
+
+    res.json({ success: true, data: result.rows[0] });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server Error' });
+    console.error('Error updating request history status:', error);
+    res.status(500).json({ success: false, message: 'Server Error' });
   }
 });
 app.get('/api/months', async (req, res) => {

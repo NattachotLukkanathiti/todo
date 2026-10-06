@@ -264,9 +264,14 @@ updateSaleOrderStatus(id: number, status: string): Observable<any> {
   getRequestHistoryById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/request_history/${id}`);
   }
-   updateRequestStatus(id: number, status: string): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/request_history/${id}`, { status }, { headers: this.headers });
-  }
+   // แก้ไขจากเดิมที่รับแค่ status ให้รับเป็น data object แทน
+updateRequestStatus(id: number, data: { status: string, admin_note?: string }): Observable<any> {
+  return this.http.put<any>(
+    `${this.apiUrl}/request_history/${id}`, 
+    data, 
+    { headers: this.headers }
+  );
+}
   updateHistoryStatusBySku(sku: string, status: string): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/history/status/${sku}`, { status }, { headers: this.headers });
   }

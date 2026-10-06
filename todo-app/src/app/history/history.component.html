@@ -169,7 +169,7 @@
         <img class="profile_employee" [src]="order.picture" alt="">
 {{ order.created_by }}
     </div>
-    <img class="icon" *ngIf="userRole === 'admin'" (click)="requestFromHistory(order.id)" src="image/file.svg" alt="">
+    <img class="icon" *ngIf="userRole === 'admin'" (click)="requestFromHistory(order)" src="image/file.svg" alt="">
 <img class="icon" *ngIf="userRole === 'backend'" (click)="request2(order)" src="image/file.svg" alt="">
 </div>
     </div>
@@ -267,73 +267,92 @@
         
         <!-- Header -->
         <div class="serach_product" >
-            <img src="image/re.svg" >
-            <span>Request Stock Adjustment</span>
+            <img src="image/main_edit2.svg" >
+            <span>Edit Stock Adjustment Request</span>
         </div>
 
-        <!-- Row 1: Adjustment No. (ID) & SKU -->
-        <div class="con_sku_pro">
-            <div class="sku_pro">
-                <label class="label_import" for="">Adjustment No.</label>
-                <input type="text" class="sku_input" [(ngModel)]="selectedProduct.id" readonly>
-            </div>
-            <div class="sku_pro">
-                <label class="label_import" for="">SKU</label>
-                <input type="text" class="sku_input" [(ngModel)]="selectedProduct.sku" readonly>
-            </div>
+        
+    <div class="con_sku_pro">
+        <div class="sku_pro">
+            <label class="label_import" for="">Adjustment No.</label>
+            <input type="text" class="sku_input" [(ngModel)]="selectedProduct.id" readonly>
         </div>
-
-        <!-- Row 2: Requested Quantity & Upload Ref -->
-        <div class="con_sku_pro">
-            <div class="sku_pro">
-                <label class="label_import" for="">Requested Quantity</label>
-                <input type="number" class="sku_input" [(ngModel)]="selectedProduct.requested_quantity" readonly>
-            </div>
-            <div class="sku_pro">
-                <label class="label_import" for="">Upload Ref</label>
-                <div class="con_edit" style="position: relative;">
-                    <input type="text" class="sku_input" [value]="selectedProduct.upload_ref || 'No File'" readonly>
-                    <label style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
-                        <img src="image/paperclip_icon.svg" alt="">
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <!-- Row 3: Staff Reason -->
-        <div class="con_sku_pro">
-            <div class="sku_pro" style="width: 100%;">
-                <label class="label_import" for="">Staff Reason</label>
-                <textarea class="sku_input" style="height: 100px; resize: none;" [(ngModel)]="selectedProduct.staff_reason" readonly></textarea>
-            </div>
-        </div>
-
-        <!-- Row 4: Request By & Date/Time -->
-        <div class="con_sku_pro" style="align-items: center; margin-top: 20px;">
-            <div class="sku_pro" style="display: flex; align-items: center;">
-                <label class="label_import" style="margin-bottom: 0; margin-right: 10px;">Request By</label>
-                <img class="profile_employee" [src]="selectedProduct.picture || 'image/user_avatar.svg'" alt="" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
-                <span>{{ selectedProduct.created_by }}</span>
-            </div>
-            <div class="sku_pro" style="display: flex; gap: 10px;">
-                <div class="sku_input" style="display: flex; align-items: center; justify-content: space-between;">
-                    <span>{{ selectedProduct.created_at }}</span>
-                    <img src="image/calendar_icon.svg" alt="">
-                </div>
-                <div class="sku_input" style="display: flex; align-items: center; justify-content: space-between;">
-                    <span>{{ selectedProduct.time }}</span>
-                    <img src="image/clock_icon.svg" alt="">
-                </div>
-            </div>
-        </div>
-
-        <!-- Buttons -->
-        <div class="button_import">
-            <div class="save" (click)="confirmAdjustment()">Confirm</div>
-            <div (click)="button_cancels()" class="cancel">Cancel</div>
+        <div class="sku_pro">
+            <label class="label_import" for="">SKU</label>
+            <input type="text" class="sku_input" [(ngModel)]="selectedProduct.sku" readonly>
         </div>
     </div>
+
+    <div class="con_sku_pro">
+        <div class="sku_pro">
+            <label class="label_import" for="">Requested Quantity</label>
+            <input type="number" class="sku_input" [(ngModel)]="selectedProduct.requested_quantity" readonly>
+        </div>
+        <div class="sku_pro">
+            <label class="label_import" for="">Upload Ref</label>
+            <div class="con_edit" style="position: relative;">
+                <input type="text" class="sku_input" [value]="selectedProduct.upload_ref || 'No File'" readonly>
+                <label style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+                    <img src="image/paperclip_icon.svg" alt="">
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="con_sku_pro">
+        <div class="sku_pro" style="width: 100%;">
+            <label class="label_import" for="">Staff Reason</label>
+            <textarea class="sku_input" style="height: 100px; resize: none;" [(ngModel)]="selectedProduct.staff_reason" readonly></textarea>
+        </div>
+    </div>
+
+    <div class="con_sku_pro">
+        <div class="sku_pro">
+            <label class="label_import" for="">Adjustment Status*</label>
+            <select class="sku_input" [(ngModel)]="selectedProduct.status">
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+            </select>
+        </div>
+       <!-- แก้ไขช่อง Confirm Password -->
+<div class="sku_pro">
+    <label class="label_import" for="">Confirm Password*</label>
+    <input type="password" class="sku_input" [(ngModel)]="selectedProduct.confirm_password" placeholder="Enter your password" autocomplete="new-password">
 </div>
+    </div>
+
+    <div class="con_sku_pro">
+        <div class="sku_pro" style="width: 100%;">
+            <label class="label_import" for="">Admin Note*</label>
+            <textarea class="sku_input" style="height: 80px; resize: none;" [(ngModel)]="selectedProduct.admin_note" placeholder="Add a note..."></textarea>
+        </div>
+    </div>
+
+    <div class="con_sku_pro" style="align-items: center; margin-top: 20px;">
+        <div class="sku_pro" style="display: flex; align-items: center;">
+            <label class="label_import" style="margin-bottom: 0; margin-right: 10px;">Request By</label>
+            <img class="profile_employee" [src]="selectedProduct.picture || 'image/user_avatar.svg'" alt="" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
+            <span>{{ selectedProduct.created_by }}</span>
+        </div>
+        <div class="sku_pro" style="display: flex; gap: 10px;">
+            <div class="sku_input" style="display: flex; align-items: center; justify-content: space-between;">
+                <span>{{ selectedProduct.created_at }}</span>
+                <img src="image/calendar_icon.svg" alt="">
+            </div>
+            <div class="sku_input" style="display: flex; align-items: center; justify-content: space-between;">
+                <span>{{ selectedProduct.time }}</span>
+                <img src="image/clock_icon.svg" alt="">
+            </div>
+        </div>
+    </div>
+
+    <div class="button_import">
+        <div class="save" (click)="confirmAdjustment2()">Confirm</div>
+        <div (click)="button_cancels()" class="cancel">Cancel</div>
+    </div>
+</div>
+
 <div class="import_product" [class.product2]="product2" [class.button_cancel]="button_cancel"  [class.button_request]="button_request">
     <div class="con_import_product2" [class.out_comimport]="outimport" >
         
