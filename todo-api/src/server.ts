@@ -719,26 +719,7 @@ app.put('/api/employee/:username', async (req, res) => {
   }
 });
 // 📌 Route สำหรับอัปเดตสถานะ Request History (เพิ่มส่วนนี้)
-app.put('/api/request_history/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { status } = req.body;
 
-    const result = await pool.query(
-      `UPDATE request_history SET status = $1 WHERE id = $2 RETURNING *`,
-      [status, id]
-    );
-
-    if (result.rowCount === 0) {
-      return res.status(404).json({ success: false, message: 'ไม่พบรายการนี้ในระบบ' });
-    }
-
-    res.json({ success: true, data: result.rows[0] });
-  } catch (error) {
-    console.error('Error updating request history status:', error);
-    res.status(500).json({ success: false, message: 'Server Error' });
-  }
-});
 // --- เพิ่ม Route สำหรับอัปเดตข้อมูล Supplier ---
 app.put('/api/suppliers/:id', async (req, res) => {
   try {

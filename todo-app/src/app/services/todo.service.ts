@@ -269,9 +269,9 @@ updateRequestStatus(id: number, data: { status: string, admin_note?: string }): 
   return this.http.put<any>(
     `${this.apiUrl}/request_history/${id}`, 
     data, 
-    { headers: this.headers }
+    { headers: this.headers } // <-- เพิ่มส่วนนี้เข้าไป
   );
-}
+} 
   updateHistoryStatusBySku(sku: string, status: string): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/history/status/${sku}`, { status }, { headers: this.headers });
   }
