@@ -257,4 +257,11 @@ updateSaleOrderStatus(id: number, status: string): Observable<any> {
   addRequestHistory(data: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/request_history`, data);
   }
+  getRequestHistory(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/request_history`);
+  }
+  // ดึงข้อมูล request_history ตาม ID
+  getRequestHistoryById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/request_history/${id}`);
+  }
 }

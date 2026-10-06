@@ -250,11 +250,24 @@ export class HistoryComponent {
       }
     });
   }
-  // เพิ่ม (order: any) เข้าไปในวงเล็บ
-  request(order: any) {
-    this.selectedProduct = { ...order }; // นำข้อมูลที่รับมาใส่ใน selectedProduct
-    this.button_edit = true;
-    this.outimport = false;
+  // ฟังก์ชันเมื่อกดปุ่มที่แถวรายการ
+  requestFromHistory(historyId: number) {
+    this.loader = true;
+    
+    // เรียก API เพื่อดึงข้อมูลตาม ID
+    this.todoService.getRequestHistoryById(historyId).subscribe({
+      next: (data) => {
+        this.selectedProduct = data; // นำข้อมูลที่ได้มาใส่ในฟอร์ม
+        this.button_edit = true;     // เปิดฟอร์ม
+        this.outimport = false;      // เล่น Animation เปิด
+        this.loader = false;
+      },
+      error: (err) => {
+        console.error('Error fetching request detail:', err);
+        this.openpopupnoti("ไม่สามารถดึงข้อมูลได้");
+        this.loader = false;
+      }
+    });
   }
   request2(order: any) {
     this.selectedProduct = { ...order }; // นำข้อมูลที่รับมาใส่ใน selectedProduct
@@ -311,5 +324,28 @@ export class HistoryComponent {
         this.button_cancels(); // ปิด Popup
       }
     });
+  }
+  requestHistoryList: any[] = [];
+
+  // ดึงข้อมูล Request History
+  loadRequestHistory() {
+    this.loader = true;
+    this.todoService.getRequestHistory().subscribe({
+      next: (res) => {
+        this.requestHistoryList = res;
+        this.loader = false;
+      },
+      error: (err) => {
+        console.error('Error loading request history:', err);
+        this.loader = false;
+      }
+    });
+  }
+
+  // เมื่อกดดูรายละเอียด
+  viewRequestDetail(item: any) {
+    this.selectedProduct = { ...item };
+    this.button_edit = true;
+    this.outimport = false;
   }
 }

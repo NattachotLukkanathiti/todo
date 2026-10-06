@@ -257,15 +257,15 @@
             <span>Request Stock Adjustment</span>
         </div>
 
-        <!-- Row 1: Adjustment No. & Quantity -->
+        <!-- Row 1: Adjustment No. (ID) & SKU -->
         <div class="con_sku_pro">
             <div class="sku_pro">
                 <label class="label_import" for="">Adjustment No.</label>
-                <input type="text" class="sku_input" placeholder="Placeholder" [(ngModel)]="selectedProduct.sku" readonly>
+                <input type="text" class="sku_input" [(ngModel)]="selectedProduct.id" readonly>
             </div>
             <div class="sku_pro">
-                <label class="label_import" for="">Quantity</label>
-                <input type="number" class="sku_input" [(ngModel)]="selectedProduct.quantity" readonly>
+                <label class="label_import" for="">SKU</label>
+                <input type="text" class="sku_input" [(ngModel)]="selectedProduct.sku" readonly>
             </div>
         </div>
 
@@ -273,13 +273,13 @@
         <div class="con_sku_pro">
             <div class="sku_pro">
                 <label class="label_import" for="">Requested Quantity</label>
-                <input type="number" class="sku_input" placeholder="60" [(ngModel)]="selectedProduct.requested_quantity">
+                <input type="number" class="sku_input" [(ngModel)]="selectedProduct.requested_quantity" readonly>
             </div>
             <div class="sku_pro">
                 <label class="label_import" for="">Upload Ref</label>
                 <div class="con_edit" style="position: relative;">
-                    <input type="text" class="sku_input" placeholder="Upload Ref Image / PDF" readonly>
-                    <label for="uploadRef" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
+                    <input type="text" class="sku_input" [value]="selectedProduct.upload_ref || 'No File'" readonly>
+                    <label style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
                         <img src="image/paperclip_icon.svg" alt="">
                     </label>
                 </div>
@@ -290,7 +290,7 @@
         <div class="con_sku_pro">
             <div class="sku_pro" style="width: 100%;">
                 <label class="label_import" for="">Staff Reason</label>
-                <textarea class="sku_input" style="height: 100px; resize: none;" placeholder="Placeholder" [(ngModel)]="selectedProduct.staff_reason"></textarea>
+                <textarea class="sku_input" style="height: 100px; resize: none;" [(ngModel)]="selectedProduct.staff_reason" readonly></textarea>
             </div>
         </div>
 
@@ -298,17 +298,16 @@
         <div class="con_sku_pro" style="align-items: center; margin-top: 20px;">
             <div class="sku_pro" style="display: flex; align-items: center;">
                 <label class="label_import" style="margin-bottom: 0; margin-right: 10px;">Request By</label>
-                <!-- แก้ไขการแสดงผลรูปภาพและชื่อผู้สร้าง -->
                 <img class="profile_employee" [src]="selectedProduct.picture || 'image/user_avatar.svg'" alt="" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
-                <span>{{ selectedProduct.created_by || username }}</span>
+                <span>{{ selectedProduct.created_by }}</span>
             </div>
             <div class="sku_pro" style="display: flex; gap: 10px;">
                 <div class="sku_input" style="display: flex; align-items: center; justify-content: space-between;">
-                    <span>{{ currentTime | date:'dd/MM/yyyy' }}</span>
+                    <span>{{ selectedProduct.created_at }}</span>
                     <img src="image/calendar_icon.svg" alt="">
                 </div>
                 <div class="sku_input" style="display: flex; align-items: center; justify-content: space-between;">
-                    <span>{{ currentTime | date:'HH:mm:ss' }}</span>
+                    <span>{{ selectedProduct.time }}</span>
                     <img src="image/clock_icon.svg" alt="">
                 </div>
             </div>
@@ -316,7 +315,7 @@
 
         <!-- Buttons -->
         <div class="button_import">
-            <div class="save">Confirm</div>
+            <div class="save" (click)="confirmAdjustment()">Confirm</div>
             <div (click)="button_cancels()" class="cancel">Cancel</div>
         </div>
     </div>
