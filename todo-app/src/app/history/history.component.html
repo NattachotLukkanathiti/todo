@@ -253,7 +253,7 @@
         
         <!-- Header -->
         <div class="serach_product" >
-            <img src="image/document_icon.svg" >
+            <img src="image/re.svg" >
             <span>Request Stock Adjustment</span>
         </div>
 
@@ -370,7 +370,7 @@
 
         <!-- Buttons: แสดงเฉพาะ Admin หรือ Manager เท่านั้น -->
         <div class="button_import" style="display: flex; justify-content: center; gap: 10px;">
-            <div class="save" >Confirm</div>
+            <div class="save" (click)="confirmAdjustment()" >Confirm</div>
             <div (click)="button_cancels()" class="cancel" >Cancel</div>
         </div>
         

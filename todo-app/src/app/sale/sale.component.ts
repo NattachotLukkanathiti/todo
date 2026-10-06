@@ -16,12 +16,13 @@ export class SaleComponent {
    button_cancel = false;
   button_importt = false;
     button_edit = false;
+    button_detail = false;
     button_request = false;
         outimport = false;
         product2 = true;
            selectedProduct: any = {}; 
 
-
+groupedSaleOrders: any[] = [];
  itemsPerPage: number = 10; 
   currentPage: number = 1;
   totalPages: number = 1;
@@ -91,7 +92,21 @@ export class SaleComponent {
     }
 
       this.loadSaleOrders(); 
+      this.todoService.getSaleOrders().subscribe({
+    next: (res) => { // <--- ตรวจสอบว่ามี (res) ตรงนี้
+      this.saleOrders = res;
       
+      // เรียกใช้ฟังก์ชันจัดกลุ่มข้อมูล
+      this.groupOrdersByCode(res); 
+      
+      this.isLoading = false; 
+      this.loader = false;
+    },
+    error: (err) => {
+      console.error('Error fetching sale order:', err);
+      this.loader = false;
+    }
+  });
     this.timeSubscription = interval(1000).subscribe(() => {
       this.currentTime = new Date();
     });
@@ -208,22 +223,23 @@ export class SaleComponent {
   }
 
   loadSaleOrders() {
-    this.loader = true;
-    this.todoService.getSaleOrders().subscribe({
-      next: (res) => {
-        this.saleOrders = res;
-        this.filteredSaleOrders = [...res]; // <-- เพิ่มบรรทัดนี้
-        
-        this.updatePagination(); // <-- เพิ่มบรรทัดนี้
-        
-        this.isLoading = false; 
-        this.loader = false;
-      },
-      error: (err) => {
-        console.error('Error fetching sale order:', err);
-      }
-    });
-  }
+  this.loader = true;
+  this.todoService.getSaleOrders().subscribe({
+    next: (res) => {
+      this.saleOrders = res;
+      
+      // จัดกลุ่มข้อมูลทุกครั้งที่โหลด เพื่อป้องกันการแสดงผลซ้ำ
+      this.groupOrdersByCode(res); 
+      
+      this.isLoading = false; 
+      this.loader = false;
+    },
+    error: (err) => {
+      console.error('Error fetching sale order:', err);
+      this.loader = false;
+    }
+  });
+}
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
@@ -274,6 +290,22 @@ export class SaleComponent {
 originalProductState: any = {};
 
 opencancel(order: any) {
+  this.product2 = true;
+  this.outimport = false;
+  this.button_edit = true; 
+  // สำรองข้อมูลเดิมไว้ก่อนการแก้ไข
+  this.originalProductState = { ...order };
+  
+  this.selectedProduct = { 
+    ...order, 
+    cancel_reason: order.cancel_reason || '' 
+  };
+  
+
+}
+
+opendetail(order: any) {
+  this.button_cancel = false;
   // สำรองข้อมูลเดิมไว้ก่อนการแก้ไข
   this.originalProductState = { ...order };
   
@@ -286,52 +318,103 @@ opencancel(order: any) {
   this.product2 = false;
 }
 
+
 button_cancels() {
   // คืนค่าข้อมูลกลับไปเป็นเหมือนเดิม
   this.selectedProduct = { ...this.originalProductState };
-  
+    const element = document.querySelector('.con_import_product') as HTMLElement;
+  const element2 = document.querySelector('.con_import_product2') as HTMLElement;
+    if (element) {
+    element.scrollTop = 0;
+    element.classList.add('out');
+  }
+  if (element2) {
+    element2.scrollTop = 0;
+    element2.classList.add('out');
+  }
   this.outimport = true;
   setTimeout(() => {
-    this.product2 = true;
+        this.product2 = true;
     this.button_edit = false;
+    this.button_detail = false;
+      this.outimport = false;
   }, 400);
 }
 confirmCancel() {
-  const orderId = this.selectedProduct.id;
+  const orderCode = this.selectedProduct.order_code;
   
-  this.todoService.updateSaleOrderStatus(orderId, 'Canceled').subscribe({
-    next: (res) => {
-      const productName = this.selectedProduct.product_name;
-      const qtyToReturn = Number(this.selectedProduct.amount) || 1; 
+  // ดึงรายการสินค้าทั้งหมดที่อยู่ในบิลเดียวกัน
+  const itemsToCancel = this.selectedProduct.items || [this.selectedProduct];
 
-      this.todoService.getInventory().subscribe(inventory => {
-        const product = inventory.find(p => p.product_name === productName);
-        if (product) {
-          const currentQty = Number(product.quantity) || 0;
-          const newQty = currentQty + qtyToReturn;
-          
-          // สร้าง Object ข้อมูลสินค้าเดิม และอัปเดตเฉพาะ quantity
-          const updateData = {
-            product_name: product.product_name,
-            picture: product.picture,
-            quantity: newQty, // ค่าใหม่ที่บวกแล้ว
-            price: product.price,
-            category: product.category,
-            brand: product.brand || 'N/A',
-            quantity_alert: product.quantity_alert || 10
-          };
-          
-          // ส่งข้อมูลทั้งหมดกลับไป เพื่อไม่ให้ช่องอื่นหาย
-          this.todoService.updateInventoryStock(product.sku, updateData).subscribe();
-        }
-      });
+  // ดึงข้อมูล Inventory ทั้งหมดมาก่อน เพื่อใช้ในการอัปเดตสต็อก
+  this.todoService.getInventory().subscribe(inventory => {
+    
+    itemsToCancel.forEach((item: any) => {
+      // 1. อัปเดตสถานะของแต่ละรายการในฐานข้อมูลเป็น 'Canceled'
+      this.todoService.updateSaleOrderStatus(item.id, 'Canceled').subscribe();
 
-      // อัปเดตหน้าจอ
-      this.selectedProduct.status = 'Canceled';
-      this.outimport = true;
-      setTimeout(() => { this.product2 = true; }, 400);
-    },
-    error: (err) => console.error('Error:', err)
+      // 2. คืนสต็อกสินค้า
+      const product = inventory.find(p => p.product_name === item.product_name);
+      if (product) {
+        const currentQty = Number(product.quantity) || 0;
+        const qtyToReturn = Number(item.quantity) || 1;
+        const newQty = currentQty + qtyToReturn;
+
+        const updateData = {
+          product_name: product.product_name,
+          picture: product.picture,
+          quantity: newQty,
+          price: product.price,
+          category: product.category,
+          brand: product.brand || 'N/A',
+          quantity_alert: product.quantity_alert || 10
+        };
+
+        this.todoService.updateInventoryStock(product.sku, updateData).subscribe();
+      }
+    });
+
+    // อัปเดตสถานะบนหน้าจอ
+    this.selectedProduct.status = 'Canceled';
+    this.outimport = true;
+      this.loadSaleOrders(); 
+    setTimeout(() => { 
+      this.product2 = true; 
+      this.loadSaleOrders(); // โหลดข้อมูลใหม่ทั้งหมด
+    }, 400);
+  });
+}
+groupOrdersByCode(orders: any[]) {
+  this.todoService.getInventory().subscribe(inventory => {
+    const map = new Map<string, any>();
+
+    orders.forEach(order => {
+      const invItem = inventory.find(p => p.product_name === order.product_name);
+      
+      const enrichedOrder = {
+        ...order,
+        sku: invItem?.sku || '-',
+        brand: invItem?.brand || '-',
+        product_picture: invItem?.picture || 'image/default_product.svg', // <--- เปลี่ยนเป็น product_picture
+        price: invItem?.price || (order.amount / order.quantity)
+      };
+
+      if (map.has(order.order_code)) {
+        const existing = map.get(order.order_code);
+        existing.amount += (Number(order.amount) || 0);
+        existing.items.push(enrichedOrder);
+      } else {
+        map.set(order.order_code, {
+          ...enrichedOrder,
+          amount: Number(order.amount) || 0,
+          items: [enrichedOrder]
+        });
+      }
+    });
+
+    this.groupedSaleOrders = Array.from(map.values());
+    this.filteredSaleOrders = [...this.groupedSaleOrders];
+    this.updatePagination();
   });
 }
 }

@@ -417,6 +417,66 @@ app.post('/api/sale_order', async (req, res) => {
     res.status(500).json({ success: false, message: 'Server all Error' });
   }
 });
+
+// 📌 Route สำหรับดึงข้อมูล Request History
+app.get('/api/request_history', async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM request_history ORDER BY id DESC'
+    );
+    
+    const formattedRows = result.rows.map(row => {
+      if (row.created_at) {
+        const dateObj = new Date(row.created_at);
+        row.created_at = dateObj.toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        });
+      }
+      return row;
+    });
+
+    res.json(formattedRows);
+  } catch (error) {
+    console.error('Error fetching request history:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+// 📌 Route สำหรับบันทึกข้อมูล Request History (สถานะเริ่มต้น Pending)
+app.post('/api/request_history', async (req, res) => {
+  try {
+    const { sku, requested_quantity, staff_reason, status, created_by, created_at, time } = req.body;
+
+    if (!sku || requested_quantity === undefined) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'กรุณากรอกข้อมูล SKU และ Requested Quantity' 
+      });
+    }
+
+    const result = await pool.query(
+      `INSERT INTO request_history (sku, requested_quantity, staff_reason, status, created_by, created_at, time) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7) 
+       RETURNING *`,
+      [sku, requested_quantity, staff_reason, status || 'Pending', created_by, created_at, time]
+    );
+
+    res.status(201).json({
+      success: true,
+      message: 'บันทึกคำขอปรับปรุงสต็อกสำเร็จ',
+      data: result.rows[0]
+    });
+
+  } catch (error) {
+    console.error('Error inserting into request_history:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Server Error' 
+    });
+  }
+});
 app.post('/api/login', async (req, res) => {
   try {
     const { title, password } = req.body;

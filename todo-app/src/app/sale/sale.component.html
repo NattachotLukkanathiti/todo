@@ -169,21 +169,22 @@
                     </ng-container>
     <!-- Data Rows -->
 <ng-template #realData>
-  <div class="table_detail2" *ngFor="let order of saleOrders; let i = index" [style.animation-delay]="i * 0.15 + 's'">
-    <div class="table_detail">
-        <div class="sku2">{{ order.order_code }}</div>
+  <!-- เปลี่ยนจาก saleOrders เป็น paginatedSaleOrders -->
+  <div class="table_detail2" *ngFor="let order of paginatedSaleOrders; let i = index" [style.animation-delay]="i * 0.15 + 's'">
+    <div class="table_detail" (click)="opendetail(order)">
+        <div class="sku2"  >{{ order.order_code }}</div>
         <div class="sku2">{{ order.created_at | date:'dd/MM/yyyy HH:mm' }}</div>
+        <!-- แสดงผลยอดรวมที่บวกกันแล้ว -->
         <div class="sku2">{{ order.amount || '-' }}</div>
         <div class="sku2">
             <div class="connn">
-                <!-- แก้ไขให้ดึงรูปภาพจาก order.picture ถ้าไม่มีให้ใช้รูป default -->
                 <img class="iconsetting4" [src]="order.picture || 'image/profile.svg'" alt="">
-                {{ order.create_by }}
+                {{ order.create_by }} 
             </div>
         </div>
-        <div class="status" [ngClass]="{'text-green': order.status === 'Completed', 'text-gray': order.status === 'Pending'}">
+        <div class="status" [ngClass]="{'text-green': order.status === 'Completed', 'text-red': order.status === 'Canceled', 'text-blue': order.status === 'Pending'}">
             {{ order.status }}
-              <img class="icon" *ngIf="userRole === 'backend' || userRole === 'admin'" (click)="opencancel(order)" src="image/file.svg">
+              <img class="icon" *ngIf="userRole === 'backend' || userRole === 'admin'" (click)="opencancel(order);$event.stopPropagation()" src="image/file.svg">
         </div>
     </div>
     <div class="line"></div>
@@ -313,5 +314,111 @@
     <div class="save" (click)="confirmCancel()">Confirm</div>
     <div (click)="button_cancels()" class="cancel">Cancel</div>
 </div>
+    </div>
+</div>
+
+
+
+<div class="import_product" [class.product2]="product2" [class.button_cancel]="button_cancel" [class.button_detail]="button_detail">
+    <div class="con_import_product2" [class.out_comimport]="outimport">
+        
+        <!-- Header -->
+        <div class="serach_product">
+            <img src="image/logo_sale_order.svg">
+            <span>Detail Sales Orders</span>
+        </div>
+
+       <div class="con_detail"> <!-- Table Header -->
+        <div class="con_sku_pro" >
+            <div class="sku_pro" >SKU</div>
+            <div class="sku_pro" >Product Name</div>
+            <div class="sku_pro" >Brand</div>
+            <div class="sku_pro" >Quantity</div>
+            <div class="sku_pro" >Price</div>
+            <div class="sku_pro" >Amount</div>
+        </div>
+
+        <div class="container_detail">
+            <!-- Table Body (วนลูปรายการสินค้า) -->
+        <div class="con_sku_pro2" *ngFor="let item of selectedProduct.items" >
+            <div class="sku_pro" >{{ item.sku }}</div>
+            <div class="sku_pro" style="text-align: left; display: flex; align-items: center;">
+                <img [src]="item.product_picture" style="width: 25px; margin-right: 8px; border-radius: 4px;">
+                {{ item.product_name }}
+            </div>
+            <div class="sku_pro" >{{ item.brand || '-' }}</div>
+            <div class="sku_pro" >{{ item.quantity }}</div>
+            <div class="sku_pro" >{{ item.price | number }}</div>
+            <div class="sku_pro" >{{ (item.price * item.quantity) | number }}</div>
+        </div>
+
+        <!-- Grand Total & Summary -->
+        <div class="con_sku_pro_" >
+            <div class="sku_pro"></div>
+            <div class="sku_pro"></div>
+            <div class="sku_pro"></div>
+            <div class="connnn">
+    <!-- ฝั่งซ้าย: ชื่อรายการ -->
+    <div class="sku_pro2">
+        <div class="sku_pro">Subtotal</div>
+        <div class="sku_pro">Product insurance</div>
+        <div class="sku_pro">Discount</div>
+        <div style="font-weight: bold; margin-top: 10px;">Grand Total</div>
+    </div>
+
+    <!-- ฝั่งขวา: ตัวเลข -->
+    <div class="sku_pro3" style="text-align: right;">
+        <div>{{ selectedProduct.subtotal || (selectedProduct.amount) | number }}</div>
+        <div>{{ selectedProduct.insurance || '0' | number }}</div>
+        <div>{{ selectedProduct.discount || '0' }}%</div>
+        <div style="font-weight: bold; margin-top: 10px;">{{ selectedProduct.amount | number }}</div>
+    </div>
+</div>
+        </div>
+</div>
+            
+        </div>
+
+        <!-- Upload Ref -->
+        <div class="con_sku_pro" style="background-color: transparent !important; margin-top: 20px;">
+            <div class="sku_pro">
+                <label class="label_import">Upload Ref</label>
+                <div class="con_edit" style="position: relative; max-width: 300px;">
+                    <input type="text" class="sku_input" placeholder="Upload Ref No, Image / PDF" readonly style="width: 100%; background: white; border: 1px solid #E5E7EB;">
+                    <label for="uploadRef" style="cursor: pointer; position: absolute; right: 15px; top: 55%; transform: translateY(-50%);">
+                        <img class="icon_edit" src="image/paperclip_icon.svg" alt="">
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Created By & Date/Time -->
+        <div class="con_sku_pro" style="background-color: transparent !important;">
+            <div class="sku_pro">
+                <label class="label_import">Created By</label>
+                <div style="display: flex; align-items: center; margin-top: 10px;">
+                    <img [src]="selectedProduct.picture || 'image/user_avatar.svg'" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
+                    <span>{{ selectedProduct.create_by || username }}</span>
+                </div>
+            </div>
+            <div class="sku_pro">
+                <label class="label_import">Date / Time</label>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <div class="sku_input" style="display: flex; align-items: center; justify-content: space-between; background: white; border: 1px solid #E5E7EB; width: 160px; height: auto; padding: 10px 15px;">
+                        <span>{{ selectedProduct.created_at | date:'dd/MM/yyyy' }}</span>
+                        <img src="image/calendar_icon.svg" alt="">
+                    </div>
+                    <div class="sku_input" style="display: flex; align-items: center; justify-content: space-between; background: white; border: 1px solid #E5E7EB; width: 160px; height: auto; padding: 10px 15px;">
+                        <span>{{ selectedProduct.created_at | date:'HH:mm:ss' }}</span>
+                        <img src="image/clock_icon.svg" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="button_import" style="justify-content: center; margin-top: 40px;">
+            <div (click)="button_cancels()" class="cancel" style="background-color: #B9BDC7; border-radius: 30px; padding: 12px 40px; width: auto; height: auto;">Back To Order</div>
+        </div>
     </div>
 </div>

@@ -268,4 +268,48 @@ export class HistoryComponent {
         this.button_edit = false;
     },400)
   }
+  confirmAdjustment() {
+    if (!this.selectedProduct.requested_quantity) {
+      this.openpopupnoti("กรุณาระบุ Requested Quantity");
+      return;
+    }
+
+    this.loader = true;
+    const now = new Date();
+
+    // 1. เตรียมข้อมูลสำหรับบันทึกลง request_history
+    const requestData = {
+      sku: this.selectedProduct.sku,
+      requested_quantity: this.selectedProduct.requested_quantity,
+      staff_reason: this.selectedProduct.staff_reason || '',
+      status: 'Pending', // สถานะเริ่มต้น
+      created_by: this.username,
+      created_at: now.toISOString().split('T')[0],
+      time: now.toTimeString().split(' ')[0]
+    };
+
+    // 2. เรียกใช้งาน Service เพื่อบันทึกข้อมูล
+    this.todoService.addRequestHistory(requestData).subscribe({
+      next: (response) => {
+        // เมื่อ Backend บันทึกสำเร็จ ให้เปลี่ยนสถานะเป็น Approved
+        this.loader = false;
+        this.openpopupnoti("บันทึกข้อมูลสำเร็จ: Approved");
+        
+        // อัปเดตสถานะในตัวแปรเพื่อแสดงผลทันที (ถ้าต้องการ)
+        this.selectedProduct.status = 'Approved'; 
+        
+        this.button_cancels(); // ปิด Popup
+        this.loadHistory();     // โหลดข้อมูลใหม่
+      },
+      error: (error) => {
+        // เมื่อเกิดข้อผิดพลาด ให้เปลี่ยนสถานะเป็น Canceled
+        this.loader = false;
+        console.error("Error saving request:", error);
+        this.openpopupnoti("การบันทึกล้มเหลว: Canceled");
+        
+        this.selectedProduct.status = 'Canceled';
+        this.button_cancels(); // ปิด Popup
+      }
+    });
+  }
 }

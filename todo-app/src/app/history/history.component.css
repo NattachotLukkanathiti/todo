@@ -1673,7 +1673,27 @@ input::placeholder{
 
     }
 }
+@keyframes moves {
+    0% {
+        width: 0px;
+        height: 0px;
+        margin-left: 50vw;
+        margin-top: -50vh;
+        clip-path: polygon(80% 0, 50% 0, 100% 100%,40% 100%);
+        filter: blur(5px); 
+    }
+    50%{
+        clip-path: polygon(50% 0, 100% 0, 100% 100%, 10% 100%);
+    }
+    100% {
 
+
+        opacity: 1;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        filter: blur(2px); 
+
+    }
+}
 .text-green {
   color: #84D46E;
 }

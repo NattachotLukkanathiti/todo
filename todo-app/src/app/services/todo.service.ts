@@ -253,4 +253,8 @@ updateSaleOrderStatus(id: number, status: string): Observable<any> {
     { headers: this.headers }
   );
 }
+// เพิ่มฟังก์ชันนี้ใน todo.service.ts
+  addRequestHistory(data: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/request_history`, data);
+  }
 }
