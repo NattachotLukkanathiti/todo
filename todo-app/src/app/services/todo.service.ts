@@ -264,4 +264,7 @@ updateSaleOrderStatus(id: number, status: string): Observable<any> {
   getRequestHistoryById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/request_history/${id}`);
   }
+   updateRequestStatus(id: number, status: string): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/request_history/${id}`, { status }, { headers: this.headers });
+  }
 }

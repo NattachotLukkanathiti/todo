@@ -158,6 +158,10 @@ export class HistoryComponent {
     this.showpopupnoti = true;
     this.popup = message;
   }
+  openpopup(message:string){
+    this.showpopup = true;
+    this.popup = message;
+  }
   closepopup(){
     this.showpopup = false;
     this.showpopupnoti = false;
@@ -288,42 +292,59 @@ export class HistoryComponent {
     }
 
     this.loader = true;
-    const now = new Date();
 
-    // 1. เตรียมข้อมูลสำหรับบันทึกลง request_history
-    const requestData = {
-      sku: this.selectedProduct.sku,
-      requested_quantity: this.selectedProduct.requested_quantity,
-      staff_reason: this.selectedProduct.staff_reason || '',
-      status: 'Pending', // สถานะเริ่มต้น
-      created_by: this.username,
-      created_at: now.toISOString().split('T')[0],
-      time: now.toTimeString().split(' ')[0]
-    };
+    // กรณีที่ 1: มี ID อยู่แล้ว (Admin กำลังกดอนุมัติรายการจาก request_history)
+    if (this.selectedProduct.id) {
+      this.todoService.updateRequestStatus(this.selectedProduct.id, 'Approved').subscribe({
+        next: () => {
+          this.loader = false;
+          this.openpopupnoti("อนุมัติคำขอเรียบร้อย: Approved");
+          this.button_cancels();
+          this.loadRequestHistory(); // โหลดข้อมูลคำขอใหม่
+        },
+        error: (error) => {
+          this.loader = false;
+          console.error("Error approving request:", error);
+          this.openpopupnoti("เกิดข้อผิดพลาด: Canceled");
+          this.todoService.updateRequestStatus(this.selectedProduct.id, 'Canceled').subscribe();
+        }
+      });
+    } 
+    // กรณีที่ 2: ไม่มี ID (Backend กำลังสร้างคำขอใหม่)
+    else {
+      const now = new Date();
+      const requestData = {
+        sku: this.selectedProduct.sku,
+        requested_quantity: this.selectedProduct.requested_quantity,
+        staff_reason: this.selectedProduct.staff_reason || '',
+        status: 'Pending',
+        created_by: this.username,
+        created_at: now.toISOString().split('T')[0],
+        time: now.toTimeString().split(' ')[0]
+      };
 
-    // 2. เรียกใช้งาน Service เพื่อบันทึกข้อมูล
-    this.todoService.addRequestHistory(requestData).subscribe({
-      next: (response) => {
-        // เมื่อ Backend บันทึกสำเร็จ ให้เปลี่ยนสถานะเป็น Approved
-        this.loader = false;
-        this.openpopupnoti("บันทึกข้อมูลสำเร็จ: Approved");
-        
-        // อัปเดตสถานะในตัวแปรเพื่อแสดงผลทันที (ถ้าต้องการ)
-        this.selectedProduct.status = 'Approved'; 
-        
-        this.button_cancels(); // ปิด Popup
-        this.loadHistory();     // โหลดข้อมูลใหม่
-      },
-      error: (error) => {
-        // เมื่อเกิดข้อผิดพลาด ให้เปลี่ยนสถานะเป็น Canceled
-        this.loader = false;
-        console.error("Error saving request:", error);
-        this.openpopupnoti("การบันทึกล้มเหลว: Canceled");
-        
-        this.selectedProduct.status = 'Canceled';
-        this.button_cancels(); // ปิด Popup
-      }
-    });
+      this.todoService.addRequestHistory(requestData).subscribe({
+        next: (response) => {
+          this.loader = false;
+          this.openpopupnoti("บันทึกข้อมูลสำเร็จ: Pending");
+          
+          // อัปเดตสถานะในตารางหลัก (History) ให้เป็น Pending ทันที
+          const targetItem = this.history.find(item => item.sku === this.selectedProduct.sku);
+          if (targetItem) {
+            targetItem.status = 'Pending';
+          }
+          
+          this.button_cancels();
+          this.loadHistory();
+        },
+        error: (error) => {
+          this.loader = false;
+          console.error("Error saving request:", error);
+          this.openpopupnoti("การบันทึกล้มเหลว: Canceled");
+          this.button_cancels();
+        }
+      });
+    }
   }
   requestHistoryList: any[] = [];
 

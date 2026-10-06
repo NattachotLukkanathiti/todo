@@ -169,8 +169,8 @@
         <img class="profile_employee" [src]="order.picture" alt="">
 {{ order.created_by }}
     </div>
-    <img class="icon"*ngIf="userRole === 'admin'" (click)="request(order)" src="image/file.svg" alt="">
-    <img class="icon"*ngIf="userRole === 'backend'"(click)="request2(order)" src="image/file.svg" >
+    <img class="icon" *ngIf="userRole === 'admin'" (click)="requestFromHistory(order.id)" src="image/file.svg" alt="">
+<img class="icon" *ngIf="userRole === 'backend'" (click)="request2(order)" src="image/file.svg" alt="">
 </div>
     </div>
     <div class="line"></div>
@@ -221,6 +221,20 @@
         </div>
     </div> -->
 
+<div *ngIf="showpopup" class="backpop">
+  <div *ngIf="showpopup" class="popupcontainer">
+  <div class="popup-content">
+    <img class="iconsuccess" src="image/success.svg" alt="">
+    <div class="headerpop">
+      Success
+    </div>
+    <div class="subheadersuccess">
+      {{popup}}
+    </div>
+    <button class="buttonclose" (click)="closepopup()">Back to Inventory</button>
+  </div>
+</div>
+</div>
 
     <div *ngIf="showpopupnoti" class="backpop">
         <div *ngIf="showpopupnoti" class="popupcontainer">
@@ -320,17 +334,14 @@
         </div>
     </div>
 </div>
-
 <div class="import_product" [class.product2]="product2" [class.button_cancel]="button_cancel"  [class.button_request]="button_request">
     <div class="con_import_product2" [class.out_comimport]="outimport" >
         
-        <!-- Header -->
         <div class="serach_product" >
             <img src="image/main_edit2.svg" >
             <span style="font-weight: 600;">Stock Adjustment Request</span>
         </div>
 
-        <!-- Row 1: SKU -->
         <div class="con_sku_pro" style="flex-direction: column; margin-bottom: 15px;">
             <div class="sku_pro" style="width: 100%;">
                 <label class="label_import" for="">SKU</label>
@@ -338,23 +349,20 @@
             </div>
         </div>
 
-        <!-- Row 2: Requested Quantity -->
         <div class="con_sku_pro" style="flex-direction: column; margin-bottom: 15px;">
             <div class="sku_pro" style="width: 100%;">
                 <label class="label_import" for="">Requested Quantity</label>
-                <input type="number" class="sku_input" placeholder="Placeholder" [(ngModel)]="selectedProduct.requested_quantity" [readonly]="userRole !== 'admin' && userRole !== 'manager'">
+                <input type="number" class="sku_input" placeholder="Placeholder" [(ngModel)]="selectedProduct.requested_quantity" [readonly]="userRole !== 'admin' && userRole !== 'manager' && userRole !== 'backend'">
             </div>
         </div>
 
-        <!-- Row 3: Staff Reason -->
         <div class="con_sku_pro" style="flex-direction: column; margin-bottom: 15px;">
             <div class="sku_pro" style="width: 100%;">
                 <label class="label_import" for="">Staff Reason</label>
-                <textarea class="sku_input" style="height: 100px; resize: none;" placeholder="Placeholder" [(ngModel)]="selectedProduct.staff_reason" [readonly]="userRole !== 'admin' && userRole !== 'manager'"></textarea>
+                <textarea class="sku_input" style="height: 100px; resize: none;" placeholder="Placeholder" [(ngModel)]="selectedProduct.staff_reason" [readonly]="userRole !== 'admin' && userRole !== 'manager' && userRole !== 'backend'"></textarea>
             </div>
         </div>
 
-        <!-- Row 4: Upload Ref -->
         <div class="con_sku_pro" style="flex-direction: column; margin-bottom: 20px;">
             <div class="sku_pro" style="width: 100%;">
                 <label class="label_import" for="">Upload Ref</label>
@@ -367,12 +375,10 @@
             </div>
         </div>
 
-        <!-- Buttons: แสดงเฉพาะ Admin หรือ Manager เท่านั้น -->
         <div class="button_import" style="display: flex; justify-content: center; gap: 10px;">
             <div class="save" (click)="confirmAdjustment()" >Confirm</div>
             <div (click)="button_cancels()" class="cancel" >Cancel</div>
         </div>
         
-      
     </div>
 </div>

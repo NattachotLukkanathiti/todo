@@ -662,7 +662,27 @@ app.put('/todos/:id', async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 });
-// 📌 Route สำหรับอัปเดตข้อมูลพนักงานในตาราง todos
+
+app.put('/api/request_history/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const result = await pool.query(
+      `UPDATE request_history SET status = $1 WHERE id = $2 RETURNING *`,
+      [status, id]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ success: false, message: 'ไม่พบรายการนี้ในระบบ' });
+    }
+
+    res.json({ success: true, data: result.rows[0] });
+  } catch (error) {
+    console.error('Error updating request status:', error);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+});
 app.put('/api/employee/:username', async (req, res) => {
   try {
     const { username } = req.params;
