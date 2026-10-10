@@ -1,4 +1,4 @@
-import { Component, OnInit, inject , ViewChild, ElementRef, HostListener  } from '@angular/core';
+import { Component, OnInit, inject , ViewChild, ElementRef, HostListener ,NgZone } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
@@ -42,7 +42,7 @@ export class InventoryComponent {
   search = '';
   items: string[] = ['รายการที่ 1', 'รายการที่ 2', 'รายการที่ 3'];
   filteredItems: string[] = [...this.items];
-
+ Number = Number; 
   data: any[] = [];
   months: string[] = [];
   profile = '';
@@ -119,10 +119,20 @@ categories: string[] = [];
   private supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVoeWhsbGF4dm96amRuZGRkZmt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ4NjUyMzAsImV4cCI6MjEwMDQ0MTIzMH0.FQ98R2OopmNkIBQLTeieKGETr0asT2KAaMf-G6uSLq4';
   private supabase = createClient(this.supabaseUrl, this.supabaseKey);
   private timeSubscription!: Subscription;
-  constructor(private router: Router) {}
+  constructor(private router: Router, private ngZone: NgZone) {}
 
   ngOnInit(): void {
-    
+    this.supabase
+      .channel('realtime-inventory')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'inventory' }, (payload) => {
+        console.log('ตรวจพบการเปลี่ยนแปลงข้อมูล:', payload);
+        
+        // 2. ใช้ ngZone.run เพื่อให้ Angular อัปเดต UI ทันที
+        this.ngZone.run(() => {
+          this.loadInventory(); 
+        });
+      })
+      .subscribe();
     this.calculateRows();
     const state = history.state;
     

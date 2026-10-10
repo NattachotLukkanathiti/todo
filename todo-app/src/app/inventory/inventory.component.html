@@ -197,7 +197,7 @@
         <div class="sku2">{{ item.category }}</div>
         <div class="sku2">{{ item.brand }}</div>
         <div class="sku2">{{ item.price }}</div>
-        <div class="sku2">{{ item.quantity }}</div>
+        <div class="sku2" [ngClass]="{'text-alert': Number(item.quantity) < Number(item.quantity_alert)}">{{ item.quantity }}</div>
         <div class="sku2">{{ item.quantity_alert }}</div>
         <div class="button_small">
             <img class="icon_small_inventory" src="image/edit.svg" (click)="button_editt(item)">

@@ -39,13 +39,15 @@ export class NotificationComponent implements OnInit, OnDestroy {
   notifications: any[] = [];
 
   ngOnInit(): void {
-     this.loadNotifications();
     const state = history.state;
     this.username = state.username || '';
     this.email = state.email || '';
     this.userRole = state.role || 'user';
     this.profile = state.profile || '';
-
+      if (this.username) {
+      this.loadNotifications();
+    }
+    
     if (!this.username || !this.email) {
       this.openpopupnoti("Session not found. Redirecting to login");
       return;
@@ -63,14 +65,20 @@ export class NotificationComponent implements OnInit, OnDestroy {
   ngOnDestroy() { this.timeSubscription?.unsubscribe(); }
 
 loadNotifications() {
-  this.todoService.getNotifications().subscribe({
-    next: (res: any) => {
-      console.log("ข้อมูลที่ได้จาก API:", res); // <-- เพิ่มบรรทัดนี้เพื่อเช็คข้อมูล
-      this.notifications = Array.isArray(res) ? res : (res.data || []);
-    },
-    error: (err) => console.error('Error:', err)
-  });
-}
+    this.todoService.getNotifications().subscribe({
+      next: (res: any) => {
+        const rawData = Array.isArray(res) ? res : (res.data || []);
+        
+        // เปลี่ยนมาเช็คจากคอลัมน์ read (1 = อ่านแล้ว, 0 = ยังไม่อ่าน)
+        this.notifications = rawData.map((item: any) => ({
+          ...item,
+          is_read: item.read === 1 
+        }));
+      },
+      error: (err) => console.error('Error:', err)
+    });
+  }
+
 
   // --- Navigation & UI Functions ---
   navigateTo(path: string, extraState: any = {}) {
@@ -192,5 +200,27 @@ loadNotifications() {
     if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
     
     return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+  }
+markAsRead(item: any) {
+    if (item.is_read) return;
+
+    // 1. อัปเดต UI ทันที
+    item.is_read = true;
+    item.read = 1;
+
+    // 2. ยิง API ไปที่ Backend (เปลี่ยนชื่อฟังก์ชันตาม Service ของคุณ)
+    this.todoService.updateNotificationReadStatus(item.id, 1).subscribe({
+      next: () => console.log('Saved to DB'),
+      error: (err) => {
+        console.error('Error', err);
+        // ถ้า Error ให้คืนค่ากลับ
+        item.is_read = false;
+        item.read = 0;
+      }
+    });
+  }
+   // เพิ่ม Getter นี้เข้าไปในคลาส NotificationComponent
+  get hasUnreadNotifications(): boolean {
+    return this.notifications.some(item => !item.is_read);
   }
 }

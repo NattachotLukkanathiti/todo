@@ -1,10 +1,11 @@
 
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject ,NgZone} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TodoService } from '../services/todo.service';
 import { interval, Subscription } from 'rxjs';
+import { createClient } from '@supabase/supabase-js'; 
 @Component({
   selector: 'app-history',
   imports: [CommonModule, DatePipe, RouterLink,FormsModule],
@@ -17,7 +18,8 @@ export class HistoryComponent {
     button_edit = false;
     button_request = false;
         outimport = false;
-        product2 = true;
+        product2 = false;
+        product = true;
            selectedProduct: any = {}; 
   private todoService = inject(TodoService);
 
@@ -42,7 +44,7 @@ export class HistoryComponent {
   out = true;
   history: any[] = []; 
   reload = false;
-  isLoading = false; 
+  isLoading = true; 
   loader = false;
   profile = '';
  play_Return = false;
@@ -50,11 +52,28 @@ export class HistoryComponent {
   return = false;
     stan = false;
    userRole: string = '';
+   private supabaseUrl = 'https://ehyhllaxvozjdndddfku.supabase.co';
+  private supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVoeWhsbGF4dm96amRuZGRkZmt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ4NjUyMzAsImV4cCI6MjEwMDQ0MTIzMH0.FQ98R2OopmNkIBQLTeieKGETr0asT2KAaMf-G6uSLq4';
+  private supabase = createClient(this.supabaseUrl, this.supabaseKey);
+
+  // ... (ตัวแปรอื่นๆ ของคุณ)
+
   private timeSubscription!: Subscription;
-  constructor(private router: Router) {}
+  
+  // เพิ่ม NgZone ใน constructor
+  constructor(private router: Router, private ngZone: NgZone) {}
 
   ngOnInit(): void {
-
+    // เพิ่มการเชื่อมต่อ Realtime สำหรับตาราง history
+    this.supabase
+      .channel('realtime-history')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'history' }, (payload) => {
+        console.log('ตรวจพบการเปลี่ยนแปลงใน History:', payload);
+        this.ngZone.run(() => {
+          this.loadHistory(); 
+        });
+      })
+      .subscribe();
     const state = history.state;
     this.username = state.username || '';
     this.email = state.email || '';
@@ -167,7 +186,7 @@ export class HistoryComponent {
     this.showpopupnoti = false;
     
   
-      this.router.navigate(['/login']); 
+
     
   }
   ngOnDestroy() {
@@ -255,11 +274,11 @@ export class HistoryComponent {
     });
   }
   requestFromHistory(order: any) {
-  this.loader = true;
-  
+    this.isLoading = true;
   // ดึงข้อมูล request_history ทั้งหมดมา
   this.todoService.getRequestHistory().subscribe({
     next: (list) => {
+      this.isLoading = false;
       // ค้นหาคำขอที่ตรงกับ SKU นี้ และมีสถานะเป็น Pending
       const found = list.find((item: any) => item.sku === order.sku && item.status === 'Pending');
       
@@ -270,7 +289,8 @@ export class HistoryComponent {
         this.selectedProduct = { ...order, id: null }; 
       }
       
-      this.button_edit = true;
+      this.product = false;
+      this.product2 = true;
       this.outimport = false;
       this.loader = false;
     },
@@ -282,63 +302,82 @@ export class HistoryComponent {
   });
 }
   request2(order: any) {
+    
+     this.product = false;
+    this.product2 = false;
     this.selectedProduct = { ...order }; // นำข้อมูลที่รับมาใส่ใน selectedProduct
     this.outimport = false;
-    this.product2 = false;
+    this.button_edit = false;
   }
   button_cancels(){
     this.outimport = true;
     setTimeout(() =>{
-    this.product2 = true;
         this.button_edit = false;
+            this.product2 = true;
+            this.product = true;
+            this.button_request = false;
     },400)
   }
   confirmAdjustment() {
-  if (!this.selectedProduct.requested_quantity) {
-    this.openpopupnoti("กรุณาระบุ Requested Quantity");
-    return;
-  }
-
-  this.loader = true;
-  const now = new Date();
-
-  const requestData = {
-    sku: this.selectedProduct.sku,
-    requested_quantity: this.selectedProduct.requested_quantity,
-    staff_reason: this.selectedProduct.staff_reason || '',
-    status: 'Pending',
-    created_by: this.username,
-    created_at: now.toISOString().split('T')[0],
-    time: now.toTimeString().split(' ')[0]
-  };
-
-  // 1. บันทึกข้อมูลลง request_history
-  this.todoService.addRequestHistory(requestData).subscribe({
-    next: (response) => {
-      
-      // 2. อัปเดตสถานะในตาราง history ให้เป็น Pending
-      this.todoService.updateHistoryStatusBySku(this.selectedProduct.sku, 'Pending').subscribe({
-        next: () => {
-          this.loader = false;
-          this.openpopup("บันทึกข้อมูลสำเร็จ: Pending");
-          this.button_cancels(); 
-          this.loadHistory(); // โหลดข้อมูลใหม่เพื่อให้ UI อัปเดตสี
-        },
-        error: (err) => {
-          this.loader = false;
-          console.error("Error updating history status:", err);
-        }
-      });
-
-    },
-    error: (error) => {
-      this.loader = false;
-      console.error("Error saving request:", error);
-      this.openpopupnoti("การบันทึกล้มเหลว: Canceled");
-      this.button_cancels();
+    this.isLoading = true;
+    if (!this.selectedProduct.requested_quantity) {
+      this.openpopupnoti("กรุณาระบุ Requested Quantity");
+      return;
     }
-  });
-}
+
+    this.loader = true;
+    const now = new Date();
+
+    const requestData = {
+      sku: this.selectedProduct.sku,
+      requested_quantity: this.selectedProduct.requested_quantity,
+      staff_reason: this.selectedProduct.staff_reason || '',
+      status: 'Pending',
+      created_by: this.username,
+      created_at: now.toISOString().split('T')[0],
+      time: now.toTimeString().split(' ')[0]
+    };
+
+    this.todoService.addRequestHistory(requestData).subscribe({
+      next: (response) => {
+        this.todoService.updateHistoryStatusBySku(this.selectedProduct.sku, 'Pending').subscribe({
+          next: () => {
+            // --- การแจ้งเตือนเดิมของคุณ ---
+            this.todoService.addNotification(
+              `Stock Adjustment : Pending Approvals`, 
+              `${this.selectedProduct.sku} ${this.selectedProduct.product_name || ''}`, 
+              'info', 
+              'Just now'
+            ).subscribe();
+
+            // --- เพิ่มการแจ้งเตือนที่สอง (ระบุชื่อผู้ส่ง) ---
+            this.todoService.addNotification(
+              `Pending Approvals: ${this.username} submitted a stock adjustment`, 
+              `${this.selectedProduct.sku} ${this.selectedProduct.product_name || ''}`, 
+              'info', 
+              'Just now'
+            ).subscribe();
+            // --------------------------------------
+
+            this.loader = false;
+            this.isLoading = false;
+            this.openpopup("บันทึกข้อมูลสำเร็จ: Pending");
+            this.button_cancels(); 
+            this.loadHistory();
+          },
+          error: (err) => {
+            this.loader = false;
+            console.error("Error updating history status:", err);
+          }
+        });
+      },
+      error: (error) => {
+        this.loader = false;
+        this.openpopupnoti("การบันทึกล้มเหลว: Canceled");
+        this.button_cancels();
+      }
+    });
+  }
   requestHistoryList: any[] = [];
 
   // ดึงข้อมูล Request History
@@ -362,13 +401,15 @@ export class HistoryComponent {
     this.button_edit = true;
     this.outimport = false;
   }
-  confirmAdjustment2() {
-  // 1. สร้างตัวแปรแยก (Local Variables) เพื่อดึงค่ามาจาก UI ป้องกันการกระทบกับตัวแปรหลัก
+ confirmAdjustment2() {
+  this.isLoading = true;
+  // 1. สร้างตัวแปรแยก (Local Variables) เพื่อดึงค่ามาจาก UI
   const currentId = this.selectedProduct.id;
   const currentSku = this.selectedProduct.sku;
   const selectedStatus = this.selectedProduct.status;
   const inputPassword = this.selectedProduct.confirm_password;
   const adminNote = this.selectedProduct.admin_note;
+  const requestedQuantity = this.selectedProduct.requested_quantity;
 
   if (!selectedStatus) {
     this.openpopupnoti("กรุณาเลือก Adjustment Status");
@@ -388,22 +429,56 @@ export class HistoryComponent {
 
       if (!currentUser || currentUser.password !== inputPassword) {
         this.loader = false;
+        this.isLoading = false;
         this.openpopupnoti("รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่");
         return;
       }
 
-      // 3. อัปเดตสถานะโดยใช้ตัวแปรที่แยกออกมา
-      this.todoService.updateRequestStatus(currentId, selectedStatus).subscribe({
+      // 3. อัปเดตสถานะ Request
+      this.todoService.updateRequestStatus(currentId, { 
+        status: selectedStatus, 
+        admin_note: adminNote 
+      }).subscribe({
         next: () => {
-          this.todoService.updateHistoryStatusBySku(currentSku, selectedStatus).subscribe(() => {
+          
+          // 4. ตรวจสอบว่าถ้าเป็น Approved ให้ไปอัปเดต Inventory
+          if (selectedStatus === 'Approved') {
             
-            // TODO: เพิ่มการบันทึก adminNote ลงในฐานข้อมูลที่นี่
-            
-            this.loader = false;
-            this.openpopupnoti(`ทำรายการสำเร็จ: ${selectedStatus}`);
-            this.button_cancels();
-            this.loadHistory();
-          });
+            // ดึงข้อมูลสินค้าเดิมจาก Inventory เพื่อป้องกันข้อมูลอื่น (เช่น รูปภาพ) หาย
+            this.todoService.getInventory().subscribe({
+              next: (inventory) => {
+                const currentProduct = inventory.find((item: any) => item.sku === currentSku);
+                
+                if (currentProduct) {
+                  // รวมข้อมูลเดิม กับ Quantity ใหม่
+                  const updateData = { 
+                    ...currentProduct, 
+                    quantity: requestedQuantity 
+                  };
+                  
+                  // ส่งข้อมูลทั้งหมดกลับไปอัปเดต
+                  this.todoService.updateInventory(currentSku, updateData).subscribe({
+                    next: () => { this.finalizeAdjustment(currentSku, selectedStatus); },
+                    error: (err) => {
+                      this.loader = false;
+                      this.isLoading = false;
+                      console.error("Error updating inventory:", err);
+                      this.openpopupnoti("อัปเดตสถานะสำเร็จ แต่ไม่สามารถอัปเดต Inventory ได้");
+                    }
+                  });
+                } else {
+                  this.loader = false;
+                  this.isLoading = false;
+                  this.openpopupnoti("ไม่พบข้อมูลสินค้าในระบบ Inventory");
+                }
+              }
+            });
+
+          } else {
+            // ถ้าไม่ใช่ Approved (เช่น Rejected) ข้ามไปอัปเดต History ได้เลย
+            this.finalizeAdjustment(currentSku, selectedStatus);
+          }
+
         },
         error: (err) => {
           this.loader = false;
@@ -411,12 +486,39 @@ export class HistoryComponent {
           this.openpopupnoti("เกิดข้อผิดพลาดในการอัปเดตสถานะ");
         }
       });
-    },
-    error: (err) => {
-      this.loader = false;
-      console.error("Error fetching users:", err);
-      this.openpopupnoti("ไม่สามารถตรวจสอบข้อมูลผู้ใช้ได้");
     }
   });
 }
+
+ private finalizeAdjustment(sku: string, status: string) {
+    this.todoService.updateHistoryStatusBySku(sku, status).subscribe(() => {
+      
+      // --- เพิ่มการส่ง Notification ---
+      let notiType = 'info';
+      let notiTitle = '';
+      let notiMessage = '';
+
+      if (status === 'Pending') {
+        notiTitle = 'Pending Approvals';
+        notiMessage = 'George Russell submitted a stock adjustment';
+      } else {
+        notiTitle = status === 'Approved' ? 'Accepted' : 'Rejected';
+        notiMessage = `${sku} ${this.selectedProduct.product_name || ''}`;
+      }
+      
+      this.todoService.addNotification(
+        `Stock Adjustment : ${notiTitle}`, 
+        notiMessage, 
+        notiType, 
+        'Just now'
+      ).subscribe();
+      // --------------------------------------
+
+      this.loader = false;
+      this.openpopup(`ทำรายการสำเร็จ: ${status}`);
+      this.button_cancels();
+      this.loadHistory();
+    });
+}
+
 }

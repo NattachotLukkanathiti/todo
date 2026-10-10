@@ -34,7 +34,7 @@
         <!-- <img class="iconsetting2" src="image/Song.svg" alt=""> -->
         <div class="red_noti">
   <!-- จุดสีแดงจะแสดง ก็ต่อเมื่อมีข้อมูลในตาราง notifications เท่านั้น -->
-  <div class="red_notification" *ngIf="notification && notification.length > 0"></div>
+  <div class="red_notification" *ngIf="notification && notification.length > 0 && hasUnreadNotifications"></div>
   
   <button class="header-icon" type="button" aria-label="Notifications" (click)="openNotifications()">
     <img src="image/Chart.svg" alt="" />

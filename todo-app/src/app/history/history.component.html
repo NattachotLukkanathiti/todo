@@ -161,7 +161,7 @@
 <div class="sku2">{{ order.brand }}</div>
 <div class="sku2">{{ order.price }}</div>
 <div class="sku2">{{ order.quantity }}</div>
-<div class="sku2" [ngClass]="{'text-green': order.status === 'Approved', 'text-gray': order.status === 'Pending'}">
+<div class="sku2" [ngClass]="{'text-green': order.status === 'Approved', 'text-gray': order.status === 'Pending' , 'text-red': order.status === 'Rejected'}">
   {{ order.status }}
 </div>
 <div class="sku3">
@@ -169,8 +169,12 @@
         <img class="profile_employee" [src]="order.picture" alt="">
 {{ order.created_by }}
     </div>
-    <img class="icon" *ngIf="userRole === 'admin'" (click)="requestFromHistory(order)" src="image/file.svg" alt="">
-<img class="icon" *ngIf="userRole === 'backend'" (click)="request2(order)" src="image/file.svg" alt="">
+    <img class="icon" *ngIf="userRole === 'admin' && order.status === 'Pending'" (click)="requestFromHistory(order)" src="image/file.svg" alt="">
+<img class="icon" 
+     *ngIf="userRole === 'backend' && order.status !== 'Pending'" 
+     (click)="request2(order)" 
+     src="image/file.svg" 
+     alt="">
 </div>
     </div>
     <div class="line"></div>
@@ -252,7 +256,7 @@
     </div>
 
 
-    <div *ngIf="isLoading" class="loading-container">
+<!--     <div *ngIf="isLoading" class="loading-container">
   <img class="logo_loading" src="/image/logoo.svg" alt="" >
   <div class="loading">
     <div class="loader1"></div>
@@ -260,10 +264,10 @@
     <div class="loader3"></div>
     <div class="loader4"></div>
   </div>
-</div>
+</div> -->
 
-<div class="import_product" [class.product2]="product2" [class.button_cancel]="button_cancel" [class.button_edit]="button_edit">
-    <div class="con_import_product2" [class.out_comimport]="outimport" >
+<div class="import_product"  [class.product]="product" [class.button_cancel]="button_cancel" [class.button_edit]="button_edit">
+    <div class="con_import_product" [class.out_comimport]="outimport" >
         
         <!-- Header -->
         <div class="serach_product" >
@@ -310,10 +314,11 @@
         <div class="sku_pro">
             <label class="label_import" for="">Adjustment Status*</label>
             <select class="sku_input" [(ngModel)]="selectedProduct.status">
-                <option value="Pending">Pending</option>
-                <option value="Approved">Approved</option>
-                <option value="Rejected">Rejected</option>
-            </select>
+    <option class="sku_inputt" [ngValue]="undefined" disabled selected>-- กรุณาเลือกสถานะ --</option>
+    <option class="sku_inputt"[ngValue]="'Pending'">Pending</option>
+    <option class="sku_inputt" [ngValue]="'Approved'">Approved</option>
+    <option class="sku_inputt" [ngValue]="'Rejected'">Rejected</option>
+</select>
         </div>
        <!-- แก้ไขช่อง Confirm Password -->
 <div class="sku_pro">
@@ -353,7 +358,7 @@
     </div>
 </div>
 
-<div class="import_product" [class.product2]="product2" [class.button_cancel]="button_cancel"  [class.button_request]="button_request">
+<div class="import_product2" [class.product2]="product2" [class.button_cancel]="button_cancel" [class.button_request]="button_request" >
     <div class="con_import_product2" [class.out_comimport]="outimport" >
         
         <div class="serach_product" >
@@ -388,6 +393,7 @@
                 <div class="con_edit" style="position: relative;">
                     <input type="text" class="sku_input" placeholder="Upload Ref Image / PDF" readonly>
                     <label for="uploadRef" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
+                        
                         <img src="image/paperclip_icon.svg" alt="">
                     </label>
                 </div>
@@ -400,4 +406,15 @@
         </div>
         
     </div>
+</div>
+
+
+<div *ngIf="isLoading" class="loading-container">
+    <img class="logo_loading" src="/image/logoo.svg" alt="" >
+  <div class="loading">
+    <div class="loader1"></div>
+    <div class="loader2"></div>
+    <div class="loader3"></div>
+    <div class="loader4"></div>
+  </div>
 </div>

@@ -275,4 +275,15 @@ updateRequestStatus(id: number, data: { status: string, admin_note?: string }): 
   updateHistoryStatusBySku(sku: string, status: string): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/history/status/${sku}`, { status }, { headers: this.headers });
   }
+  updateNotificationStatus(id: number, data: { read_by: string[] }): Observable<any> {
+    return this.http.put<any>(
+      `${this.apiUrl}/notification/${id}`, 
+      data, 
+      { headers: this.headers }
+    );
+  }
+  // ตัวอย่างฟังก์ชันใน TodoService
+  updateNotificationReadStatus(id: number, readStatus: number) {
+    return this.http.put(`${this.apiUrl}/notifications/${id}`, { read: readStatus });
+  }
 }

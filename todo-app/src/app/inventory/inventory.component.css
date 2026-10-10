@@ -671,7 +671,10 @@ flex-direction: column; /* ใส่หรือไม่ใส่ก็ได�
     
 
 }
-
+.text-alert {
+    color: #DC1818 !important; /* สีแดง */
+    font-weight: 600; /* ตัวหนา */
+}
 .con_import_product,.con_import_product2{
     width: 40%;
     height: 650px;

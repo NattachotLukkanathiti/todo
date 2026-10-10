@@ -192,6 +192,9 @@
   color: #6fab23;
     cursor: pointer;
 }
+.hidden {
+  display: none !important;
+}
 .account-sidebar__menu button svg, .account-sidebar__logout svg {
   width: 24px;
   height: 24px;

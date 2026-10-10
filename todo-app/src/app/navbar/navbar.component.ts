@@ -217,7 +217,7 @@ export class NavbarComponent implements OnInit {
   
   this.todoService.getTodoss().subscribe({
     next: (res) => {
-      console.log("Todos Data:", res);
+     
       
       // สมมติว่าคุณมีตัวแปร currentState ที่เก็บข้อมูล state ที่ส่งมา
       const currentEmail = this.navigationState?.state?.email;
@@ -361,10 +361,27 @@ export class NavbarComponent implements OnInit {
           state: { username: this.username, email: this.email, Move_returns3: true, role: this.userRole, profile: this.profile }
     });
   }
-loadNotifications(): void {
+// 1. เพิ่ม Getter เพื่อเช็คว่ามีรายการที่ "ยังไม่ได้อ่าน" หรือไม่
+  get hasUnreadNotifications(): boolean {
+    return this.notification.some(item => !item.is_read);
+  }
+
+  // 2. อัปเดตฟังก์ชัน loadNotifications
+  loadNotifications(): void {
     this.todoService.getNotifications().subscribe({
       next: (res: any) => {
-        this.notification = Array.isArray(res) ? res : (res.data || []);
+        const rawData = Array.isArray(res) ? res : (res.data || []);
+        
+        // ดึงข้อมูลการอ่านจาก Local Storage ของผู้ใช้คนนี้
+        const readKey = `read_notifications_${this.username}`;
+        const readIds = JSON.parse(localStorage.getItem(readKey) || '[]');
+
+        // แมปข้อมูลเพิ่ม is_read เข้าไป
+        this.notification = rawData.map((item: any) => ({
+          ...item,
+          is_read: readIds.includes(item.id)
+        }));
+
         this.changeDetector.markForCheck(); // สั่งให้ Angular อัปเดต UI
       },
       error: (err) => console.error('Error loading notifications:', err)
@@ -378,4 +395,5 @@ loadNotifications(): void {
     // ทำให้ตัวอักษรตัวแรกเป็นตัวพิมพ์ใหญ่สำหรับ Role อื่นๆ
     return this.userRole.charAt(0).toUpperCase() + this.userRole.slice(1);
   }
+  
 }

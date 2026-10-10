@@ -1540,6 +1540,7 @@ width: 100%;
     align-items: center;
     width: 100%;
     gap: 10px;
+    background-color: #F4F5FC;
     box-sizing: border-box;
     padding: 10px 20px; 
     border-radius: 8px; 
@@ -1681,14 +1682,14 @@ width: 100%;
     pointer-events: auto !important; /* บังคับให้รับการคลิกเสมอ */
     cursor: pointer; 
 
-    background-color: #F3E6FE;
+    background-color: #FCE8E8;
     border-radius: 10px;
 }
 .icon:hover{
-    background-color: #C68AF8;
+    background-color: #EF9595;
 }
 .icon:active{
-    background-color: #AD54F5;
+    background-color: #E86464;
 }
 
 .sku_pro2{
@@ -1696,8 +1697,15 @@ width: 100%;
     text-align: left; /* เปลี่ยนเป็น left เพื่อให้ข้อความชิดซ้าย */
     box-sizing: border-box;
 }
+.con_table{
+    margin-top: 40px;
+    display: flex;
+    width: 100%;
+}
 .sku_pro3{
+    font-size: 13px;
     position: relative;
+    margin-right:75px; /* ดันไปชิดขวา */
 }
 .connnn {
     display: flex;

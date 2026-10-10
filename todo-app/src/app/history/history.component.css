@@ -1503,10 +1503,43 @@ input::placeholder{
     width: 100vw;
     height: 100vh;
     position: fixed;
-    z-index: 10;
+    z-index: 1200;
+}
+.import_product2 {
+    background-color: #d9d9d977;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 9933;
+}
+.con_import_product3{
+     width: 40%;
+    height: 650px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column; /* ใส่หรือไม่ใส่ก็ได้ ขึ้นอยู่กับว่าต้องการให้เรียงเป็นแนวตั้งหรือแนวนอน */
+    transform: translate(-50%, -50%);
+    z-index: 7;
+    border-radius: 40px;
+    background-color: rgba(255, 255, 255, 0.866);
+    border: 1px solid #E5E7EB;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    
+
+}
+.product2 {
+    display: none;
 }
 
-.product2 {
+.product {
     display: none;
 }
 
@@ -1539,6 +1572,31 @@ input::placeholder{
 .con_import_product2::-webkit-scrollbar {
     display: none;
 }
+
+.con_import_product {
+    width: 40%;
+    height: 650px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    color: #212529;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    border-radius: 40px;
+    background-color: white;
+    border: 1px solid #E5E7EB;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+
+    overflow-x: hidden;
+    animation: moves 0.5s ease-in-out;
+}
+
+.con_import_product::-webkit-scrollbar {
+    display: none;
+}
+
 
 .out_comimport {
     animation: movess 0.5s ease-in-out;
@@ -1574,18 +1632,21 @@ input::placeholder{
     width: 100%;
     box-sizing: border-box;
 }
+.sku_inputt {
+    color: #48505E !important;
+}
 
 .sku_input {
     box-sizing: border-box;
     position: relative;
     border-radius: 8px;
-    padding: 17px;
+    padding: 0 17px; /* เอา Padding บน-ล่าง ออก เพื่อไม่ให้ดันตัวหนังสือ */
     margin-top: 10px;
     width: 100%;
-    height: 20px;
+    height: 40px; /* เพิ่มความสูงจาก 20px เป็น 40px */
     font-size: 15px;
-    font-weight: 100;
-    color: #48505E;
+    font-weight: 400; /* ปรับจาก 100 เป็น 400 เพื่อให้ตัวหนังสือหนาขึ้น อ่านง่ายขึ้น */
+    color: #48505E !important;
     border: 1px solid #E6EAED;
 }
 
@@ -1700,4 +1761,7 @@ input::placeholder{
 
 .text-gray {
   color: gray;
+}
+.text-red {
+  color: #DC1818;
 }

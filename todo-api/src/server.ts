@@ -749,6 +749,32 @@ app.put('/api/suppliers/:id', async (req, res) => {
     res.status(500).json({ success: false, message: 'Server Error' });
   }
 });
+// 📌 Route สำหรับอัปเดตสถานะการอ่าน (Read) ของ Notification
+app.put('/api/notification/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { read } = req.body;
+
+    // ตรวจสอบว่ามีการส่งค่า read มาหรือไม่
+    if (read === undefined) {
+      return res.status(400).json({ success: false, message: 'Read status is required' });
+    }
+
+    const result = await pool.query(
+      `UPDATE notification SET read = $1 WHERE id = $2 RETURNING *`,
+      [read, id]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ success: false, message: 'ไม่พบการแจ้งเตือนนี้' });
+    }
+
+    res.json({ success: true, data: result.rows[0] });
+  } catch (error) {
+    console.error('Error updating notification read status:', error);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+});
 app.put('/api/reset-password', async (req, res) => {
   try {
     const { title, password } = req.body;
