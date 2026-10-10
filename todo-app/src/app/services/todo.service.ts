@@ -286,4 +286,19 @@ updateRequestStatus(id: number, data: { status: string, admin_note?: string }): 
   updateNotificationReadStatus(id: number, readStatus: number) {
     return this.http.put(`${this.apiUrl}/notifications/${id}`, { read: readStatus });
   }
+  getNotificationStatus(username: string): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.apiUrl}/notification_status/${username}`, 
+      { headers: this.headers }
+    );
+  }
+
+  // บันทึกสถานะการอ่านลงตาราง notification_status
+  markNotificationAsRead(notificationId: number, username: string): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl}/notification_status`, 
+      { notification_id: notificationId, username: username }, 
+      { headers: this.headers }
+    );
+  }
 }

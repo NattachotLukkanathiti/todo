@@ -64,44 +64,46 @@ export class NavbarComponent implements OnInit {
   private timeSubscription!: Subscription;
   constructor(private router: Router) {}
 
-  ngOnInit(): void {
-  this.loadNotifications();
+ngOnInit(): void {
     const state = history.state;
     this.username = state.username || '';
     this.email = state.email || '';
     this.userRole = state.role || 'user';
     this.profile = state.profile || '';
-    this.loadTodos()
-     if (state.Move_return === true) {
-    this.stan = false;
-    this.play_Return = true;
-    this.inhere = true;
-    this.loadSummary(); 
-  }
 
-  // เข้ามาจาก Login
-  else if (state.stan === true) {
-    this.stan = true;
-        this.inhere = true;
-    this.play_Return = false;
-  }
-  if (state.Dont_animation === true){
-     this.inhere = false;
-    this.outs = true;
-    
-  }
+    // 1. ย้ายมาโหลดตรงนี้ เพื่อให้แน่ใจว่ามี username แล้ว
+    if (this.username) {
+      this.loadNotifications();
+    }
+
+    this.loadTodos();
+
+    if (state.Move_return === true) {
+      this.stan = false;
+      this.play_Return = true;
+      this.inhere = true;
+      this.loadSummary(); 
+    }
+    else if (state.stan === true) {
+      this.stan = true;
+      this.inhere = true;
+      this.play_Return = false;
+    }
+
+    if (state.Dont_animation === true){
+      this.inhere = false;
+      this.outs = true;
+    }
 
     if(!this.username || !this.email){
-      this.openpopupnoti("Session not found. Redirecting to login")
+      this.openpopupnoti("Session not found. Redirecting to login");
     return;
   }
     this.loadChartData();
     this.timeSubscription = interval(1000).subscribe(() => {
       this.currentTime = new Date();
     });
-  
   }
-
   loadSummary() {
     this.todoService.getSummary().subscribe({
       next: (res) => {
@@ -361,39 +363,33 @@ export class NavbarComponent implements OnInit {
           state: { username: this.username, email: this.email, Move_returns3: true, role: this.userRole, profile: this.profile }
     });
   }
-// 1. เพิ่ม Getter เพื่อเช็คว่ามีรายการที่ "ยังไม่ได้อ่าน" หรือไม่
-  get hasUnreadNotifications(): boolean {
-    return this.notification.some(item => !item.is_read);
-  }
-
-  // 2. อัปเดตฟังก์ชัน loadNotifications
-  loadNotifications(): void {
+ loadNotifications(): void {
     this.todoService.getNotifications().subscribe({
       next: (res: any) => {
         const rawData = Array.isArray(res) ? res : (res.data || []);
         
-        // ดึงข้อมูลการอ่านจาก Local Storage ของผู้ใช้คนนี้
         const readKey = `read_notifications_${this.username}`;
         const readIds = JSON.parse(localStorage.getItem(readKey) || '[]');
 
-        // แมปข้อมูลเพิ่ม is_read เข้าไป
         this.notification = rawData.map((item: any) => ({
           ...item,
           is_read: readIds.includes(item.id)
         }));
 
-        this.changeDetector.markForCheck(); // สั่งให้ Angular อัปเดต UI
+        this.changeDetector.markForCheck(); 
       },
       error: (err) => console.error('Error loading notifications:', err)
     });
   }
-  // เพิ่มฟังก์ชันนี้เพื่อแปลงค่า Role สำหรับแสดงผล
-  getDisplayRole(): string {
+    getDisplayRole(): string {
     if (this.userRole.toLowerCase() === 'pos') {
       return 'Frontend';
     }
     // ทำให้ตัวอักษรตัวแรกเป็นตัวพิมพ์ใหญ่สำหรับ Role อื่นๆ
     return this.userRole.charAt(0).toUpperCase() + this.userRole.slice(1);
   }
-  
+get hasUnreadNotifications(): boolean {
+    // เช็คว่ามีรายการไหนที่ is_read เป็น false หรือไม่
+    return this.notification.some(item => !item.is_read);
+  }
 }

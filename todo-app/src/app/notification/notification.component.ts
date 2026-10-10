@@ -44,10 +44,10 @@ export class NotificationComponent implements OnInit, OnDestroy {
     this.email = state.email || '';
     this.userRole = state.role || 'user';
     this.profile = state.profile || '';
-      if (this.username) {
+       if (this.username) {
       this.loadNotifications();
     }
-    
+
     if (!this.username || !this.email) {
       this.openpopupnoti("Session not found. Redirecting to login");
       return;
@@ -69,16 +69,26 @@ loadNotifications() {
       next: (res: any) => {
         const rawData = Array.isArray(res) ? res : (res.data || []);
         
-        // เปลี่ยนมาเช็คจากคอลัมน์ read (1 = อ่านแล้ว, 0 = ยังไม่อ่าน)
-        this.notifications = rawData.map((item: any) => ({
-          ...item,
-          is_read: item.read === 1 
-        }));
+        // 1. ดึงข้อมูลสถานะการอ่านจาก Backend แทน Local Storage
+        this.todoService.getNotificationStatus(this.username).subscribe({
+          next: (statusRes: any) => {
+            const readStatusList = Array.isArray(statusRes) ? statusRes : (statusRes.data || []);
+            
+            // สร้าง Array ของ ID ที่อ่านแล้ว
+            const readIds = readStatusList.map((status: any) => status.notification_id);
+
+            // แมปข้อมูลเพิ่ม is_read เข้าไป
+            this.notifications = rawData.map((item: any) => ({
+              ...item,
+              is_read: readIds.includes(item.id)
+            }));
+          },
+          error: (err) => console.error('Error fetching status:', err)
+        });
       },
-      error: (err) => console.error('Error:', err)
+      error: (err) => console.error('Error fetching notifications:', err)
     });
   }
-
 
   // --- Navigation & UI Functions ---
   navigateTo(path: string, extraState: any = {}) {
@@ -201,25 +211,24 @@ loadNotifications() {
     
     return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
   }
-markAsRead(item: any) {
+ markAsRead(item: any) {
+    // ถ้าอ่านแล้วไม่ต้องทำอะไรซ้ำ
     if (item.is_read) return;
 
-    // 1. อัปเดต UI ทันที
+    // 1. อัปเดตสถานะใน UI ทันที
     item.is_read = true;
-    item.read = 1;
 
-    // 2. ยิง API ไปที่ Backend (เปลี่ยนชื่อฟังก์ชันตาม Service ของคุณ)
-    this.todoService.updateNotificationReadStatus(item.id, 1).subscribe({
-      next: () => console.log('Saved to DB'),
-      error: (err) => {
-        console.error('Error', err);
-        // ถ้า Error ให้คืนค่ากลับ
-        item.is_read = false;
-        item.read = 0;
-      }
-    });
+    // 2. ดึงข้อมูลเดิมจาก Local Storage ของผู้ใช้คนนี้
+    const readKey = `read_notifications_${this.username}`;
+    const readIds = JSON.parse(localStorage.getItem(readKey) || '[]');
+    
+    // 3. เพิ่ม ID ใหม่เข้าไปและบันทึกกลับลง Local Storage
+    if (!readIds.includes(item.id)) {
+      readIds.push(item.id);
+      localStorage.setItem(readKey, JSON.stringify(readIds));
+    }
   }
-   // เพิ่ม Getter นี้เข้าไปในคลาส NotificationComponent
+  // เช็คว่ามีอันที่ยังไม่ได้อ่านเหลืออยู่ไหม
   get hasUnreadNotifications(): boolean {
     return this.notifications.some(item => !item.is_read);
   }

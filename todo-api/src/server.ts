@@ -749,29 +749,55 @@ app.put('/api/suppliers/:id', async (req, res) => {
     res.status(500).json({ success: false, message: 'Server Error' });
   }
 });
-// 📌 Route สำหรับอัปเดตสถานะการอ่าน (Read) ของ Notification
-app.put('/api/notification/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { read } = req.body;
+// ==========================================
+// 📌 Notification Status Routes
+// ==========================================
 
-    // ตรวจสอบว่ามีการส่งค่า read มาหรือไม่
-    if (read === undefined) {
-      return res.status(400).json({ success: false, message: 'Read status is required' });
+// 1. ดึงรายการแจ้งเตือนที่ User คนนั้นๆ อ่านแล้ว
+app.get('/api/notification_status/:username', async (req, res) => {
+  try {
+    const { username } = req.params;
+    
+    const result = await pool.query(
+      'SELECT notification_id FROM notification_status WHERE username = $1',
+      [username]
+    );
+    
+    // ส่งกลับเป็น Array ของ Object ที่มี notification_id
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error fetching notification status:', error);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+});
+
+// 2. บันทึกสถานะเมื่อ User กดอ่านแจ้งเตือน
+app.post('/api/notification_status', async (req, res) => {
+  try {
+    const { notification_id, username } = req.body;
+
+    if (!notification_id || !username) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Missing notification_id or username' 
+      });
     }
 
+    // ใช้คำสั่ง ON CONFLICT เพื่อป้องกัน Error กรณีที่กดย้ำๆ (Insert Ignore)
     const result = await pool.query(
-      `UPDATE notification SET read = $1 WHERE id = $2 RETURNING *`,
-      [read, id]
+      `INSERT INTO notification_status (notification_id, username) 
+       VALUES ($1, $2) 
+       ON CONFLICT (notification_id, username) DO NOTHING 
+       RETURNING *`,
+      [notification_id, username]
     );
 
-    if (result.rowCount === 0) {
-      return res.status(404).json({ success: false, message: 'ไม่พบการแจ้งเตือนนี้' });
-    }
-
-    res.json({ success: true, data: result.rows[0] });
+    res.status(201).json({ 
+      success: true, 
+      data: result.rows[0] || { message: 'Already marked as read' } 
+    });
   } catch (error) {
-    console.error('Error updating notification read status:', error);
+    console.error('Error saving notification status:', error);
     res.status(500).json({ success: false, message: 'Server Error' });
   }
 });
